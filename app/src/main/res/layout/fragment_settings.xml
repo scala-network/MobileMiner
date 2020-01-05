@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="#000"
@@ -139,8 +140,9 @@
                         android:layout_height="25dp"
                         android:layout_marginTop="5dp"
                         android:gravity="bottom"
-                        android:text="Coin"
-                        android:textStyle="bold" />
+                        android:text="Pool"
+                        android:textStyle="bold"
+                        tools:visibility="visible" />
 
                     <android.support.v7.widget.AppCompatSpinner
                         android:id="@+id/poolSpinner"
@@ -148,7 +150,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
-                        android:spinnerMode="dropdown" />
+                        android:spinnerMode="dropdown"
+                        android:visibility="visible"
+                        tools:visibility="visible" />
 
 
                     <android.support.v7.widget.AppCompatTextView
@@ -157,7 +161,7 @@
                         android:layout_height="25dp"
                         android:layout_marginTop="5dp"
                         android:gravity="bottom"
-                        android:text="Pool (change only for custom coin)"
+                        android:text="Pool Address (url:port)"
                         android:textStyle="bold" />
 
 
@@ -166,36 +170,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="" />
-
-                    <android.support.v7.widget.AppCompatTextView
-                        android:layout_width="match_parent"
-                        android:layout_height="25dp"
-                        android:layout_marginTop="5dp"
-                        android:gravity="bottom"
-                        android:text="Algo (change only for custom coin)"
-                        android:textStyle="bold" />
-
-                    <android.support.v7.widget.AppCompatSpinner
-                        android:id="@+id/algoSpinner"
-                        style="@style/Widget.AppCompat.Spinner.Underlined"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:spinnerMode="dropdown" />
-
-                    <android.support.v7.widget.AppCompatTextView
-                        android:layout_width="match_parent"
-                        android:layout_height="25dp"
-                        android:layout_marginTop="5dp"
-                        android:gravity="bottom"
-                        android:text="Miner"
-                        android:textStyle="bold" />
-
-                    <android.support.v7.widget.AppCompatSpinner
-                        android:id="@+id/minerSpinner"
-                        style="@style/Widget.AppCompat.Spinner.Underlined"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:spinnerMode="dropdown" />
 
                     <android.support.v7.widget.AppCompatTextView
                         android:id="@+id/addressText"
