@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#000"
+    android:backgroundTint="#000"
+    android:backgroundTintMode="src_over">
+
+    <TextView
+        android:id="@+id/statsTitle"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:gravity="center"
+        android:text="Settings"
+        android:textSize="30sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/statsTitle"
+        android:orientation="vertical">
+
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="55dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="15dp"
+                android:paddingBottom="25dp"
+                android:orientation="vertical">
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/cpuText"
+                    android:layout_width="match_parent"
+                    android:layout_height="25dp"
+                    android:layout_marginTop="5dp"
+                    android:gravity="bottom"
+                    android:text="CPU"
+                    android:textStyle="bold" />
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginRight="5dp"
+                                android:text="Cores" />
+
+                            <TextView
+                                android:id="@+id/cpus"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="5dp"
+                                android:text="" />
+
+                        </LinearLayout>
+
+                        <NumberPicker
+                            android:theme="@style/DefaultNumberPickerTheme"
+                            android:id="@+id/cores"
+                            android:layout_width="75dp"
+                            android:layout_height="75dp" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginRight="5dp"
+                            android:text="Threads/Core" />
+
+
+                        <NumberPicker
+                            android:theme="@style/DefaultNumberPickerTheme"
+                            android:id="@+id/threads"
+                            android:layout_width="75dp"
+                            android:layout_height="75dp" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginRight="5dp"
+                            android:text="Intensity" />
+
+                        <NumberPicker
+                            android:theme="@style/DefaultNumberPickerTheme"
+                            android:id="@+id/intensity"
+                            android:layout_width="75dp"
+                            android:layout_height="75dp" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <android.support.v7.widget.AppCompatTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="25dp"
+                        android:layout_marginTop="5dp"
+                        android:gravity="bottom"
+                        android:text="Coin"
+                        android:textStyle="bold" />
+
+                    <android.support.v7.widget.AppCompatSpinner
+                        android:id="@+id/poolSpinner"
+                        style="@style/Widget.AppCompat.Spinner.Underlined"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:spinnerMode="dropdown" />
+
+
+                    <android.support.v7.widget.AppCompatTextView
+                        android:id="@+id/poolText"
+                        android:layout_width="match_parent"
+                        android:layout_height="25dp"
+                        android:layout_marginTop="5dp"
+                        android:gravity="bottom"
+                        android:text="Pool (change only for custom coin)"
+                        android:textStyle="bold" />
+
+
+                    <android.support.v7.widget.AppCompatEditText
+                        android:id="@+id/pool"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="" />
+
+                    <android.support.v7.widget.AppCompatTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="25dp"
+                        android:layout_marginTop="5dp"
+                        android:gravity="bottom"
+                        android:text="Algo (change only for custom coin)"
+                        android:textStyle="bold" />
+
+                    <android.support.v7.widget.AppCompatSpinner
+                        android:id="@+id/algoSpinner"
+                        style="@style/Widget.AppCompat.Spinner.Underlined"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:spinnerMode="dropdown" />
+
+                    <android.support.v7.widget.AppCompatTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="25dp"
+                        android:layout_marginTop="5dp"
+                        android:gravity="bottom"
+                        android:text="Miner"
+                        android:textStyle="bold" />
+
+                    <android.support.v7.widget.AppCompatSpinner
+                        android:id="@+id/minerSpinner"
+                        style="@style/Widget.AppCompat.Spinner.Underlined"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:spinnerMode="dropdown" />
+
+                    <android.support.v7.widget.AppCompatTextView
+                        android:id="@+id/addressText"
+                        android:layout_width="match_parent"
+                        android:layout_height="25dp"
+                        android:layout_marginTop="5dp"
+                        android:gravity="bottom"
+                        android:text="Wallet Address"
+                        android:textStyle="bold" />
+
+                    <android.support.v7.widget.AppCompatEditText
+                        android:id="@+id/username"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="(your wallet address)"
+                        android:text="" />
+
+                    <android.support.v7.widget.AppCompatTextView
+                        android:id="@+id/passText"
+                        android:layout_width="match_parent"
+                        android:layout_height="25dp"
+                        android:layout_marginTop="5dp"
+                        android:gravity="bottom"
+                        android:text="Pool Password"
+                        android:textStyle="bold" />
+
+                    <android.support.v7.widget.AppCompatEditText
+                        android:id="@+id/pass"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="(worker name or pool options)"
+                        android:text="" />
+
+                    <android.support.v7.widget.AppCompatTextView
+                        android:id="@+id/systemText"
+                        android:layout_width="match_parent"
+                        android:layout_height="25dp"
+                        android:layout_marginTop="5dp"
+                        android:gravity="bottom"
+                        android:text="System"
+                        android:textStyle="bold" />
+
+                    <android.support.v7.widget.AppCompatCheckBox
+                        android:id="@+id/chkPauseOnBattery"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="(worker name or pool options)"
+                        android:text="Pause mining on battery power" />
+
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </ScrollView>
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="bottom">
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/saveSettings"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_centerHorizontal="true"
+            android:text="Save" />
+    </RelativeLayout>
+
+</RelativeLayout>

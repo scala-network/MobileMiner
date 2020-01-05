@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:context="scala.androidminer.MainActivity"> <!--  tools:openDrawer="start" -->
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#000000"
+        android:orientation="vertical"
+        android:paddingLeft="0dp"
+        android:paddingTop="0dp"
+        android:paddingRight="0dp">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:elevation="4dp"
+            android:theme="@style/Base.ThemeOverlay.AppCompat.Dark.ActionBar"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.ActionBar">
+
+            <ImageView
+                android:id="@+id/imageView3"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:paddingTop="7dp"
+                android:paddingRight="60dp"
+                android:src="@drawable/ic_m2g" />
+
+        </android.support.v7.widget.Toolbar>
+
+        <FrameLayout
+            android:id="@+id/fragment_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="15dp"
+            android:paddingTop="5dp"
+            android:paddingRight="15dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:layout_marginBottom="5dp">
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/miningTo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Mining to:" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+           >
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/status"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:text=""
+                android:layout_marginBottom="5dp"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:layout_marginBottom="10dp">
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/speed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="5dp"
+                android:text="0" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:text="@string/hpers" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/accepted"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="5dp"
+                android:text="0" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/accepted" />
+        </LinearLayout>
+
+        <ScrollView
+            android:id="@+id/outputScrollView"
+            android:layout_width="match_parent"
+            android:layout_height="158dp"
+            android:layout_marginBottom="15dp"
+            android:layout_weight="1"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp">
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/output"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:visibility="visible" />
+
+        </ScrollView>
+
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:paddingBottom="15dp">
+
+            <android.support.v7.widget.AppCompatButton
+                android:id="@+id/start"
+                android:layout_width="100dp"
+                android:layout_height="45dp"
+                android:backgroundTint="#009900"
+                android:backgroundTintMode="src_over"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:text="@string/start"
+                app:layout_constraintBaseline_toBaselineOf="parent"
+                app:layout_constraintRight_toRightOf="parent" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingLeft="0dp"
+                android:paddingRight="0dp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintBaseline_toBaselineOf="parent">
+
+                <android.support.v7.widget.AppCompatButton
+                    android:id="@+id/minerBtn1"
+                    android:layout_width="45dp"
+                    android:layout_height="45dp"
+                    android:text="H"/>
+
+                <android.support.v7.widget.AppCompatButton
+                    android:id="@+id/minerBtn2"
+                    android:layout_width="45dp"
+                    android:layout_height="45dp"
+                    android:text="P"/>
+
+                <android.support.v7.widget.AppCompatButton
+                    android:id="@+id/minerBtn3"
+                    android:layout_width="45dp"
+                    android:layout_height="45dp"
+                    android:text="R"/>
+
+            </LinearLayout>
+
+        </android.support.constraint.ConstraintLayout>
+    </LinearLayout>
+
+    <android.support.design.widget.NavigationView
+        android:id="@+id/nav_view"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:background="#CC000000"
+        android:textColor="#ffffff"
+        app:headerLayout="@layout/nav_header"
+        app:itemIconTint="#FFF"
+        app:itemTextColor="#FFFFFF"
+        app:menu="@menu/drawermenu" />
+
+</android.support.v4.widget.DrawerLayout>
