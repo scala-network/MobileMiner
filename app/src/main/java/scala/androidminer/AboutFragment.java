@@ -26,11 +26,13 @@ public class AboutFragment extends Fragment {
         TextView tvWebsite;
         TextView tvGithub;
         TextView tvDiscord;
+        TextView tvEmail;
         TextView tvSystemInfo;
 
         tvWebsite = view.findViewById(R.id.websiteURL);
         tvGithub = view.findViewById(R.id.githubURL);
         tvDiscord = view.findViewById(R.id.discordURL);
+        tvEmail = view.findViewById(R.id.email);
         tvSystemInfo = view.findViewById(R.id.systemInfo);
 
         tvWebsite.setText(Html.fromHtml(getString(R.string.websiteLink)));
@@ -41,6 +43,9 @@ public class AboutFragment extends Fragment {
 
         tvDiscord.setText(Html.fromHtml(getString(R.string.discordLink)));
         tvDiscord.setMovementMethod(LinkMovementMethod.getInstance());
+
+        tvEmail.setText(Html.fromHtml(getString(R.string.emailLink)));
+        tvEmail.setMovementMethod(LinkMovementMethod.getInstance());
 
         try {
             Map<String, String> m = Tools.getCPUInfo();
