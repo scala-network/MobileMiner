@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:tag="fragment_settings"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="#000"
@@ -132,7 +134,7 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:orientation="vertical">
 
                     <android.support.v7.widget.AppCompatTextView
@@ -171,14 +173,35 @@
                         android:layout_height="wrap_content"
                         android:text="" />
 
-                    <android.support.v7.widget.AppCompatTextView
-                        android:id="@+id/addressText"
-                        android:layout_width="match_parent"
+                    <LinearLayout
+                        android:layout_width="wrap_content"
                         android:layout_height="25dp"
-                        android:layout_marginTop="5dp"
-                        android:gravity="bottom"
-                        android:text="Wallet Address"
-                        android:textStyle="bold" />
+                        android:orientation="horizontal">
+
+                        <Button
+                            android:id="@+id/buttonQrReader"
+                            android:layout_width="27dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="0dp"
+                            android:layout_marginRight="10dp"
+                            android:layout_weight="1"
+                            android:paddingLeft="2dp"
+                            android:paddingTop="2dp"
+                            android:paddingRight="0dp"
+                            android:paddingBottom="2dp"
+                            app:backgroundTint="#00000000"
+                            app:icon="@drawable/ic_qr_scan"
+                            app:iconPadding="0dp" />
+
+                        <android.support.v7.widget.AppCompatTextView
+                            android:id="@+id/addressText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:text="Wallet Address"
+                            android:gravity="bottom"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
 
                     <android.support.v7.widget.AppCompatEditText
                         android:id="@+id/username"
@@ -218,6 +241,11 @@
                         android:layout_height="wrap_content"
                         android:hint="(worker name or pool options)"
                         android:text="Pause mining on battery power" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal"></LinearLayout>
 
 
                 </LinearLayout>

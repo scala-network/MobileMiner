@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private DrawerLayout drawer;
     boolean accepted = false;
 
-    private final static String[] SUPPORTED_ARCHITECTURES = {"arm64-v8a", "armeabi-v7a", "x86", "x86_64"};
+    private final static String[] SUPPORTED_ARCHITECTURES = {"arm64-v8a", "armeabi-v7a"};
 
     private TextView tvLog;
     private TextView edStatus;
@@ -94,7 +94,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onCreate(Bundle savedInstanceState) {
         preferences = getSharedPreferences(getPackageName() + "_preferences", MODE_PRIVATE);
 
-        //PreferenceHelper.clear();
+        PreferenceHelper.clear();
 
         contextOfApplication = getApplicationContext();
 
@@ -118,9 +118,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         super.onCreate(savedInstanceState);
 
-        if (PreferenceHelper.getName("address").equals("")) {
+        if (PreferenceHelper.getName("address").equals("") || PreferenceHelper.getName("pool").equals("")) {
             setContentView(R.layout.activity_main);
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new SettingsFragment()).commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new SettingsFragment(),"settings_fragment").commit();
         } else {
             setContentView(R.layout.activity_main);
         }
@@ -152,7 +152,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         minerBtn1 = (Button) findViewById(R.id.minerBtn1);
         minerBtn2 = (Button) findViewById(R.id.minerBtn2);
         minerBtn3 = (Button) findViewById(R.id.minerBtn3);
-
         updateUI();
 
         if (!Arrays.asList(SUPPORTED_ARCHITECTURES).contains(Tools.getABI())) {
@@ -259,7 +258,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 updateUI();
                 break;
             case R.id.settings:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new SettingsFragment()).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new SettingsFragment(),"settings_fragment").commit();
                 break;
 
         }
@@ -275,6 +274,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             super.onBackPressed();
         }
     }
+
+
 
     private void showdialog() {
         final Dialog dialog = new Dialog(this);
@@ -350,10 +351,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onResume() {
         super.onResume();
         updateUI();
+        SettingsFragment frag = (SettingsFragment) getSupportFragmentManager().findFragmentByTag("settings_fragment");
+        frag.updateAddress();
+
     }
 
     @Override
     protected void onPause() {
+
         super.onPause();
     }
 
