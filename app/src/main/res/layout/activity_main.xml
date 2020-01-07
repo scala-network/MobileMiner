@@ -8,12 +8,10 @@
     android:fitsSystemWindows="true"
     tools:context="scala.androidminer.MainActivity"> <!--  tools:openDrawer="start" -->
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#000000"
+        android:background="#1d232c"
         android:orientation="vertical"
         android:paddingLeft="0dp"
         android:paddingTop="0dp"
@@ -23,6 +21,7 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
+            android:background="#323340"
             android:elevation="4dp"
             android:theme="@style/Base.ThemeOverlay.AppCompat.Dark.ActionBar"
             app:popupTheme="@style/ThemeOverlay.AppCompat.ActionBar">
@@ -31,10 +30,11 @@
                 android:id="@+id/imageView3"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
+
                 android:gravity="center"
                 android:paddingTop="7dp"
                 android:paddingRight="60dp"
-                android:src="@drawable/ic_m2g" />
+                android:src="@drawable/ic_launcher_foreground" />
 
         </android.support.v7.widget.Toolbar>
 
@@ -145,7 +145,7 @@
                 android:id="@+id/start"
                 android:layout_width="100dp"
                 android:layout_height="45dp"
-                android:backgroundTint="#009900"
+                android:backgroundTint="#238bff"
                 android:backgroundTintMode="src_over"
                 android:paddingLeft="15dp"
                 android:paddingRight="15dp"

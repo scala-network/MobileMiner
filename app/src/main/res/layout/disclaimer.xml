@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    android:background="#323340"
     android:orientation="vertical" >
 
     <ScrollView
@@ -32,6 +33,7 @@
                 android:layout_marginLeft="5dip"
                 android:layout_marginRight="5dip"
                 android:layout_marginTop="5dip"
+                android:backgroundTint="#238bff"
                 android:text="Agree" />
 
             <android.support.v7.widget.AppCompatButton
@@ -42,6 +44,7 @@
                 android:layout_marginLeft="5dip"
                 android:layout_marginRight="5dip"
                 android:layout_marginTop="5dip"
+                android:backgroundTint="#238bff"
                 android:text="Exit" />
 
         </LinearLayout>

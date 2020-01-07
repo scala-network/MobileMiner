@@ -59,19 +59,19 @@ public class SettingsFragment extends Fragment {
         EditText edPool;
 
         Spinner spPool;
-        Spinner spAlgo;
-        Spinner spMiner;
+        /*Spinner spAlgo;
+        Spinner spMiner;*/
 
         NumberPicker npCores;
         NumberPicker npThreads;
         NumberPicker npIntensity;
 
         PoolSpinAdapter poolAdapter;
-        AlgoSpinAdapter algoAdapter;
+        //AlgoSpinAdapter algoAdapter;
 
         CheckBox chkPauseOnBattery;
 
-        final MinerSpinAdapter minerAdapter = new MinerSpinAdapter(MainActivity.contextOfApplication, R.layout.spinner_text_color, new ArrayList<MinerItem>());
+        //final MinerSpinAdapter minerAdapter = new MinerSpinAdapter(MainActivity.contextOfApplication, R.layout.spinner_text_color, new ArrayList<MinerItem>());
 
         View view = inflater.inflate(R.layout.fragment_settings, container, false);
         Context appContext = MainActivity.getContextOfApplication();
@@ -82,8 +82,8 @@ public class SettingsFragment extends Fragment {
         edPass = view.findViewById(R.id.pass);
 
         spPool = view.findViewById(R.id.poolSpinner);
-        spAlgo = view.findViewById(R.id.algoSpinner);
-        spMiner = view.findViewById(R.id.minerSpinner);
+        /*spAlgo = view.findViewById(R.id.algoSpinner);
+        spMiner = view.findViewById(R.id.minerSpinner);*/
 
         npCores = view.findViewById(R.id.cores);
         npThreads = view.findViewById(R.id.threads);
@@ -94,10 +94,10 @@ public class SettingsFragment extends Fragment {
         poolAdapter = new PoolSpinAdapter(MainActivity.contextOfApplication, R.layout.spinner_text_color, Config.settings.getPools());
         spPool.setAdapter(poolAdapter);
 
-        algoAdapter = new AlgoSpinAdapter(MainActivity.contextOfApplication, R.layout.spinner_text_color, Config.settings.getAlgos());
+        /*algoAdapter = new AlgoSpinAdapter(MainActivity.contextOfApplication, R.layout.spinner_text_color, Config.settings.getAlgos());
         spAlgo.setAdapter(algoAdapter);
 
-        spMiner.setAdapter(minerAdapter);
+        spMiner.setAdapter(minerAdapter);*/
 
         int cores = Runtime.getRuntime().availableProcessors();
         // write suggested cores usage into editText
@@ -155,16 +155,17 @@ public class SettingsFragment extends Fragment {
             for (int i = 0; i < n; i++) {
                 PoolItem itemPool = (PoolItem) poolAdapter.getItem(i);
                 if (itemPool.getPool().equals(poolAddress)) {
-                    if (itemPool.getAlgo().equals(PreferenceHelper.getName("algo"))) {
+                    spPool.setSelection(i);
+                    /*if (itemPool.getAlgo().equals(PreferenceHelper.getName("algo"))) {
                         spPool.setSelection(i);
 
-                    }
+                    }*/
                     break;
                 }
             }
         }
 
-        if (PreferenceHelper.getName("algo").equals("") == false) {
+        /*if (PreferenceHelper.getName("algo").equals("") == false) {
             int n = algoAdapter.getCount();
             String selectedAlgo = PreferenceHelper.getName("algo");
             for (int i = 0; i < n; i++) {
@@ -174,7 +175,7 @@ public class SettingsFragment extends Fragment {
                     break;
                 }
             }
-        }
+        }*/
 
         if (PreferenceHelper.getName("init").equals("1") == false) {
             spPool.setSelection(Config.settings.defaultPoolIndex);
@@ -198,7 +199,7 @@ public class SettingsFragment extends Fragment {
 
                 edPool.setText(item.getPool());
 
-                int n = algoAdapter.getCount();
+                /*int n = algoAdapter.getCount();
                 String selectedCoinAlgo = item.getAlgo();
 
                 for (int i = 0; i < n; i++) {
@@ -207,8 +208,7 @@ public class SettingsFragment extends Fragment {
                         spAlgo.setSelection(i);
                         break;
                     }
-                }
-
+                }*/
             }
 
             @Override
@@ -216,7 +216,7 @@ public class SettingsFragment extends Fragment {
             }
         });
 
-        spAlgo.setOnItemSelectedListener(new OnItemSelectedListener() {
+        /*spAlgo.setOnItemSelectedListener(new OnItemSelectedListener() {
 
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
@@ -276,7 +276,7 @@ public class SettingsFragment extends Fragment {
             @Override
             public void onNothingSelected(AdapterView<?> adapter) {
             }
-        });
+        });*/
 
         click.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -286,17 +286,24 @@ public class SettingsFragment extends Fragment {
                 PreferenceHelper.setName("pool", edPool.getText().toString().trim());
                 PreferenceHelper.setName("pass", edPass.getText().toString().trim());
 
-                AlgoItem selectedAlgoItem = (AlgoItem) spAlgo.getSelectedItem();
-                MinerItem selectedMinerItem = (MinerItem) spMiner.getSelectedItem();
+                //AlgoItem selectedAlgoItem = (AlgoItem) spAlgo.getSelectedItem();
+                //MinerItem selectedMinerItem = (MinerItem) spMiner.getSelectedItem();
                 PoolItem selectedPoolItem = (PoolItem) spPool.getSelectedItem();
 
                 //save miner based on algo
-                PreferenceHelper.setName("keyMiner-" + selectedAlgoItem.getAlgo(), selectedMinerItem.getMiner());
+                /*PreferenceHelper.setName("keyMiner-" + selectedAlgoItem.getAlgo(), selectedMinerItem.getMiner());
                 PreferenceHelper.setName("minerAlgo", selectedMinerItem.getAlgo());
                 PreferenceHelper.setName("miner", selectedMinerItem.getMiner());
 
                 PreferenceHelper.setName("algo", selectedAlgoItem.getAlgo());
-                PreferenceHelper.setName("assetExtension", selectedMinerItem.getAssetExtension());
+                PreferenceHelper.setName("assetExtension", selectedMinerItem.getAssetExtension());*/
+
+                PreferenceHelper.setName("keyMiner-defyx", "scala");
+                PreferenceHelper.setName("minerAlgo", "defyx");
+                PreferenceHelper.setName("miner", "xlarig");
+
+                PreferenceHelper.setName("algo", "defyx");
+                PreferenceHelper.setName("assetExtension", "xlarig");
 
                 PreferenceHelper.setName("apiUrl", selectedPoolItem.getApiUrl());
                 PreferenceHelper.setName("apiUrlMerged", selectedPoolItem.getApiUrlMerged());
@@ -350,11 +357,13 @@ public class SettingsFragment extends Fragment {
                     for (int i = 0; i < n; i++) {
                         PoolItem itemPool = (PoolItem) poolAdapter.getItem(i);
                         if (itemPool.getPool().equals(poolAddress)) {
-                            if (itemPool.getAlgo().equals(algoAdapter.getItem(spAlgo.getSelectedItemPosition()).getAlgo())) {
+                            spPool.setSelection(i);
+                            return;
+                            /*if (itemPool.getAlgo().equals(algoAdapter.getItem(spAlgo.getSelectedItemPosition()).getAlgo())) {
                                 spPool.setSelection(i);
                                 return;
-                            }
-                            break;
+                            }*/
+                            //break;
                         }
                     }
                     spPool.setSelection(0);
@@ -408,7 +417,7 @@ public class SettingsFragment extends Fragment {
         }
     }
 
-    public class AlgoSpinAdapter extends ArrayAdapter<AlgoItem> {
+    /*public class AlgoSpinAdapter extends ArrayAdapter<AlgoItem> {
 
         private Context context;
         private AlgoItem[] values;
@@ -509,5 +518,5 @@ public class SettingsFragment extends Fragment {
                 break;
             }
         }
-    }
+    }*/
 }
