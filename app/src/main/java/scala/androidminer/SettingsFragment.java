@@ -4,6 +4,7 @@
 
 package scala.androidminer;
 
+import android.content.Intent;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.content.Context;
@@ -50,6 +51,7 @@ public class SettingsFragment extends Fragment {
 
     private EditText edPass;
     private EditText edUser;
+    private Button  qrButton;
 
     @Nullable
     @Override
@@ -80,6 +82,8 @@ public class SettingsFragment extends Fragment {
         edUser = view.findViewById(R.id.username);
         edPool = view.findViewById(R.id.pool);
         edPass = view.findViewById(R.id.pass);
+
+        qrButton = view.findViewById(R.id.buttonQrReader);
 
         spPool = view.findViewById(R.id.poolSpinner);
         /*spAlgo = view.findViewById(R.id.algoSpinner);
@@ -183,6 +187,8 @@ public class SettingsFragment extends Fragment {
             edPass.setText(Config.settings.defaultPassword);
         }
 
+
+
         spPool.setOnItemSelectedListener(new OnItemSelectedListener() {
 
             @Override
@@ -214,6 +220,7 @@ public class SettingsFragment extends Fragment {
             @Override
             public void onNothingSelected(AdapterView<?> adapter) {
             }
+
         });
 
         /*spAlgo.setOnItemSelectedListener(new OnItemSelectedListener() {
@@ -371,7 +378,22 @@ public class SettingsFragment extends Fragment {
             }
         });
 
-        return view;
+
+        qrButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                    Intent intent = new Intent(appContext, QrCodeScannerActivity.class);
+                    startActivity(intent);
+            }
+        });
+
+            return view;
+    }
+
+    public void updateAddress() {
+        if (PreferenceHelper.getName("address").equals("") == false && edUser != null) {
+            edUser.setText(PreferenceHelper.getName("address"));
+        }
     }
 
     public class PoolSpinAdapter extends ArrayAdapter<PoolItem> {

@@ -21,7 +21,7 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="#323340"
+            android:background="#238CFC"
             android:elevation="4dp"
             android:theme="@style/Base.ThemeOverlay.AppCompat.Dark.ActionBar"
             app:popupTheme="@style/ThemeOverlay.AppCompat.ActionBar">
@@ -32,7 +32,7 @@
                 android:layout_height="wrap_content"
 
                 android:gravity="center"
-                android:paddingTop="7dp"
+                android:paddingTop="0dp"
                 android:paddingRight="60dp"
                 android:src="@drawable/ic_launcher_foreground" />
 

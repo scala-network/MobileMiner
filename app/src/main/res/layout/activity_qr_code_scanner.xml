@@ -91,7 +91,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
                     android:maxLines="1"
-                    android:text="Stellite Address"
+                    android:text="Scala Address"
                     android:textColor="#FFF" />
             </LinearLayout>
 
@@ -107,10 +107,9 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="20dp"
                     android:layout_weight="1"
-                    android:background="@color/bg_red"
                     android:enabled="true"
                     android:text="Cancel"
-                    android:textColor="#FFF" />
+                    android:textColor="#000" />
 
             </LinearLayout>
 

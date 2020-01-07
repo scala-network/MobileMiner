@@ -1,12 +1,12 @@
 package scala.androidminer;
 
+
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.SparseArray;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.samples.vision.barcodereader.BarcodeCapture;
 import com.google.android.gms.samples.vision.barcodereader.BarcodeGraphic;
@@ -37,7 +37,6 @@ public class QrCodeScannerActivity extends AppCompatActivity  implements Barcode
         });
 
         scanResult = findViewById(R.id.scanResult);
-        scanResult.setVisibility(View.GONE);
 
         barcodeCapture.setShowDrawRect(true)
                 .setSupportMultipleScan(false)
@@ -53,15 +52,20 @@ public class QrCodeScannerActivity extends AppCompatActivity  implements Barcode
 
     @Override
     public void onRetrieved(final Barcode barcode) {
-        Log.d("CONSOLE:QRCODE", "Barcode read: " + barcode.displayValue);
-        if(barcode.displayValue.startsWith("stellite:")){
-            String s = barcode.displayValue.replaceFirst("^stellite:","");
-            scanResult.setText(s);
-            PreferenceHelper.setMiner(s);
 
-        }else{
-            Toast.makeText(this,"Invalid scala address",Toast.LENGTH_LONG);
+
+        String miner = barcode.displayValue;
+        scanResult.setText("Scala Address : " + miner);
+        if(Utils.verifyAddress(miner)) {
+            Log.d("CONSOLE:QRCODE", "Barcode read: " + barcode.displayValue);
+            PreferenceHelper.setName("address",miner);
+            barcodeCapture.stopScanning();
+            finish();
+            return;
         }
+        //@@TODO Some kind of notification saying invalid
+
+
     }
 
     @Override

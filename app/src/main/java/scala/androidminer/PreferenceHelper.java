@@ -18,12 +18,4 @@ public class PreferenceHelper {
         MainActivity.preferences.edit().clear().commit();
     }
 
-
-    public static boolean setMiner(String miner) {
-        //@@TODO Verify miner variable
-        setName("miner", miner);
-        return true;
-    }
-
-
 }
