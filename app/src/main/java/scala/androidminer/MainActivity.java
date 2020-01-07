@@ -94,7 +94,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onCreate(Bundle savedInstanceState) {
         preferences = getSharedPreferences(getPackageName() + "_preferences", MODE_PRIVATE);
 
-        PreferenceHelper.clear();
+        //PreferenceHelper.clear();
 
         contextOfApplication = getApplicationContext();
 
