@@ -24,7 +24,7 @@
             android:background="#323340"
             android:elevation="4dp"
             android:theme="@style/Base.ThemeOverlay.AppCompat.Dark.ActionBar"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.ActionBar">
+            android:popupTheme="@style/ThemeOverlay.AppCompat.ActionBar">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -37,13 +37,13 @@
                     android:paddingTop="6dp"
                     android:paddingBottom="5dp"
                     android:scaleType="fitStart"
-                    android:src="@drawable/ic_launcher_foreground_round" />
+                    android:src="@mipmap/ic_launcher_round" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="#fbfaff"
-                    android:text="Miner"
+                    android:text="Scala Miner"
                     android:layout_alignRight="@id/imageView3"
                     android:layout_centerInParent="true"
                     android:textSize="20dp" />

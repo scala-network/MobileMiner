@@ -352,7 +352,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onResume();
         updateUI();
         SettingsFragment frag = (SettingsFragment) getSupportFragmentManager().findFragmentByTag("settings_fragment");
-        frag.updateAddress();
+        if(frag != null) {
+            frag.updateAddress();
+        }
 
     }
 
