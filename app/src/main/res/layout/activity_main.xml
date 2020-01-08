@@ -37,14 +37,13 @@
 
                     <ImageView
                         android:id="@+id/imageView3"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:paddingLeft="0dp"
-                        android:paddingTop="6dp"
-                        android:paddingRight="0dp"
-                        android:paddingBottom="5dp"
-                        android:scaleType="fitCenter"
-                        android:src="@mipmap/ic_launcher_round" />
+                        android:layout_width="45dp"
+                        android:layout_height="45dp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerVertical="true"
+                        android:paddingTop="5dp"
+                        android:scaleType="fitStart"
+                        android:src="@mipmap/ic_logo_colors" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -54,7 +53,7 @@
                         android:layout_gravity="center|left"
                         android:text="Scala Miner"
                         android:textColor="#fbfaff"
-                        android:textSize="20dp" />
+                        android:textSize="18dp" />
                 </LinearLayout>
 
             </RelativeLayout>

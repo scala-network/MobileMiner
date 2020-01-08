@@ -7,7 +7,7 @@
     <color name="colorSpinnerBackground">#961e1e1e</color>
     <color name="colorSpinner">#547458</color>
 
-    <color name='bg_green'>#00a85d</color>
+    <color name="bg_light">#00a85d</color>
     <color name='bg_red'>#ff2a52</color>
     <color name='bg_dark'>#171b24</color>
 </resources>
