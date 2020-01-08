@@ -189,8 +189,9 @@
                             android:paddingTop="2dp"
                             android:paddingRight="0dp"
                             android:paddingBottom="2dp"
-                            android:backgroundTint="#00000000"
-                            android:icon="@drawable/ic_qr_scan"
+                            app:backgroundTint="#00000000"
+                            app:icon="@drawable/ic_qr_scan"
+                            app:iconPadding="0dp"
                              />
 
                         <android.support.v7.widget.AppCompatTextView
