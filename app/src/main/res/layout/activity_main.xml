@@ -21,20 +21,34 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="#238CFC"
+            android:background="#323340"
             android:elevation="4dp"
             android:theme="@style/Base.ThemeOverlay.AppCompat.Dark.ActionBar"
             app:popupTheme="@style/ThemeOverlay.AppCompat.ActionBar">
 
-            <ImageView
-                android:id="@+id/imageView3"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" >
 
-                android:gravity="center"
-                android:paddingTop="0dp"
-                android:paddingRight="60dp"
-                android:src="@drawable/ic_launcher_foreground" />
+                <ImageView
+                    android:id="@+id/imageView3"
+                    android:layout_width="110dp"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="6dp"
+                    android:paddingBottom="5dp"
+                    android:scaleType="fitStart"
+                    android:src="@drawable/ic_launcher_foreground_round" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#fbfaff"
+                    android:text="Miner"
+                    android:layout_alignRight="@id/imageView3"
+                    android:layout_centerInParent="true"
+                    android:textSize="20dp" />
+
+            </RelativeLayout>
 
         </android.support.v7.widget.Toolbar>
 
@@ -69,7 +83,7 @@
             android:orientation="horizontal"
             android:paddingLeft="15dp"
             android:paddingRight="15dp"
-           >
+            >
 
             <android.support.v7.widget.AppCompatTextView
                 android:id="@+id/status"
@@ -141,7 +155,7 @@
             android:paddingRight="15dp"
             android:paddingBottom="15dp">
 
-            <android.support.v7.widget.AppCompatButton
+            <android.support.design.button.MaterialButton
                 android:id="@+id/start"
                 android:layout_width="100dp"
                 android:layout_height="45dp"
@@ -150,6 +164,9 @@
                 android:paddingLeft="15dp"
                 android:paddingRight="15dp"
                 android:text="@string/start"
+                android:textSize="15dp"
+                android:textAllCaps="false"
+                app:cornerRadius="5dp"
                 app:layout_constraintBaseline_toBaselineOf="parent"
                 app:layout_constraintRight_toRightOf="parent" />
 
@@ -166,18 +183,24 @@
                     android:id="@+id/minerBtn1"
                     android:layout_width="45dp"
                     android:layout_height="45dp"
+                    android:backgroundTint="#323340"
+                    android:backgroundTintMode="src_over"
                     android:text="H"/>
 
                 <android.support.v7.widget.AppCompatButton
                     android:id="@+id/minerBtn2"
                     android:layout_width="45dp"
                     android:layout_height="45dp"
+                    android:backgroundTint="#323340"
+                    android:backgroundTintMode="src_over"
                     android:text="P"/>
 
                 <android.support.v7.widget.AppCompatButton
                     android:id="@+id/minerBtn3"
                     android:layout_width="45dp"
                     android:layout_height="45dp"
+                    android:backgroundTint="#323340"
+                    android:backgroundTintMode="src_over"
                     android:text="R"/>
 
             </LinearLayout>
