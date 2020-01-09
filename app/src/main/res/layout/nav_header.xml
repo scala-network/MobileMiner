@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:alpha="1"
-    android:background="#000"
+    android:background="@color/bg_lighter"
     android:gravity="bottom"
     android:orientation="vertical"
     android:padding="16dp"
@@ -13,7 +13,7 @@
     <ImageView
         android:layout_width="64dp"
         android:layout_height="64dp"
-        android:src="@mipmap/ic_launcher" />
+        android:src="@mipmap/ic_logo_colors" />
 
     <android.support.v7.widget.AppCompatTextView
         android:paddingTop="8dp"

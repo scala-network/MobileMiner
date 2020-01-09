@@ -11,7 +11,7 @@
         android:layout_height="match_parent"
         android:layout_above="@+id/actions"
         android:layout_weight="1"
-        android:background="@color/bg_dark"
+        android:background="@color/bg_black"
         android:clickable="false"
         android:gravity="center">
 
@@ -36,14 +36,12 @@
 
     </RelativeLayout>
 
-
-
     <LinearLayout
         android:id="@+id/actions"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:background="@color/bg_dark"
+        android:background="@color/bg_black"
         android:orientation="vertical"
         android:paddingLeft="16dp"
         android:paddingRight="16dp">
@@ -101,15 +99,18 @@
                 android:layout_weight="1"
                 android:orientation="horizontal">
 
-                <Button
+                <android.support.design.button.MaterialButton
                     android:id="@+id/stop"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="20dp"
-                    android:layout_weight="1"
-                    android:enabled="true"
+                    android:layout_marginBottom="5dip"
+                    android:layout_marginLeft="5dip"
+                    android:layout_marginRight="5dip"
+                    android:layout_marginTop="5dip"
+                    android:backgroundTint="#238bff"
                     android:text="Cancel"
-                    android:textColor="#000" />
+                    android:textAllCaps="false"
+                    app:cornerRadius="5dp" />
 
             </LinearLayout>
 

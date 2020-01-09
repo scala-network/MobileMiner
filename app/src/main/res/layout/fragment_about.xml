@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#1d232c">
+    android:background="@color/bg_black">
 
     <android.support.v7.widget.AppCompatTextView
         android:id="@+id/aboutTitle"

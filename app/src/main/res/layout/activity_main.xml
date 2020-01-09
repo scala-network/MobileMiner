@@ -11,7 +11,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#1d232c"
+        android:background="@color/bg_black"
         android:orientation="vertical"
         android:paddingLeft="0dp"
         android:paddingTop="0dp"
@@ -21,7 +21,7 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="#323340"
+            android:background="@color/bg_lighter"
             android:elevation="4dp"
             android:theme="@style/Base.ThemeOverlay.AppCompat.Dark.ActionBar"
             android:popupTheme="@style/ThemeOverlay.AppCompat.ActionBar">
@@ -33,15 +33,13 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
 
                     <ImageView
                         android:id="@+id/imageView3"
-                        android:layout_width="45dp"
-                        android:layout_height="45dp"
-                        android:layout_centerHorizontal="true"
-                        android:layout_centerVertical="true"
-                        android:paddingTop="5dp"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
                         android:scaleType="fitStart"
                         android:src="@mipmap/ic_logo_colors" />
 
@@ -51,8 +49,9 @@
                         android:layout_centerHorizontal="true"
                         android:layout_centerVertical="true"
                         android:layout_gravity="center|left"
-                        android:text="Scala Miner"
-                        android:textColor="#fbfaff"
+                        android:paddingLeft="10dp"
+                        android:text="Miner"
+                        android:textColor="@color/c_white"
                         android:textSize="18dp" />
                 </LinearLayout>
 
@@ -167,7 +166,7 @@
                 android:id="@+id/start"
                 android:layout_width="100dp"
                 android:layout_height="45dp"
-                android:backgroundTint="#238bff"
+                android:backgroundTint="@color/c_blue"
                 android:backgroundTintMode="src_over"
                 android:paddingLeft="15dp"
                 android:paddingRight="15dp"
@@ -187,29 +186,41 @@
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintBaseline_toBaselineOf="parent">
 
-                <android.support.v7.widget.AppCompatButton
+                <android.support.design.button.MaterialButton
                     android:id="@+id/minerBtn1"
                     android:layout_width="45dp"
                     android:layout_height="45dp"
-                    android:backgroundTint="#323340"
+                    android:insetLeft="2dp"
+                    android:insetRight="2dp"
+                    android:backgroundTint="@color/bg_lighter"
                     android:backgroundTintMode="src_over"
-                    android:text="H"/>
+                    android:textSize="15dp"
+                    android:text="H"
+                    app:cornerRadius="5dp" />
 
-                <android.support.v7.widget.AppCompatButton
+                <android.support.design.button.MaterialButton
                     android:id="@+id/minerBtn2"
                     android:layout_width="45dp"
                     android:layout_height="45dp"
-                    android:backgroundTint="#323340"
+                    android:insetLeft="2dp"
+                    android:insetRight="2dp"
+                    android:backgroundTint="@color/bg_lighter"
                     android:backgroundTintMode="src_over"
-                    android:text="P"/>
+                    android:textSize="15dp"
+                    android:text="P"
+                    app:cornerRadius="5dp" />
 
-                <android.support.v7.widget.AppCompatButton
+                <android.support.design.button.MaterialButton
                     android:id="@+id/minerBtn3"
                     android:layout_width="45dp"
                     android:layout_height="45dp"
-                    android:backgroundTint="#323340"
+                    android:insetLeft="2dp"
+                    android:insetRight="2dp"
+                    android:backgroundTint="@color/bg_lighter"
                     android:backgroundTintMode="src_over"
-                    android:text="R"/>
+                    android:textSize="15dp"
+                    android:text="R"
+                    app:cornerRadius="5dp" />
 
             </LinearLayout>
 
