@@ -393,16 +393,16 @@ public class MainActivity extends AppCompatActivity
 
         if (minerPaused) {
             btn.setText("Resume");
-            DrawableCompat.setTint(buttonDrawable, Color.rgb(238, 201, 0));
+            DrawableCompat.setTint(buttonDrawable, getResources().getColor(R.color.c_green));
             btn.setBackground(buttonDrawable);
         } else {
             if (state) {
                 btn.setText("Stop");
-                DrawableCompat.setTint(buttonDrawable, Color.rgb(153, 0, 0));
+                DrawableCompat.setTint(buttonDrawable, getResources().getColor(R.color.c_red));
                 btn.setBackground(buttonDrawable);
             } else {
                 btn.setText("Start");
-                DrawableCompat.setTint(buttonDrawable, Color.rgb(0, 153, 0));
+                DrawableCompat.setTint(buttonDrawable, getResources().getColor(R.color.c_blue));
                 btn.setBackground(buttonDrawable);
             }
         }
