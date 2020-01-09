@@ -12,10 +12,10 @@
     <TextView
         android:id="@+id/statsTitle"
         android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:gravity="center"
+        android:layout_height="28dp"
+        android:gravity="start"
         android:text="Settings"
-        android:textSize="30sp" />
+        android:textSize="22sp" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -129,19 +129,15 @@
 
                 </LinearLayout>
 
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="20dp"
+                    />
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical">
-
-                    <android.support.v7.widget.AppCompatTextView
-                        android:layout_width="match_parent"
-                        android:layout_height="25dp"
-                        android:layout_marginTop="5dp"
-                        android:gravity="bottom"
-                        android:text="Pool"
-                        android:textStyle="bold"
-                        tools:visibility="visible" />
 
                     <android.support.v7.widget.AppCompatSpinner
                         android:id="@+id/poolSpinner"
@@ -153,16 +149,6 @@
                         android:visibility="visible"
                         tools:visibility="visible" />
 
-                    <android.support.v7.widget.AppCompatTextView
-                        android:id="@+id/poolText"
-                        android:layout_width="match_parent"
-                        android:layout_height="25dp"
-                        android:layout_marginTop="5dp"
-                        android:gravity="bottom"
-                        android:text="Pool Address (url:port)"
-                        android:textStyle="bold" />
-
-
                     <android.support.v7.widget.AppCompatEditText
                         android:id="@+id/pool"
                         android:layout_width="match_parent"
@@ -170,25 +156,24 @@
                         android:text="" />
 
                     <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="25dp"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
                         android:orientation="horizontal">
 
-                        <android.support.v7.widget.AppCompatTextView
-                            android:id="@+id/addressText"
+                        <android.support.v7.widget.AppCompatEditText
+                            android:id="@+id/username"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
-                            android:text="Wallet Address"
-                            android:gravity="bottom"
-                            android:textStyle="bold" />
+                            android:layout_weight = "1"
+                            android:hint="(your wallet address)"
+                            android:text="" />
 
                         <Button
                             android:id="@+id/buttonQrReader"
                             android:layout_width="27dp"
-                            android:layout_height="match_parent"
                             android:layout_marginTop="0dp"
                             android:layout_marginRight="10dp"
-                            android:layout_weight="1"
+                            android:layout_height = "wrap_content"
                             android:paddingLeft="2dp"
                             android:paddingTop="2dp"
                             android:paddingRight="0dp"
@@ -199,36 +184,11 @@
                     </LinearLayout>
 
                     <android.support.v7.widget.AppCompatEditText
-                        android:id="@+id/username"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="(your wallet address)"
-                        android:text="" />
-
-                    <android.support.v7.widget.AppCompatTextView
-                        android:id="@+id/passText"
-                        android:layout_width="match_parent"
-                        android:layout_height="25dp"
-                        android:layout_marginTop="5dp"
-                        android:gravity="bottom"
-                        android:text="Pool Password"
-                        android:textStyle="bold" />
-
-                    <android.support.v7.widget.AppCompatEditText
                         android:id="@+id/pass"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="(worker name or pool options)"
                         android:text="" />
-
-                    <android.support.v7.widget.AppCompatTextView
-                        android:id="@+id/systemText"
-                        android:layout_width="match_parent"
-                        android:layout_height="25dp"
-                        android:layout_marginTop="5dp"
-                        android:gravity="bottom"
-                        android:text="System"
-                        android:textStyle="bold" />
 
                     <android.support.v7.widget.AppCompatCheckBox
                         android:id="@+id/chkPauseOnBattery"
@@ -241,7 +201,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:orientation="horizontal"></LinearLayout>
-
 
                 </LinearLayout>
 
@@ -265,7 +224,7 @@
             android:textSize="15dp"
             android:textAllCaps="false"
             android:text="Save"
-            android:layout_centerHorizontal="true"
+            android:layout_alignParentRight="true"
             app:cornerRadius="5dp" />
 
     </RelativeLayout>

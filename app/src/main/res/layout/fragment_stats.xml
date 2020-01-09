@@ -8,9 +8,9 @@
         android:id="@+id/statsTitle"
         android:layout_width="match_parent"
         android:layout_height="45dp"
-        android:gravity="center"
+        android:gravity="start"
         android:text="Mining Stats"
-        android:textSize="30sp" />
+        android:textSize="22sp" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -34,8 +34,8 @@
                 android:layout_height="wrap_content"
                 android:padding="5dp"
                 android:text="Your Stats"
-                android:gravity="center"
-                />
+                android:gravity="start"
+                android:textSize="20sp" />
 
             <android.support.v7.widget.AppCompatTextView
                 android:id="@+id/fetchdata"
@@ -48,8 +48,8 @@
                 android:layout_height="wrap_content"
                 android:padding="5dp"
                 android:text="Network Stats"
-                android:gravity="center"
-                />
+                android:gravity="start"
+                android:textSize="20sp" />
 
             <android.support.v7.widget.AppCompatTextView
                 android:id="@+id/fetchdataNetwork"
