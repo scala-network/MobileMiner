@@ -31,19 +31,8 @@ import android.widget.Toast;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.AdapterView;
 import android.widget.NumberPicker;
+import java.util.Arrays;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Iterator;
 
 public class SettingsFragment extends Fragment {
 
@@ -58,22 +47,17 @@ public class SettingsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         Button click;
-        EditText edPool;
-
+        EditText edPool, edPort;
         Spinner spPool;
-        /*Spinner spAlgo;
-        Spinner spMiner;*/
+
 
         NumberPicker npCores;
         NumberPicker npThreads;
         NumberPicker npIntensity;
 
         PoolSpinAdapter poolAdapter;
-        //AlgoSpinAdapter algoAdapter;
 
         CheckBox chkPauseOnBattery;
-
-        //final MinerSpinAdapter minerAdapter = new MinerSpinAdapter(MainActivity.contextOfApplication, R.layout.spinner_text_color, new ArrayList<MinerItem>());
 
         View view = inflater.inflate(R.layout.fragment_settings, container, false);
         Context appContext = MainActivity.getContextOfApplication();
@@ -81,13 +65,12 @@ public class SettingsFragment extends Fragment {
 
         edUser = view.findViewById(R.id.username);
         edPool = view.findViewById(R.id.pool);
+        edPort = view.findViewById(R.id.port);
         edPass = view.findViewById(R.id.pass);
 
         qrButton = view.findViewById(R.id.buttonQrReader);
 
         spPool = view.findViewById(R.id.poolSpinner);
-        /*spAlgo = view.findViewById(R.id.algoSpinner);
-        spMiner = view.findViewById(R.id.minerSpinner);*/
 
         npCores = view.findViewById(R.id.cores);
         npThreads = view.findViewById(R.id.threads);
@@ -95,13 +78,14 @@ public class SettingsFragment extends Fragment {
 
         chkPauseOnBattery = view.findViewById(R.id.chkPauseOnBattery);
 
-        poolAdapter = new PoolSpinAdapter(MainActivity.contextOfApplication, R.layout.spinner_text_color, Config.settings.getPools());
+        PoolItem[] pools = Config.settings.getPools();
+        String[] description = new String[pools.length];
+        for(int i =0; i< pools.length;i++) {
+            description[i] = pools[i].getKey();
+        }
+
+        poolAdapter = new PoolSpinAdapter(appContext, R.layout.spinner_text_color, description);
         spPool.setAdapter(poolAdapter);
-
-        /*algoAdapter = new AlgoSpinAdapter(MainActivity.contextOfApplication, R.layout.spinner_text_color, Config.settings.getAlgos());
-        spAlgo.setAdapter(algoAdapter);
-
-        spMiner.setAdapter(minerAdapter);*/
 
         int cores = Runtime.getRuntime().availableProcessors();
         // write suggested cores usage into editText
@@ -139,10 +123,8 @@ public class SettingsFragment extends Fragment {
             npIntensity.setValue(Integer.parseInt(PreferenceHelper.getName("intensity")));
         }
 
-        if (PreferenceHelper.getName("pauseonbattery").equals("1") == true) {
-            chkPauseOnBattery.setChecked(true);
-        }
-
+        boolean checkStatus = (PreferenceHelper.getName("pauseonbattery").equals("1") == true);
+        chkPauseOnBattery.setChecked(checkStatus);
 
         if (PreferenceHelper.getName("address").equals("") == false) {
             edUser.setText(PreferenceHelper.getName("address"));
@@ -152,69 +134,64 @@ public class SettingsFragment extends Fragment {
             edPass.setText(PreferenceHelper.getName("pass"));
         }
 
-        if (PreferenceHelper.getName("pool").equals("") == false) {
-            edPool.setText(PreferenceHelper.getName("pool"));
-            int n = poolAdapter.getCount();
-            String poolAddress = PreferenceHelper.getName("pool");
-            for (int i = 0; i < n; i++) {
-                PoolItem itemPool = (PoolItem) poolAdapter.getItem(i);
-                if (itemPool.getPool().equals(poolAddress)) {
-                    spPool.setSelection(i);
-                    /*if (itemPool.getAlgo().equals(PreferenceHelper.getName("algo"))) {
-                        spPool.setSelection(i);
-
-                    }*/
-                    break;
-                }
-            }
+        PoolItem poolItem = null;
+        String poolSelected = PreferenceHelper.getName("selected_pool");
+        int sp = Config.settings.defaultPoolIndex;
+        if (poolSelected.equals("") == false) {
+            poolSelected = String.valueOf(sp);
         }
 
-        /*if (PreferenceHelper.getName("algo").equals("") == false) {
-            int n = algoAdapter.getCount();
-            String selectedAlgo = PreferenceHelper.getName("algo");
-            for (int i = 0; i < n; i++) {
-                String itemAlgo = (String) algoAdapter.getItem(i).getAlgo();
-                if (itemAlgo.equals(selectedAlgo)) {
-                    spAlgo.setSelection(i);
-                    break;
-                }
-            }
-        }*/
+        poolItem = Config.getPoolById(poolSelected);
+
+        if(poolItem == null) {
+            poolSelected = String.valueOf(sp);
+        }
+
+        poolItem = Config.getPoolById(poolSelected);
 
         if (PreferenceHelper.getName("init").equals("1") == false) {
-            spPool.setSelection(Config.settings.defaultPoolIndex);
+            poolSelected = String.valueOf(sp);
             edUser.setText(Config.settings.defaultWallet);
             edPass.setText(Config.settings.defaultPassword);
         }
 
+        if(poolSelected.equals("0")) {
+            edPool.setText(PreferenceHelper.getName("custom_pool"));
+            edPort.setText(PreferenceHelper.getName("custom_port"));
+        } else if(!PreferenceHelper.getName("custom_port").isEmpty()) {
+            edPool.setText(poolItem.getKey());
+            edPort.setText(PreferenceHelper.getName("custom_port"));
+        }else{
+            PreferenceHelper.setName("custom_pool","");
+            PreferenceHelper.setName("custom_port","");
+            edPool.setText(poolItem.getKey());
+            edPort.setText(poolItem.getPort());
+        }
 
+        spPool.setSelection(Integer.valueOf(poolSelected));
 
         spPool.setOnItemSelectedListener(new OnItemSelectedListener() {
 
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
 
-                PoolItem item = poolAdapter.getItem(position);
-
                 if (PreferenceHelper.getName("init").equals("1") == true) {
-                    edUser.setText(PreferenceHelper.getName("keyAddress-" + item.getKey()));
-                    edPass.setText(PreferenceHelper.getName("keyPassword-" + item.getKey()));
+                    edUser.setText(PreferenceHelper.getName("address"));
+                    edPass.setText(PreferenceHelper.getName("password"));
                 }
 
-                if (position == 0) return;
+                if (position == 0){
+                    edPool.setText(PreferenceHelper.getName("custom_pool"));
+                    edPort.setText(PreferenceHelper.getName("custom_port"));
+                    return;
+                }
 
-                edPool.setText(item.getPool());
+                PoolItem poolItem = Config.getPoolById(position);
+                if(poolItem != null){
+                    edPool.setText(poolItem.getPool());
+                    edPort.setText(poolItem.getPort());
+                }
 
-                /*int n = algoAdapter.getCount();
-                String selectedCoinAlgo = item.getAlgo();
-
-                for (int i = 0; i < n; i++) {
-                    String s = (String) algoAdapter.getItem(i).getAlgo();
-                    if (selectedCoinAlgo.equals(s)) {
-                        spAlgo.setSelection(i);
-                        break;
-                    }
-                }*/
             }
 
             @Override
@@ -223,96 +200,27 @@ public class SettingsFragment extends Fragment {
 
         });
 
-        /*spAlgo.setOnItemSelectedListener(new OnItemSelectedListener() {
-
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
-
-                ArrayList<MinerItem> items = algoAdapter.getItem(spAlgo.getSelectedItemPosition()).getMiners();
-                minerAdapter.addList(items);
-
-                String selectedAlgo = algoAdapter.getItem(spAlgo.getSelectedItemPosition()).getAlgo();
-                String selectedMiner = PreferenceHelper.getName("keyMiner-" + selectedAlgo);
-
-                if (selectedMiner.equals("") == false) {
-
-                    int n = minerAdapter.getCount();
-
-                    for (int i = 0; i < n; i++) {
-                        String itemMiner = (String) minerAdapter.getItem(i).getMiner();
-                        if (itemMiner.equals(selectedMiner)) {
-                            spMiner.setSelection(i);
-                            break;
-                        }
-                    }
-
-                } else {
-
-                    spMiner.setSelection(0);
-
-                    int n = minerAdapter.getCount();
-
-                    String defaultMiner = algoAdapter.getItem(spAlgo.getSelectedItemPosition()).getDefaultMiner();
-
-                    for (int i = 0; i < n; i++) {
-                        String itemMiner = (String) minerAdapter.getItem(i).getMiner();
-                        if (itemMiner.equals(defaultMiner)) {
-                            spMiner.setSelection(i);
-                            break;
-                        }
-                    }
-
-                }
-
-                String poolAddress = edPool.getText().toString();
-                int n = poolAdapter.getCount();
-
-                for (int i = 0; i < n; i++) {
-                    PoolItem itemPool = (PoolItem) poolAdapter.getItem(i);
-                    if (itemPool.getPool().equals(poolAddress)) {
-                        if (itemPool.getAlgo().equals(selectedAlgo)) {
-                            spPool.setSelection(i);
-                            return;
-                        }
-                        break;
-                    }
-                }
-                spPool.setSelection(0);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapter) {
-            }
-        });*/
-
         click.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 PreferenceHelper.setName("address", edUser.getText().toString().trim());
-                PreferenceHelper.setName("pool", edPool.getText().toString().trim());
                 PreferenceHelper.setName("pass", edPass.getText().toString().trim());
+                int seletedPosition = spPool.getSelectedItemPosition();
+                String port = edPort.getText().toString().trim();
+                String pool = edPool.getText().toString().trim();
+                if(seletedPosition == 0) {
+                    PreferenceHelper.setName("custom_pool", pool);
+                    PreferenceHelper.setName("custom_port", port);
+                } else if(!port.equals(Config.getPoolById(seletedPosition).getPort())) {
+                    PreferenceHelper.setName("custom_pool", "");
+                    PreferenceHelper.setName("custom_port", port);
+                } else {
+                    PreferenceHelper.setName("custom_port", "");
+                    PreferenceHelper.setName("custom_pool", "");
+                }
 
-                PoolItem selectedPoolItem = (PoolItem) spPool.getSelectedItem();
-
-                PreferenceHelper.setName("keyMiner-defyx", "scala");
-                PreferenceHelper.setName("minerAlgo", "defyx");
-                PreferenceHelper.setName("miner", "xlarig");
-
-                PreferenceHelper.setName("algo", "defyx");
-                PreferenceHelper.setName("assetExtension", "xlarig");
-
-                PreferenceHelper.setName("apiUrl", selectedPoolItem.getApiUrl());
-                PreferenceHelper.setName("apiUrlMerged", selectedPoolItem.getApiUrlMerged());
-                PreferenceHelper.setName("poolUrl", selectedPoolItem.getPoolUrl());
-                PreferenceHelper.setName("statsUrl", selectedPoolItem.getStatsURL());
-                PreferenceHelper.setName("startUrl", selectedPoolItem.getStartUrl());
-
-                PreferenceHelper.setName("coin", selectedPoolItem.getCoin());
-
-                PreferenceHelper.setName("keyAddress-" + selectedPoolItem.getKey(), edUser.getText().toString().trim());
-                PreferenceHelper.setName("keyPassword-" + selectedPoolItem.getKey(), edPass.getText().toString().trim());
-
+                PreferenceHelper.setName("selected_pool", String.valueOf(seletedPosition));
                 PreferenceHelper.setName("cores", Integer.toString(npCores.getValue()));
                 PreferenceHelper.setName("threads", Integer.toString(npThreads.getValue()));
                 PreferenceHelper.setName("intensity", Integer.toString(npIntensity.getValue()));
@@ -329,7 +237,7 @@ public class SettingsFragment extends Fragment {
                         getFragmentManager().beginTransaction().remove(fragment).commit();
                     }
                 }
-                //  getActivity().getFragmentManager().beginTransaction().remove(this).commit();
+
                 NavigationView nav = main.findViewById(R.id.nav_view);
                 nav.getMenu().getItem(0).setChecked(true);
                 main.updateUI();
@@ -348,22 +256,22 @@ public class SettingsFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                String poolAddress = edPool.getText().toString();
-                int n = poolAdapter.getCount();
-                if (s.length() != 0) {
-                    for (int i = 0; i < n; i++) {
-                        PoolItem itemPool = (PoolItem) poolAdapter.getItem(i);
+                String poolAddress = edPool.getText().toString().trim();
+                PoolItem[] pools = Config.getPools();
+                int position  = spPool.getSelectedItemPosition();
+
+                if (s.length() > 0) {
+                    int poolSelected = 0;
+                    for (int i = 1; i < pools.length; i++) {
+                        PoolItem itemPool = pools[i];
                         if (itemPool.getPool().equals(poolAddress)) {
-                            spPool.setSelection(i);
-                            return;
-                            /*if (itemPool.getAlgo().equals(algoAdapter.getItem(spAlgo.getSelectedItemPosition()).getAlgo())) {
-                                spPool.setSelection(i);
-                                return;
-                            }*/
-                            //break;
+                            poolSelected = i;
+                            break;
                         }
                     }
-                    spPool.setSelection(0);
+                    if(position != poolSelected){
+                        spPool.setSelection(poolSelected);
+                    }
                 }
             }
         });
@@ -372,8 +280,8 @@ public class SettingsFragment extends Fragment {
         qrButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                    Intent intent = new Intent(appContext, QrCodeScannerActivity.class);
-                    startActivity(intent);
+                Intent intent = new Intent(appContext, QrCodeScannerActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -386,12 +294,12 @@ public class SettingsFragment extends Fragment {
         }
     }
 
-    public class PoolSpinAdapter extends ArrayAdapter<PoolItem> {
+    public class PoolSpinAdapter extends ArrayAdapter<String> {
 
         private Context context;
-        private PoolItem[] values;
+        private String[] values;
 
-        public PoolSpinAdapter(Context c, int textViewResourceId, PoolItem[] values) {
+        public PoolSpinAdapter(Context c, int textViewResourceId, String[] values) {
             super(c, textViewResourceId, values);
             this.context = c;
             this.values = values;
@@ -403,51 +311,12 @@ public class SettingsFragment extends Fragment {
         }
 
         @Override
-        public PoolItem getItem(int position) {
+        public String getItem(int position) {
             return values[position];
         }
 
-        @Override
-        public long getItemId(int position) {
-            return position;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-
-            TextView label = (TextView) super.getView(position, convertView, parent);
-            label.setText(values[position].getCoin());
-            return label;
-        }
-
-        @Override
-        public View getDropDownView(int position, View convertView, ViewGroup parent) {
-            TextView label = (TextView) super.getDropDownView(position, convertView, parent);
-            label.setText(values[position].getCoin());
-            label.setPadding(5, 10, 5, 10);
-            return label;
-        }
-    }
-
-    /*public class AlgoSpinAdapter extends ArrayAdapter<AlgoItem> {
-
-        private Context context;
-        private AlgoItem[] values;
-
-        public AlgoSpinAdapter(Context c, int textViewResourceId, AlgoItem[] values) {
-            super(c, textViewResourceId, values);
-            this.context = c;
-            this.values = values;
-        }
-
-        @Override
-        public int getCount() {
-            return values.length;
-        }
-
-        @Override
-        public AlgoItem getItem(int position) {
-            return values[position];
+        public int getPosition(String item){
+            return Arrays.asList(values).indexOf(item);
         }
 
         @Override
@@ -459,76 +328,18 @@ public class SettingsFragment extends Fragment {
         public View getView(int position, View convertView, ViewGroup parent) {
 
             TextView label = (TextView) super.getView(position, convertView, parent);
-            label.setText(values[position].getAlgo());
+            label.setText(values[position]);
             return label;
         }
 
         @Override
         public View getDropDownView(int position, View convertView, ViewGroup parent) {
             TextView label = (TextView) super.getDropDownView(position, convertView, parent);
-            label.setText(values[position].getAlgo());
+            label.setText(values[position]);
             label.setPadding(5, 10, 5, 10);
             return label;
         }
+
     }
 
-    public class MinerSpinAdapter extends ArrayAdapter<MinerItem> {
-
-        private Context context;
-        private ArrayList<MinerItem> values;
-
-        public MinerSpinAdapter(Context c, int textViewResourceId, ArrayList<MinerItem> values) {
-            super(c, textViewResourceId, values);
-            this.context = c;
-            this.values = values;
-        }
-
-        public void addList(ArrayList<MinerItem> list) {
-            values.clear();
-            for (MinerItem value : list) {
-                values.add(value);
-            }
-            this.notifyDataSetChanged();
-        }
-
-        @Override
-        public int getCount() {
-            return values.size();
-        }
-
-        @Override
-        public MinerItem getItem(int position) {
-            return values.get(position);
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return position;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-
-            TextView label = (TextView) super.getView(position, convertView, parent);
-            label.setText(values.get(position).getMiner());
-            return label;
-        }
-
-        @Override
-        public View getDropDownView(int position, View convertView, ViewGroup parent) {
-            TextView label = (TextView) super.getDropDownView(position, convertView, parent);
-            label.setText(values.get(position).getMiner());
-            label.setPadding(5, 10, 5, 10);
-            return label;
-        }
-    }
-
-    private void selectSpinnerValue(Spinner spinner, String value) {
-        for (int i = 0; i < spinner.getCount(); i++) {
-            if (spinner.getItemAtPosition(i).toString().equals(value)) {
-                spinner.setSelection(i);
-                break;
-            }
-        }
-    }*/
 }

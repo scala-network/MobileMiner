@@ -16,7 +16,7 @@
     <string name="hpers">H/s</string>
     <string name="accepted">accepted</string>
     <string name="cpus">Cores</string>
-    <string name="temperature">Temperature</string>
+    <string name="temperature">°C</string>
 
 
     <string name="websiteLink">&lt;a href=&quot;https://scalaproject.io&quot;&gt;scalaproject.io&lt;/a&gt;</string>

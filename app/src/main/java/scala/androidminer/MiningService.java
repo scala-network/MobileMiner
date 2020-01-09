@@ -110,7 +110,7 @@ public class MiningService extends Service {
 
         Log.i(LOG_TAG, "MINING SERVICE ABI: " + abi);
 
-        assetExtension = PreferenceHelper.getName("assetExtension");
+        assetExtension = Config.miner_xlarig;
 
         if (Arrays.asList(SUPPORTED_ARCHITECTURES).contains(abi)) {
             assetPath = assetExtension + "/" + abi;
@@ -161,28 +161,25 @@ public class MiningService extends Service {
         int cores, threads, intensity, legacyThreads, legacyIntensity;
     }
 
-    public MiningConfig newConfig(String username, String pool, String pass, int cores, int threads, int intensity, String algo, String assetExtension) {
+    public MiningConfig newConfig(String username, String pass, int cores, int threads, int intensity) {
 
         MiningConfig config = new MiningConfig();
-
+        PoolItem pi = Config.getSelectedPool();
         config.username = username;
-        config.pool = pool;
+        config.pool = pi.getPool() + ":" + pi.getPort();
         config.cores = cores;
         config.threads = threads;
         config.intensity = intensity;
         config.pass = pass;
-        config.algo = algo;
-        config.assetExtension = assetExtension;
+        config.algo = Config.algo;
+        config.assetExtension = Config.miner_xlarig;
 
         config.legacyThreads = threads * cores;
         config.legacyIntensity = intensity;
 
-        String[] poolParts = pool.split(":");
-        config.poolHost = poolParts[0];
-        config.poolPort = "";
-        if (poolParts.length > 1) {
-            config.poolPort = poolParts[1];
-        }
+        config.poolHost = pi.getPool();
+        config.poolPort = pi.getPort();
+
         config.cpuConfig = createCpuConfig(cores, threads, intensity);
 
         return config;
@@ -239,11 +236,11 @@ public class MiningService extends Service {
 
             if (hostParts.length == 2) {
                 return getIpByHost(hostParts[0]) + ":" + hostParts[1];
-            } else if (hostParts.length == 1) {
-                return getIpByHost(hostParts[0]);
-            } else {
-                return pool;
             }
+            if (hostParts.length == 1) {
+                return getIpByHost(hostParts[0]);
+            }
+            return pool;
         }
 
         private Exception exception;
@@ -253,7 +250,7 @@ public class MiningService extends Service {
 
             try {
                 this.config = config[0];
-                this.config.pool = getPoolHost(this.config.pool);
+                this.config.pool = getPoolHost(this.config.poolHost);
                 return "success";
             } catch (Exception e) {
                 this.exception = e;
@@ -308,7 +305,7 @@ public class MiningService extends Service {
 
             process = pb.start();
 
-            outputHandler = new MiningService.OutputReaderThread(process.getInputStream(), PreferenceHelper.getName("miner"));
+            outputHandler = new MiningService.OutputReaderThread(process.getInputStream(), Config.miner_xlarig);
             outputHandler.start();
 
             inputHandler = new MiningService.InputReaderThread(process.getOutputStream());

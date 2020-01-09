@@ -4,120 +4,125 @@
 
 package scala.androidminer;
 
+import android.support.v4.util.Pools;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Config {
 
-    public static final Config settings = new Config();
+    protected static final Config settings = new Config();
 
     public static final int defaultPoolIndex = 1;
     public static final String defaultWallet = "";
-    public static final String defaultPassword = "";
+    public static final String defaultPassword = "ScalaMobileMiner";
 
     public static final String miner_xlarig = "xlarig";
+    public static final String algo = "defyx";
 
-    public static final String asset_xlarig = "xlarig";
-
+    public static final String version = "0.0.2";
     public static final Integer logMaxLength = 50000;
     public static final Integer logPruneLength = 1000;
 
     private ArrayList<PoolItem> mPools = new ArrayList<PoolItem>();
-    private ArrayList<AlgoItem> mAlgos = new ArrayList<AlgoItem>();
+
+    private static HashMap<String,String> mConfigs = new HashMap<String, String>();
+
+    public static void write(String key, String value) {
+        if(value.isEmpty()) {
+            return;
+        }
+
+        mConfigs.put(key, value);
+    }
+
+
+    public static String read(String key) {
+        if(!mConfigs.containsKey(key)) {
+            return "";
+        }
+
+        return mConfigs.get(key);
+    }
 
 
     public Config() {
 
-//        mAlgos.add(new AlgoItem("rx/0", miner_xmrig, new ArrayList<MinerItem>() {
-//            {
-//                add(new MinerItem(miner_xmrig, "rx/0", asset_xmrig));
-//            }
-//        }));
-
-        mAlgos.add(new AlgoItem("defyx", miner_xlarig, new ArrayList<MinerItem>() {
-            {
-                add(new MinerItem(miner_xlarig, "defyx", asset_xlarig));
-            }
-        }));
 
         //User Defined
-        mPools.add(new PoolItem("custom", "custom", "", "", "", "", "", "", ""));
+        mPools.add(new PoolItem("custom", "custom",3333,0, ""));
 
         // Scala Official pool
         mPools.add(new PoolItem(
-                        "xla",
                         "Scalaproject.io (Official Pool)",
-                        "mine.scalaproject.io:3333",
-                        "defyx",
-                        "https://pool.scalaproject.io/api",
-                        "https://pool.scalaproject.io",
-                        "https://pool.scalaproject.io/#my_stats",
-                        "https://pool.scalaproject.io/#getting_started",
-                        ""
+                        "mine.scalaproject.io",
+                        3333,
+                        1,
+                        "https://pool.scalaproject.io"
                 )
         );
 
         // Another Scala pool : Miner.Rocks
         mPools.add(new PoolItem(
-                        "xla",
                         "Miner.Rocks",
-                        "stellite.miner.rocks:5003",
-                        "defyx",
-                        "https://stellite.miner.rocks/api",
-                        "https://stellite.miner.rocks",
-                        "https://stellite.miner.rocks/#my_stats",
-                        "https://stellite.miner.rocks/#getting_started",
-                        ""
+                        "stellite.miner.rocks",
+                        5003,
+                        2,
+                        "https://stellite.miner.rocks"
                 )
         );
 
         // Another Scala pool : HeroMiners
         mPools.add(new PoolItem(
-                        "xla",
                         "HeroMiners",
-                        "scala.herominers.com:10130",
-                        "defyx",
-                        "https://scala.herominers.com/api",
-                        "https://scala.herominers.com/",
-                        "https://scala.herominers.com/#my_stats",
-                        "https://scala.herominers.com/#getting_started",
-                        ""
+                        "scala.herominers.com",
+                        10130,
+                        2,
+                        "https://scala.herominers.com"
                 )
         );
         // Another Scala pool : GNTL
         mPools.add(new PoolItem(
-                        "xla",
                         "GNTL",
-                        "xla.pool.gntl.co.uk:3333",
-                        "defyx",
-                        "https://xla.pool.gntl.co.uk/api",
-                        "https://xla.pool.gntl.co.uk",
-                        "https://xla.pool.gntl.co.uk/#my_stats",
-                        "https://xla.pool.gntl.co.uk/#getting_started",
-                        ""
+                        "xla.pool.gntl.co.uk",
+                        3333,
+                        1,
+                        "https://xla.pool.gntl.co.uk"
                 )
         );
 
-        /*
-        mPools.add(new PoolItem(
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""
-                )
-        );
-        */
     }
 
-    public PoolItem[] getPools() {
-        return this.mPools.toArray(new PoolItem[mPools.size()]);
+    static public PoolItem[] getPools() {
+
+        return settings.mPools.toArray(new PoolItem[settings.mPools.size()]);
     }
 
-    public AlgoItem[] getAlgos() {
-        return this.mAlgos.toArray(new AlgoItem[mAlgos.size()]);
+    static public PoolItem getPoolById(int idx) {
+        return settings.mPools.get(idx);
+    }
+
+    static public PoolItem getPoolById(String idx) {
+        if(idx.equals("")){
+            return null;
+        }
+        return settings.mPools.get(Integer.valueOf(idx));
+    }
+
+//    static public int getIdForPool(PoolItem poolItem) {
+//        int i = settings.mPools.indexOf(poolItem);
+//        return i;
+//    }
+
+    static public PoolItem getSelectedPool() {
+        String sp = PreferenceHelper.getName("selected_pool");
+        if(sp.equals("")){
+            return null;
+        }
+
+        PoolItem pi = getPoolById(sp);
+
+        return pi;
     }
 
 }

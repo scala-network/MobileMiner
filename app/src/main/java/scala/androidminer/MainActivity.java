@@ -33,9 +33,11 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.BatteryManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.os.PowerManager;
+import android.os.StrictMode;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.graphics.drawable.DrawableCompat;
@@ -47,23 +49,24 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import java.io.BufferedReader;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
+
+import java.io.FileInputStream;
 import java.util.Arrays;
 
 /* FOR AMAYC Support */
 import android.hardware.Sensor;
-import android.hardware.SensorEvent;
-import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 
 import static android.os.PowerManager.PARTIAL_WAKE_LOCK;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, SensorEventListener
+        implements NavigationView.OnNavigationItemSelectedListener
 {
     private static final String LOG_TAG = "MiningSvc";
     private DrawerLayout drawer;
@@ -75,7 +78,8 @@ public class MainActivity extends AppCompatActivity
     private TextView edStatus;
     private TextView tvMiningTo;
 
-    private TextView tvSpeed, tvAccepted;
+
+    private TextView tvSpeed, tvAccepted, tvTemperature;
     private boolean validArchitecture = true;
     public static SharedPreferences preferences;
 
@@ -88,8 +92,6 @@ public class MainActivity extends AppCompatActivity
     private PowerManager pm;
     private PowerManager.WakeLock wl;
 
-    private SensorManager mSensorManager;
-    private Sensor mTempSensor;
 
     public static Context getContextOfApplication() {
         return contextOfApplication;
@@ -100,11 +102,13 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         preferences = getSharedPreferences(getPackageName() + "_preferences", MODE_PRIVATE);
+        String configversion = PreferenceHelper.getName("config_version");
 
-        mSensorManager = (SensorManager)getSystemService(SENSOR_SERVICE);
-        mTempSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_AMBIENT_TEMPERATURE);
+        if(!configversion.equals(Config.version)) {
+            PreferenceHelper.clear();
+            PreferenceHelper.setName("config_version", Config.version);
+        }
 
-        //PreferenceHelper.clear();
 
         contextOfApplication = getApplicationContext();
 
@@ -127,8 +131,8 @@ public class MainActivity extends AppCompatActivity
         }
 
         super.onCreate(savedInstanceState);
-
-        if (PreferenceHelper.getName("address").equals("") || PreferenceHelper.getName("pool").equals("")) {
+        PoolItem pi = Config.getSelectedPool();
+        if (PreferenceHelper.getName("address").equals("") || pi == null || pi.getPool().equals("") || pi.getPort().equals("")) {
             setContentView(R.layout.activity_main);
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new SettingsFragment(),"settings_fragment").commit();
         } else {
@@ -154,6 +158,7 @@ public class MainActivity extends AppCompatActivity
         // wire views
         tvLog = findViewById(R.id.output);
         tvSpeed = findViewById(R.id.speed);
+        tvTemperature = findViewById(R.id.temperature);
         tvAccepted = findViewById(R.id.accepted);
         edStatus = findViewById(R.id.status);
         tvMiningTo = findViewById(R.id.miningTo);
@@ -206,18 +211,20 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void updateUI() {
+        PoolItem pi = Config.getSelectedPool();
 
         String status = "";
-        if (PreferenceHelper.getName("address").equals("")) {
+        String pool = "";
+        if (PreferenceHelper.getName("address").equals("") || pi == null || pi.getPool().equals("") || pi.getPort().equals("")) {
             status = "Update your Wallet Address in 'Settings'";
+        } else {
+            pool = pi.getPool();
         }
 
         setStatusText(status);
-
         String miningTo = "Mining to:";
-        String pool = PreferenceHelper.getName("pool");
-        String algo = PreferenceHelper.getName("algo");
-        String miner = PreferenceHelper.getName("miner");
+        String algo = Config.algo;
+        String miner = Config.miner_xlarig;
 
         if (pool.equals("") == false) {
             miningTo += "\n" + pool;
@@ -314,16 +321,13 @@ public class MainActivity extends AppCompatActivity
     private void startMining(View view) {
         if (binder == null) return;
 
-        if (PreferenceHelper.getName("init").equals("1") == false) {
+        if (PreferenceHelper.getName("init").equals("1") == false || Config.getSelectedPool() == null) {
             Toast.makeText(contextOfApplication, "Save settings before mining.", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        String pool = PreferenceHelper.getName("pool");
         String pass = PreferenceHelper.getName("pass");
         String address = PreferenceHelper.getName("address");
-        String algo = PreferenceHelper.getName("minerAlgo");
-        String assetExtension = PreferenceHelper.getName("assetExtension");
 
         int cores = Integer.parseInt(PreferenceHelper.getName("cores"));
         int threads = Integer.parseInt(PreferenceHelper.getName("threads"));
@@ -339,13 +343,11 @@ public class MainActivity extends AppCompatActivity
 
         MiningService.MiningConfig cfg = binder.getService().newConfig(
                 address,
-                pool,
                 pass,
                 cores,
                 threads,
-                intensity,
-                algo,
-                assetExtension);
+                intensity
+        );
 
         binder.getService().startMining(cfg);
 
@@ -360,8 +362,6 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onResume() {
         super.onResume();
-        mSensorManager.registerListener(this, mTempSensor, SensorManager.SENSOR_DELAY_NORMAL);
-
         updateUI();
         SettingsFragment frag = (SettingsFragment) getSupportFragmentManager().findFragmentByTag("settings_fragment");
         if(frag != null) {
@@ -374,8 +374,6 @@ public class MainActivity extends AppCompatActivity
     protected void onPause() {
 
         super.onPause();
-        mSensorManager.unregisterListener(this);
-
     }
 
     private void setMiningState(View view) {
@@ -429,6 +427,51 @@ public class MainActivity extends AppCompatActivity
         }, 50);
 
     }
+    private String getCurrentCPUTemperature() {
+        String file = readFile("/sys/devices/virtual/thermal/thermal_zone0/temp", '\n');
+        float output = 0.0f;
+        if (file != null) {
+            output = (float) Long.parseLong(file);
+        }
+        if(output > 0.0f && Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
+            output = output / 1000;
+        }
+
+        return String.format("%.02f "+ (char) 0x00B0 + "C", output);
+    }
+    private byte[] mBuffer = new byte[4096];
+
+    private String readFile(String file, char endChar) {
+
+        StrictMode.ThreadPolicy savedPolicy = StrictMode.allowThreadDiskReads();
+        FileInputStream is = null;
+        try {
+            is = new FileInputStream(file);
+            int len = is.read(mBuffer);
+            is.close();
+
+            if (len > 0) {
+                int i;
+                for (i = 0; i < len; i++) {
+                    if (mBuffer[i] == endChar) {
+                        break;
+                    }
+                }
+                return new String(mBuffer, 0, i);
+            }
+        } catch (java.io.FileNotFoundException e) {
+        } catch (java.io.IOException e) {
+        } finally {
+            if (is != null) {
+                try {
+                    is.close();
+                } catch (java.io.IOException e) {
+                }
+            }
+            StrictMode.setThreadPolicy(savedPolicy);
+        }
+        return null;
+    }
 
     private ServiceConnection serverConnection = new ServiceConnection() {
         @Override
@@ -460,6 +503,7 @@ public class MainActivity extends AppCompatActivity
                                     tvLog.setText("");
                                     tvAccepted.setText("0");
                                     tvSpeed.setText("0");
+                                    tvTemperature.setText("0" + (char) 0x00B0 + "C (" + batteryTemp + (char) 0x00B0 + "C)");
                                 }
                                 clearMinerLog = true;
                                 Toast.makeText(contextOfApplication, "Miner Started", Toast.LENGTH_SHORT).show();
@@ -471,10 +515,24 @@ public class MainActivity extends AppCompatActivity
 
                     @Override
                     public void onStatusChange(String status, String speed, Integer accepted) {
+                        StringBuilder temp = new StringBuilder();
+                        temp.append(getCurrentCPUTemperature());
+                        Intent intent = getApplicationContext().registerReceiver(null, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
+                        batteryTemp   = ((float) intent.getIntExtra(BatteryManager.EXTRA_TEMPERATURE,0)) / 10;
+                        if(batteryTemp > 0.0f) {
+                            temp.append(" (");
+                            temp.append(batteryTemp);
+                            temp.append((char) 0x00B0);
+                            temp.append("C)");
+                        }
+                        final String finalTemp = temp.toString();
+                        
                         runOnUiThread(() -> {
                             appendLogOutputText(status);
                             tvAccepted.setText(Integer.toString(accepted));
                             tvSpeed.setText(speed);
+
+                            tvTemperature.setText(finalTemp);
                         });
                     }
 
@@ -503,9 +561,12 @@ public class MainActivity extends AppCompatActivity
     private boolean minerPaused = false;
     private boolean clearMinerLog = true;
     static boolean lastIsCharging = false;
+    static float batteryTemp = 0.0f;
     private BroadcastReceiver batteryInfoReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context c, Intent batteryStatus) {
+
+            batteryTemp = (float) (batteryStatus.getIntExtra(BatteryManager.EXTRA_TEMPERATURE, 0)) / 10;
 
             int status = batteryStatus.getIntExtra(BatteryManager.EXTRA_STATUS, -1);
             boolean isCharging = status == BatteryManager.BATTERY_STATUS_CHARGING || status == BatteryManager.BATTERY_STATUS_FULL;
@@ -542,17 +603,6 @@ public class MainActivity extends AppCompatActivity
             }
         }
     };
-
-    /* AMAYC */
-
-    public void onAccuracyChanged(Sensor sensor, int accuracy) {
-    }
-
-    public void onSensorChanged(SensorEvent event) {
-        if (event.sensor.getType() == Sensor.TYPE_AMBIENT_TEMPERATURE) {
-            PreferenceHelper.setName("temperature",String.valueOf(event.values[0]));
-        }
-    }
 
 
 }

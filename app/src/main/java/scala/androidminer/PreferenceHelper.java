@@ -4,11 +4,16 @@
 
 package scala.androidminer;
 
+import android.content.SharedPreferences;
+
+import java.util.HashMap;
+
 public class PreferenceHelper {
 
     public static void setName(String key, String value) {
         MainActivity.preferences.edit().putString(key, value).commit();
     }
+
 
     public static String getName(String key) {
         return MainActivity.preferences.getString(key, "");

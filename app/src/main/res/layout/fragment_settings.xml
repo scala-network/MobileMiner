@@ -90,13 +90,13 @@
                         android:layout_weight="1"
                         android:orientation="vertical">
 
+
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="5dp"
                             android:layout_marginRight="5dp"
                             android:text="Threads/Core" />
-
 
                         <NumberPicker
                             android:theme="@style/DefaultNumberPickerTheme"
@@ -153,42 +153,88 @@
                         android:visibility="visible"
                         tools:visibility="visible" />
 
-                    <android.support.v7.widget.AppCompatTextView
-                        android:id="@+id/poolText"
+                    <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="25dp"
-                        android:layout_marginTop="5dp"
-                        android:gravity="bottom"
-                        android:text="Pool Address (url:port)"
-                        android:textStyle="bold" />
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="15"
+                            android:orientation="vertical">
+
+                            <android.support.v7.widget.AppCompatTextView
+                                android:id="@+id/poolText"
+                                android:layout_width="match_parent"
+                                android:layout_height="25dp"
+                                android:layout_marginTop="5dp"
+                                android:gravity="bottom"
+                                android:text="Pool Address (url)"
+                                android:textStyle="bold" />
+
+                            <android.support.v7.widget.AppCompatEditText
+                                android:id="@+id/pool"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="textUri"
+                                android:singleLine="true" />
 
 
-                    <android.support.v7.widget.AppCompatEditText
-                        android:id="@+id/pool"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="82dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <android.support.v7.widget.AppCompatTextView
+                                android:id="@+id/portText"
+                                android:layout_width="match_parent"
+                                android:layout_height="25dp"
+                                android:layout_marginTop="5dp"
+                                android:gravity="bottom"
+                                android:text="Port"
+                                android:textStyle="bold" />
+
+                            <EditText
+                                android:id="@+id/port"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:ems="10"
+                                android:inputType="number|phone"
+                                android:maxLength="6"
+                                android:singleLine="true"
+                                android:text="3333" />
+
+                        </LinearLayout>
+                    </LinearLayout>
+
 
                     <LinearLayout
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="25dp"
                         android:orientation="horizontal">
 
                         <android.support.v7.widget.AppCompatTextView
                             android:id="@+id/addressText"
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:text="Wallet Address"
+                            android:layout_weight="2"
                             android:gravity="bottom"
+                            android:text="Wallet Address"
                             android:textStyle="bold" />
 
                         <Button
                             android:id="@+id/buttonQrReader"
                             android:layout_width="27dp"
                             android:layout_height="match_parent"
+                            android:layout_gravity="center|right"
                             android:layout_marginTop="0dp"
                             android:layout_marginRight="10dp"
                             android:layout_weight="1"
+                            android:layoutDirection="rtl"
                             android:paddingLeft="2dp"
                             android:paddingTop="2dp"
                             android:paddingRight="0dp"
@@ -219,6 +265,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="(worker name or pool options)"
+                        android:singleLine="true"
                         android:text="" />
 
                     <android.support.v7.widget.AppCompatTextView

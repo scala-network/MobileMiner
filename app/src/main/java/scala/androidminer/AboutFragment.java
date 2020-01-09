@@ -46,19 +46,23 @@ public class AboutFragment extends Fragment {
 
         tvEmail.setText(Html.fromHtml(getString(R.string.emailLink)));
         tvEmail.setMovementMethod(LinkMovementMethod.getInstance());
+        String cpuinfo = Config.read("CPUINFO");
+        if(cpuinfo.isEmpty()) {
+            try {
+                Map<String, String> m = Tools.getCPUInfo();
 
-        try {
-            Map<String, String> m = Tools.getCPUInfo();
+                cpuinfo = "ABI: " + Tools.getABI() + "\n";
+                for (Map.Entry<String, String> pair : m.entrySet()) {
+                    cpuinfo += pair.getKey() + ": " + pair.getValue() + "\n";
+                }
 
-            String i = "ABI: " + Tools.getABI() + "\n";
-            for (Map.Entry<String, String> pair : m.entrySet()) {
-                i += pair.getKey() + ": " + pair.getValue() + "\n";
+            } catch (Exception e) {
+                cpuinfo = "";
             }
 
-            tvSystemInfo.setText(i);
-        } catch (Exception e){
-
+            Config.write("CPUINFO", cpuinfo);
         }
+        tvSystemInfo.setText(cpuinfo);
         return view;
 
     }

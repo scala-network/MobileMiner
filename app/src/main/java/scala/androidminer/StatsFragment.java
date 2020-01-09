@@ -67,20 +67,25 @@ public class StatsFragment extends Fragment {
 
     private boolean checkValidState() {
 
-        if (PreferenceHelper.getName("init").equals("1") == false) {
+        String ps = PreferenceHelper.getName("PoolSelection");
+
+        if (PreferenceHelper.getName("init").equals("1") == false || ps.isEmpty()) {
             data.setText("(start mining to view stats)");
             tvStatCheckOnline.setText("");
             return false;
-        } else if (PreferenceHelper.getName("coin").equals("custom")) {
+        }
+
+        PoolItem pi = Config.getPoolById(Integer.valueOf(ps));
+
+        if (pi.getPoolType() == 0) {
             data.setText("(stats are not available for custom pools)");
             tvStatCheckOnline.setText("");
             return false;
         }
 
         wallet = PreferenceHelper.getName("address");
-        apiUrl = PreferenceHelper.getName("apiUrl");
-        apiUrlMerged = PreferenceHelper.getName("apiUrlMerged");
-        statsUrl = PreferenceHelper.getName("statsUrl");
+        apiUrl = pi.getPoolUrl();
+        statsUrl = pi.getStatsURL();
 
         tvStatCheckOnline.setText(Html.fromHtml("<a href=\"" + statsUrl + "?wallet=" + wallet + "\">Check Stats Online</a>"));
         tvStatCheckOnline.setMovementMethod(LinkMovementMethod.getInstance());
