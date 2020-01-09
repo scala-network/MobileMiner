@@ -293,17 +293,7 @@ public class SettingsFragment extends Fragment {
                 PreferenceHelper.setName("pool", edPool.getText().toString().trim());
                 PreferenceHelper.setName("pass", edPass.getText().toString().trim());
 
-                //AlgoItem selectedAlgoItem = (AlgoItem) spAlgo.getSelectedItem();
-                //MinerItem selectedMinerItem = (MinerItem) spMiner.getSelectedItem();
                 PoolItem selectedPoolItem = (PoolItem) spPool.getSelectedItem();
-
-                //save miner based on algo
-                /*PreferenceHelper.setName("keyMiner-" + selectedAlgoItem.getAlgo(), selectedMinerItem.getMiner());
-                PreferenceHelper.setName("minerAlgo", selectedMinerItem.getAlgo());
-                PreferenceHelper.setName("miner", selectedMinerItem.getMiner());
-
-                PreferenceHelper.setName("algo", selectedAlgoItem.getAlgo());
-                PreferenceHelper.setName("assetExtension", selectedMinerItem.getAssetExtension());*/
 
                 PreferenceHelper.setName("keyMiner-defyx", "scala");
                 PreferenceHelper.setName("minerAlgo", "defyx");

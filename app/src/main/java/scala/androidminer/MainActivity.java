@@ -52,15 +52,19 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
-
 import java.util.Arrays;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
+
+/* FOR AMAYC Support */
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 
 import static android.os.PowerManager.PARTIAL_WAKE_LOCK;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity
+        implements NavigationView.OnNavigationItemSelectedListener, SensorEventListener
+{
     private static final String LOG_TAG = "MiningSvc";
     private DrawerLayout drawer;
     boolean accepted = false;
@@ -84,6 +88,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private PowerManager pm;
     private PowerManager.WakeLock wl;
 
+    private SensorManager mSensorManager;
+    private Sensor mTempSensor;
+
     public static Context getContextOfApplication() {
         return contextOfApplication;
     }
@@ -93,6 +100,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         preferences = getSharedPreferences(getPackageName() + "_preferences", MODE_PRIVATE);
+
+        mSensorManager = (SensorManager)getSystemService(SENSOR_SERVICE);
+        mTempSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_AMBIENT_TEMPERATURE);
 
         //PreferenceHelper.clear();
 
@@ -350,6 +360,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     protected void onResume() {
         super.onResume();
+        mSensorManager.registerListener(this, mTempSensor, SensorManager.SENSOR_DELAY_NORMAL);
+
         updateUI();
         SettingsFragment frag = (SettingsFragment) getSupportFragmentManager().findFragmentByTag("settings_fragment");
         if(frag != null) {
@@ -362,6 +374,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onPause() {
 
         super.onPause();
+        mSensorManager.unregisterListener(this);
+
     }
 
     private void setMiningState(View view) {
@@ -528,5 +542,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         }
     };
+
+    /* AMAYC */
+
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+    }
+
+    public void onSensorChanged(SensorEvent event) {
+        if (event.sensor.getType() == Sensor.TYPE_AMBIENT_TEMPERATURE) {
+            PreferenceHelper.setName("temperature",String.valueOf(event.values[0]));
+        }
+    }
+
 
 }
