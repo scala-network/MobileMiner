@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:alpha="1"
-    android:background="@color/bg_lighter"
+    android:background="@color/bg_grey"
     android:gravity="bottom"
     android:orientation="vertical"
     android:padding="16dp"
@@ -20,13 +20,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:text="scalaproject.io"
-        android:textColor="#ffffff" />
+        android:textColor="@color/c_lighter" />
 
     <android.support.v7.widget.AppCompatTextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:text="Scala Android Miner"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:textColor="#ffffff" />
+        android:textColor="@color/c_lighter" />
 
 </LinearLayout>

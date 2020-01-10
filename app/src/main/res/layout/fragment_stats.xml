@@ -7,9 +7,10 @@
     <android.support.v7.widget.AppCompatTextView
         android:id="@+id/statsTitle"
         android:layout_width="match_parent"
-        android:layout_height="45dp"
+        android:layout_height="32dp"
         android:gravity="start"
         android:text="Mining Stats"
+        android:textColor="@color/c_white"
         android:textSize="24sp" />
 
     <ScrollView
@@ -35,6 +36,7 @@
                 android:padding="5dp"
                 android:text="Your Stats"
                 android:gravity="start"
+                android:textColor="@color/c_grey"
                 android:textSize="20sp" />
 
             <android.support.v7.widget.AppCompatTextView
@@ -49,6 +51,7 @@
                 android:padding="5dp"
                 android:text="Network Stats"
                 android:gravity="start"
+                android:textColor="@color/c_grey"
                 android:textSize="20sp" />
 
             <android.support.v7.widget.AppCompatTextView

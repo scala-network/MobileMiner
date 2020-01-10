@@ -5,16 +5,17 @@
     android:tag="fragment_settings"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#000"
+    android:background="@color/bg_grey"
     android:backgroundTint="@color/bg_grey"
     android:backgroundTintMode="src_over">
 
     <TextView
         android:id="@+id/statsTitle"
         android:layout_width="match_parent"
-        android:layout_height="28dp"
+        android:layout_height="32dp"
         android:gravity="start"
         android:text="Settings"
+        android:textColor="@color/c_white"
         android:textSize="24sp" />
 
     <LinearLayout
@@ -42,6 +43,7 @@
                     android:layout_marginTop="5dp"
                     android:gravity="bottom"
                     android:text="CPU"
+                    android:textColor="@color/c_grey"
                     android:textStyle="bold" />
 
                 <LinearLayout
@@ -64,6 +66,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginRight="5dp"
+                                android:textColor="@color/c_grey"
                                 android:text="Cores" />
 
                             <TextView
@@ -94,6 +97,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="5dp"
                             android:layout_marginRight="5dp"
+                            android:textColor="@color/c_grey"
                             android:text="Threads/Core" />
 
 
@@ -116,6 +120,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="5dp"
                             android:layout_marginRight="5dp"
+                            android:textColor="@color/c_grey"
                             android:text="Intensity" />
 
                         <NumberPicker
@@ -130,7 +135,7 @@
 
                 <Space
                     android:layout_width="match_parent"
-                    android:layout_height="20dp" />
+                    android:layout_height="26dp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -145,6 +150,7 @@
                         android:layout_marginTop="5dp"
                         android:spinnerMode="dropdown"
                         android:visibility="visible"
+                        android:textColor="@color/c_lighter"
                         tools:visibility="visible" />
 
                     <android.support.v7.widget.AppCompatEditText
@@ -152,7 +158,21 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textSize="14dp"
+                        android:textColor="@color/c_lighter"
                         android:text="" />
+
+                    <android.support.v7.widget.AppCompatEditText
+                        android:id="@+id/pass"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="worker name or pool options"
+                        android:textSize="14dp"
+                        android:textColor="@color/c_lighter"
+                        android:text="" />
+
+                    <Space
+                        android:layout_width="match_parent"
+                        android:layout_height="26dp" />
 
                     <LinearLayout
                         android:layout_width="fill_parent"
@@ -166,6 +186,7 @@
                             android:layout_weight = "1"
                             android:hint="your wallet address"
                             android:textSize="14dp"
+                            android:textColor="@color/c_lighter"
                             android:text="" />
 
                         <Button
@@ -183,18 +204,11 @@
 
                     </LinearLayout>
 
-                    <android.support.v7.widget.AppCompatEditText
-                        android:id="@+id/pass"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="worker name or pool options"
-                        android:textSize="14dp"
-                        android:text="" />
-
                     <android.support.v7.widget.AppCompatCheckBox
                         android:id="@+id/chkPauseOnBattery"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:textColor="@color/c_lighter"
                         android:text="Pause mining on battery power" />
 
                     <LinearLayout

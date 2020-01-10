@@ -62,7 +62,7 @@
                     android:layout_height="match_parent"
                     android:gravity="center"
                     android:text="Touch screen to capture"
-                    android:textColor="#FFF"
+                    android:textColor="@color/c_lighter"
                     android:textSize="10sp" />
 
             </LinearLayout>
@@ -88,7 +88,7 @@
                     android:layout_weight="2"
                     android:maxLines="1"
                     android:text="Wallet Address"
-                    android:textColor="#FFF" />
+                    android:textColor="@color/c_lighter" />
 
             </LinearLayout>
 
