@@ -73,16 +73,7 @@
             android:orientation="horizontal"
             android:paddingLeft="15dp"
             android:paddingRight="15dp"
-            android:layout_marginBottom="5dp">
-
-            <android.support.v7.widget.AppCompatTextView
-                android:id="@+id/miningTo"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Mining to:" />
-
-        </LinearLayout>
+            android:layout_marginBottom="7dp"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -90,20 +81,37 @@
             android:orientation="horizontal"
             android:paddingLeft="15dp"
             android:paddingRight="15dp"
-            >
+            android:layout_marginBottom="5dp">
 
             <android.support.v7.widget.AppCompatTextView
-                android:id="@+id/status"
-                android:layout_width="match_parent"
+                android:id="@+id/hashrate"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingLeft="15dp"
-                android:paddingRight="15dp"
-                android:text=""
-                android:layout_marginBottom="5dp"/>
+                android:layout_marginRight="5dp"
+                android:gravity="start"
+                android:text="Hashrate"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"/>
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/shares"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="5dp"
+                android:gravity="end"
+                android:text="Accepted shares"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:paddingLeft="15dp"
@@ -115,7 +123,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="5dp"
-                android:text="0" />
+                android:gravity="start"
+                android:text="0"
+                android:textStyle="bold"
+                android:textSize="32sp"
+                android:textColor="@color/c_green" />
 
             <android.support.v7.widget.AppCompatTextView
                 android:layout_width="wrap_content"
@@ -123,17 +135,22 @@
                 android:layout_marginRight="10dp"
                 android:text="@string/hpers" />
 
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"/>
+
             <android.support.v7.widget.AppCompatTextView
                 android:id="@+id/accepted"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="5dp"
-                android:text="0" />
+                android:gravity="end"
+                android:text="0"
+                android:textStyle="bold"
+                android:textSize="32sp"
+                android:textColor="#FFF"/>
 
-            <android.support.v7.widget.AppCompatTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/accepted" />
         </LinearLayout>
 
         <ScrollView
@@ -143,13 +160,15 @@
             android:layout_marginBottom="15dp"
             android:layout_weight="1"
             android:paddingLeft="15dp"
-            android:paddingRight="15dp">
+            android:paddingRight="15dp"
+            android:background="@color/bg_grey">
 
             <android.support.v7.widget.AppCompatTextView
                 android:id="@+id/output"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text=""
+                android:background="@color/bg_grey"
                 android:visibility="visible" />
 
         </ScrollView>

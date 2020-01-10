@@ -68,8 +68,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private final static String[] SUPPORTED_ARCHITECTURES = {"arm64-v8a", "armeabi-v7a"};
 
     private TextView tvLog;
-    private TextView edStatus;
-    private TextView tvMiningTo;
 
     private TextView tvSpeed, tvAccepted;
     private boolean validArchitecture = true;
@@ -145,8 +143,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         tvLog = findViewById(R.id.output);
         tvSpeed = findViewById(R.id.speed);
         tvAccepted = findViewById(R.id.accepted);
-        edStatus = findViewById(R.id.status);
-        tvMiningTo = findViewById(R.id.miningTo);
         svOutput = findViewById(R.id.outputScrollView);
 
         minerBtn1 = (Button) findViewById(R.id.minerBtn1);
@@ -187,11 +183,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void setStatusText(String status) {
 
         if (status == null || status.isEmpty()) {
-            edStatus.setVisibility(View.GONE);
-            edStatus.setText("");
+            //edStatus.setVisibility(View.GONE);
+            tvLog.setText("");
         } else {
-            edStatus.setVisibility(View.VISIBLE);
-            edStatus.setText(status);
+            //edStatus.setVisibility(View.VISIBLE);
+            tvLog.setText(status);
         }
     }
 
@@ -203,41 +199,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
 
         setStatusText(status);
-
-        String miningTo = "Mining to:";
-        String pool = PreferenceHelper.getName("pool");
-        String algo = PreferenceHelper.getName("algo");
-        String miner = PreferenceHelper.getName("miner");
-
-        if (pool.equals("") == false) {
-            miningTo += "\n" + pool;
-        }
-
-        if (miner.equals("") == false || algo.equals("") == false) {
-
-            miningTo += "\n";
-
-            if (miner.equals("") == false) {
-                miningTo += miner + ": ";
-            }
-
-            if (algo.equals("") == false) {
-                miningTo += algo;
-            }
-        }
-
-        tvMiningTo.setText(miningTo);
-
-        if (miner.equals(Config.miner_xlarig)) {
-            minerBtn1.setVisibility(View.VISIBLE);
-            minerBtn2.setVisibility(View.VISIBLE);
-            minerBtn3.setVisibility(View.VISIBLE);
-        } else {
-            minerBtn1.setVisibility(View.INVISIBLE);
-            minerBtn2.setVisibility(View.INVISIBLE);
-            minerBtn3.setVisibility(View.INVISIBLE);
-        }
-
     }
 
     @Override
@@ -274,8 +235,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             super.onBackPressed();
         }
     }
-
-
 
     private void showdialog() {
         final Dialog dialog = new Dialog(this);
@@ -318,14 +277,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         int cores = Integer.parseInt(PreferenceHelper.getName("cores"));
         int threads = Integer.parseInt(PreferenceHelper.getName("threads"));
         int intensity = Integer.parseInt(PreferenceHelper.getName("intensity"));
-
-        /*
-        int av = 1;
-
-        if (Tools.getABI().contains("armeabi-v7a")) {
-            av = 3;
-        }
-        */
 
         MiningService.MiningConfig cfg = binder.getService().newConfig(
                 address,
