@@ -8,7 +8,7 @@ public class PoolItem {
 
     private int mId = 0;
     private String mPool = "";
-    private int mPort;
+    private String mPort;
     private String mApiUrl = "";
     private String mPoolUrl = "";
     private String mStatsURL = "";
@@ -16,7 +16,7 @@ public class PoolItem {
     private String mKey = "";
     private int mPoolType = 0;
 
-    public  PoolItem(String key, String pool,int port, int poolType, String poolUrl) {
+    public  PoolItem(String key, String pool,String port, int poolType, String poolUrl) {
         this.mKey = key;
         this.mPool = pool;
         this.mPort = port;
@@ -43,7 +43,7 @@ public class PoolItem {
         }
     }
 
-    public PoolItem(String key, String pool,int port, int poolType, String poolUrl,  String apiUrl,String statsUrl, String startUrl) {
+    public PoolItem(String key, String pool,String port, int poolType, String poolUrl,  String apiUrl,String statsUrl, String startUrl) {
         this.mKey = key;
         this.mPool = pool;
         this.mPoolUrl = poolUrl;
@@ -119,11 +119,13 @@ public class PoolItem {
         if(this.mPoolType == 0){
             return custom_port;
         }
-        String mport = String.valueOf(this.mPort);
-        if(!custom_port.equals("") && !custom_port.equals(mport)) {
-            return custom_port;
+
+
+        if(custom_port.equals("") || custom_port.equals(this.mPort)) {
+            return this.mPort;
         }
-        return mport;
+
+        return custom_port;
     }
 
     public String getApiUrl() { return this.mApiUrl;}

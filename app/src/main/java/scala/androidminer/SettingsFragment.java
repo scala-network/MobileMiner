@@ -39,7 +39,7 @@ public class SettingsFragment extends Fragment {
     private static final String LOG_TAG = "MiningSvc";
 
     private EditText edPass;
-    private EditText edUser;
+    private TextView edUser;
     private Button  qrButton;
 
     @Nullable
@@ -134,41 +134,8 @@ public class SettingsFragment extends Fragment {
             edPass.setText(PreferenceHelper.getName("pass"));
         }
 
-        PoolItem poolItem = null;
-        String poolSelected = PreferenceHelper.getName("selected_pool");
-        int sp = Config.settings.defaultPoolIndex;
-        if (poolSelected.equals("") == false) {
-            poolSelected = String.valueOf(sp);
-        }
 
-        poolItem = Config.getPoolById(poolSelected);
 
-        if(poolItem == null) {
-            poolSelected = String.valueOf(sp);
-        }
-
-        poolItem = Config.getPoolById(poolSelected);
-
-        if (PreferenceHelper.getName("init").equals("1") == false) {
-            poolSelected = String.valueOf(sp);
-            edUser.setText(Config.settings.defaultWallet);
-            edPass.setText(Config.settings.defaultPassword);
-        }
-
-        if(poolSelected.equals("0")) {
-            edPool.setText(PreferenceHelper.getName("custom_pool"));
-            edPort.setText(PreferenceHelper.getName("custom_port"));
-        } else if(!PreferenceHelper.getName("custom_port").isEmpty()) {
-            edPool.setText(poolItem.getKey());
-            edPort.setText(PreferenceHelper.getName("custom_port"));
-        }else{
-            PreferenceHelper.setName("custom_pool","");
-            PreferenceHelper.setName("custom_port","");
-            edPool.setText(poolItem.getKey());
-            edPort.setText(poolItem.getPort());
-        }
-
-        spPool.setSelection(Integer.valueOf(poolSelected));
 
         spPool.setOnItemSelectedListener(new OnItemSelectedListener() {
 
@@ -187,6 +154,7 @@ public class SettingsFragment extends Fragment {
                 }
 
                 PoolItem poolItem = Config.getPoolById(position);
+
                 if(poolItem != null){
                     edPool.setText(poolItem.getPool());
                     edPort.setText(poolItem.getPort());
@@ -200,19 +168,66 @@ public class SettingsFragment extends Fragment {
 
         });
 
+        PoolItem poolItem = null;
+        String poolSelected = PreferenceHelper.getName("selected_pool");
+        int sp = Config.settings.defaultPoolIndex;
+        if (poolSelected.equals("") == false) {
+            poolSelected = Integer.toString(sp);
+        }
+
+        poolItem = Config.getPoolById(poolSelected);
+
+        if(poolItem == null) {
+            poolSelected = Integer.toString(sp);
+        }
+
+        poolItem = Config.getPoolById(poolSelected);
+
+        if (PreferenceHelper.getName("init").equals("1") == false) {
+            poolSelected = Integer.toString(sp);
+            edUser.setText(Config.settings.defaultWallet);
+            edPass.setText(Config.settings.defaultPassword);
+        }
+
+        if(poolSelected.equals("0")) {
+            edPool.setText(PreferenceHelper.getName("custom_pool"));
+            edPort.setText(PreferenceHelper.getName("custom_port"));
+        } else if(!PreferenceHelper.getName("custom_port").equals("")) {
+            edPool.setText(poolItem.getKey());
+            edPort.setText(PreferenceHelper.getName("custom_port"));
+        }else{
+            PreferenceHelper.setName("custom_pool","");
+            PreferenceHelper.setName("custom_port","");
+            edPool.setText(poolItem.getKey());
+            edPort.setText(poolItem.getPort());
+        }
+
+        spPool.setSelection(Integer.valueOf(poolSelected));
+
         click.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 PreferenceHelper.setName("address", edUser.getText().toString().trim());
                 PreferenceHelper.setName("pass", edPass.getText().toString().trim());
-                int seletedPosition = spPool.getSelectedItemPosition();
+                String key = spPool.getSelectedItem();
+                int selectedPosition = Config.defaultPoolIndex;
+                PoolItem[] pools = Config.getPools();
+                for(int i = 0;i< pools.length;i++){
+                    PoolItem pi = pools[i];
+                    if(pi.getKey().equals(key)) {
+                        selectedPosition = i;
+                        break;
+                    }
+                }
+                
+                PoolItem pi = Config.getPoolById(selectedPosition);
                 String port = edPort.getText().toString().trim();
                 String pool = edPool.getText().toString().trim();
-                if(seletedPosition == 0) {
+                if(selectedPosition == 0) {
                     PreferenceHelper.setName("custom_pool", pool);
                     PreferenceHelper.setName("custom_port", port);
-                } else if(!port.equals(Config.getPoolById(seletedPosition).getPort())) {
+                } else if(!port.equals("") && !pi.getPort().equals(port)) {
                     PreferenceHelper.setName("custom_pool", "");
                     PreferenceHelper.setName("custom_port", port);
                 } else {
@@ -220,11 +235,11 @@ public class SettingsFragment extends Fragment {
                     PreferenceHelper.setName("custom_pool", "");
                 }
 
-                PreferenceHelper.setName("selected_pool", String.valueOf(seletedPosition));
+                PreferenceHelper.setName("selected_pool", Integer.toString(selectedPosition));
                 PreferenceHelper.setName("cores", Integer.toString(npCores.getValue()));
                 PreferenceHelper.setName("threads", Integer.toString(npThreads.getValue()));
                 PreferenceHelper.setName("intensity", Integer.toString(npIntensity.getValue()));
-
+                Log.d(selectedPosition);
                 PreferenceHelper.setName("pauseonbattery", (chkPauseOnBattery.isChecked() ? "1" : "0"));
 
                 PreferenceHelper.setName("init", "1");

@@ -210,17 +210,16 @@
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="25dp"
+                        android:layout_height="wrap_content"
                         android:orientation="horizontal">
 
                         <android.support.v7.widget.AppCompatTextView
-                            android:id="@+id/addressText"
+                            android:id="@+id/username"
                             android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="2"
-                            android:gravity="bottom"
-                            android:text="Wallet Address"
-                            android:textStyle="bold" />
+                            android:layout_height="wrap_content"
+                            android:layout_weight="10"
+                            android:hint="(your wallet address)"
+                            android:text="" />
 
                         <Button
                             android:id="@+id/buttonQrReader"
