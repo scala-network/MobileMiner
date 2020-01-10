@@ -11,7 +11,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/bg_black"
+        android:background="@color/bg_grey"
         android:orientation="vertical"
         android:paddingLeft="0dp"
         android:paddingTop="0dp"
@@ -161,14 +161,14 @@
             android:layout_weight="1"
             android:paddingLeft="15dp"
             android:paddingRight="15dp"
-            android:background="@color/bg_grey">
+            android:background="@color/bg_black">
 
             <android.support.v7.widget.AppCompatTextView
                 android:id="@+id/output"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text=""
-                android:background="@color/bg_grey"
+                android:background="@color/bg_black"
                 android:visibility="visible" />
 
         </ScrollView>

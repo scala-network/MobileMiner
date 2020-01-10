@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="#000"
-    android:backgroundTint="@color/bg_black"
+    android:backgroundTint="@color/bg_grey"
     android:backgroundTintMode="src_over">
 
     <TextView
