@@ -18,6 +18,9 @@ import android.widget.TextView;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import scala.androidminer.pools.PoolManager;
+import scala.androidminer.pools.PoolItem;
+
 public class StatsFragment extends Fragment {
 
     private static final String LOG_TAG = "MiningSvc";
@@ -67,20 +70,25 @@ public class StatsFragment extends Fragment {
 
     private boolean checkValidState() {
 
-        if (PreferenceHelper.getName("init").equals("1") == false) {
+        String ps = Config.read("PoolSelection");
+
+        if (Config.read("init").equals("1") == false || ps.isEmpty()) {
             data.setText("(start mining to view stats)");
             tvStatCheckOnline.setText("");
             return false;
-        } else if (PreferenceHelper.getName("coin").equals("custom")) {
+        }
+
+        PoolItem pi = PoolManager.getPoolById(Integer.valueOf(ps));
+
+        if (pi.getPoolType() == 0) {
             data.setText("(stats are not available for custom pools)");
             tvStatCheckOnline.setText("");
             return false;
         }
 
-        wallet = PreferenceHelper.getName("address");
-        apiUrl = PreferenceHelper.getName("apiUrl");
-        apiUrlMerged = PreferenceHelper.getName("apiUrlMerged");
-        statsUrl = PreferenceHelper.getName("statsUrl");
+        wallet = Config.read("address");
+        apiUrl = pi.getPoolUrl();
+        statsUrl = pi.getStatsURL();
 
         tvStatCheckOnline.setText(Html.fromHtml("<a href=\"" + statsUrl + "?wallet=" + wallet + "\">Check Stats Online</a>"));
         tvStatCheckOnline.setMovementMethod(LinkMovementMethod.getInstance());

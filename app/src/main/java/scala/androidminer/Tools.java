@@ -24,10 +24,12 @@ package scala.androidminer;
 
 import android.content.Context;
 import android.os.Build;
+import android.os.StrictMode;
 import android.util.Log;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
@@ -238,5 +240,50 @@ public class Tools {
             abiString = Build.CPU_ABI;
         }
         return abiString.toLowerCase().trim();
+    }
+
+    static public String getCurrentCPUTemperature() {
+        String file = readFile("/sys/devices/virtual/thermal/thermal_zone0/temp", '\n',new byte[4096]);
+        float output = 0.0f;
+        if (file != null) {
+            output = (float) Long.parseLong(file);
+        }
+        if(output > 0.0f && Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
+            output = output / 1000;
+        }
+
+        return String.format("%.02f "+ (char) 0x00B0 + "C", output);
+    }
+
+    static public String readFile(String file, char endChar,byte[] mBuffer) {
+
+        StrictMode.ThreadPolicy savedPolicy = StrictMode.allowThreadDiskReads();
+        FileInputStream is = null;
+        try {
+            is = new FileInputStream(file);
+            int len = is.read(mBuffer);
+            is.close();
+
+            if (len > 0) {
+                int i;
+                for (i = 0; i < len; i++) {
+                    if (mBuffer[i] == endChar) {
+                        break;
+                    }
+                }
+                return new String(mBuffer, 0, i);
+            }
+        } catch (java.io.FileNotFoundException e) {
+        } catch (java.io.IOException e) {
+        } finally {
+            if (is != null) {
+                try {
+                    is.close();
+                } catch (java.io.IOException e) {
+                }
+            }
+            StrictMode.setThreadPolicy(savedPolicy);
+        }
+        return null;
     }
 }

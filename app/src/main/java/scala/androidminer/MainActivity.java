@@ -22,6 +22,7 @@
 
 package scala.androidminer;
 
+import android.Manifest;
 import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
@@ -30,12 +31,15 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.BatteryManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.os.PowerManager;
+import android.os.StrictMode;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.graphics.drawable.DrawableCompat;
@@ -47,31 +51,37 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import java.io.BufferedReader;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 
+import java.io.FileInputStream;
 import java.util.Arrays;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
+
+/* FOR AMAYC Support */
+import android.hardware.Sensor;
+import android.hardware.SensorManager;
+
+import scala.androidminer.pools.PoolItem;
+import scala.androidminer.pools.PoolManager;
 
 import static android.os.PowerManager.PARTIAL_WAKE_LOCK;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity
+        implements NavigationView.OnNavigationItemSelectedListener
+{
     private static final String LOG_TAG = "MiningSvc";
     private DrawerLayout drawer;
     boolean accepted = false;
 
-    private final static String[] SUPPORTED_ARCHITECTURES = {"arm64-v8a", "armeabi-v7a"};
-
     private TextView tvLog;
 
-    private TextView tvSpeed, tvAccepted;
+
+    private TextView tvSpeed, tvAccepted, tvTemperature;
     private boolean validArchitecture = true;
-    public static SharedPreferences preferences;
 
     private MiningService.MiningServiceBinder binder;
 
@@ -82,6 +92,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private PowerManager pm;
     private PowerManager.WakeLock wl;
 
+
     public static Context getContextOfApplication() {
         return contextOfApplication;
     }
@@ -90,9 +101,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        preferences = getSharedPreferences(getPackageName() + "_preferences", MODE_PRIVATE);
+        SharedPreferences preferences = getSharedPreferences(getPackageName() + "_preferences", MODE_PRIVATE);
+        Config.initialize(preferences);
+        String configversion = Config.read("config_version");
 
-        //PreferenceHelper.clear();
+        if(!configversion.equals(Config.version)) {
+            Config.clear();
+            Config.write("config_version", Config.version);
+        }
+
 
         contextOfApplication = getApplicationContext();
 
@@ -108,17 +125,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         registerReceiver(batteryInfoReceiver, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
 
-        String isshowagain = PreferenceHelper.getName("show_again");
+        String isshowagain = Config.read("show_again");
 
         if (isshowagain.equals("")) {
             showdialog();
         }
 
         super.onCreate(savedInstanceState);
-
-        if (PreferenceHelper.getName("address").equals("") || PreferenceHelper.getName("pool").equals("")) {
+        PoolItem pi = PoolManager.getSelectedPool();
+        if (Config.read("address").equals("") || pi == null || pi.getPool().equals("") || pi.getPort().equals("")) {
+            if (Build.VERSION.SDK_INT >= 23) {
+                if (checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                    requestPermissions(new String[]{Manifest.permission.CAMERA}, 100);
+                }
+            }
             setContentView(R.layout.activity_main);
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new SettingsFragment(),"settings_fragment").commit();
+
         } else {
             setContentView(R.layout.activity_main);
         }
@@ -142,6 +165,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         // wire views
         tvLog = findViewById(R.id.output);
         tvSpeed = findViewById(R.id.speed);
+        //@@TODO Add temperature at UI
+        // tvTemperature = findViewById(R.id.temperature);
         tvAccepted = findViewById(R.id.accepted);
         svOutput = findViewById(R.id.outputScrollView);
 
@@ -150,7 +175,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         minerBtn3 = (Button) findViewById(R.id.minerBtn3);
         updateUI();
 
-        if (!Arrays.asList(SUPPORTED_ARCHITECTURES).contains(Tools.getABI())) {
+        if (!Arrays.asList(Config.SUPPORTED_ARCHITECTURES).contains(Tools.getABI())) {
             Toast.makeText(this, "Unsupported architecture, yours is " + Tools.getABI(), Toast.LENGTH_LONG).show();
             validArchitecture = false;
         }
@@ -192,9 +217,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     public void updateUI() {
+        PoolItem pi = PoolManager.getSelectedPool();
 
         String status = "";
-        if (PreferenceHelper.getName("address").equals("")) {
+
+        if (pi == null || pi.getPool().equals("") || pi.getPort().equals("") || Config.read("address").equals("")) {
             status = "Update your Wallet Address in 'Settings'";
         }
 
@@ -247,7 +274,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public void onClick(View v) {
                 accepted = true;
-                PreferenceHelper.setName("show_again", "1");
+                Config.write("show_again", "1");
                 dialog.dismiss();
             }
         });
@@ -263,30 +290,25 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void startMining(View view) {
         if (binder == null) return;
 
-        if (PreferenceHelper.getName("init").equals("1") == false) {
+        if (Config.read("init").equals("1") == false || PoolManager.getSelectedPool() == null) {
             Toast.makeText(contextOfApplication, "Save settings before mining.", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        String pool = PreferenceHelper.getName("pool");
-        String pass = PreferenceHelper.getName("pass");
-        String address = PreferenceHelper.getName("address");
-        String algo = PreferenceHelper.getName("minerAlgo");
-        String assetExtension = PreferenceHelper.getName("assetExtension");
+        String pass = Config.read("pass");
+        String address = Config.read("address");
 
-        int cores = Integer.parseInt(PreferenceHelper.getName("cores"));
-        int threads = Integer.parseInt(PreferenceHelper.getName("threads"));
-        int intensity = Integer.parseInt(PreferenceHelper.getName("intensity"));
+        int cores = Integer.parseInt(Config.read("cores"));
+        int threads = Integer.parseInt(Config.read("threads"));
+        int intensity = Integer.parseInt(Config.read("intensity"));
 
         MiningService.MiningConfig cfg = binder.getService().newConfig(
                 address,
-                pool,
                 pass,
                 cores,
                 threads,
-                intensity,
-                algo,
-                assetExtension);
+                intensity
+        );
 
         binder.getService().startMining(cfg);
 
@@ -367,6 +389,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     }
 
+    private byte[] mBuffer = new byte[4096];
+
+
+
     private ServiceConnection serverConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
@@ -397,6 +423,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                                     tvLog.setText("");
                                     tvAccepted.setText("0");
                                     tvSpeed.setText("0");
+                                    if(tvTemperature != null){
+                                        tvTemperature.setText("0" + (char) 0x00B0 + "C (" + batteryTemp + (char) 0x00B0 + "C)");
+                                    }
                                 }
                                 clearMinerLog = true;
                                 Toast.makeText(contextOfApplication, "Miner Started", Toast.LENGTH_SHORT).show();
@@ -408,10 +437,24 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                     @Override
                     public void onStatusChange(String status, String speed, Integer accepted) {
+                        StringBuilder temp = new StringBuilder();
+                        temp.append(Tools.getCurrentCPUTemperature());
+
+                        if(batteryTemp > 0.0f) {
+                            temp.append(" (");
+                            temp.append(batteryTemp);
+                            temp.append((char) 0x00B0);
+                            temp.append("C)");
+                        }
+                        final String finalTemp = temp.toString();
+                        
                         runOnUiThread(() -> {
                             appendLogOutputText(status);
                             tvAccepted.setText(Integer.toString(accepted));
                             tvSpeed.setText(speed);
+                            if(tvTemperature != null) {
+                                tvTemperature.setText(finalTemp);
+                            }
                         });
                     }
 
@@ -440,9 +483,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private boolean minerPaused = false;
     private boolean clearMinerLog = true;
     static boolean lastIsCharging = false;
+    static float batteryTemp = 0.0f;
     private BroadcastReceiver batteryInfoReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context c, Intent batteryStatus) {
+
+            batteryTemp = (float) (batteryStatus.getIntExtra(BatteryManager.EXTRA_TEMPERATURE, 0)) / 10;
 
             int status = batteryStatus.getIntExtra(BatteryManager.EXTRA_STATUS, -1);
             boolean isCharging = status == BatteryManager.BATTERY_STATUS_CHARGING || status == BatteryManager.BATTERY_STATUS_FULL;
@@ -452,7 +498,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             Toast.makeText(contextOfApplication, (isCharging ? "Device Charging" : "Device on Battery"), Toast.LENGTH_SHORT).show();
 
-            if (PreferenceHelper.getName("pauseonbattery").equals("0") == true) {
+            if (Config.read("pauseonbattery").equals("0") == true) {
                 minerPaused = false;
                 clearMinerLog = true;
                 return;
@@ -479,5 +525,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         }
     };
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == 100) {
+            if (grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(this, "Camera permission denied", Toast.LENGTH_LONG).show();
+            }
+        }
+    }
 
 }
