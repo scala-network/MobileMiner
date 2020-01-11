@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Config {
+    public final static String[] SUPPORTED_ARCHITECTURES = {"arm64-v8a", "armeabi-v7a"};
 
     protected static final Config settings = new Config();
 
@@ -20,7 +21,7 @@ public class Config {
     public static final String miner_xlarig = "xlarig";
     public static final String algo = "defyx";
 
-    public static final String version = "0.0.2";
+    public static final String version = "0.0.3";
     public static final Integer logMaxLength = 50000;
     public static final Integer logPruneLength = 1000;
 

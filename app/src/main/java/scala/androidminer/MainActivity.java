@@ -22,6 +22,7 @@
 
 package scala.androidminer;
 
+import android.Manifest;
 import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
@@ -30,6 +31,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.BatteryManager;
@@ -71,8 +73,6 @@ public class MainActivity extends AppCompatActivity
     private static final String LOG_TAG = "MiningSvc";
     private DrawerLayout drawer;
     boolean accepted = false;
-
-    private final static String[] SUPPORTED_ARCHITECTURES = {"arm64-v8a", "armeabi-v7a"};
 
     private TextView tvLog;
 
@@ -131,8 +131,14 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         PoolItem pi = Config.getSelectedPool();
         if (PreferenceHelper.getName("address").equals("") || pi == null || pi.getPool().equals("") || pi.getPort().equals("")) {
+            if (Build.VERSION.SDK_INT >= 23) {
+                if (checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                    requestPermissions(new String[]{Manifest.permission.CAMERA}, 100);
+                }
+            }
             setContentView(R.layout.activity_main);
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new SettingsFragment(),"settings_fragment").commit();
+
         } else {
             setContentView(R.layout.activity_main);
         }
@@ -166,7 +172,7 @@ public class MainActivity extends AppCompatActivity
         minerBtn3 = (Button) findViewById(R.id.minerBtn3);
         updateUI();
 
-        if (!Arrays.asList(SUPPORTED_ARCHITECTURES).contains(Tools.getABI())) {
+        if (!Arrays.asList(Config.SUPPORTED_ARCHITECTURES).contains(Tools.getABI())) {
             Toast.makeText(this, "Unsupported architecture, yours is " + Tools.getABI(), Toast.LENGTH_LONG).show();
             validArchitecture = false;
         }
@@ -211,11 +217,9 @@ public class MainActivity extends AppCompatActivity
         PoolItem pi = Config.getSelectedPool();
 
         String status = "";
-        String pool = "";
-        if (PreferenceHelper.getName("address").equals("") || pi == null || pi.getPool().equals("") || pi.getPort().equals("")) {
+
+        if (pi == null || pi.getPool().equals("") || pi.getPort().equals("") || PreferenceHelper.getName("address").equals("")) {
             status = "Update your Wallet Address in 'Settings'";
-        } else {
-            pool = pi.getPool();
         }
 
         setStatusText(status);
@@ -561,5 +565,14 @@ public class MainActivity extends AppCompatActivity
         }
     };
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == 100) {
+            if (grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(this, "Camera permission denied", Toast.LENGTH_LONG).show();
+            }
+        }
+    }
 
 }

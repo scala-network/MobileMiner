@@ -26,36 +26,26 @@
             android:theme="@style/Base.ThemeOverlay.AppCompat.Dark.ActionBar"
             android:popupTheme="@style/ThemeOverlay.AppCompat.ActionBar">
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" >
-
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="horizontal"
+                    android:paddingRight="25dp"
                     android:gravity="center_vertical">
+
+                    <Space
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"/>
 
                     <ImageView
                         android:id="@+id/imageView3"
                         android:layout_width="35dp"
                         android:layout_height="35dp"
-                        android:scaleType="fitStart"
+                        android:gravity="end"
                         android:src="@mipmap/ic_logo_colors" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerHorizontal="true"
-                        android:layout_centerVertical="true"
-                        android:layout_gravity="center|left"
-                        android:paddingLeft="10dp"
-                        android:text="Miner"
-                        android:textColor="@color/c_white"
-                        android:textSize="18dp" />
                 </LinearLayout>
-
-            </RelativeLayout>
 
         </android.support.v7.widget.Toolbar>
 
@@ -105,7 +95,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginRight="5dp"
                 android:gravity="end"
-                android:text="Accepted shares"
+                android:text="Shares"
                 android:textSize="16sp"
                 android:textColor="@color/c_grey"
                 android:textStyle="bold" />
@@ -171,6 +161,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text=""
+                android:textSize="15dp"
+                android:textColor="@color/c_lighter"
                 android:background="@color/bg_black"
                 android:visibility="visible" />
 
@@ -188,7 +180,7 @@
                 android:id="@+id/start"
                 android:layout_width="100dp"
                 android:layout_height="45dp"
-                android:backgroundTint="@color/c_blue"
+                android:backgroundTint="@color/bg_blue"
                 android:backgroundTintMode="src_over"
                 android:paddingLeft="15dp"
                 android:paddingRight="15dp"

@@ -166,7 +166,7 @@ public class MiningService extends Service {
         MiningConfig config = new MiningConfig();
         PoolItem pi = Config.getSelectedPool();
         config.username = username;
-        config.pool = pi.getPool() + ":" + pi.getPort();
+//        config.pool = pi.getPool() + ":" + pi.getPort();
         config.cores = cores;
         config.threads = threads;
         config.intensity = intensity;
@@ -230,17 +230,10 @@ public class MiningService extends Service {
 
     class startMiningAsync extends AsyncTask<MiningConfig, Void, String> {
 
-        protected String getPoolHost(String pool) {
+        protected String getPoolHost() {
 
-            String[] hostParts = pool.split(":");
-
-            if (hostParts.length == 2) {
-                return getIpByHost(hostParts[0]) + ":" + hostParts[1];
-            }
-            if (hostParts.length == 1) {
-                return getIpByHost(hostParts[0]);
-            }
-            return pool;
+            PoolItem pi = Config.getSelectedPool();
+            return getIpByHost(pi.getPool()) + ":" + pi.getPort();
         }
 
         private Exception exception;
@@ -250,7 +243,7 @@ public class MiningService extends Service {
 
             try {
                 this.config = config[0];
-                this.config.pool = getPoolHost(this.config.poolHost);
+                this.config.pool = getPoolHost();
                 return "success";
             } catch (Exception e) {
                 this.exception = e;

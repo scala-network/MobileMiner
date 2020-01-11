@@ -28,12 +28,16 @@ public class AboutFragment extends Fragment {
         TextView tvDiscord;
         TextView tvEmail;
         TextView tvSystemInfo;
+        TextView tvMine2gether;
+        TextView tvFontAwesome;
 
         tvWebsite = view.findViewById(R.id.websiteURL);
         tvGithub = view.findViewById(R.id.githubURL);
         tvDiscord = view.findViewById(R.id.discordURL);
         tvEmail = view.findViewById(R.id.email);
         tvSystemInfo = view.findViewById(R.id.systemInfo);
+        tvMine2gether = view.findViewById(R.id.Mine2getherURL);
+        tvFontAwesome = view.findViewById(R.id.FontAwesomeURL);
 
         tvWebsite.setText(Html.fromHtml(getString(R.string.websiteLink)));
         tvWebsite.setMovementMethod(LinkMovementMethod.getInstance());
@@ -63,6 +67,13 @@ public class AboutFragment extends Fragment {
             Config.write("CPUINFO", cpuinfo);
         }
         tvSystemInfo.setText(cpuinfo);
+
+        tvMine2gether.setText(Html.fromHtml(getString(R.string.Mine2getherLink)));
+        tvMine2gether.setMovementMethod(LinkMovementMethod.getInstance());
+
+        tvFontAwesome.setText(Html.fromHtml(getString(R.string.FontAwesomeLink)));
+        tvFontAwesome.setMovementMethod(LinkMovementMethod.getInstance());
+
         return view;
 
     }

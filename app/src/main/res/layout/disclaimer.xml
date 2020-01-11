@@ -8,8 +8,7 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        >
+        android:layout_height="wrap_content">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -30,12 +29,10 @@
             <android.support.design.button.MaterialButton
                 android:id="@+id/button1"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="5dip"
+                android:layout_height="50dp"
                 android:layout_marginLeft="5dip"
                 android:layout_marginRight="5dip"
-                android:layout_marginTop="5dip"
-                android:backgroundTint="@color/c_blue"
+                android:backgroundTint="@color/bg_blue"
                 android:text="Agree"
                 android:textAllCaps="false"
                 app:cornerRadius="5dp" />
@@ -43,12 +40,10 @@
             <android.support.design.button.MaterialButton
                 android:id="@+id/button2"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="5dip"
+                android:layout_height="50dp"
                 android:layout_marginLeft="5dip"
                 android:layout_marginRight="5dip"
-                android:layout_marginTop="5dip"
-                android:backgroundTint="@color/c_blue"
+                android:backgroundTint="@color/bg_lighter"
                 android:text="Exit"
                 android:textAllCaps="false"
                 app:cornerRadius="5dp" />

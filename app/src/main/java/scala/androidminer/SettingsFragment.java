@@ -4,8 +4,12 @@
 
 package scala.androidminer;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.support.design.widget.NavigationView;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.content.Context;
 import android.graphics.Color;
@@ -125,7 +129,7 @@ public class SettingsFragment extends Fragment {
 
         boolean checkStatus = (PreferenceHelper.getName("pauseonbattery").equals("1") == true);
         chkPauseOnBattery.setChecked(checkStatus);
-
+        Log.i(LOG_TAG,"ADRESS: "+PreferenceHelper.getName("address"));
         if (PreferenceHelper.getName("address").equals("") == false) {
             edUser.setText(PreferenceHelper.getName("address"));
         }
@@ -171,10 +175,10 @@ public class SettingsFragment extends Fragment {
         PoolItem poolItem = null;
         String poolSelected = PreferenceHelper.getName("selected_pool");
         int sp = Config.settings.defaultPoolIndex;
-        if (poolSelected.equals("") == false) {
+        if (poolSelected.equals("")) {
             poolSelected = Integer.toString(sp);
         }
-
+        Log.d(LOG_TAG,poolSelected);
         poolItem = Config.getPoolById(poolSelected);
 
         if(poolItem == null) {
@@ -211,6 +215,7 @@ public class SettingsFragment extends Fragment {
                 PreferenceHelper.setName("address", edUser.getText().toString().trim());
                 PreferenceHelper.setName("pass", edPass.getText().toString().trim());
                 String key = (String)spPool.getSelectedItem();
+                Log.i(LOG_TAG,"ON CLICK GET ADDRESS: "+edUser.getText().toString().trim());
 
                 Log.d(LOG_TAG,key);
 
@@ -297,12 +302,21 @@ public class SettingsFragment extends Fragment {
         qrButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (Build.VERSION.SDK_INT >= 23) {
+                    if (ContextCompat.checkSelfPermission(appContext, Manifest.permission.CAMERA)
+                            == PackageManager.PERMISSION_DENIED) {
+                        Toast.makeText(appContext,"Camera Permission Denied",Toast.LENGTH_LONG);
+                        return;
+                    }
+                }
+
                 try {
                     Intent intent = new Intent(appContext, QrCodeScannerActivity.class);
                     startActivity(intent);
                 }catch (Exception e) {
                     Toast.makeText(appContext,e.getMessage(),Toast.LENGTH_LONG);
                 }
+
             }
         });
 
@@ -310,9 +324,12 @@ public class SettingsFragment extends Fragment {
     }
 
     public void updateAddress() {
-        if (PreferenceHelper.getName("address").equals("") == false && edUser != null) {
-            edUser.setText(PreferenceHelper.getName("address"));
+        String address =  PreferenceHelper.getName("address");
+        if (edUser == null || address.equals("")) {
+            return;
         }
+
+        edUser.setText(address);
     }
 
     public class PoolSpinAdapter extends ArrayAdapter<String> {

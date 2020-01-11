@@ -147,6 +147,8 @@ public class PoolItem {
     }
     public String getPoolTypeName() {
         switch (this.mPoolType) {
+//            case 0:
+//                return "custom";
             case 1:
                 return "nodejs-pool";
             case 2:
