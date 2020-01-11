@@ -136,7 +136,7 @@
 
                     <android.support.v7.widget.AppCompatSpinner
                         android:id="@+id/poolSpinner"
-                        style="@style/Widget.AppCompat.Spinner.DropDown.ActionBar"
+                        style="@style/Widget.AppCompat.Spinner.Underlined"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"

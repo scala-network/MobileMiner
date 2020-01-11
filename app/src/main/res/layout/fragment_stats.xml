@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="32dp"
         android:gravity="start"
-        android:text="Mining Stats"
+        android:text="Stats"
         android:textColor="@color/c_white"
         android:textStyle="bold"
         android:textSize="24sp" />
