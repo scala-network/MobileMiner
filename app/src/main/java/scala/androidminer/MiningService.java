@@ -26,7 +26,6 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Binder;
-import android.os.Build;
 import android.os.IBinder;
 import android.os.PowerManager;
 import android.text.TextUtils;
@@ -45,6 +44,9 @@ import java.io.OutputStreamWriter;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Arrays;
+
+import scala.androidminer.pools.PoolItem;
+import scala.androidminer.pools.PoolManager;
 
 import static android.os.PowerManager.*;
 
@@ -164,7 +166,7 @@ public class MiningService extends Service {
     public MiningConfig newConfig(String username, String pass, int cores, int threads, int intensity) {
 
         MiningConfig config = new MiningConfig();
-        PoolItem pi = Config.getSelectedPool();
+        PoolItem pi = PoolManager.getSelectedPool();
         config.username = username;
 //        config.pool = pi.getPool() + ":" + pi.getPort();
         config.cores = cores;
@@ -232,7 +234,7 @@ public class MiningService extends Service {
 
         protected String getPoolHost() {
 
-            PoolItem pi = Config.getSelectedPool();
+            PoolItem pi = PoolManager.getSelectedPool();
             return getIpByHost(pi.getPool()) + ":" + pi.getPort();
         }
 

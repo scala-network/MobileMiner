@@ -18,6 +18,9 @@ import android.widget.TextView;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import scala.androidminer.pools.PoolManager;
+import scala.androidminer.pools.PoolItem;
+
 public class StatsFragment extends Fragment {
 
     private static final String LOG_TAG = "MiningSvc";
@@ -75,7 +78,7 @@ public class StatsFragment extends Fragment {
             return false;
         }
 
-        PoolItem pi = Config.getPoolById(Integer.valueOf(ps));
+        PoolItem pi = PoolManager.getPoolById(Integer.valueOf(ps));
 
         if (pi.getPoolType() == 0) {
             data.setText("(stats are not available for custom pools)");

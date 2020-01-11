@@ -106,7 +106,7 @@ public class MainActivity extends AppCompatActivity
         String configversion = Config.read("config_version");
 
         if(!configversion.equals(Config.version)) {
-            PreferenceHelper.clear();
+            Config.clear();
             Config.write("config_version", Config.version);
         }
 
