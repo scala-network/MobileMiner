@@ -48,15 +48,14 @@ public class Config {
 
     public Config() {
 
-
         //User Defined
-        mPools.add(new PoolItem("custom", "custom",3333,0, ""));
+        mPools.add(new PoolItem("custom", "custom","3333",0, ""));
 
         // Scala Official pool
         mPools.add(new PoolItem(
                         "Scalaproject.io (Official Pool)",
                         "mine.scalaproject.io",
-                        3333,
+                        "3333",
                         1,
                         "https://pool.scalaproject.io"
                 )
@@ -66,7 +65,7 @@ public class Config {
         mPools.add(new PoolItem(
                         "Miner.Rocks",
                         "stellite.miner.rocks",
-                        5003,
+                        "5003",
                         2,
                         "https://stellite.miner.rocks"
                 )
@@ -76,7 +75,7 @@ public class Config {
         mPools.add(new PoolItem(
                         "HeroMiners",
                         "scala.herominers.com",
-                        10130,
+                        "10130",
                         2,
                         "https://scala.herominers.com"
                 )
@@ -85,16 +84,14 @@ public class Config {
         mPools.add(new PoolItem(
                         "GNTL",
                         "xla.pool.gntl.co.uk",
-                        3333,
+                        "3333",
                         1,
                         "https://xla.pool.gntl.co.uk"
                 )
         );
-
     }
 
     static public PoolItem[] getPools() {
-
         return settings.mPools.toArray(new PoolItem[settings.mPools.size()]);
     }
 
@@ -103,16 +100,13 @@ public class Config {
     }
 
     static public PoolItem getPoolById(String idx) {
-        if(idx.equals("")){
+        int index = Integer.parseInt(idx);
+        if(idx.equals("") || settings.mPools.size() < index){
             return null;
         }
-        return settings.mPools.get(Integer.valueOf(idx));
+        return settings.mPools.get(index);
     }
 
-//    static public int getIdForPool(PoolItem poolItem) {
-//        int i = settings.mPools.indexOf(poolItem);
-//        return i;
-//    }
 
     static public PoolItem getSelectedPool() {
         String sp = PreferenceHelper.getName("selected_pool");

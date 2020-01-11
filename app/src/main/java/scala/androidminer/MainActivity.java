@@ -156,7 +156,8 @@ public class MainActivity extends AppCompatActivity
         // wire views
         tvLog = findViewById(R.id.output);
         tvSpeed = findViewById(R.id.speed);
-        tvTemperature = findViewById(R.id.temperature);
+        //@@TODO Add temperature at UI
+        // tvTemperature = findViewById(R.id.temperature);
         tvAccepted = findViewById(R.id.accepted);
         svOutput = findViewById(R.id.outputScrollView);
 

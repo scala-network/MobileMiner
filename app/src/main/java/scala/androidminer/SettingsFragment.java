@@ -210,7 +210,10 @@ public class SettingsFragment extends Fragment {
 
                 PreferenceHelper.setName("address", edUser.getText().toString().trim());
                 PreferenceHelper.setName("pass", edPass.getText().toString().trim());
-                String key = spPool.getSelectedItem();
+                String key = (String)spPool.getSelectedItem();
+
+                Log.d(LOG_TAG,key);
+
                 int selectedPosition = Config.defaultPoolIndex;
                 PoolItem[] pools = Config.getPools();
                 for(int i = 0;i< pools.length;i++){
@@ -224,7 +227,7 @@ public class SettingsFragment extends Fragment {
                 PoolItem pi = Config.getPoolById(selectedPosition);
                 String port = edPort.getText().toString().trim();
                 String pool = edPool.getText().toString().trim();
-                if(selectedPosition == 0) {
+                if(pi.getPoolType() == 4) {
                     PreferenceHelper.setName("custom_pool", pool);
                     PreferenceHelper.setName("custom_port", port);
                 } else if(!port.equals("") && !pi.getPort().equals(port)) {
@@ -239,7 +242,6 @@ public class SettingsFragment extends Fragment {
                 PreferenceHelper.setName("cores", Integer.toString(npCores.getValue()));
                 PreferenceHelper.setName("threads", Integer.toString(npThreads.getValue()));
                 PreferenceHelper.setName("intensity", Integer.toString(npIntensity.getValue()));
-                Log.d(selectedPosition);
                 PreferenceHelper.setName("pauseonbattery", (chkPauseOnBattery.isChecked() ? "1" : "0"));
 
                 PreferenceHelper.setName("init", "1");
@@ -295,12 +297,16 @@ public class SettingsFragment extends Fragment {
         qrButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(appContext, QrCodeScannerActivity.class);
-                startActivity(intent);
+                try {
+                    Intent intent = new Intent(appContext, QrCodeScannerActivity.class);
+                    startActivity(intent);
+                }catch (Exception e) {
+                    Log.e(LOG_TAG,e.getMessage());
+                }
             }
         });
 
-            return view;
+        return view;
     }
 
     public void updateAddress() {

@@ -11,7 +11,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/bg_black"
+        android:background="@color/bg_grey"
         android:orientation="vertical"
         android:paddingLeft="0dp"
         android:paddingTop="0dp"
@@ -91,6 +91,7 @@
                 android:gravity="start"
                 android:text="Hashrate"
                 android:textSize="16sp"
+                android:textColor="@color/c_grey"
                 android:textStyle="bold" />
 
             <Space
@@ -106,6 +107,7 @@
                 android:gravity="end"
                 android:text="Accepted shares"
                 android:textSize="16sp"
+                android:textColor="@color/c_grey"
                 android:textStyle="bold" />
 
         </LinearLayout>
@@ -133,6 +135,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="10dp"
+                android:textColor="@color/c_grey"
                 android:text="@string/hpers" />
 
             <Space
@@ -149,7 +152,7 @@
                 android:text="0"
                 android:textStyle="bold"
                 android:textSize="32sp"
-                android:textColor="#FFF"/>
+                android:textColor="@color/c_lighter" />
 
         </LinearLayout>
 
@@ -161,14 +164,14 @@
             android:layout_weight="1"
             android:paddingLeft="15dp"
             android:paddingRight="15dp"
-            android:background="@color/bg_grey">
+            android:background="@color/bg_black">
 
             <android.support.v7.widget.AppCompatTextView
                 android:id="@+id/output"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text=""
-                android:background="@color/bg_grey"
+                android:background="@color/bg_black"
                 android:visibility="visible" />
 
         </ScrollView>
@@ -251,11 +254,12 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:background="#CC000000"
-        android:textColor="#ffffff"
+        android:background="@color/bg_black"
+        android:textColor="@color/c_white"
         app:headerLayout="@layout/nav_header"
         app:itemIconTint="#FFF"
-        app:itemTextColor="#FFFFFF"
+        app:itemTextColor="@color/c_lighter"
+        app:itemBackground="@drawable/drawer_selected_item"
         app:menu="@menu/drawermenu" />
 
 </android.support.v4.widget.DrawerLayout>
