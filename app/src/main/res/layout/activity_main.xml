@@ -259,6 +259,7 @@
         app:headerLayout="@layout/nav_header"
         app:itemIconTint="#FFF"
         app:itemTextColor="@color/c_lighter"
+        app:itemBackground="@drawable/drawer_selected_item"
         app:menu="@menu/drawermenu" />
 
 </android.support.v4.widget.DrawerLayout>
