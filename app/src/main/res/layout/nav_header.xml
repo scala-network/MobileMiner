@@ -10,23 +10,12 @@
     android:layout_marginTop="20dp"
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
-    <ImageView
-        android:layout_width="64dp"
-        android:layout_height="64dp"
-        android:src="@mipmap/ic_logo_colors" />
-
-    <android.support.v7.widget.AppCompatTextView
-        android:paddingTop="8dp"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="scalaproject.io"
-        android:textColor="@color/c_lighter" />
-
     <android.support.v7.widget.AppCompatTextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Scala Android Miner"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:textColor="@color/c_lighter" />
+        android:text="Menu"
+        android:textSize="24dp"
+        android:textStyle="bold"
+        android:textColor="@color/c_white" />
 
 </LinearLayout>

@@ -3,7 +3,7 @@
     <string name="app_name">Scala Miner</string>
     <string name="navigation_drawer_open">Open Navigation Drawer</string>
     <string name="navigation_drawer_close">Close Navigation Drawer</string>
-    <string name="mining_pool_address">Mining Pool Address</string>
+    <string name="mining_pool_address">Mining Pool URL</string>
     <string name="mining_pool_port">Port</string>
     <string name="username">Wallet Address:</string>
     <string name="cmdline">Cmdline</string>
@@ -19,12 +19,12 @@
     <string name="cpus">Cores</string>
     <string name="temperature">°C</string>
 
-
     <string name="websiteLink">&lt;a href=&quot;https://scalaproject.io&quot;&gt;scalaproject.io&lt;/a&gt;</string>
     <string name="githubLink">&lt;a href=&quot;https://github.com/scala-network/scala_android_miner/releases&quot;&gt;Scala Android Miner&lt;/a&gt;</string>
     <string name="discordLink">&lt;a href=&quot;https://discord.gg/djAFVvy&quot;&gt;Scala Chat and Support&lt;/a&gt;</string>
     <string name="emailLink">&lt;a href=mailto:&quot;hello@scalaproject.io&quot;&gt;hello@scalaproject.io&lt;/a&gt;</string>
     <string name="Mine2getherLink">&lt;a href=&quot;https://github.com/Mine2Gether/m2g_android_miner&quot;&gt;Mine2gether&lt;/a&gt;</string>
+    <string name="MoneroMinerLink">&lt;a href=&quot;https://github.com/upost/MoneroMiner&quot;&gt;MoneroMiner&lt;/a&gt;</string>
     <string name="FontAwesomeLink">&lt;a href=&quot;https://fontawesome.com/license&quot;&gt;Font Awesome&lt;/a&gt;</string>
 
     <string name="disclaimerText">Scala Miner is an open-source cryptocurrency miner to mine Scala under Android devices.\n\nRunning your CPU at a high setting for a prolonged duration may result in negative effects such as: battery drainage, slow response time, overheating, and may cause permanent damage to your device.\n\nWe recommend only using this software on low settings (below 50% of your available device threads and below 50% CPU Usage).\n\nBy using this application, you assume full responsibility for any damage that may be caused to your device, property or self by the Scala Miner.</string>

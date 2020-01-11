@@ -209,7 +209,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="start"
-            android:text="Thanks to "
+            android:text="Forked from "
             android:textColor="@color/c_lighter"
             android:textSize="14sp"
             android:layout_marginBottom="0sp"/>
@@ -228,7 +228,26 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="start"
-            android:text=" for their work."
+            android:text=" and "
+            android:textColor="@color/c_lighter"
+            android:textSize="14sp"
+            android:layout_marginBottom="0sp"/>
+
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/MoneroMinerURL"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="start"
+            android:text=""
+            android:textColor="@color/c_blue"
+            android:textColorLink="@color/c_blue"
+            android:textSize="14sp" />
+
+        <android.support.v7.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="start"
+            android:text="."
             android:textColor="@color/c_lighter"
             android:textSize="14sp"
             android:layout_marginBottom="0sp"/>
