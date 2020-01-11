@@ -301,7 +301,7 @@ public class SettingsFragment extends Fragment {
                     Intent intent = new Intent(appContext, QrCodeScannerActivity.class);
                     startActivity(intent);
                 }catch (Exception e) {
-                    Log.e(LOG_TAG,e.getMessage());
+                    Toast.makeText(appContext,e.getMessage(),Toast.LENGTH_LONG);
                 }
             }
         });

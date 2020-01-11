@@ -457,7 +457,9 @@ public class MainActivity extends AppCompatActivity
                                     tvLog.setText("");
                                     tvAccepted.setText("0");
                                     tvSpeed.setText("0");
-                                    tvTemperature.setText("0" + (char) 0x00B0 + "C (" + batteryTemp + (char) 0x00B0 + "C)");
+                                    if(tvTemperature != null){
+                                        tvTemperature.setText("0" + (char) 0x00B0 + "C (" + batteryTemp + (char) 0x00B0 + "C)");
+                                    }
                                 }
                                 clearMinerLog = true;
                                 Toast.makeText(contextOfApplication, "Miner Started", Toast.LENGTH_SHORT).show();
@@ -485,8 +487,9 @@ public class MainActivity extends AppCompatActivity
                             appendLogOutputText(status);
                             tvAccepted.setText(Integer.toString(accepted));
                             tvSpeed.setText(speed);
-
-                            tvTemperature.setText(finalTemp);
+                            if(tvTemperature != null) {
+                                tvTemperature.setText(finalTemp);
+                            }
                         });
                     }
 

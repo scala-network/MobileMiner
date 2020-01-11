@@ -161,15 +161,6 @@
                             android:textColor="@color/c_lighter"
                             android:text="" />
 
-                        <android.support.v7.widget.AppCompatEditText
-                            android:id="@+id/pass"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint="worker name or pool options"
-                            android:textSize="14dp"
-                            android:textColor="@color/c_lighter"
-                            android:text="" />
-
                         <Space
                             android:layout_width="match_parent"
                             android:layout_height="26dp" />
@@ -227,22 +218,22 @@
 
                         <android.support.v7.widget.AppCompatTextView
                             android:id="@+id/username"
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:layout_weight = "1"
+                            android:layout_weight="2"
                             android:hint="your wallet address"
-                            android:textSize="14dp"
+                            android:text=""
                             android:textColor="@color/c_lighter"
-                            android:text="" />
+                            android:textSize="14dp" />
 
                         <Button
                             android:id="@+id/buttonQrReader"
-                            android:layout_width="27dp"
+                            android:layout_width="32dp"
                             android:layout_height="match_parent"
                             android:layout_gravity="center|right"
                             android:layout_marginTop="0dp"
                             android:layout_marginRight="10dp"
-                            android:layout_weight="1"
+                            android:layout_weight="0.0001"
                             android:layoutDirection="rtl"
                             android:paddingLeft="2dp"
                             android:paddingTop="2dp"
@@ -252,6 +243,15 @@
                             app:icon="@drawable/ic_qr_scan" />
 
                     </LinearLayout>
+
+                    <android.support.v7.widget.AppCompatEditText
+                        android:id="@+id/pass"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="worker name or pool options"
+                        android:text=""
+                        android:textColor="@color/c_lighter"
+                        android:textSize="14dp" />
 
                     <android.support.v7.widget.AppCompatCheckBox
                         android:id="@+id/chkPauseOnBattery"
