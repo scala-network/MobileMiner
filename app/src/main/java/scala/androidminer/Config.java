@@ -50,13 +50,13 @@ public class Config {
     }
 
     public static String read(String key) {
-        if(!mSettings.mConfigs.containsKey(key)) {
-            return "";
-        }
+
         if(!key.startsWith("system:")) {
             return mSettings.preferences.getString(key, "");
         }
-
+        if(!mSettings.mConfigs.containsKey(key)) {
+            return "";
+        }
         return mSettings.mConfigs.get(key);
     }
 
