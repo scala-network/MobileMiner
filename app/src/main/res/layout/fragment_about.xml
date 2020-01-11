@@ -11,6 +11,7 @@
         android:gravity="start"
         android:text="About"
         android:textColor="@color/c_white"
+        android:textStyle="bold"
         android:textSize="24sp" />
 
     <LinearLayout
@@ -50,6 +51,7 @@
                 android:gravity="start"
                 android:text=""
                 android:textColor="@color/c_blue"
+                android:textColorLink="@color/c_blue"
                 android:textSize="14sp" />
 
         </LinearLayout>
@@ -75,6 +77,7 @@
                 android:gravity="start"
                 android:text=""
                 android:textColor="@color/c_blue"
+                android:textColorLink="@color/c_blue"
                 android:textSize="14sp" />
 
         </LinearLayout>
@@ -100,6 +103,7 @@
                 android:gravity="start"
                 android:text=""
                 android:textColor="@color/c_blue"
+                android:textColorLink="@color/c_blue"
                 android:textSize="14sp" />
 
         </LinearLayout>
@@ -125,6 +129,7 @@
                 android:gravity="start"
                 android:text=""
                 android:textColor="@color/c_blue"
+                android:textColorLink="@color/c_blue"
                 android:textSize="14sp" />
 
         </LinearLayout>
@@ -132,11 +137,67 @@
         <android.support.v7.widget.AppCompatTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="System Info"
+            android:layout_gravity="start"
+            android:textSize="24sp"
+            android:textColor="@color/c_white"
+            android:textStyle="bold"
+            android:layout_marginTop="15sp"/>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/systemInfo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textSize="14sp" />
+
+        </ScrollView>
+
+        <android.support.v7.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:text="Credits"
             android:layout_gravity="start"
-            android:textSize="20sp"
-            android:textColor="@color/c_grey"
-            android:layout_marginTop="10sp"/>
+            android:textSize="24sp"
+            android:textColor="@color/c_white"
+            android:textStyle="bold"
+            android:layout_marginTop="0sp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="start|center"
+            android:orientation="horizontal">
+
+            <android.support.v7.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="start"
+                android:text="Made with "
+                android:textColor="@color/c_lighter"
+                android:textSize="14sp"
+                android:layout_marginBottom="0sp"/>
+
+            <ImageView
+                android:id="@+id/imageView3"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:src="@drawable/ic_heart" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="start"
+                android:text=" by Scala."
+                android:textColor="@color/c_lighter"
+                android:textSize="14sp"
+                android:layout_marginBottom="0sp"/>
+
+        </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -148,56 +209,68 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="start"
-            android:text="Made with "
+            android:text="Thanks to "
             android:textColor="@color/c_lighter"
             android:textSize="14sp"
             android:layout_marginBottom="0sp"/>
 
-        <ImageView
-            android:id="@+id/imageView3"
-            android:layout_width="16dp"
-            android:layout_height="16dp"
-            android:src="@drawable/ic_heart" />
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/Mine2getherURL"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="start"
+            android:text=""
+            android:textColor="@color/c_blue"
+            android:textColorLink="@color/c_blue"
+            android:textSize="14sp" />
 
         <android.support.v7.widget.AppCompatTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="start"
-            android:text=" by Scala."
+            android:text=" for their work."
             android:textColor="@color/c_lighter"
             android:textSize="14sp"
             android:layout_marginBottom="0sp"/>
+
+    </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="start|center"
+            android:orientation="horizontal">
+
+            <android.support.v7.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="start"
+                android:text="Icons powered by "
+                android:textColor="@color/c_lighter"
+                android:textSize="14sp"
+                android:layout_marginBottom="0sp"/>
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/FontAwesomeURL"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="start"
+                android:text=""
+                android:textColor="@color/c_blue"
+                android:textColorLink="@color/c_blue"
+                android:textSize="14sp" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="start"
+                android:text="."
+                android:textColor="@color/c_lighter"
+                android:textSize="14sp"
+                android:layout_marginBottom="0sp"/>
 
         </LinearLayout>
 
-        <android.support.v7.widget.AppCompatTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="start"
-            android:text="Thanks to Mine2gether for their work."
-            android:textColor="@color/c_lighter" />
-
-        <android.support.v7.widget.AppCompatTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="System Info"
-            android:layout_gravity="start"
-            android:textSize="20sp"
-            android:textColor="@color/c_grey"
-            android:layout_marginTop="10sp"/>
-
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <android.support.v7.widget.AppCompatTextView
-                android:id="@+id/systemInfo"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text=""
-                android:textSize="14sp" />
-
-        </ScrollView>
     </LinearLayout>
 
 </RelativeLayout>

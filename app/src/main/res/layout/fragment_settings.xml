@@ -16,6 +16,7 @@
         android:gravity="start"
         android:text="Settings"
         android:textColor="@color/c_white"
+        android:textStyle="bold"
         android:textSize="24sp" />
 
     <LinearLayout
@@ -27,6 +28,7 @@
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
             android:layout_marginBottom="55dp">
 
             <LinearLayout
@@ -35,16 +37,6 @@
                 android:layout_margin="15dp"
                 android:paddingBottom="25dp"
                 android:orientation="vertical">
-
-                <android.support.v7.widget.AppCompatTextView
-                    android:id="@+id/cpuText"
-                    android:layout_width="match_parent"
-                    android:layout_height="25dp"
-                    android:layout_marginTop="5dp"
-                    android:gravity="bottom"
-                    android:text="CPU"
-                    android:textColor="@color/c_grey"
-                    android:textStyle="bold" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -144,7 +136,7 @@
 
                     <android.support.v7.widget.AppCompatSpinner
                         android:id="@+id/poolSpinner"
-                        style="@style/Widget.AppCompat.Spinner.Underlined"
+                        style="@style/Widget.AppCompat.Spinner.DropDown.ActionBar"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
@@ -165,7 +157,8 @@
                         android:id="@+id/pass"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="worker name or pool options"
+                        android:hint="Worker name or pool options"
+                        android:textColorHint="@color/c_black"
                         android:textSize="14dp"
                         android:textColor="@color/c_lighter"
                         android:text="" />
@@ -184,7 +177,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:layout_weight = "1"
-                            android:hint="your wallet address"
+                            android:hint="Your wallet address"
+                            android:textColorHint="@color/c_black"
                             android:textSize="14dp"
                             android:textColor="@color/c_lighter"
                             android:text="" />
@@ -231,10 +225,12 @@
 
         <android.support.design.button.MaterialButton
             android:id="@+id/saveSettings"
-            android:backgroundTint="@color/c_blue"
+            android:backgroundTint="@color/bg_blue"
             android:backgroundTintMode="src_over"
             android:layout_width="100dp"
             android:layout_height="45dp"
+            android:layout_marginRight="0dp"
+            android:layout_marginBottom="15dp"
             android:textSize="15dp"
             android:textAllCaps="false"
             android:text="Save"

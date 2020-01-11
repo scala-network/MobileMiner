@@ -21,6 +21,8 @@
     <string name="githubLink">&lt;a href=&quot;https://github.com/scala-network/scala_android_miner/releases&quot;&gt;Scala Android Miner&lt;/a&gt;</string>
     <string name="discordLink">&lt;a href=&quot;https://discord.gg/djAFVvy&quot;&gt;Scala Chat and Support&lt;/a&gt;</string>
     <string name="emailLink">&lt;a href=mailto:&quot;hello@scalaproject.io&quot;&gt;hello@scalaproject.io&lt;/a&gt;</string>
+    <string name="Mine2getherLink">&lt;a href=&quot;https://github.com/Mine2Gether/m2g_android_miner&quot;&gt;Mine2gether&lt;/a&gt;</string>
+    <string name="FontAwesomeLink">&lt;a href=&quot;https://fontawesome.com/license&quot;&gt;Font Awesome&lt;/a&gt;</string>
 
     <string name="disclaimerText">Scala Miner is an open-source cryptocurrency miner to mine Scala under Android devices.\n\nRunning your CPU at a high setting for a prolonged duration may result in negative effects such as: battery drainage, slow response time, overheating, and may cause permanent damage to your device.\n\nWe recommend only using this software on low settings (below 50% of your available device threads and below 50% CPU Usage).\n\nBy using this application, you assume full responsibility for any damage that may be caused to your device, property or self by the Scala Miner.</string>
     <string-array name="threadNumbers">

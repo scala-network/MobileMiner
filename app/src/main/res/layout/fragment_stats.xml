@@ -11,6 +11,7 @@
         android:gravity="start"
         android:text="Mining Stats"
         android:textColor="@color/c_white"
+        android:textStyle="bold"
         android:textSize="24sp" />
 
     <ScrollView
