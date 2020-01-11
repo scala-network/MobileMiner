@@ -10,7 +10,7 @@
         android:layout_height="45dp"
         android:gravity="start"
         android:text="Mining Stats"
-        android:textSize="22sp" />
+        android:textSize="24sp" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -27,7 +27,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="5dp"
-                android:gravity="end"/>
+                android:gravity="start"/>
 
             <android.support.v7.widget.AppCompatTextView
                 android:layout_width="match_parent"

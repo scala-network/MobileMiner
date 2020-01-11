@@ -15,7 +15,7 @@
         android:layout_height="28dp"
         android:gravity="start"
         android:text="Settings"
-        android:textSize="22sp" />
+        android:textSize="24sp" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -54,7 +54,6 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:orientation="vertical">
-
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -131,8 +130,7 @@
 
                 <Space
                     android:layout_width="match_parent"
-                    android:layout_height="20dp"
-                    />
+                    android:layout_height="20dp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -151,8 +149,9 @@
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="horizontal">
+                        android:layout_height="wrap_content"
+                        android:textSize="14dp"
+                        android:text="" />
 
                         <LinearLayout
                             android:layout_width="0dp"
@@ -215,10 +214,11 @@
 
                         <android.support.v7.widget.AppCompatTextView
                             android:id="@+id/username"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="10"
-                            android:hint="(your wallet address)"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_weight = "1"
+                            android:hint="your wallet address"
+                            android:textSize="14dp"
                             android:text="" />
 
                         <Button
@@ -243,15 +243,14 @@
                         android:id="@+id/pass"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="(worker name or pool options)"
-                        android:singleLine="true"
+                        android:hint="worker name or pool options"
+                        android:textSize="14dp"
                         android:text="" />
 
                     <android.support.v7.widget.AppCompatCheckBox
                         android:id="@+id/chkPauseOnBattery"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="(worker name or pool options)"
                         android:text="Pause mining on battery power" />
 
                     <LinearLayout
