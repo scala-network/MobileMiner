@@ -2,8 +2,8 @@
 //
 // Please see the included LICENSE file for more information.
 
-package scala.androidminer;
-
+package scala.androidminer.pools;
+import scala.androidminer.Config;
 public class PoolItem {
 
     private int mId = 0;
@@ -105,7 +105,7 @@ public class PoolItem {
     }
 
     public String getPool() {
-        String custom_pool = PreferenceHelper.getName("custom_pool");
+        String custom_pool = Config.read("custom_pool");
         if(this.mPoolType == 0) {
             return custom_pool;
         }
@@ -114,7 +114,7 @@ public class PoolItem {
     }
 
     public String getPort() {
-        String custom_port = PreferenceHelper.getName("custom_port");
+        String custom_port = Config.read("custom_port");
 
         if(this.mPoolType == 0){
             return custom_port;

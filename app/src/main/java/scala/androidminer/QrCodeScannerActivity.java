@@ -59,7 +59,7 @@ public class QrCodeScannerActivity extends AppCompatActivity  implements Barcode
         scanResult.setText("Scala Address : " + miner);
         if(Utils.verifyAddress(miner)) {
             Log.d("CONSOLE:QRCODE", "Barcode read: " + barcode.displayValue);
-            PreferenceHelper.setName("address",miner);
+            Config.write("address",miner);
             barcodeCapture.stopScanning();
             finish();
             return;

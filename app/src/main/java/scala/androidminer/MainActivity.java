@@ -65,6 +65,9 @@ import java.util.Arrays;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
 
+import scala.androidminer.pools.PoolItem;
+import scala.androidminer.pools.PoolManager;
+
 import static android.os.PowerManager.PARTIAL_WAKE_LOCK;
 
 public class MainActivity extends AppCompatActivity
@@ -79,7 +82,6 @@ public class MainActivity extends AppCompatActivity
 
     private TextView tvSpeed, tvAccepted, tvTemperature;
     private boolean validArchitecture = true;
-    public static SharedPreferences preferences;
 
     private MiningService.MiningServiceBinder binder;
 
@@ -99,12 +101,13 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        preferences = getSharedPreferences(getPackageName() + "_preferences", MODE_PRIVATE);
-        String configversion = PreferenceHelper.getName("config_version");
+        SharedPreferences preferences = getSharedPreferences(getPackageName() + "_preferences", MODE_PRIVATE);
+        Config.initialize(preferences);
+        String configversion = Config.read("config_version");
 
         if(!configversion.equals(Config.version)) {
             PreferenceHelper.clear();
-            PreferenceHelper.setName("config_version", Config.version);
+            Config.write("config_version", Config.version);
         }
 
 
@@ -122,15 +125,15 @@ public class MainActivity extends AppCompatActivity
 
         registerReceiver(batteryInfoReceiver, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
 
-        String isshowagain = PreferenceHelper.getName("show_again");
+        String isshowagain = Config.read("show_again");
 
         if (isshowagain.equals("")) {
             showdialog();
         }
 
         super.onCreate(savedInstanceState);
-        PoolItem pi = Config.getSelectedPool();
-        if (PreferenceHelper.getName("address").equals("") || pi == null || pi.getPool().equals("") || pi.getPort().equals("")) {
+        PoolItem pi = PoolManager.getSelectedPool();
+        if (Config.read("address").equals("") || pi == null || pi.getPool().equals("") || pi.getPort().equals("")) {
             if (Build.VERSION.SDK_INT >= 23) {
                 if (checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
                     requestPermissions(new String[]{Manifest.permission.CAMERA}, 100);
@@ -214,11 +217,11 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void updateUI() {
-        PoolItem pi = Config.getSelectedPool();
+        PoolItem pi = PoolManager.getSelectedPool();
 
         String status = "";
 
-        if (pi == null || pi.getPool().equals("") || pi.getPort().equals("") || PreferenceHelper.getName("address").equals("")) {
+        if (pi == null || pi.getPool().equals("") || pi.getPort().equals("") || Config.read("address").equals("")) {
             status = "Update your Wallet Address in 'Settings'";
         }
 
@@ -271,7 +274,7 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(View v) {
                 accepted = true;
-                PreferenceHelper.setName("show_again", "1");
+                Config.write("show_again", "1");
                 dialog.dismiss();
             }
         });
@@ -287,17 +290,17 @@ public class MainActivity extends AppCompatActivity
     private void startMining(View view) {
         if (binder == null) return;
 
-        if (PreferenceHelper.getName("init").equals("1") == false || Config.getSelectedPool() == null) {
+        if (Config.read("init").equals("1") == false || PoolManager.getSelectedPool() == null) {
             Toast.makeText(contextOfApplication, "Save settings before mining.", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        String pass = PreferenceHelper.getName("pass");
-        String address = PreferenceHelper.getName("address");
+        String pass = Config.read("pass");
+        String address = Config.read("address");
 
-        int cores = Integer.parseInt(PreferenceHelper.getName("cores"));
-        int threads = Integer.parseInt(PreferenceHelper.getName("threads"));
-        int intensity = Integer.parseInt(PreferenceHelper.getName("intensity"));
+        int cores = Integer.parseInt(Config.read("cores"));
+        int threads = Integer.parseInt(Config.read("threads"));
+        int intensity = Integer.parseInt(Config.read("intensity"));
 
         MiningService.MiningConfig cfg = binder.getService().newConfig(
                 address,
@@ -385,51 +388,10 @@ public class MainActivity extends AppCompatActivity
         }, 50);
 
     }
-    private String getCurrentCPUTemperature() {
-        String file = readFile("/sys/devices/virtual/thermal/thermal_zone0/temp", '\n');
-        float output = 0.0f;
-        if (file != null) {
-            output = (float) Long.parseLong(file);
-        }
-        if(output > 0.0f && Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
-            output = output / 1000;
-        }
 
-        return String.format("%.02f "+ (char) 0x00B0 + "C", output);
-    }
     private byte[] mBuffer = new byte[4096];
 
-    private String readFile(String file, char endChar) {
 
-        StrictMode.ThreadPolicy savedPolicy = StrictMode.allowThreadDiskReads();
-        FileInputStream is = null;
-        try {
-            is = new FileInputStream(file);
-            int len = is.read(mBuffer);
-            is.close();
-
-            if (len > 0) {
-                int i;
-                for (i = 0; i < len; i++) {
-                    if (mBuffer[i] == endChar) {
-                        break;
-                    }
-                }
-                return new String(mBuffer, 0, i);
-            }
-        } catch (java.io.FileNotFoundException e) {
-        } catch (java.io.IOException e) {
-        } finally {
-            if (is != null) {
-                try {
-                    is.close();
-                } catch (java.io.IOException e) {
-                }
-            }
-            StrictMode.setThreadPolicy(savedPolicy);
-        }
-        return null;
-    }
 
     private ServiceConnection serverConnection = new ServiceConnection() {
         @Override
@@ -476,9 +438,8 @@ public class MainActivity extends AppCompatActivity
                     @Override
                     public void onStatusChange(String status, String speed, Integer accepted) {
                         StringBuilder temp = new StringBuilder();
-                        temp.append(getCurrentCPUTemperature());
-                        Intent intent = getApplicationContext().registerReceiver(null, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
-                        batteryTemp   = ((float) intent.getIntExtra(BatteryManager.EXTRA_TEMPERATURE,0)) / 10;
+                        temp.append(Tools.getCurrentCPUTemperature());
+
                         if(batteryTemp > 0.0f) {
                             temp.append(" (");
                             temp.append(batteryTemp);
@@ -537,7 +498,7 @@ public class MainActivity extends AppCompatActivity
 
             Toast.makeText(contextOfApplication, (isCharging ? "Device Charging" : "Device on Battery"), Toast.LENGTH_SHORT).show();
 
-            if (PreferenceHelper.getName("pauseonbattery").equals("0") == true) {
+            if (Config.read("pauseonbattery").equals("0") == true) {
                 minerPaused = false;
                 clearMinerLog = true;
                 return;

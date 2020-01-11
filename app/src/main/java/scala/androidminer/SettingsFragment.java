@@ -37,6 +37,9 @@ import android.widget.AdapterView;
 import android.widget.NumberPicker;
 import java.util.Arrays;
 
+import scala.androidminer.pools.PoolItem;
+import scala.androidminer.pools.PoolManager;
+
 
 public class SettingsFragment extends Fragment {
 
@@ -82,7 +85,7 @@ public class SettingsFragment extends Fragment {
 
         chkPauseOnBattery = view.findViewById(R.id.chkPauseOnBattery);
 
-        PoolItem[] pools = Config.settings.getPools();
+        PoolItem[] pools = PoolManager.getPools();
         String[] description = new String[pools.length];
         for(int i =0; i< pools.length;i++) {
             description[i] = pools[i].getKey();
@@ -109,33 +112,33 @@ public class SettingsFragment extends Fragment {
         npIntensity.setMaxValue(5);
         npIntensity.setWrapSelectorWheel(true);
 
-        if (PreferenceHelper.getName("cores").equals("") == true) {
+        if (Config.read("cores").equals("") == true) {
             npCores.setValue(suggested);
         } else {
-            npCores.setValue(Integer.parseInt(PreferenceHelper.getName("cores")));
+            npCores.setValue(Integer.parseInt(Config.read("cores")));
         }
 
-        if (PreferenceHelper.getName("threads").equals("") == true) {
+        if (Config.read("threads").equals("") == true) {
             npThreads.setValue(1);
         } else {
-            npThreads.setValue(Integer.parseInt(PreferenceHelper.getName("threads")));
+            npThreads.setValue(Integer.parseInt(Config.read("threads")));
         }
 
-        if (PreferenceHelper.getName("intensity").equals("") == true) {
+        if (Config.read("intensity").equals("") == true) {
             npIntensity.setValue(1);
         } else {
-            npIntensity.setValue(Integer.parseInt(PreferenceHelper.getName("intensity")));
+            npIntensity.setValue(Integer.parseInt(Config.read("intensity")));
         }
 
-        boolean checkStatus = (PreferenceHelper.getName("pauseonbattery").equals("1") == true);
+        boolean checkStatus = (Config.read("pauseonbattery").equals("1") == true);
         chkPauseOnBattery.setChecked(checkStatus);
-        Log.i(LOG_TAG,"ADRESS: "+PreferenceHelper.getName("address"));
-        if (PreferenceHelper.getName("address").equals("") == false) {
-            edUser.setText(PreferenceHelper.getName("address"));
+        Log.i(LOG_TAG,"ADRESS: "+Config.read("address"));
+        if (Config.read("address").equals("") == false) {
+            edUser.setText(Config.read("address"));
         }
 
-        if (PreferenceHelper.getName("pass").equals("") == false) {
-            edPass.setText(PreferenceHelper.getName("pass"));
+        if (Config.read("pass").equals("") == false) {
+            edPass.setText(Config.read("pass"));
         }
 
 
@@ -146,18 +149,18 @@ public class SettingsFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
 
-                if (PreferenceHelper.getName("init").equals("1") == true) {
-                    edUser.setText(PreferenceHelper.getName("address"));
-                    edPass.setText(PreferenceHelper.getName("password"));
+                if (Config.read("init").equals("1") == true) {
+                    edUser.setText(Config.read("address"));
+                    edPass.setText(Config.read("password"));
                 }
 
                 if (position == 0){
-                    edPool.setText(PreferenceHelper.getName("custom_pool"));
-                    edPort.setText(PreferenceHelper.getName("custom_port"));
+                    edPool.setText(Config.read("custom_pool"));
+                    edPort.setText(Config.read("custom_port"));
                     return;
                 }
 
-                PoolItem poolItem = Config.getPoolById(position);
+                PoolItem poolItem = PoolManager.getPoolById(position);
 
                 if(poolItem != null){
                     edPool.setText(poolItem.getPool());
@@ -173,35 +176,35 @@ public class SettingsFragment extends Fragment {
         });
 
         PoolItem poolItem = null;
-        String poolSelected = PreferenceHelper.getName("selected_pool");
-        int sp = Config.settings.defaultPoolIndex;
+        String poolSelected = Config.read("selected_pool");
+        int sp = Config.DefaultPoolIndex;
         if (poolSelected.equals("")) {
             poolSelected = Integer.toString(sp);
         }
         Log.d(LOG_TAG,poolSelected);
-        poolItem = Config.getPoolById(poolSelected);
+        poolItem = PoolManager.getPoolById(poolSelected);
 
         if(poolItem == null) {
             poolSelected = Integer.toString(sp);
         }
 
-        poolItem = Config.getPoolById(poolSelected);
+        poolItem = PoolManager.getPoolById(poolSelected);
 
-        if (PreferenceHelper.getName("init").equals("1") == false) {
+        if (Config.read("init").equals("1") == false) {
             poolSelected = Integer.toString(sp);
-            edUser.setText(Config.settings.defaultWallet);
-            edPass.setText(Config.settings.defaultPassword);
+            edUser.setText(Config.DefaultWallet);
+            edPass.setText(Config.DefaultPassword);
         }
 
         if(poolSelected.equals("0")) {
-            edPool.setText(PreferenceHelper.getName("custom_pool"));
-            edPort.setText(PreferenceHelper.getName("custom_port"));
-        } else if(!PreferenceHelper.getName("custom_port").equals("")) {
+            edPool.setText(Config.read("custom_pool"));
+            edPort.setText(Config.read("custom_port"));
+        } else if(!Config.read("custom_port").equals("")) {
             edPool.setText(poolItem.getKey());
-            edPort.setText(PreferenceHelper.getName("custom_port"));
+            edPort.setText(Config.read("custom_port"));
         }else{
-            PreferenceHelper.setName("custom_pool","");
-            PreferenceHelper.setName("custom_port","");
+            Config.write("custom_pool","");
+            Config.write("custom_port","");
             edPool.setText(poolItem.getKey());
             edPort.setText(poolItem.getPort());
         }
@@ -212,15 +215,15 @@ public class SettingsFragment extends Fragment {
             @Override
             public void onClick(View view) {
 
-                PreferenceHelper.setName("address", edUser.getText().toString().trim());
-                PreferenceHelper.setName("pass", edPass.getText().toString().trim());
+                Config.write("address", edUser.getText().toString().trim());
+                Config.write("pass", edPass.getText().toString().trim());
                 String key = (String)spPool.getSelectedItem();
                 Log.i(LOG_TAG,"ON CLICK GET ADDRESS: "+edUser.getText().toString().trim());
 
                 Log.d(LOG_TAG,key);
 
-                int selectedPosition = Config.defaultPoolIndex;
-                PoolItem[] pools = Config.getPools();
+                int selectedPosition = Config.DefaultPoolIndex;
+                PoolItem[] pools = PoolManager.getPools();
                 for(int i = 0;i< pools.length;i++){
                     PoolItem pi = pools[i];
                     if(pi.getKey().equals(key)) {
@@ -229,27 +232,27 @@ public class SettingsFragment extends Fragment {
                     }
                 }
                 
-                PoolItem pi = Config.getPoolById(selectedPosition);
+                PoolItem pi = PoolManager.getPoolById(selectedPosition);
                 String port = edPort.getText().toString().trim();
                 String pool = edPool.getText().toString().trim();
                 if(pi.getPoolType() == 4) {
-                    PreferenceHelper.setName("custom_pool", pool);
-                    PreferenceHelper.setName("custom_port", port);
+                    Config.write("custom_pool", pool);
+                    Config.write("custom_port", port);
                 } else if(!port.equals("") && !pi.getPort().equals(port)) {
-                    PreferenceHelper.setName("custom_pool", "");
-                    PreferenceHelper.setName("custom_port", port);
+                    Config.write("custom_pool", "");
+                    Config.write("custom_port", port);
                 } else {
-                    PreferenceHelper.setName("custom_port", "");
-                    PreferenceHelper.setName("custom_pool", "");
+                    Config.write("custom_port", "");
+                    Config.write("custom_pool", "");
                 }
 
-                PreferenceHelper.setName("selected_pool", Integer.toString(selectedPosition));
-                PreferenceHelper.setName("cores", Integer.toString(npCores.getValue()));
-                PreferenceHelper.setName("threads", Integer.toString(npThreads.getValue()));
-                PreferenceHelper.setName("intensity", Integer.toString(npIntensity.getValue()));
-                PreferenceHelper.setName("pauseonbattery", (chkPauseOnBattery.isChecked() ? "1" : "0"));
+                Config.write("selected_pool", Integer.toString(selectedPosition));
+                Config.write("cores", Integer.toString(npCores.getValue()));
+                Config.write("threads", Integer.toString(npThreads.getValue()));
+                Config.write("intensity", Integer.toString(npIntensity.getValue()));
+                Config.write("pauseonbattery", (chkPauseOnBattery.isChecked() ? "1" : "0"));
 
-                PreferenceHelper.setName("init", "1");
+                Config.write("init", "1");
 
                 Toast.makeText(appContext, "Settings Saved", Toast.LENGTH_SHORT).show();
 
@@ -279,7 +282,7 @@ public class SettingsFragment extends Fragment {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 String poolAddress = edPool.getText().toString().trim();
-                PoolItem[] pools = Config.getPools();
+                PoolItem[] pools = PoolManager.getPools();
                 int position  = spPool.getSelectedItemPosition();
 
                 if (s.length() > 0) {
@@ -324,7 +327,7 @@ public class SettingsFragment extends Fragment {
     }
 
     public void updateAddress() {
-        String address =  PreferenceHelper.getName("address");
+        String address =  Config.read("address");
         if (edUser == null || address.equals("")) {
             return;
         }

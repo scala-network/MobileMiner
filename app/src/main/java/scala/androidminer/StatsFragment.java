@@ -67,9 +67,9 @@ public class StatsFragment extends Fragment {
 
     private boolean checkValidState() {
 
-        String ps = PreferenceHelper.getName("PoolSelection");
+        String ps = Config.read("PoolSelection");
 
-        if (PreferenceHelper.getName("init").equals("1") == false || ps.isEmpty()) {
+        if (Config.read("init").equals("1") == false || ps.isEmpty()) {
             data.setText("(start mining to view stats)");
             tvStatCheckOnline.setText("");
             return false;
@@ -83,7 +83,7 @@ public class StatsFragment extends Fragment {
             return false;
         }
 
-        wallet = PreferenceHelper.getName("address");
+        wallet = Config.read("address");
         apiUrl = pi.getPoolUrl();
         statsUrl = pi.getStatsURL();
 
