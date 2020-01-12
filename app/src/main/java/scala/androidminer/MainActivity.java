@@ -78,9 +78,8 @@ public class MainActivity extends AppCompatActivity
     boolean accepted = false;
 
     private TextView tvLog;
-
-
     private TextView tvSpeed, tvAccepted, tvCPUTemperature, tvBatteryTemperature;
+
     private boolean validArchitecture = true;
 
     private MiningService.MiningServiceBinder binder;
@@ -91,7 +90,6 @@ public class MainActivity extends AppCompatActivity
 
     private PowerManager pm;
     private PowerManager.WakeLock wl;
-
 
     public static Context getContextOfApplication() {
         return contextOfApplication;
@@ -227,6 +225,9 @@ public class MainActivity extends AppCompatActivity
         }
 
         setStatusText(status);
+
+        //@@TODO Update AMYAC accordingly
+        updateAmyac(false);
     }
 
     @Override
@@ -393,7 +394,6 @@ public class MainActivity extends AppCompatActivity
     private byte[] mBuffer = new byte[4096];
 
 
-
     private ServiceConnection serverConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
@@ -455,6 +455,12 @@ public class MainActivity extends AppCompatActivity
             enableButtons(false);
         }
     };
+
+    private void updateAmyac(boolean enabled) {
+        int visible = enabled ? View.VISIBLE : View.INVISIBLE;
+        findViewById(R.id.arrowdown).setVisibility(visible);
+        findViewById(R.id.cooling).setVisibility(visible);
+    }
 
     private void enableButtons(boolean enabled) {
         findViewById(R.id.start).setEnabled(enabled);
