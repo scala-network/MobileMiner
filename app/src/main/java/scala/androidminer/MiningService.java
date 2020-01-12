@@ -66,7 +66,6 @@ public class MiningService extends Service {
     private String speed = "0";
     private String lastAssetPath;
     private String lastOutput = "";
-    private String assetExtension = "";
 
     @Override
     public void onCreate() {
@@ -112,7 +111,7 @@ public class MiningService extends Service {
 
         Log.i(LOG_TAG, "MINING SERVICE ABI: " + abi);
 
-        assetExtension = Config.miner_xlarig;
+        String assetExtension = Config.miner_xlarig;
 
         if (Arrays.asList(SUPPORTED_ARCHITECTURES).contains(abi)) {
             assetPath = assetExtension + "/" + abi;
@@ -249,10 +248,10 @@ public class MiningService extends Service {
                 return "success";
             } catch (Exception e) {
                 this.exception = e;
-                return null;
             } finally {
 
             }
+            return null;
         }
 
         protected void onPostExecute(String result) {
@@ -284,7 +283,7 @@ public class MiningService extends Service {
         try {
             Tools.writeConfig(configTemplate, config, privatePath);
 
-            String[] args = {"./" + assetExtension};
+            String[] args = {"./" + Config.miner_xlarig};
 
             ProcessBuilder pb = new ProcessBuilder(args);
 
@@ -372,9 +371,9 @@ public class MiningService extends Service {
     private class OutputReaderThread extends Thread {
 
         private InputStream inputStream;
-        private StringBuilder output = new StringBuilder();
         private BufferedReader reader;
         private String miner;
+        private StringBuilder output = new StringBuilder();
 
         OutputReaderThread(InputStream inputStream, String miner) {
 
@@ -387,19 +386,16 @@ public class MiningService extends Service {
 
             String lineCompare = line.toLowerCase();
 
-            if (miner.equals(Config.miner_xlarig)) {
-
-                if (lineCompare.contains("accepted")) {
-                    accepted++;
-                } else if (lineCompare.contains("speed")) {
-                    String[] split = TextUtils.split(line, " ");
-                    speed = split[5];
-                    if (speed.equals("n/a")) {
-                        speed = split[4];
-                    }
+            if (lineCompare.contains("accepted")) {
+                accepted++;
+            } else if (lineCompare.contains("speed")) {
+                String[] split = TextUtils.split(line, " ");
+                speed = split[5];
+                if (speed.equals("n/a")) {
+                    speed = split[4];
                 }
-
             }
+
 
             if (output.length() > Config.logMaxLength)
                 output.delete(0, output.indexOf(System.lineSeparator(), Config.logPruneLength) + 1);

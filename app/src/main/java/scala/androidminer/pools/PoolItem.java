@@ -4,6 +4,10 @@
 
 package scala.androidminer.pools;
 import scala.androidminer.Config;
+import scala.androidminer.pools.api.NoPool;
+import scala.androidminer.pools.api.NodejsPool;
+import scala.androidminer.pools.api.PoolTypeAbstract;
+
 public class PoolItem {
 
     private int mId = 0;
@@ -15,6 +19,7 @@ public class PoolItem {
     private String mStartUrl = "";
     private String mKey = "";
     private int mPoolType = 0;
+    private PoolTypeAbstract mPoolInterface;
 
     public  PoolItem(String key, String pool,String port, int poolType, String poolUrl) {
         this.mKey = key;
@@ -160,5 +165,19 @@ public class PoolItem {
         }
     }
 
+    public PoolTypeAbstract getInterface() {
+        if(mPoolInterface==null) {
+            switch (this.mPoolType) {
+                case 1:
+                    mPoolInterface = new NodejsPool(this);
+                case 2:
+                case 3:
+                default:
+                   mPoolInterface = new NoPool(this);
+            }
+        }
+
+        return  this.mPoolInterface;
+    }
 
 }

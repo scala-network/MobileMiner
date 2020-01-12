@@ -225,6 +225,7 @@
                 android:id="@+id/output"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:keepScreenOn="true"
                 android:text=""
                 android:textSize="14dp"
                 android:textColor="@color/c_lighter"

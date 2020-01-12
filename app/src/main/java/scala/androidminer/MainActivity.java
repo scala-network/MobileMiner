@@ -60,6 +60,7 @@ import android.support.v4.widget.DrawerLayout;
 
 import java.io.FileInputStream;
 import java.util.Arrays;
+import java.util.List;
 
 /* FOR AMAYC Support */
 import android.hardware.Sensor;
@@ -132,6 +133,11 @@ public class MainActivity extends AppCompatActivity
         }
 
         super.onCreate(savedInstanceState);
+
+        setContentView(R.layout.activity_main);
+        List<Fragment> frags = getSupportFragmentManager().getFragments();
+        for(int i = 0;i< frags.size();i++)
+        Log.d(LOG_TAG,"This is the initial FRAG: "+ frags.get(i).toString());
         PoolItem pi = PoolManager.getSelectedPool();
         if (Config.read("address").equals("") || pi == null || pi.getPool().equals("") || pi.getPort().equals("")) {
             if (Build.VERSION.SDK_INT >= 23) {
@@ -139,11 +145,12 @@ public class MainActivity extends AppCompatActivity
                     requestPermissions(new String[]{Manifest.permission.CAMERA}, 100);
                 }
             }
-            setContentView(R.layout.activity_main);
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new SettingsFragment(),"settings_fragment").commit();
-
-        } else {
-            setContentView(R.layout.activity_main);
+            SettingsFragment fragment = (SettingsFragment) getSupportFragmentManager().findFragmentByTag("settings_fragment");
+            if(fragment != null) {
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment,"settings_fragment").commit();
+            } else {
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new SettingsFragment(),"settings_fragment").commit();
+            }
         }
 
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -227,16 +234,32 @@ public class MainActivity extends AppCompatActivity
         }
 
         setStatusText(status);
+
+        minerBtn1.setVisibility(View.VISIBLE);
+        minerBtn2.setVisibility(View.VISIBLE);
+        minerBtn3.setVisibility(View.VISIBLE);
+
     }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.stats:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new StatsFragment()).commit();
+                StatsFragment fragment_stats = (StatsFragment) getSupportFragmentManager().findFragmentByTag("fragment_stats");
+                if(fragment_stats == null) {
+                    fragment_stats = new StatsFragment();
+                }
+
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment_stats,"fragment_stats").commit();
                 break;
             case R.id.about:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new AboutFragment()).commit();
+                AboutFragment fragment_about = (AboutFragment) getSupportFragmentManager().findFragmentByTag("fragment_about");
+
+                if(fragment_about == null) {
+                    fragment_about = new AboutFragment();
+                }
+
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment_about,"fragment_about").commit();
                 break;
             case R.id.miner: //Main view
                 for (Fragment fragment : getSupportFragmentManager().getFragments()) {
@@ -247,7 +270,11 @@ public class MainActivity extends AppCompatActivity
                 updateUI();
                 break;
             case R.id.settings:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new SettingsFragment(),"settings_fragment").commit();
+                SettingsFragment settings_fragment = (SettingsFragment) getSupportFragmentManager().findFragmentByTag("settings_fragment");
+                if(settings_fragment == null) {
+                    settings_fragment = new SettingsFragment();
+                }
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, settings_fragment,"settings_fragment").commit();
                 break;
 
         }
@@ -325,10 +352,10 @@ public class MainActivity extends AppCompatActivity
     protected void onResume() {
         super.onResume();
         updateUI();
-        SettingsFragment frag = (SettingsFragment) getSupportFragmentManager().findFragmentByTag("settings_fragment");
-        if(frag != null) {
-            frag.updateAddress();
-        }
+//        SettingsFragment frag = (SettingsFragment) getSupportFragmentManager().findFragmentByTag("settings_fragment");
+//        if(frag != null) {
+//            frag.updateAddress();
+//        }
 
     }
 
@@ -373,13 +400,13 @@ public class MainActivity extends AppCompatActivity
 
     private void appendLogOutputText(String line) {
 
-        if (tvLog.length() > Config.logMaxLength) {
-            if (binder != null) {
-                tvLog.setText(binder.getService().getOutput());
-            }
-        } else {
+//        if (tvLog.length() > Config.logMaxLength) {
+//            if (binder != null) {
+//                tvLog.setText(binder.getService().getOutput());
+//            }
+//        } else {
             tvLog.append(line + System.lineSeparator());
-        }
+//        }
 
         svOutput.postDelayed(new Runnable() {
             @Override
@@ -389,10 +416,6 @@ public class MainActivity extends AppCompatActivity
         }, 50);
 
     }
-
-    private byte[] mBuffer = new byte[4096];
-
-
 
     private ServiceConnection serverConnection = new ServiceConnection() {
         @Override
@@ -427,7 +450,7 @@ public class MainActivity extends AppCompatActivity
                                     tvCPUTemperature.setText("0");
                                     tvBatteryTemperature.setText("0");
                                 }
-                                clearMinerLog = true;
+//                                clearMinerLog = true;
                                 Toast.makeText(contextOfApplication, "Miner Started", Toast.LENGTH_SHORT).show();
                             } else {
                                 Toast.makeText(contextOfApplication, "Miner Stopped", Toast.LENGTH_SHORT).show();
@@ -438,6 +461,15 @@ public class MainActivity extends AppCompatActivity
                     @Override
                     public void onStatusChange(String status, String speed, Integer accepted) {
                         runOnUiThread(() -> {
+                            StringBuilder temp = new StringBuilder();
+                            temp.append(Tools.getCurrentCPUTemperature());
+
+                            if(batteryTemp > 0.0f) {
+                                temp.append(" (");
+                                temp.append(batteryTemp);
+                                temp.append((char) 0x00B0);
+                                temp.append("C)");
+                            }
                             appendLogOutputText(status);
                             tvAccepted.setText(Integer.toString(accepted));
                             tvSpeed.setText(speed);

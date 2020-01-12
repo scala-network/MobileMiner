@@ -131,8 +131,11 @@ public class SettingsFragment extends Fragment {
         }
 
         boolean checkStatus = (Config.read("pauseonbattery").equals("1") == true);
-        chkPauseOnBattery.setChecked(checkStatus);
-        Log.i(LOG_TAG,"ADRESS: "+Config.read("address"));
+
+        if(checkStatus){
+            chkPauseOnBattery.setChecked(checkStatus);
+        }
+
         if (Config.read("address").equals("") == false) {
             edUser.setText(Config.read("address"));
         }
@@ -181,7 +184,6 @@ public class SettingsFragment extends Fragment {
         if (poolSelected.equals("")) {
             poolSelected = Integer.toString(sp);
         }
-        Log.d(LOG_TAG,poolSelected);
         poolItem = PoolManager.getPoolById(poolSelected);
 
         if(poolItem == null) {
@@ -218,9 +220,6 @@ public class SettingsFragment extends Fragment {
                 Config.write("address", edUser.getText().toString().trim());
                 Config.write("pass", edPass.getText().toString().trim());
                 String key = (String)spPool.getSelectedItem();
-                Log.i(LOG_TAG,"ON CLICK GET ADDRESS: "+edUser.getText().toString().trim());
-
-                Log.d(LOG_TAG,key);
 
                 int selectedPosition = Config.DefaultPoolIndex;
                 PoolItem[] pools = PoolManager.getPools();
