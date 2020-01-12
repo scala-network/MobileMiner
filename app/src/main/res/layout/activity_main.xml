@@ -70,8 +70,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:paddingLeft="15dp"
-            android:paddingRight="15dp"
-            android:layout_marginBottom="5dp">
+            android:paddingRight="15dp">
 
             <android.support.v7.widget.AppCompatTextView
                 android:id="@+id/hashrate"
@@ -81,7 +80,7 @@
                 android:gravity="start"
                 android:text="Hashrate"
                 android:textSize="16sp"
-                android:textColor="@color/c_grey"
+                android:textColor="@color/c_white"
                 android:textStyle="bold" />
 
             <Space
@@ -97,7 +96,7 @@
                 android:gravity="end"
                 android:text="Shares"
                 android:textSize="16sp"
-                android:textColor="@color/c_grey"
+                android:textColor="@color/c_white"
                 android:textStyle="bold" />
 
         </LinearLayout>
@@ -108,7 +107,7 @@
             android:orientation="horizontal"
             android:paddingLeft="15dp"
             android:paddingRight="15dp"
-            android:layout_marginBottom="10dp">
+            android:layout_marginBottom="5dp">
 
             <android.support.v7.widget.AppCompatTextView
                 android:id="@+id/speed"
@@ -126,6 +125,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginRight="10dp"
                 android:textColor="@color/c_grey"
+                android:textSize="15dp"
                 android:text="@string/hpers" />
 
             <Space
@@ -146,6 +146,71 @@
 
         </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="10dp">
+
+        <android.support.v7.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
+            android:textColor="@color/c_grey"
+            android:text="@string/cputemp"
+            android:textSize="15sp"/>
+
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/cputemp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="3dp"
+            android:gravity="end"
+            android:text="0"
+            android:textSize="15sp"
+            android:textColor="@color/c_lighter" />
+
+        <android.support.v7.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/c_grey"
+            android:text="@string/celsius"
+            android:textSize="15sp"/>
+
+        <Space
+            android:layout_width="20dp"
+            android:layout_height="match_parent" />
+
+        <android.support.v7.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
+            android:textColor="@color/c_grey"
+            android:text="@string/batterytemp"
+            android:textSize="15sp"/>
+
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/batterytemp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="3dp"
+            android:gravity="end"
+            android:text="0"
+            android:textSize="15sp"
+            android:textColor="@color/c_lighter" />
+
+        <android.support.v7.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/c_grey"
+            android:text="@string/celsius"
+            android:textSize="15sp"/>
+
+    </LinearLayout>
+
         <ScrollView
             android:id="@+id/outputScrollView"
             android:layout_width="match_parent"
@@ -161,7 +226,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text=""
-                android:textSize="15dp"
+                android:textSize="14dp"
                 android:textColor="@color/c_lighter"
                 android:background="@color/bg_black"
                 android:visibility="visible" />

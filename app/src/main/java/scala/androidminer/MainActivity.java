@@ -80,7 +80,7 @@ public class MainActivity extends AppCompatActivity
     private TextView tvLog;
 
 
-    private TextView tvSpeed, tvAccepted, tvTemperature;
+    private TextView tvSpeed, tvAccepted, tvCPUTemperature, tvBatteryTemperature;
     private boolean validArchitecture = true;
 
     private MiningService.MiningServiceBinder binder;
@@ -165,9 +165,10 @@ public class MainActivity extends AppCompatActivity
         // wire views
         tvLog = findViewById(R.id.output);
         tvSpeed = findViewById(R.id.speed);
-        //@@TODO Add temperature at UI
-        // tvTemperature = findViewById(R.id.temperature);
+
         tvAccepted = findViewById(R.id.accepted);
+        tvCPUTemperature = findViewById(R.id.cputemp);
+        tvBatteryTemperature = findViewById(R.id.batterytemp);
         svOutput = findViewById(R.id.outputScrollView);
 
         minerBtn1 = (Button) findViewById(R.id.minerBtn1);
@@ -423,9 +424,8 @@ public class MainActivity extends AppCompatActivity
                                     tvLog.setText("");
                                     tvAccepted.setText("0");
                                     tvSpeed.setText("0");
-                                    if(tvTemperature != null){
-                                        tvTemperature.setText("0" + (char) 0x00B0 + "C (" + batteryTemp + (char) 0x00B0 + "C)");
-                                    }
+                                    tvCPUTemperature.setText("0");
+                                    tvBatteryTemperature.setText("0");
                                 }
                                 clearMinerLog = true;
                                 Toast.makeText(contextOfApplication, "Miner Started", Toast.LENGTH_SHORT).show();
@@ -437,29 +437,15 @@ public class MainActivity extends AppCompatActivity
 
                     @Override
                     public void onStatusChange(String status, String speed, Integer accepted) {
-                        StringBuilder temp = new StringBuilder();
-                        temp.append(Tools.getCurrentCPUTemperature());
-
-                        if(batteryTemp > 0.0f) {
-                            temp.append(" (");
-                            temp.append(batteryTemp);
-                            temp.append((char) 0x00B0);
-                            temp.append("C)");
-                        }
-                        final String finalTemp = temp.toString();
-                        
                         runOnUiThread(() -> {
                             appendLogOutputText(status);
                             tvAccepted.setText(Integer.toString(accepted));
                             tvSpeed.setText(speed);
-                            if(tvTemperature != null) {
-                                tvTemperature.setText(finalTemp);
-                            }
+                            tvCPUTemperature.setText(Tools.getCurrentCPUTemperature());
+                            tvBatteryTemperature.setText(String.format("%.1f", batteryTemp));
                         });
                     }
-
                 });
-
             }
         }
 

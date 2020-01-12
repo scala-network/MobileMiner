@@ -31,7 +31,6 @@
             android:layout_marginTop="15dp"
             android:layout_marginBottom="55dp">
 
-
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -45,6 +44,7 @@
                         android:layout_marginTop="5dp"
                         android:gravity="bottom"
                         android:text="CPU"
+                        android:textSize="14dp"
                         android:textColor="@color/c_grey"
                         android:textStyle="bold" />
 
@@ -69,6 +69,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_marginRight="5dp"
                                     android:textColor="@color/c_grey"
+                                    android:textSize="14dp"
                                     android:text="Cores" />
 
                                 <TextView
@@ -76,6 +77,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginLeft="5dp"
+                                    android:textColor="@color/c_lighter"
                                     android:text="" />
 
                             </LinearLayout>
@@ -98,9 +100,8 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginLeft="5dp"
-                                android:layout_marginRight="5dp"
                                 android:textColor="@color/c_grey"
+                                android:textSize="14dp"
                                 android:text="Threads/Core" />
 
                             <NumberPicker
@@ -120,9 +121,8 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginLeft="5dp"
-                                android:layout_marginRight="5dp"
                                 android:textColor="@color/c_grey"
+                                android:textSize="14dp"
                                 android:text="Intensity" />
 
                             <NumberPicker
