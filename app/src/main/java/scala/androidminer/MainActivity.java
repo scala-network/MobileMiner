@@ -300,6 +300,11 @@ public class MainActivity extends AppCompatActivity
         String pass = Config.read("pass");
         String address = Config.read("address");
 
+        if (!Utils.verifyAddress(address)) {
+            Toast.makeText(contextOfApplication, "Invalid wallet address.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         int cores = Integer.parseInt(Config.read("cores"));
         int threads = Integer.parseInt(Config.read("threads"));
         int intensity = Integer.parseInt(Config.read("intensity"));
