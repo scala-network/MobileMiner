@@ -53,7 +53,6 @@ import static android.os.PowerManager.*;
 public class MiningService extends Service {
 
     private static final String LOG_TAG = "MiningSvc";
-    private final static String[] SUPPORTED_ARCHITECTURES = {"arm64-v8a", "armeabi-v7a", "x86", "x86_64"};
     private Process process;
     private String configTemplate;
     private String privatePath;
@@ -113,7 +112,7 @@ public class MiningService extends Service {
 
         String assetExtension = Config.miner_xlarig;
 
-        if (Arrays.asList(SUPPORTED_ARCHITECTURES).contains(abi)) {
+        if (Arrays.asList(Config.SUPPORTED_ARCHITECTURES).contains(abi)) {
             assetPath = assetExtension + "/" + abi;
             libraryPath = "lib" + "/" + abi;
             configPath = assetExtension + "/config.json";
@@ -328,12 +327,12 @@ public class MiningService extends Service {
     }
 
     public String getOutput() {
+
         if (outputHandler != null && outputHandler.getOutput() != null) {
-            lastOutput = outputHandler.getOutput().toString();
-            return lastOutput;
-        } else {
-            return lastOutput;
+            lastOutput =  outputHandler.getOutput().toString();
         }
+
+        return lastOutput;
     }
 
     public void sendInput(String s) {
@@ -372,13 +371,11 @@ public class MiningService extends Service {
 
         private InputStream inputStream;
         private BufferedReader reader;
-        private String miner;
         private StringBuilder output = new StringBuilder();
 
         OutputReaderThread(InputStream inputStream, String miner) {
 
             this.inputStream = inputStream;
-            this.miner = miner;
         }
 
         private void processLogLine(String line) {
@@ -396,9 +393,9 @@ public class MiningService extends Service {
                 }
             }
 
-
-            if (output.length() > Config.logMaxLength)
+            if (output.length() > Config.logMaxLength) {
                 output.delete(0, output.indexOf(System.lineSeparator(), Config.logPruneLength) + 1);
+            }
 
             raiseMiningServiceStatusChange(line, speed, accepted);
 
