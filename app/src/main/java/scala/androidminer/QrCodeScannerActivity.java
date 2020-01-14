@@ -53,8 +53,6 @@ public class QrCodeScannerActivity extends AppCompatActivity  implements Barcode
 
     @Override
     public void onRetrieved(final Barcode barcode) {
-
-
         String miner = barcode.displayValue;
         scanResult.setText("Scala Address : " + miner);
         if(Utils.verifyAddress(miner)) {
@@ -64,7 +62,6 @@ public class QrCodeScannerActivity extends AppCompatActivity  implements Barcode
             finish();
             return;
         }
-        //@@TODO Some kind of notification saying invalid
         Toast.makeText(MainActivity.contextOfApplication, "Invalid scala address", Toast.LENGTH_SHORT).show();
 
 
@@ -107,15 +104,5 @@ public class QrCodeScannerActivity extends AppCompatActivity  implements Barcode
     public void onPermissionRequestDenied(){
         Log.e("CONSOLE:QRCODE:FAIL", "DENIED");
 
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
     }
 }

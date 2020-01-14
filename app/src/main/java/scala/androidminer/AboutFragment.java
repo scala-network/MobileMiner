@@ -29,6 +29,7 @@ public class AboutFragment extends Fragment {
         TextView tvEmail;
         TextView tvSystemInfo;
         TextView tvMine2gether;
+        TextView tvMonerominer;
         TextView tvFontAwesome;
 
         tvWebsite = view.findViewById(R.id.websiteURL);
@@ -37,6 +38,7 @@ public class AboutFragment extends Fragment {
         tvEmail = view.findViewById(R.id.email);
         tvSystemInfo = view.findViewById(R.id.systemInfo);
         tvMine2gether = view.findViewById(R.id.Mine2getherURL);
+        tvMonerominer = view.findViewById(R.id.MoneroMinerURL);
         tvFontAwesome = view.findViewById(R.id.FontAwesomeURL);
 
         tvWebsite.setText(Html.fromHtml(getString(R.string.websiteLink)));
@@ -66,16 +68,18 @@ public class AboutFragment extends Fragment {
 
             Config.write("CPUINFO", cpuinfo);
         }
+
         tvSystemInfo.setText(cpuinfo);
 
         tvMine2gether.setText(Html.fromHtml(getString(R.string.Mine2getherLink)));
         tvMine2gether.setMovementMethod(LinkMovementMethod.getInstance());
 
+        tvMonerominer.setText(Html.fromHtml(getString(R.string.MoneroMinerLink)));
+        tvMonerominer.setMovementMethod(LinkMovementMethod.getInstance());
+
         tvFontAwesome.setText(Html.fromHtml(getString(R.string.FontAwesomeLink)));
         tvFontAwesome.setMovementMethod(LinkMovementMethod.getInstance());
 
         return view;
-
     }
-
 }

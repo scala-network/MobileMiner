@@ -252,7 +252,7 @@ public class Tools {
             output = output / 1000;
         }
 
-        return String.format("%.02f "+ (char) 0x00B0 + "C", output);
+        return String.format("%.1f", output);
     }
 
     static public String readFile(String file, char endChar,byte[] mBuffer) {

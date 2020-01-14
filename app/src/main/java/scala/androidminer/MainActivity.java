@@ -60,6 +60,7 @@ import android.support.v4.widget.DrawerLayout;
 
 import java.io.FileInputStream;
 import java.util.Arrays;
+import java.util.List;
 
 /* FOR AMAYC Support */
 import android.hardware.Sensor;
@@ -78,9 +79,8 @@ public class MainActivity extends AppCompatActivity
     boolean accepted = false;
 
     private TextView tvLog;
+    private TextView tvSpeed, tvAccepted, tvCPUTemperature, tvBatteryTemperature;
 
-
-    private TextView tvSpeed, tvAccepted, tvTemperature;
     private boolean validArchitecture = true;
 
     private MiningService.MiningServiceBinder binder;
@@ -89,9 +89,7 @@ public class MainActivity extends AppCompatActivity
 
     public static Context contextOfApplication;
 
-    private PowerManager pm;
     private PowerManager.WakeLock wl;
-
 
     public static Context getContextOfApplication() {
         return contextOfApplication;
@@ -132,6 +130,11 @@ public class MainActivity extends AppCompatActivity
         }
 
         super.onCreate(savedInstanceState);
+
+        setContentView(R.layout.activity_main);
+        List<Fragment> frags = getSupportFragmentManager().getFragments();
+        for(int i = 0;i< frags.size();i++)
+        Log.d(LOG_TAG,"This is the initial FRAG: "+ frags.get(i).toString());
         PoolItem pi = PoolManager.getSelectedPool();
         if (Config.read("address").equals("") || pi == null || pi.getPool().equals("") || pi.getPort().equals("")) {
             if (Build.VERSION.SDK_INT >= 23) {
@@ -139,11 +142,12 @@ public class MainActivity extends AppCompatActivity
                     requestPermissions(new String[]{Manifest.permission.CAMERA}, 100);
                 }
             }
-            setContentView(R.layout.activity_main);
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new SettingsFragment(),"settings_fragment").commit();
-
-        } else {
-            setContentView(R.layout.activity_main);
+            SettingsFragment fragment = (SettingsFragment) getSupportFragmentManager().findFragmentByTag("settings_fragment");
+            if(fragment != null) {
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment,"settings_fragment").commit();
+            } else {
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new SettingsFragment(),"settings_fragment").commit();
+            }
         }
 
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -165,9 +169,10 @@ public class MainActivity extends AppCompatActivity
         // wire views
         tvLog = findViewById(R.id.output);
         tvSpeed = findViewById(R.id.speed);
-        //@@TODO Add temperature at UI
-        // tvTemperature = findViewById(R.id.temperature);
+
         tvAccepted = findViewById(R.id.accepted);
+        tvCPUTemperature = findViewById(R.id.cputemp);
+        tvBatteryTemperature = findViewById(R.id.batterytemp);
         svOutput = findViewById(R.id.outputScrollView);
 
         minerBtn1 = (Button) findViewById(R.id.minerBtn1);
@@ -207,12 +212,8 @@ public class MainActivity extends AppCompatActivity
 
     private void setStatusText(String status) {
 
-        if (status == null || status.isEmpty()) {
-            //edStatus.setVisibility(View.GONE);
-            tvLog.setText("");
-        } else {
-            //edStatus.setVisibility(View.VISIBLE);
-            tvLog.setText(status);
+        if (status != null && !status.isEmpty() && !status.equals("")) {
+            Toast.makeText(getApplicationContext(),status,Toast.LENGTH_SHORT);
         }
     }
 
@@ -226,16 +227,35 @@ public class MainActivity extends AppCompatActivity
         }
 
         setStatusText(status);
+
+        minerBtn1.setVisibility(View.VISIBLE);
+        minerBtn2.setVisibility(View.VISIBLE);
+        minerBtn3.setVisibility(View.VISIBLE);
+
+        //@@TODO Update AMYAC accordingly
+        updateAmyac(false);
+
     }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.stats:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new StatsFragment()).commit();
+                StatsFragment fragment_stats = (StatsFragment) getSupportFragmentManager().findFragmentByTag("fragment_stats");
+                if(fragment_stats == null) {
+                    fragment_stats = new StatsFragment();
+                }
+
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment_stats,"fragment_stats").commit();
                 break;
             case R.id.about:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new AboutFragment()).commit();
+                AboutFragment fragment_about = (AboutFragment) getSupportFragmentManager().findFragmentByTag("fragment_about");
+
+                if(fragment_about == null) {
+                    fragment_about = new AboutFragment();
+                }
+
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment_about,"fragment_about").commit();
                 break;
             case R.id.miner: //Main view
                 for (Fragment fragment : getSupportFragmentManager().getFragments()) {
@@ -246,7 +266,11 @@ public class MainActivity extends AppCompatActivity
                 updateUI();
                 break;
             case R.id.settings:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new SettingsFragment(),"settings_fragment").commit();
+                SettingsFragment settings_fragment = (SettingsFragment) getSupportFragmentManager().findFragmentByTag("settings_fragment");
+                if(settings_fragment == null) {
+                    settings_fragment = new SettingsFragment();
+                }
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, settings_fragment,"settings_fragment").commit();
                 break;
 
         }
@@ -298,11 +322,16 @@ public class MainActivity extends AppCompatActivity
         String pass = Config.read("pass");
         String address = Config.read("address");
 
+        if (!Utils.verifyAddress(address)) {
+            Toast.makeText(contextOfApplication, "Invalid wallet address.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         int cores = Integer.parseInt(Config.read("cores"));
         int threads = Integer.parseInt(Config.read("threads"));
         int intensity = Integer.parseInt(Config.read("intensity"));
-
-        MiningService.MiningConfig cfg = binder.getService().newConfig(
+        MiningService s = binder.getService();
+        MiningService.MiningConfig cfg = s.newConfig(
                 address,
                 pass,
                 cores,
@@ -310,12 +339,15 @@ public class MainActivity extends AppCompatActivity
                 intensity
         );
 
-        binder.getService().startMining(cfg);
+        s.startMining(cfg);
 
         updateUI();
     }
 
     private void stopMining(View view) {
+        if(binder == null) {
+            return;
+        }
         binder.getService().stopMining();
         updateUI();
     }
@@ -328,7 +360,7 @@ public class MainActivity extends AppCompatActivity
         if(frag != null) {
             frag.updateAddress();
         }
-
+        appendLogOutputText("");
     }
 
     @Override
@@ -371,27 +403,28 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void appendLogOutputText(String line) {
+        boolean refresh = false;
 
-        if (tvLog.length() > Config.logMaxLength) {
-            if (binder != null) {
-                tvLog.setText(binder.getService().getOutput());
-            }
-        } else {
-            tvLog.append(line + System.lineSeparator());
+        if (tvLog.getText().length() > Config.logMaxLength && binder != null) {
+            tvLog.setText(binder.getService().getOutput());
+            refresh = true;
         }
 
-        svOutput.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                svOutput.fullScroll(View.FOCUS_DOWN);
-            }
-        }, 50);
+        if(!line.equals("")) {
+            tvLog.append(line + System.lineSeparator());
+            refresh = true;
+        }
+
+        if(refresh) {
+            svOutput.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    svOutput.fullScroll(View.FOCUS_DOWN);
+                }
+            }, 50);
+        }
 
     }
-
-    private byte[] mBuffer = new byte[4096];
-
-
 
     private ServiceConnection serverConnection = new ServiceConnection() {
         @Override
@@ -423,9 +456,8 @@ public class MainActivity extends AppCompatActivity
                                     tvLog.setText("");
                                     tvAccepted.setText("0");
                                     tvSpeed.setText("0");
-                                    if(tvTemperature != null){
-                                        tvTemperature.setText("0" + (char) 0x00B0 + "C (" + batteryTemp + (char) 0x00B0 + "C)");
-                                    }
+                                    tvCPUTemperature.setText("0");
+                                    tvBatteryTemperature.setText("0");
                                 }
                                 clearMinerLog = true;
                                 Toast.makeText(contextOfApplication, "Miner Started", Toast.LENGTH_SHORT).show();
@@ -437,29 +469,24 @@ public class MainActivity extends AppCompatActivity
 
                     @Override
                     public void onStatusChange(String status, String speed, Integer accepted) {
-                        StringBuilder temp = new StringBuilder();
-                        temp.append(Tools.getCurrentCPUTemperature());
-
-                        if(batteryTemp > 0.0f) {
-                            temp.append(" (");
-                            temp.append(batteryTemp);
-                            temp.append((char) 0x00B0);
-                            temp.append("C)");
-                        }
-                        final String finalTemp = temp.toString();
-                        
                         runOnUiThread(() -> {
+                            StringBuilder temp = new StringBuilder();
+                            temp.append(Tools.getCurrentCPUTemperature());
+
+                            if(batteryTemp > 0.0f) {
+                                temp.append(" (");
+                                temp.append(batteryTemp);
+                                temp.append((char) 0x00B0);
+                                temp.append("C)");
+                            }
                             appendLogOutputText(status);
                             tvAccepted.setText(Integer.toString(accepted));
                             tvSpeed.setText(speed);
-                            if(tvTemperature != null) {
-                                tvTemperature.setText(finalTemp);
-                            }
+                            tvCPUTemperature.setText(Tools.getCurrentCPUTemperature());
+                            tvBatteryTemperature.setText(String.format("%.1f", batteryTemp));
                         });
                     }
-
                 });
-
             }
         }
 
@@ -469,6 +496,12 @@ public class MainActivity extends AppCompatActivity
             enableButtons(false);
         }
     };
+
+    private void updateAmyac(boolean enabled) {
+        int visible = enabled ? View.VISIBLE : View.INVISIBLE;
+        findViewById(R.id.arrowdown).setVisibility(visible);
+        findViewById(R.id.cooling).setVisibility(visible);
+    }
 
     private void enableButtons(boolean enabled) {
         findViewById(R.id.start).setEnabled(enabled);
@@ -515,14 +548,13 @@ public class MainActivity extends AppCompatActivity
                     clearMinerLog = false;
                     startMining(null);
                 }
+            } else if (state) {
+                minerPaused = true;
+                stopMining(null);
             } else {
-                if (state) {
-                    minerPaused = true;
-                    stopMining(null);
-                } else {
-                    minerPaused = false;
-                }
+                minerPaused = false;
             }
+
         }
     };
 
