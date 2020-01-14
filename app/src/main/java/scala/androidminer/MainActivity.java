@@ -89,7 +89,6 @@ public class MainActivity extends AppCompatActivity
 
     public static Context contextOfApplication;
 
-    private PowerManager pm;
     private PowerManager.WakeLock wl;
 
     public static Context getContextOfApplication() {
@@ -213,12 +212,8 @@ public class MainActivity extends AppCompatActivity
 
     private void setStatusText(String status) {
 
-        if (status == null || status.isEmpty()) {
-            //edStatus.setVisibility(View.GONE);
-            tvLog.setText("");
-        } else {
-            //edStatus.setVisibility(View.VISIBLE);
-            tvLog.setText(status);
+        if (status != null && !status.isEmpty() && !status.equals("")) {
+            Toast.makeText(getApplicationContext(),status,Toast.LENGTH_SHORT);
         }
     }
 
@@ -237,9 +232,9 @@ public class MainActivity extends AppCompatActivity
         minerBtn2.setVisibility(View.VISIBLE);
         minerBtn3.setVisibility(View.VISIBLE);
 
-
         //@@TODO Update AMYAC accordingly
         updateAmyac(false);
+
     }
 
     @Override
@@ -335,8 +330,8 @@ public class MainActivity extends AppCompatActivity
         int cores = Integer.parseInt(Config.read("cores"));
         int threads = Integer.parseInt(Config.read("threads"));
         int intensity = Integer.parseInt(Config.read("intensity"));
-
-        MiningService.MiningConfig cfg = binder.getService().newConfig(
+        MiningService s = binder.getService();
+        MiningService.MiningConfig cfg = s.newConfig(
                 address,
                 pass,
                 cores,
@@ -344,12 +339,15 @@ public class MainActivity extends AppCompatActivity
                 intensity
         );
 
-        binder.getService().startMining(cfg);
+        s.startMining(cfg);
 
         updateUI();
     }
 
     private void stopMining(View view) {
+        if(binder == null) {
+            return;
+        }
         binder.getService().stopMining();
         updateUI();
     }
@@ -358,11 +356,11 @@ public class MainActivity extends AppCompatActivity
     protected void onResume() {
         super.onResume();
         updateUI();
-//        SettingsFragment frag = (SettingsFragment) getSupportFragmentManager().findFragmentByTag("settings_fragment");
-//        if(frag != null) {
-//            frag.updateAddress();
-//        }
-
+        SettingsFragment frag = (SettingsFragment) getSupportFragmentManager().findFragmentByTag("settings_fragment");
+        if(frag != null) {
+            frag.updateAddress();
+        }
+        appendLogOutputText("");
     }
 
     @Override
@@ -405,21 +403,26 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void appendLogOutputText(String line) {
+        boolean refresh = false;
 
-//        if (tvLog.length() > Config.logMaxLength) {
-//            if (binder != null) {
-//                tvLog.setText(binder.getService().getOutput());
-//            }
-//        } else {
+        if (tvLog.getText().length() > Config.logMaxLength && binder != null) {
+            tvLog.setText(binder.getService().getOutput());
+            refresh = true;
+        }
+
+        if(!line.equals("")) {
             tvLog.append(line + System.lineSeparator());
-//        }
+            refresh = true;
+        }
 
-        svOutput.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                svOutput.fullScroll(View.FOCUS_DOWN);
-            }
-        }, 50);
+        if(refresh) {
+            svOutput.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    svOutput.fullScroll(View.FOCUS_DOWN);
+                }
+            }, 50);
+        }
 
     }
 
@@ -456,7 +459,7 @@ public class MainActivity extends AppCompatActivity
                                     tvCPUTemperature.setText("0");
                                     tvBatteryTemperature.setText("0");
                                 }
-//                                clearMinerLog = true;
+                                clearMinerLog = true;
                                 Toast.makeText(contextOfApplication, "Miner Started", Toast.LENGTH_SHORT).show();
                             } else {
                                 Toast.makeText(contextOfApplication, "Miner Stopped", Toast.LENGTH_SHORT).show();
@@ -545,14 +548,13 @@ public class MainActivity extends AppCompatActivity
                     clearMinerLog = false;
                     startMining(null);
                 }
+            } else if (state) {
+                minerPaused = true;
+                stopMining(null);
             } else {
-                if (state) {
-                    minerPaused = true;
-                    stopMining(null);
-                } else {
-                    minerPaused = false;
-                }
+                minerPaused = false;
             }
+
         }
     };
 
