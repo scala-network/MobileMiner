@@ -144,9 +144,6 @@ public class SettingsFragment extends Fragment {
             edPass.setText(Config.read("pass"));
         }
 
-
-
-
         spPool.setOnItemSelectedListener(new OnItemSelectedListener() {
 
             @Override
@@ -217,7 +214,13 @@ public class SettingsFragment extends Fragment {
             @Override
             public void onClick(View view) {
 
-                Config.write("address", edUser.getText().toString().trim());
+                String address = edUser.getText().toString().trim();
+                if (!Utils.verifyAddress(address)) {
+                    Toast.makeText(appContext, "Invalid wallet address.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                Config.write("address", address);
+
                 Config.write("pass", edPass.getText().toString().trim());
                 String key = (String)spPool.getSelectedItem();
 

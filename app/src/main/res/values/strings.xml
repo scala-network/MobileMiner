@@ -17,10 +17,11 @@
     <string name="hpers">H/s</string>
     <string name="accepted">accepted</string>
     <string name="cpus">Cores</string>
-    <string name="cancel">°Cancel</string>
-    <string name="cputemp">CPU: </string>
-    <string name="batterytemp">Battery: </string>
     <string name="celsius">°C</string>
+    <string name="cputemp">CPU:</string>
+    <string name="batterytemp">Battery:</string>
+    <string name="cooling">Cooling</string>
+    <string name="cancel">°Cancel</string>
 
     <string name="websiteLink">&lt;a href=&quot;https://scalaproject.io&quot;&gt;scalaproject.io&lt;/a&gt;</string>
     <string name="githubLink">&lt;a href=&quot;https://github.com/scala-network/scala_android_miner/releases&quot;&gt;Scala Android Miner&lt;/a&gt;</string>

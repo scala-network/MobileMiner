@@ -107,7 +107,7 @@
             android:orientation="horizontal"
             android:paddingLeft="15dp"
             android:paddingRight="15dp"
-            android:layout_marginBottom="5dp">
+            android:layout_marginBottom="3dp">
 
             <android.support.v7.widget.AppCompatTextView
                 android:id="@+id/speed"
@@ -152,7 +152,6 @@
         android:orientation="horizontal"
         android:paddingLeft="15dp"
         android:paddingRight="15dp"
-        android:layout_marginTop="4dp"
         android:layout_marginBottom="10dp">
 
         <android.support.v7.widget.AppCompatTextView
@@ -176,7 +175,7 @@
         <android.support.v7.widget.AppCompatTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/c_grey"
+            android:textColor="@color/c_lighter"
             android:text="@string/celsius"
             android:textSize="15sp"/>
 
@@ -205,8 +204,26 @@
         <android.support.v7.widget.AppCompatTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/c_grey"
+            android:textColor="@color/c_lighter"
             android:text="@string/celsius"
+            android:textSize="15sp"/>
+
+        <ImageView
+            android:id="@+id/arrowdown"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginLeft="25dp"
+            android:gravity="center_vertical"
+            android:src="@drawable/ic_arrow_down" />
+
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/cooling"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:textColor="@color/c_blue"
+            android:text="@string/cooling"
             android:textSize="15sp"/>
 
     </LinearLayout>
@@ -225,7 +242,7 @@
                 android:id="@+id/output"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:keepScreenOn="true"
+                android:layout_marginTop="10dp"
                 android:text=""
                 android:textSize="14dp"
                 android:textColor="@color/c_lighter"

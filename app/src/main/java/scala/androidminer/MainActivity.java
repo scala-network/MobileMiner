@@ -79,9 +79,8 @@ public class MainActivity extends AppCompatActivity
     boolean accepted = false;
 
     private TextView tvLog;
-
-
     private TextView tvSpeed, tvAccepted, tvCPUTemperature, tvBatteryTemperature;
+
     private boolean validArchitecture = true;
 
     private MiningService.MiningServiceBinder binder;
@@ -92,7 +91,6 @@ public class MainActivity extends AppCompatActivity
 
     private PowerManager pm;
     private PowerManager.WakeLock wl;
-
 
     public static Context getContextOfApplication() {
         return contextOfApplication;
@@ -239,6 +237,9 @@ public class MainActivity extends AppCompatActivity
         minerBtn2.setVisibility(View.VISIBLE);
         minerBtn3.setVisibility(View.VISIBLE);
 
+
+        //@@TODO Update AMYAC accordingly
+        updateAmyac(false);
     }
 
     @Override
@@ -325,6 +326,11 @@ public class MainActivity extends AppCompatActivity
 
         String pass = Config.read("pass");
         String address = Config.read("address");
+
+        if (!Utils.verifyAddress(address)) {
+            Toast.makeText(contextOfApplication, "Invalid wallet address.", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         int cores = Integer.parseInt(Config.read("cores"));
         int threads = Integer.parseInt(Config.read("threads"));
@@ -487,6 +493,12 @@ public class MainActivity extends AppCompatActivity
             enableButtons(false);
         }
     };
+
+    private void updateAmyac(boolean enabled) {
+        int visible = enabled ? View.VISIBLE : View.INVISIBLE;
+        findViewById(R.id.arrowdown).setVisibility(visible);
+        findViewById(R.id.cooling).setVisibility(visible);
+    }
 
     private void enableButtons(boolean enabled) {
         findViewById(R.id.start).setEnabled(enabled);
