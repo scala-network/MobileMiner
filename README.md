@@ -24,7 +24,7 @@ This application is built upon the libraries of XLArig, the official Scala (XLA)
 ## Usage
 When opening the application, you first need to specify the pool that you want to use to mine XLA. Some predefined pools have already been configured to make it easier for you. You can still select 'custom' if you wish to use a pool that is not included in the predefined list. More information about the port number can be found on the pools' website, but if you are not sure you can use port '3333'.
 
-Then, you have to specify the Scala wallet address that will be used with the mining pool. A validation has been added to this field to make sure you enter a valid Scala adress - if the adress is invalid, you won't be able to mine. You can also use the provided QR code functionnality to retrieve a valid Scala wallet address. Below demostrates how to get your address from the [Official Pool](https://pool.scalaproject.io) via QR Code.
+Then, you have to specify the Scala wallet address that will be used with the mining pool. A validation has been added to this field to make sure you enter a valid Scala adress - if the adress is invalid, you won't be able to mine. You can also use the provided QR code functionnality to retrieve a valid Scala wallet address. Currently, only the [Official Pool](https://pool.scalaproject.io) has QR Code generator. You can also capture QR Code generated from our [Official GUI Wallet](https://github.com/scala-network/scala-electron-gui). Below demostrates how to get your address from the [Official Pool](https://pool.scalaproject.io) via QR Code.
 
 ## How to generate from pool.
 ![QR Code](https://cdn.discordapp.com/attachments/663050624769982474/667078766266155011/Peek_2020-01-16_02-52.gif)
