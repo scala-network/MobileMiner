@@ -404,10 +404,11 @@ public class MainActivity extends AppCompatActivity
 
     private void appendLogOutputText(String line) {
         boolean refresh = false;
-
-        if (tvLog.getText().length() > Config.logMaxLength && binder != null) {
-            tvLog.setText(binder.getService().getOutput());
-            refresh = true;
+        if(binder != null){
+            if ((tvLog.getText().equals("") && !binder.getService().getOutput().equals("")) || tvLog.getText().length() > Config.logMaxLength ){
+                tvLog.setText(binder.getService().getOutput());
+                refresh = true;
+            }
         }
 
         if(!line.equals("")) {
