@@ -8,6 +8,14 @@ A high performance and open source application for mining Scala on Android mobil
 - **armeabi-v7a**
 - **arm64-v8a**
 
+# Features	
+We have implemented some major improvements and enhancements that differ from previous projects.	
+- Temperature display	
+- QR code feature to capture wallet addres	
+- Completely redesigned UI	
+- Refactored framework	
+- Stats are available for pool using nodejs-pool code base and not limited to cryptonote-nodejs-pool code base pool only.
+
 ## Miner
 This application is built upon the libraries of XLArig, the official Scala (XLA) CPU miner.
 - Miner: [XLArig](https://github.com/scala-network/XLArig)
