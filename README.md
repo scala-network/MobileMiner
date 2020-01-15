@@ -8,7 +8,7 @@ A high performance and open source application for mining Scala on Android mobil
 - **armeabi-v7a**
 - **arm64-v8a**
 
-# Features	
+## Features	
 We have implemented some major improvements and enhancements that differ from previous projects.	
 - Temperature display	
 - QR code feature to capture wallet addres	
@@ -26,7 +26,7 @@ When opening the application, you first need to specify the pool that you want t
 
 Then, you have to specify the Scala wallet address that will be used with the mining pool. A validation has been added to this field to make sure you enter a valid Scala adress - if the adress is invalid, you won't be able to mine. You can also use the provided QR code functionnality to retrieve a valid Scala wallet address. Currently, only the [Official Pool](https://pool.scalaproject.io) has QR Code generator. You can also capture QR Code generated from our [Official GUI Wallet](https://github.com/scala-network/scala-electron-gui). Below demostrates how to get your address from the [Official Pool](https://pool.scalaproject.io) via QR Code.
 
-## How to generate from pool.
+### How to generate from pool.
 ![QR Code](https://cdn.discordapp.com/attachments/663050624769982474/667078766266155011/Peek_2020-01-16_02-52.gif)
 
 ### How to capture it via miner
@@ -59,3 +59,11 @@ Donations setting has been set to 0% in the XLArig lib embedded within the appli
 * hello@scalaproject.io
 * [Discord](https://discord.gg/djAFVvy)
 * [Twitter](https://twitter.com/scalahq)
+
+
+# License
+
+XLARig and Mobile Miner is licensed as GPLv3, thus this derivative work also is.
+You need to consider this if you plan to build a "real" Android app. You'd propably need
+to make it GPLv3 also, unless you can somehow make use of the GPL clause which allows
+to bundle a GPLv3 binary with another propietary licensed binary.
