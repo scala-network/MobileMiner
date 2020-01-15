@@ -219,12 +219,12 @@
                         <EditText
                             android:id="@+id/username"
                             android:layout_width="0dp"
-                            android:layout_height="match_parent"
+                            android:layout_height="wrap_content"
                             android:layout_weight = "1"
                             android:hint="Your wallet address"
                             android:textColorHint="@color/c_black"
                             android:textColor="@color/c_lighter"
-                            android:textSize="14dp" />
+                            android:textSize="14sp" />
 
                         <Button
                             android:id="@+id/buttonQrReader"

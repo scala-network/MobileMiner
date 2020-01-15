@@ -387,15 +387,15 @@ public class MiningService extends Service {
                 accepted++;
             } else if (lineCompare.contains("speed")) {
                 String[] split = TextUtils.split(line, " ");
-                newspeed = split[5];
-                if (newspeed.equals("n/a")) {
-                    newspeed = split[4];
+                speed = split[5];
+                if (speed.equals("n/a")) {
+                    speed = split[4];
+                }
+                if (speed.equals("n/a")) {
+                    speed = "0";
                 }
             }
-            if (newspeed.equals("n/a")) {
-                newspeed = "0";
-            }
-            speed = newspeed;
+
             if (output.length() > Config.logMaxLength) {
                 output.delete(0, output.indexOf(System.lineSeparator(), Config.logPruneLength) + 1);
             }

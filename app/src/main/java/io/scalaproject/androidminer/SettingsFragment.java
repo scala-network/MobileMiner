@@ -221,7 +221,11 @@ public class SettingsFragment extends Fragment {
                 }
                 Config.write("address", address);
 
-                Config.write("pass", edPass.getText().toString().trim());
+                String password = edPass.getText().toString().trim();
+                if(password.equals("")) {
+                    password = Tools.getDeviceName();
+                }
+                Config.write("pass", password);
                 String key = (String)spPool.getSelectedItem();
 
                 int selectedPosition = Config.DefaultPoolIndex;
