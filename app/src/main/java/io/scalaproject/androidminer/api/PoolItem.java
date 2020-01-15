@@ -17,7 +17,6 @@ public class PoolItem {
     private String mStartUrl = "";
     private String mKey = "";
     private int mPoolType = 0;
-    private PoolApiAbstract mPoolInterface;
 
     public  PoolItem(String key, String pool,String port, int poolType, String poolUrl) {
         this.mKey = key;
@@ -164,26 +163,22 @@ public class PoolItem {
     }
 
     public ProviderAbstract getInterface() {
-        if(mPoolInterface==null) {
-            switch (this.mPoolType) {
-                case 1:
-                    mPoolInterface = new NodejsPool(this);
-                    break;
-                case 2:
-                    mPoolInterface = new CryptonoteNodejsPool(this);
-                    break;
-                case 3:
-                default:
-                   mPoolInterface = new NoPool(this);
-            }
+        ProviderAbstract mPoolInterface;
+        switch (this.mPoolType) {
+            case 1:
+                mPoolInterface = new NodejsPool(this);
+                break;
+            case 2:
+                mPoolInterface = new CryptonoteNodejsPool(this);
+                break;
+            case 3:
+            default:
+               mPoolInterface = new NoPool(this);
         }
 
-        return  this.mPoolInterface;
+        return  mPoolInterface;
     }
 
-    public ProviderAbstract createInterface() {
-        mPoolInterface = null;
-        return getInterface();
-    }
+
 
 }

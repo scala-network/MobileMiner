@@ -14,6 +14,9 @@ public final class PoolManager {
     static public void add(String key, String pool,String port, int poolType, String poolUrl) {
         mPools.add(new PoolItem(key,pool,port,poolType,poolUrl ));
     }
+    static public void add(String key, String pool,String port, int poolType, String poolUrl, String poolApi) {
+        mPools.add(new PoolItem(key,pool,port,poolType,poolUrl ,poolApi,"",""));
+    }
 
     static public PoolItem[] getPools() {
         return mPools.toArray(new PoolItem[mPools.size()]);

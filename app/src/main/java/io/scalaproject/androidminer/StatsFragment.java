@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -35,6 +36,7 @@ public class StatsFragment extends Fragment {
 
     Timer timer;
     long delay = 30000L;
+
     protected ProviderListenerInterface statsListener;
     @Nullable
     @Override
@@ -44,17 +46,45 @@ public class StatsFragment extends Fragment {
         dataNetwork = (TextView) view.findViewById(R.id.fetchdataNetwork);
         tvStatCheckOnline = view.findViewById(R.id.statCheckOnline);
 
-        ProviderAbstract api = PoolManager.getSelectedPool().getInterface();
-        statsListener = api.setStatsChangeListener(new ProviderListenerInterface(){
-            void onStatsChange(Data d) {
-                data.setText("");
-                dataNetwork.setText("");
-            }
-        });
 
-        if (!checkValidState()) {
-            return view;
-        }
+        PoolItem pi = PoolManager.getSelectedPool();
+        ProviderAbstract api = pi.getInterface();
+        statsListener = new ProviderListenerInterface(){
+            public void onStatsChange(Data d) {
+                if (!checkValidState()) {
+                    return;
+                }
+                //@@TODO UI FOR DATA TO BE INSERTED
+                String dataParsedNetwork = d.getCoin().name + "\n"
+                    + "Height: " + d.getNetwork().lastBlockHeight + "\n"
+                    + "Difficulty: " + d.getNetwork().difficulty + "\n"
+                    + "Last Block: " + d.getNetwork().lastBlockTime + "\n"
+                    + "Reward: " + d.getNetwork().lastRewardAmount;
+
+                String dataParsedAddress = d.getCoin().name + "\n"
+                        + "Hash Rate: " + d.getMiner().hashrate + "\n"
+                        + "Balance: " + d.getMiner().balance + "\n"
+                        + "Paid: " + d.getMiner().paid + "\n"
+                        + "Last Share: " + d.getMiner().lastShare + "\n";
+
+                if(pi.getPoolType() == 1) {
+                    dataParsedAddress+= "Shares Accepted: " + d.getMiner().blocks;
+                } else {
+                    dataParsedAddress+= "Blocks Found: " + d.getMiner().blocks;
+
+                }
+
+                data.setText(dataParsedAddress);
+                dataNetwork.setText(dataParsedNetwork);
+
+
+                String wallet = Config.read("address");
+                String statsUrl = pi.getStatsURL();
+
+                tvStatCheckOnline.setText(Html.fromHtml("<a href=\"" + statsUrl + "?wallet=" + wallet + "\">Check Stats Online</a>"));
+                tvStatCheckOnline.setMovementMethod(LinkMovementMethod.getInstance());
+            }
+        };
 
 
 
@@ -76,17 +106,12 @@ public class StatsFragment extends Fragment {
         }
 
         if (pi.getPoolType() == 0) {
-            data.setText("(stats are not available for custom pools)");
+            Toast.makeText(getContext(),"(stats are not available for custom pools)",Toast.LENGTH_LONG);
             tvStatCheckOnline.setText("");
             return false;
         }
 
-//        wallet = Config.read("address");
-//        apiUrl = pi.getPoolUrl();
-//        statsUrl = pi.getStatsURL();
-//
-//        tvStatCheckOnline.setText(Html.fromHtml("<a href=\"" + statsUrl + "?wallet=" + wallet + "\">Check Stats Online</a>"));
-//        tvStatCheckOnline.setMovementMethod(LinkMovementMethod.getInstance());
+
 
         return true;
     }
@@ -120,14 +145,12 @@ public class StatsFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        Log.i(LOG_TAG, "onResume of StatsFragment");
         repeatTask();
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        Log.i(LOG_TAG, "OnPause of StatsFragment");
         if (timer != null) {
             timer.cancel();
             timer.purge();

@@ -1,24 +1,9 @@
 package io.scalaproject.androidminer.api;
 
 import android.os.AsyncTask;
-import android.util.Log;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.ocpsoft.prettytime.PrettyTime;
-
-import java.util.Date;
 
 import io.scalaproject.androidminer.Config;
-import scala.androidminer.StatsFragment;
-import scala.androidminer.Tools;
-import scala.androidminer.network.Json;
-import io.scalaproject.androidminer.api.PoolItem;
-import io.scalaproject.androidminer.api.PoolManager;
-
-import static scala.androidminer.Tools.getReadableHashRateString;
-import static scala.androidminer.Tools.parseCurrency;
-import static scala.androidminer.Tools.tryParseLong;
 
 public abstract class ProviderAbstract extends AsyncTask<Void, Void, Void> {
 
@@ -71,7 +56,7 @@ public abstract class ProviderAbstract extends AsyncTask<Void, Void, Void> {
         try {
             onBackgroundFetchData();
 
-        } catch (Exception) {
+        } catch (Exception e) {
 
         }
 

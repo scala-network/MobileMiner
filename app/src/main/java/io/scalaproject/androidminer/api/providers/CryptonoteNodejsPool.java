@@ -23,8 +23,8 @@ public class CryptonoteNodejsPool extends ProviderAbstract {
         super(pi);
     }
 
-    @@Override
-    void onBackgroundFetchData() {
+    @Override
+    protected void onBackgroundFetchData() {
         PrettyTime pTime = new PrettyTime();
 
         try {
@@ -48,10 +48,14 @@ public class CryptonoteNodejsPool extends ProviderAbstract {
 
 
         } catch (JSONException e) {
-            Log.i(LOG_TAG, e.toString());
+            Log.i(LOG_TAG, "NETWORK\n"+e.toString());
             e.printStackTrace();
         }
 
+        String wallet = getWalletAddress();
+        if(wallet.equals("")) {
+            return;
+        }
         try {
             String url = mPoolItem.getApiUrl() + "/stats_address?address=" + getWalletAddress();
 
@@ -71,7 +75,7 @@ public class CryptonoteNodejsPool extends ProviderAbstract {
             mBlockData.getMiner().lastShare = lastShare;
             mBlockData.getMiner().blocks = blocks;
         } catch (JSONException e) {
-            Log.i(LOG_TAG, e.toString());
+            Log.i(LOG_TAG, "ADDRESS\n"+e.toString());
             e.printStackTrace();
         }
     }

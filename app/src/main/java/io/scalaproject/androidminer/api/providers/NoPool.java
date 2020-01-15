@@ -8,8 +8,8 @@ public final class NoPool extends ProviderAbstract {
     public NoPool(PoolItem poolItem){
         super(poolItem);
     }
-    @@Override
-    void onBackgroundFetchData() {
+    @Override
+    protected void onBackgroundFetchData() {
 
     }
 }
