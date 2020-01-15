@@ -2,7 +2,7 @@
 //
 // Please see the included LICENSE file for more information.
 
-package scala.androidminer;
+package io.scalaproject.androidminer;
 
 import java.util.ArrayList;
 

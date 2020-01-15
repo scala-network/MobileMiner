@@ -2,7 +2,7 @@
 //
 // Please see the included LICENSE file for more information.
 
-package scala.androidminer;
+package io.scalaproject.androidminer;
 
 import android.Manifest;
 import android.content.Intent;
@@ -37,8 +37,8 @@ import android.widget.AdapterView;
 import android.widget.NumberPicker;
 import java.util.Arrays;
 
-import scala.androidminer.pools.PoolItem;
-import scala.androidminer.pools.PoolManager;
+import io.scalaproject.androidminer.api.PoolItem;
+import io.scalaproject.androidminer.api.PoolManager;
 
 
 public class SettingsFragment extends Fragment {

@@ -1,7 +1,7 @@
-package scala.androidminer.pools;
+package io.scalaproject.androidminer.api;
 
 import java.util.ArrayList;
-import scala.androidminer.Config;
+import io.scalaproject.androidminer.Config;
 
 public final class PoolManager {
 

@@ -20,7 +20,7 @@
 //
 // Please see the included LICENSE file for more information.
 
-package scala.androidminer;
+package io.scalaproject.androidminer;
 
 import android.content.Context;
 import android.os.Build;
@@ -36,6 +36,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -286,4 +289,53 @@ public class Tools {
         }
         return null;
     }
+
+    static public String parseCurrency(String value, long coinUnits, long denominationUnits, String symbol) {
+
+        double base = tryParseDouble(value, 1D);
+        double d = base / (double) coinUnits;
+        double d2 = Math.round(d * (double) denominationUnits) / (double) denominationUnits;
+
+        Log.i(LOG_TAG, "parseCurrency: d: " + d + " d2: " + d2);
+
+        NumberFormat nf = NumberFormat.getInstance();
+        nf.setMinimumFractionDigits(2);
+
+        return nf.format(d2) + " " + symbol.toUpperCase();
+    }
+
+    static public  Long tryParseLong(String s, Long fallback) {
+        try {
+            return Long.parseLong(s);
+        } catch (Exception e) {
+            return fallback;
+        }
+    }
+
+    static public  Double tryParseDouble(String s, Double fallback) {
+        try {
+            return Double.parseDouble(s);
+        } catch (Exception e) {
+            return fallback;
+        }
+    }
+
+    static public  String getReadableHashRateString(long hashrate) {
+
+        BigDecimal bn = new BigDecimal(hashrate);
+        BigDecimal bnThousand = new BigDecimal(1000);
+
+        int i = 0;
+        String byteUnits[] = {"H", "KH", "MH", "GH", "TH", "PH"};
+
+        while (bn.compareTo(bnThousand) > 0) {
+            bn = bn.divide(bnThousand);
+            i++;
+        }
+
+        DecimalFormat decimalFormat = new DecimalFormat("0.##");
+
+        return decimalFormat.format(bn) + ' ' + byteUnits[i];
+    }
+
 }

@@ -1,4 +1,4 @@
-package scala.androidminer;
+package io.scalaproject.androidminer;
 import java.util.regex.*;
 
 final class Utils {

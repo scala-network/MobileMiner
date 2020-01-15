@@ -2,12 +2,12 @@
 //
 // Please see the included LICENSE file for more information.
 
-package scala.androidminer;
+package io.scalaproject.androidminer;
 
 import android.content.SharedPreferences;
 
 import java.util.HashMap;
-import scala.androidminer.pools.PoolManager;
+import io.scalaproject.androidminer.api.PoolManager;
 
 public class Config {
     public final static String[] SUPPORTED_ARCHITECTURES = {"arm64-v8a", "armeabi-v7a"};

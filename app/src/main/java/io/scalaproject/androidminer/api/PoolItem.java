@@ -2,11 +2,9 @@
 //
 // Please see the included LICENSE file for more information.
 
-package scala.androidminer.pools;
-import scala.androidminer.Config;
-import scala.androidminer.pools.api.NoPool;
-import scala.androidminer.pools.api.NodejsPool;
-import scala.androidminer.pools.api.PoolTypeAbstract;
+package io.scalaproject.androidminer.api;
+import io.scalaproject.androidminer.Config;
+import io.scalaproject.androidminer.api.providers.*;
 
 public class PoolItem {
 
@@ -19,7 +17,7 @@ public class PoolItem {
     private String mStartUrl = "";
     private String mKey = "";
     private int mPoolType = 0;
-    private PoolTypeAbstract mPoolInterface;
+    private PoolApiAbstract mPoolInterface;
 
     public  PoolItem(String key, String pool,String port, int poolType, String poolUrl) {
         this.mKey = key;
@@ -165,12 +163,15 @@ public class PoolItem {
         }
     }
 
-    public PoolTypeAbstract getInterface() {
+    public ProviderAbstract getInterface() {
         if(mPoolInterface==null) {
             switch (this.mPoolType) {
                 case 1:
                     mPoolInterface = new NodejsPool(this);
+                    break;
                 case 2:
+                    mPoolInterface = new CryptonoteNodejsPool(this);
+                    break;
                 case 3:
                 default:
                    mPoolInterface = new NoPool(this);
@@ -178,6 +179,11 @@ public class PoolItem {
         }
 
         return  this.mPoolInterface;
+    }
+
+    public ProviderAbstract createInterface() {
+        mPoolInterface = null;
+        return getInterface();
     }
 
 }

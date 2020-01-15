@@ -2,7 +2,7 @@
 //
 // Please see the included LICENSE file for more information.
 
-package scala.androidminer;
+package io.scalaproject.androidminer;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -18,51 +18,48 @@ import android.widget.TextView;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import scala.androidminer.pools.PoolManager;
-import scala.androidminer.pools.PoolItem;
+import io.scalaproject.androidminer.api.Data;
+import io.scalaproject.androidminer.api.PoolManager;
+import io.scalaproject.androidminer.api.PoolItem;
+import io.scalaproject.androidminer.api.ProviderAbstract;
+import io.scalaproject.androidminer.api.ProviderListenerInterface;
 
 public class StatsFragment extends Fragment {
 
     private static final String LOG_TAG = "MiningSvc";
-
-    public static String wallet;
-    public static String apiUrl;
-    public static String apiUrlMerged;
-    public static String statsUrl;
 
     private TextView tvStatCheckOnline;
 
     private TextView data;
     private TextView dataNetwork;
 
-    private fetchData.statsChangeListener statsListener;
-
     Timer timer;
     long delay = 30000L;
-
+    protected ProviderListenerInterface statsListener;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_stats, container, false);
-
-        statsListener = new fetchData.statsChangeListener() {
-            public void onStatsChange(String addressStats, String networkStats) {
-                data.setText(addressStats);
-                dataNetwork.setText(networkStats);
-            }
-        };
-
         data = (TextView) view.findViewById(R.id.fetchdata);
         dataNetwork = (TextView) view.findViewById(R.id.fetchdataNetwork);
         tvStatCheckOnline = view.findViewById(R.id.statCheckOnline);
+
+        ProviderAbstract api = PoolManager.getSelectedPool().getInterface();
+        statsListener = api.setStatsChangeListener(new ProviderListenerInterface(){
+            void onStatsChange(Data d) {
+                data.setText("");
+                dataNetwork.setText("");
+            }
+        });
 
         if (!checkValidState()) {
             return view;
         }
 
-        fetchData process = new fetchData();
-        process.setStatsChangeListener(statsListener);
-        process.execute();
+
+
+        api.setStatsChangeListener(statsListener);
+        api.execute();
         repeatTask();
 
         return view;
@@ -70,15 +67,13 @@ public class StatsFragment extends Fragment {
 
     private boolean checkValidState() {
 
-        String ps = Config.read("PoolSelection");
+        PoolItem pi = PoolManager.getSelectedPool();
 
-        if (Config.read("init").equals("1") == false || ps.isEmpty()) {
+        if (Config.read("init").equals("1") == false || pi == null) {
             data.setText("(start mining to view stats)");
             tvStatCheckOnline.setText("");
             return false;
         }
-
-        PoolItem pi = PoolManager.getPoolById(Integer.valueOf(ps));
 
         if (pi.getPoolType() == 0) {
             data.setText("(stats are not available for custom pools)");
@@ -86,12 +81,12 @@ public class StatsFragment extends Fragment {
             return false;
         }
 
-        wallet = Config.read("address");
-        apiUrl = pi.getPoolUrl();
-        statsUrl = pi.getStatsURL();
-
-        tvStatCheckOnline.setText(Html.fromHtml("<a href=\"" + statsUrl + "?wallet=" + wallet + "\">Check Stats Online</a>"));
-        tvStatCheckOnline.setMovementMethod(LinkMovementMethod.getInstance());
+//        wallet = Config.read("address");
+//        apiUrl = pi.getPoolUrl();
+//        statsUrl = pi.getStatsURL();
+//
+//        tvStatCheckOnline.setText(Html.fromHtml("<a href=\"" + statsUrl + "?wallet=" + wallet + "\">Check Stats Online</a>"));
+//        tvStatCheckOnline.setMovementMethod(LinkMovementMethod.getInstance());
 
         return true;
     }
@@ -112,7 +107,7 @@ public class StatsFragment extends Fragment {
 
         TimerTask task = new TimerTask() {
             public void run() {
-                fetchData process = new fetchData();
+                ProviderAbstract process = PoolManager.getSelectedPool().getInterface();
                 process.setStatsChangeListener(statsListener);
                 process.execute();
                 repeatTask();

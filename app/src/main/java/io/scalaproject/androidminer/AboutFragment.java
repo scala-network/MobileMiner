@@ -1,7 +1,7 @@
 // Copyright (c) 2020, Scala Project
 //
 // Please see the included LICENSE file for more information.
-package scala.androidminer;
+package io.scalaproject.androidminer;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;

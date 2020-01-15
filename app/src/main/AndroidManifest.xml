@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest package="scala.androidminer"
+<manifest package="io.scalaproject.androidminer"
           xmlns:android="http://schemas.android.com/apk/res/android">
 
     <uses-permission android:name="android.permission.INTERNET"/>
@@ -18,7 +18,7 @@
             android:name="com.google.android.gms.vision.DEPENDENCIES"
             android:value="barcode" />
 
-        <activity android:name="scala.androidminer.MainActivity" android:windowSoftInputMode="adjustPan|stateHidden" android:theme="@style/AppTheme.NoActionBar">
+        <activity android:name="io.scalaproject.androidminer.MainActivity" android:windowSoftInputMode="adjustPan|stateHidden" android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
@@ -26,14 +26,14 @@
         </activity>
 
 	<activity
-            android:name="scala.androidminer.QrCodeScannerActivity"
-            android:parentActivityName="scala.androidminer.MainActivity"
+            android:name="io.scalaproject.androidminer.QrCodeScannerActivity"
+            android:parentActivityName="io.scalaproject.androidminer.MainActivity"
             >
 
         </activity>
 
         <service
-            android:name="scala.androidminer.MiningService"
+            android:name="io.scalaproject.androidminer.MiningService"
             android:enabled="true"/>
     </application>
 

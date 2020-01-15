@@ -20,7 +20,7 @@
 //
 // Please see the included LICENSE file for more information.
 
-package scala.androidminer;
+package io.scalaproject.androidminer;
 
 import android.app.Service;
 import android.content.Context;
@@ -45,8 +45,8 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Arrays;
 
-import scala.androidminer.pools.PoolItem;
-import scala.androidminer.pools.PoolManager;
+import io.scalaproject.androidminer.api.PoolItem;
+import io.scalaproject.androidminer.api.PoolManager;
 
 import static android.os.PowerManager.*;
 

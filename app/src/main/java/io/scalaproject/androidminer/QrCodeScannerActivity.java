@@ -1,4 +1,4 @@
-package scala.androidminer;
+package io.scalaproject.androidminer;
 
 
 import android.support.v7.app.AppCompatActivity;
