@@ -9,15 +9,30 @@ A high performance and open source application for mining Scala on Android mobil
 - **arm64-v8a**
 
 ## Miner
-This application is built upon the libraries of XLARig, the official Scala (XLA) CPU miner.
-- Miner: [XLARig](https://github.com/scala-network/XLArig)
+This application is built upon the libraries of XLArig, the official Scala (XLA) CPU miner.
+- Miner: [XLArig](https://github.com/scala-network/XLArig)
 - Algorithm: [DefyX](https://medium.com/scala-network/scalas-v6-testnet-and-new-proof-of-work-information-3ba2a4eb0ad8)
 
 ## Usage
-TODO
+When opening the application, you first need to specify the pool that you want to use to mine XLA. Some predefined pools have already been configured to make it easier for you. You can still select 'custom' if you wish to use a pool that is not included in the predefined list. More information about the port number can be found on the pools website, but if you are not sure you can use port '3333'.
+
+Then, you have to specify the Scala wallet address that will be used with the mining pool. A validation has been added to this field to make sure you enter a valid Scala adress - if the adress is invalid, you won't be able to mine. You can also use the provided QR code functionnality to retrieve a valid Scala wallet address.
+
+The next field can be left blank if the pool doesn't use any options/password. When saving the settings, you will be redirected automatically to the Miner page. Just hit 'Start' to start mining.
+
+The stats about the hashrate and the accepted shares are presented at the top of the screen and are retrieved from XLArig. The hahsrate information comes from the 60s hashrate data from the output log. The CPU and Battery temperatures are also displayed there and will be used in the future for the AMYAC integration. They still provide useful information to make sure your device is not overheating. The middle screen displays the output from XLArig as is.
+
+You can use the buttons at the bottom of the application to display the hashrate in the log ('H'), to pause the miner ('P') and to resume the miner ('R').
+
+The application will keep mining even when your phone/device is on standby mode. So keep in mind that even if your phone screen is off, the your device may still be running.
+
+## Future development
+- Add notifications when the miner is running in the background
+- Integrate AMAYC protocol to prevent device from overheating
+- Improve UI
 
 ## Donations
-* Donations setting has been set to 0% in the XLArig lib embedded into the miner.
+Donations setting has been set to 0% in the XLArig lib embedded within the application.
 * XLA: `SEiTBcLGpfm3uj5b5RaZDGSUoAGnLCyG5aJjAwko67jqRwWEH26NFPd26EUpdL1zh4RTmTdRWLz8WCmk5F4umYaFByMtJT6RLjD6vzApQJWfi`
 * XMR: `48edfHu7V9Z84YzzMa6fUueoELZ9ZRXq9VetWzYGzKt52XU5xvqgzYnDK9URnRoJMk1j8nLwEVsaSWJ4fhdUyZijBGUicoD`
 * BTC: `1XTLY5LqdBXRW6hcHtnuMU7c68mAyW6qm`
