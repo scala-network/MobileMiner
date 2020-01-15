@@ -151,7 +151,7 @@ public class SettingsFragment extends Fragment {
 
                 if (Config.read("init").equals("1") == true) {
                     edUser.setText(Config.read("address"));
-                    edPass.setText(Config.read("password"));
+                    edPass.setText(Config.read("pass"));
                 }
 
                 if (position == 0){
@@ -225,7 +225,10 @@ public class SettingsFragment extends Fragment {
                 if(password.equals("")) {
                     password = Tools.getDeviceName();
                 }
+
+                Log.i(LOG_TAG,"Pssword : " + password);
                 Config.write("pass", password);
+                edPass.setText(password);
                 String key = (String)spPool.getSelectedItem();
 
                 int selectedPosition = Config.DefaultPoolIndex;

@@ -17,12 +17,12 @@ public class Config {
 
     public static final int DefaultPoolIndex = 1;
     public static final String DefaultWallet = "";
-    public static final String DefaultPassword = "ScalaMobileMiner";
+    public static final String DefaultPassword = "";
 
     public static final String miner_xlarig = "xlarig";
     public static final String algo = "defyx";
 
-    public static final String version = "0.0.3";
+    public static final String version = "0.0.4";
     public static final Integer logMaxLength = 50000;
     public static final Integer logPruneLength = 1000;
 

@@ -156,56 +156,38 @@
 
                         <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:textSize="14dp"
-                            android:textColor="@color/c_lighter"
-                            android:text="" />
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_weight="0"
                             android:orientation="horizontal">
 
-                            <LinearLayout
-                                android:layout_width="0dp"
-                                android:layout_height="match_parent"
-                                android:layout_weight="15"
-                                android:orientation="vertical">
 
-                                <android.support.v7.widget.AppCompatEditText
-                                    android:id="@+id/pool"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:hint="@string/mining_pool_address"
-                                    android:textColorHint="@color/c_black"
-                                    android:inputType="textUri"
-                                    android:textColor="@color/c_lighter"
-                                    android:textSize="14dp"
-                                    android:singleLine="true" />
-
-                            </LinearLayout>
-
-                            <LinearLayout
-                                android:layout_width="40dp"
-                                android:layout_height="match_parent"
+                            <android.support.v7.widget.AppCompatEditText
+                                android:id="@+id/pool"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:orientation="vertical">
+                                android:hint="@string/mining_pool_address"
+                                android:inputType="textUri"
+                                android:singleLine="true"
+                                android:textColor="@color/c_lighter"
+                                android:textColorHint="@color/c_black"
+                                android:textSize="14dp" />
 
-                                <EditText
-                                    android:id="@+id/port"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:ems="10"
-                                    android:textColor="@color/c_lighter"
-                                    android:textSize="14dp"
-                                    android:hint="@string/mining_pool_port"
-                                    android:textColorHint="@color/c_black"
-                                    android:inputType="number|phone"
-                                    android:maxLength="6"
-                                    android:singleLine="true" />
 
-                            </LinearLayout>
+                            <android.support.v7.widget.AppCompatEditText
+                                android:id="@+id/port"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="5"
+                                android:ems="10"
+                                android:hint="@string/mining_pool_port"
+                                android:inputType="number|phone"
+                                android:maxLength="6"
+                                android:singleLine="true"
+                                android:textColor="@color/c_lighter"
+                                android:textColorHint="@color/c_black"
+                                android:textSize="14dp" />
+
 
                         </LinearLayout>
 
@@ -216,7 +198,7 @@
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
 
-                        <EditText
+                        <android.support.v7.widget.AppCompatEditText
                             android:id="@+id/username"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
