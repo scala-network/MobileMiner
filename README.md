@@ -9,7 +9,7 @@ A high performance and open source application for mining Scala on Android mobil
 - **arm64-v8a**
 
 # Features
-We have done some major improvements and enhancements that differ from previous projects.
+We have implemented some major improvements and enhancements that differ from previous projects.
 - Temperature display
 - QR code feature to capture wallet addres
 - Completely redesigned UI
@@ -42,7 +42,6 @@ The application will keep mining even when your phone/device is on standby mode.
 ## Donations
 Donations setting has been set to 0% in the XLArig lib embedded within the application.
 * XLA: `SEiTBcLGpfm3uj5b5RaZDGSUoAGnLCyG5aJjAwko67jqRwWEH26NFPd26EUpdL1zh4RTmTdRWLz8WCmk5F4umYaFByMtJT6RLjD6vzApQJWfi`
-* XMR: `48edfHu7V9Z84YzzMa6fUueoELZ9ZRXq9VetWzYGzKt52XU5xvqgzYnDK9URnRoJMk1j8nLwEVsaSWJ4fhdUyZijBGUicoD`
 * BTC: `1XTLY5LqdBXRW6hcHtnuMU7c68mAyW6qm`
 
 ## Credits
