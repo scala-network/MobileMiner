@@ -46,7 +46,6 @@ public class StatsFragment extends Fragment {
         dataNetwork = (TextView) view.findViewById(R.id.fetchdataNetwork);
         tvStatCheckOnline = view.findViewById(R.id.statCheckOnline);
 
-
         PoolItem pi = PoolManager.getSelectedPool();
         ProviderAbstract api = pi.getInterface();
         statsListener = new ProviderListenerInterface(){
@@ -55,14 +54,12 @@ public class StatsFragment extends Fragment {
                     return;
                 }
                 //@@TODO UI FOR DATA TO BE INSERTED
-                String dataParsedNetwork = d.getCoin().name + "\n"
-                    + "Height: " + d.getNetwork().lastBlockHeight + "\n"
+                String dataParsedNetwork = "Block Height: " + d.getNetwork().lastBlockHeight + "\n"
                     + "Difficulty: " + d.getNetwork().difficulty + "\n"
                     + "Last Block: " + d.getNetwork().lastBlockTime + "\n"
-                    + "Reward: " + d.getNetwork().lastRewardAmount;
+                    + "Last Reward: " + d.getNetwork().lastRewardAmount;
 
-                String dataParsedAddress = d.getCoin().name + "\n"
-                        + "Hash Rate: " + d.getMiner().hashrate + "\n"
+                String dataParsedAddress = "Hashrate: " + d.getMiner().hashrate + "\n"
                         + "Balance: " + d.getMiner().balance + "\n"
                         + "Paid: " + d.getMiner().paid + "\n"
                         + "Last Share: " + d.getMiner().lastShare + "\n";
@@ -76,7 +73,6 @@ public class StatsFragment extends Fragment {
 
                 data.setText(dataParsedAddress);
                 dataNetwork.setText(dataParsedNetwork);
-
 
                 String wallet = Config.read("address");
                 String statsUrl = pi.getStatsURL();

@@ -106,7 +106,7 @@
                     android:layout_marginLeft="5dip"
                     android:layout_marginRight="5dip"
                     android:layout_marginTop="5dip"
-                    android:backgroundTint="@color/bg_red"
+                    android:backgroundTint="@color/bg_lighter"
                     android:text="@string/cancel"
                     android:textAllCaps="false"
                     app:cornerRadius="5dp" />
