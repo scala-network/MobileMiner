@@ -293,7 +293,7 @@ public class MiningService extends Service {
             pb.redirectErrorStream();
 
             accepted = 0;
-            speed = "0";
+            speed = "n/a";
             lastOutput = "";
 
             process = pb.start();
@@ -382,7 +382,6 @@ public class MiningService extends Service {
             output.append(line + System.lineSeparator());
 
             String lineCompare = line.toLowerCase();
-            String newspeed = "";
             if (lineCompare.contains("accepted")) {
                 accepted++;
             } else if (lineCompare.contains("speed")) {
@@ -391,9 +390,6 @@ public class MiningService extends Service {
                 if (speed.equals("n/a")) {
                     speed = split[4];
                 }
-                if (speed.equals("n/a")) {
-                    speed = "0";
-                }
             }
 
             if (output.length() > Config.logMaxLength) {
@@ -401,7 +397,6 @@ public class MiningService extends Service {
             }
 
             raiseMiningServiceStatusChange(line, speed, accepted);
-
         }
 
         public void run() {
@@ -425,7 +420,6 @@ public class MiningService extends Service {
         public StringBuilder getOutput() {
             return output;
         }
-
     }
 
     private class InputReaderThread extends Thread {
@@ -465,8 +459,6 @@ public class MiningService extends Service {
             } catch (Exception e) {
                 Log.w(LOG_TAG, "exception", e);
             }
-
         }
-
     }
 }

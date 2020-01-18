@@ -82,8 +82,6 @@ public class StatsFragment extends Fragment {
             }
         };
 
-
-
         api.setStatsChangeListener(statsListener);
         api.execute();
         repeatTask();
@@ -96,18 +94,16 @@ public class StatsFragment extends Fragment {
         PoolItem pi = PoolManager.getSelectedPool();
 
         if (Config.read("init").equals("1") == false || pi == null) {
-            data.setText("(start mining to view stats)");
+            data.setText("Start mining to view stats");
             tvStatCheckOnline.setText("");
             return false;
         }
 
         if (pi.getPoolType() == 0) {
-            Toast.makeText(getContext(),"(stats are not available for custom pools)",Toast.LENGTH_LONG);
+            Toast.makeText(getContext(),"Stats are not available for custom pools",Toast.LENGTH_LONG);
             tvStatCheckOnline.setText("");
             return false;
         }
-
-
 
         return true;
     }
@@ -153,7 +149,6 @@ public class StatsFragment extends Fragment {
             timer = null;
         }
     }
-
 }
 
 

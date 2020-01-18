@@ -40,8 +40,8 @@
 
                     <ImageView
                         android:id="@+id/imageView3"
-                        android:layout_width="35dp"
-                        android:layout_height="35dp"
+                        android:layout_width="28dp"
+                        android:layout_height="28dp"
                         android:gravity="end"
                         android:src="@mipmap/ic_logo_colors" />
 
@@ -112,15 +112,16 @@
             <android.support.v7.widget.AppCompatTextView
                 android:id="@+id/speed"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_marginRight="5dp"
                 android:gravity="start"
                 android:text="0"
-                android:textStyle="bold"
+                android:textColor="@color/c_green"
                 android:textSize="32sp"
-                android:textColor="@color/c_green" />
+                android:textStyle="bold" />
 
             <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/hs"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="10dp"
@@ -168,7 +169,7 @@
             android:layout_height="wrap_content"
             android:layout_marginRight="3dp"
             android:gravity="end"
-            android:text="0"
+            android:text="n/a"
             android:textSize="15sp"
             android:textColor="@color/c_lighter" />
 
@@ -197,7 +198,7 @@
             android:layout_height="wrap_content"
             android:layout_marginRight="3dp"
             android:gravity="end"
-            android:text="0"
+            android:text="n/a"
             android:textSize="15sp"
             android:textColor="@color/c_lighter" />
 
@@ -244,7 +245,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:text=""
-                android:textSize="14dp"
+                android:textSize="13dp"
                 android:textColor="@color/c_lighter"
                 android:background="@color/bg_black"
                 android:visibility="visible" />

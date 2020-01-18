@@ -47,7 +47,11 @@ import android.support.v4.view.GravityCompat;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -57,6 +61,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
+import android.text.Spannable;
+import android.support.v4.content.ContextCompat;
 
 import java.io.FileInputStream;
 import java.util.Arrays;
@@ -79,7 +85,7 @@ public class MainActivity extends AppCompatActivity
     boolean accepted = false;
 
     private TextView tvLog;
-    private TextView tvSpeed, tvAccepted, tvCPUTemperature, tvBatteryTemperature;
+    private TextView tvSpeed, tvHs, tvAccepted, tvCPUTemperature, tvBatteryTemperature;
 
     private boolean validArchitecture = true;
 
@@ -95,7 +101,7 @@ public class MainActivity extends AppCompatActivity
         return contextOfApplication;
     }
 
-    private Button minerBtn1, minerBtn2, minerBtn3;
+    private Button minerBtnH, minerBtnP, minerBtnR;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -169,15 +175,16 @@ public class MainActivity extends AppCompatActivity
         // wire views
         tvLog = findViewById(R.id.output);
         tvSpeed = findViewById(R.id.speed);
+        tvHs = findViewById(R.id.hs);
 
         tvAccepted = findViewById(R.id.accepted);
         tvCPUTemperature = findViewById(R.id.cputemp);
         tvBatteryTemperature = findViewById(R.id.batterytemp);
         svOutput = findViewById(R.id.outputScrollView);
 
-        minerBtn1 = (Button) findViewById(R.id.minerBtn1);
-        minerBtn2 = (Button) findViewById(R.id.minerBtn2);
-        minerBtn3 = (Button) findViewById(R.id.minerBtn3);
+        minerBtnH = (Button) findViewById(R.id.minerBtn1);
+        minerBtnP = (Button) findViewById(R.id.minerBtn2);
+        minerBtnR = (Button) findViewById(R.id.minerBtn3);
         updateUI();
 
         if (!Arrays.asList(Config.SUPPORTED_ARCHITECTURES).contains(Tools.getABI())) {
@@ -189,25 +196,23 @@ public class MainActivity extends AppCompatActivity
         bindService(intent, serverConnection, BIND_AUTO_CREATE);
         startService(intent);
 
-
-        minerBtn1.setOnClickListener(new View.OnClickListener() {
+        minerBtnH.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 sendInput("h");
             }
         });
 
-        minerBtn2.setOnClickListener(new View.OnClickListener() {
+        minerBtnP.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 sendInput("p");
             }
         });
 
-        minerBtn3.setOnClickListener(new View.OnClickListener() {
+        minerBtnR.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 sendInput("r");
             }
         });
-
     }
 
     private void setStatusText(String status) {
@@ -228,13 +233,12 @@ public class MainActivity extends AppCompatActivity
 
         setStatusText(status);
 
-        minerBtn1.setVisibility(View.VISIBLE);
-        minerBtn2.setVisibility(View.VISIBLE);
-        minerBtn3.setVisibility(View.VISIBLE);
+        minerBtnH.setVisibility(View.VISIBLE);
+        minerBtnP.setVisibility(View.VISIBLE);
+        minerBtnR.setVisibility(View.VISIBLE);
 
         //@@TODO Update AMYAC accordingly
         updateAmyac(false);
-
     }
 
     @Override
@@ -379,40 +383,73 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void setMiningButtonState(Boolean state) {
-        Button btn = findViewById(R.id.start);
+        Button btnStart = findViewById(R.id.start);
 
-        Drawable buttonDrawable = btn.getBackground();
+        Drawable buttonDrawable = btnStart.getBackground();
         buttonDrawable = DrawableCompat.wrap(buttonDrawable);
 
         if (minerPaused) {
-            btn.setText("Resume");
+            btnStart.setText("Resume");
+            updateHashrate("0");
             DrawableCompat.setTint(buttonDrawable, getResources().getColor(R.color.c_green));
-            btn.setBackground(buttonDrawable);
+            btnStart.setBackground(buttonDrawable);
         } else {
             if (state) {
-                btn.setText("Stop");
+                btnStart.setText("Stop");
+                updateHashrate("n/a");
                 DrawableCompat.setTint(buttonDrawable, getResources().getColor(R.color.c_red));
-                btn.setBackground(buttonDrawable);
+                btnStart.setBackground(buttonDrawable);
             } else {
-                btn.setText("Start");
+                btnStart.setText("Start");
+                updateHashrate("0");
                 DrawableCompat.setTint(buttonDrawable, getResources().getColor(R.color.c_blue));
-                btn.setBackground(buttonDrawable);
+                btnStart.setBackground(buttonDrawable);
             }
         }
+    }
 
+    private void updateHashrate(String speed) {
+        String speedstr = speed;
+        if (speed.equals("n/a")) {
+            speedstr = "Computing...";
+            tvHs.setVisibility(View.INVISIBLE);
+            tvSpeed.setTextColor(getResources().getColor(R.color.c_grey));
+            tvSpeed.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
+        }
+        else {
+            tvHs.setVisibility(View.VISIBLE);
+            tvSpeed.setTextColor(getResources().getColor(R.color.c_green));
+            tvSpeed.setTextSize(TypedValue.COMPLEX_UNIT_SP, 32);
+        }
+
+        tvSpeed.setText(speedstr);
+    }
+
+    private Spannable formatLogOutputText(String text) {
+        Spannable textSpan = new SpannableString(text);
+
+        String formatText = "speed";
+        if(text.contains(formatText)) {
+            int i = text.indexOf(formatText);
+            textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_blue)), i, i + formatText.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        }
+
+        return textSpan;
     }
 
     private void appendLogOutputText(String line) {
         boolean refresh = false;
         if(binder != null){
             if ((tvLog.getText().equals("") && !binder.getService().getOutput().equals("")) || tvLog.getText().length() > Config.logMaxLength ){
-                tvLog.setText(binder.getService().getOutput());
+                String outputLog = binder.getService().getOutput();
+                tvLog.setText(formatLogOutputText(outputLog));
                 refresh = true;
             }
         }
 
         if(!line.equals("")) {
-            tvLog.append(line + System.lineSeparator());
+            String outputLog = line + System.lineSeparator();
+            tvLog.append(formatLogOutputText(outputLog));
             refresh = true;
         }
 
@@ -424,7 +461,6 @@ public class MainActivity extends AppCompatActivity
                 }
             }, 50);
         }
-
     }
 
     private ServiceConnection serverConnection = new ServiceConnection() {
@@ -456,7 +492,7 @@ public class MainActivity extends AppCompatActivity
                                 if (clearMinerLog == true) {
                                     tvLog.setText("");
                                     tvAccepted.setText("0");
-                                    tvSpeed.setText("0");
+                                    updateHashrate("n/a");
                                     tvCPUTemperature.setText("0");
                                     tvBatteryTemperature.setText("0");
                                 }
@@ -471,18 +507,10 @@ public class MainActivity extends AppCompatActivity
                     @Override
                     public void onStatusChange(String status, String speed, Integer accepted) {
                         runOnUiThread(() -> {
-                            StringBuilder temp = new StringBuilder();
-                            temp.append(Tools.getCurrentCPUTemperature());
-
-                            if(batteryTemp > 0.0f) {
-                                temp.append(" (");
-                                temp.append(batteryTemp);
-                                temp.append((char) 0x00B0);
-                                temp.append("C)");
-                            }
                             appendLogOutputText(status);
                             tvAccepted.setText(Integer.toString(accepted));
-                            tvSpeed.setText(speed);
+
+                            updateHashrate(speed);
                             tvCPUTemperature.setText(Tools.getCurrentCPUTemperature());
                             tvBatteryTemperature.setText(String.format("%.1f", batteryTemp));
                         });
@@ -555,7 +583,6 @@ public class MainActivity extends AppCompatActivity
             } else {
                 minerPaused = false;
             }
-
         }
     };
 
@@ -568,5 +595,4 @@ public class MainActivity extends AppCompatActivity
             }
         }
     }
-
 }
