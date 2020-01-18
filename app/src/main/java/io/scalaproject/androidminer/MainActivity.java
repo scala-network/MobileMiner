@@ -399,11 +399,48 @@ public class MainActivity extends AppCompatActivity
                 updateHashrate("n/a");
                 DrawableCompat.setTint(buttonDrawable, getResources().getColor(R.color.c_red));
                 btnStart.setBackground(buttonDrawable);
+
+                minerBtnH.setEnabled(true);
+
+                // Pause button
+                minerBtnP.setEnabled(true);
+                buttonDrawable = minerBtnP.getBackground();
+                buttonDrawable = DrawableCompat.wrap(buttonDrawable);
+                DrawableCompat.setTint(buttonDrawable, getResources().getColor(R.color.bg_lighter));
+                minerBtnP.setBackground(buttonDrawable);
+                minerBtnP.setTextColor(getResources().getColor(R.color.c_white));
+
+                // Resume button
+                minerBtnR.setEnabled(false);
+                buttonDrawable = minerBtnR.getBackground();
+                buttonDrawable = DrawableCompat.wrap(buttonDrawable);
+                DrawableCompat.setTint(buttonDrawable, getResources().getColor(R.color.bg_black));
+                minerBtnR.setBackground(buttonDrawable);
+                minerBtnR.setTextColor(getResources().getColor(R.color.c_black));
+
             } else {
                 btnStart.setText("Start");
                 updateHashrate("0");
                 DrawableCompat.setTint(buttonDrawable, getResources().getColor(R.color.c_blue));
                 btnStart.setBackground(buttonDrawable);
+
+                minerBtnH.setEnabled(false);
+
+                // Pause button
+                minerBtnP.setEnabled(false);
+                buttonDrawable = minerBtnP.getBackground();
+                buttonDrawable = DrawableCompat.wrap(buttonDrawable);
+                DrawableCompat.setTint(buttonDrawable, getResources().getColor(R.color.bg_black));
+                minerBtnP.setBackground(buttonDrawable);
+                minerBtnP.setTextColor(getResources().getColor(R.color.c_black));
+
+                // Resume button
+                minerBtnR.setEnabled(false);
+                buttonDrawable = minerBtnR.getBackground();
+                buttonDrawable = DrawableCompat.wrap(buttonDrawable);
+                DrawableCompat.setTint(buttonDrawable, getResources().getColor(R.color.bg_black));
+                minerBtnR.setBackground(buttonDrawable);
+                minerBtnR.setTextColor(getResources().getColor(R.color.c_black));
             }
         }
     }
@@ -537,6 +574,54 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void sendInput(String s) {
+
+        if (s.equals("p")) {
+            if (!minerPaused) {
+                minerPaused = true;
+
+                // Pause button
+                Drawable buttonDrawable = minerBtnP.getBackground();
+                buttonDrawable = DrawableCompat.wrap(buttonDrawable);
+                DrawableCompat.setTint(buttonDrawable, getResources().getColor(R.color.bg_black));
+                minerBtnP.setBackground(buttonDrawable);
+                minerBtnP.setTextColor(getResources().getColor(R.color.c_black));
+
+                minerBtnP.setEnabled(false);
+
+                // Resume button
+                buttonDrawable = minerBtnR.getBackground();
+                buttonDrawable = DrawableCompat.wrap(buttonDrawable);
+                DrawableCompat.setTint(buttonDrawable, getResources().getColor(R.color.bg_lighter));
+                minerBtnR.setBackground(buttonDrawable);
+                minerBtnP.setTextColor(getResources().getColor(R.color.c_white));
+
+                minerBtnR.setEnabled(true);
+            }
+        }
+        else if (s.equals("r")) {
+            if (minerPaused) {
+                minerPaused = false;
+
+                // Pause button
+                Drawable buttonDrawable = minerBtnP.getBackground();
+                buttonDrawable = DrawableCompat.wrap(buttonDrawable);
+                DrawableCompat.setTint(buttonDrawable, getResources().getColor(R.color.bg_lighter));
+                minerBtnP.setBackground(buttonDrawable);
+                minerBtnP.setTextColor(getResources().getColor(R.color.c_white));
+
+                minerBtnP.setEnabled(true);
+
+                // Resume button
+                buttonDrawable = minerBtnR.getBackground();
+                buttonDrawable = DrawableCompat.wrap(buttonDrawable);
+                DrawableCompat.setTint(buttonDrawable, getResources().getColor(R.color.bg_black));
+                minerBtnR.setBackground(buttonDrawable);
+                minerBtnP.setTextColor(getResources().getColor(R.color.c_black));
+
+                minerBtnR.setEnabled(false);
+            }
+        }
+
         if (binder != null) {
             binder.getService().sendInput(s);
         }

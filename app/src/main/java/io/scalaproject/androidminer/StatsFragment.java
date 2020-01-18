@@ -100,12 +100,13 @@ public class StatsFragment extends Fragment {
     private boolean checkValidState() {
 
         PoolItem pi = PoolManager.getSelectedPool();
+
         if(Config.read("address").equals("")) {
-            data.setText("Please go to settings");
+            data.setText("Wallet address is empty");
             tvStatCheckOnline.setText("");
             return false;
-
         }
+
         if (Config.read("init").equals("1") == false || pi == null) {
             data.setText("Start mining to view stats");
             tvStatCheckOnline.setText("");
@@ -122,8 +123,6 @@ public class StatsFragment extends Fragment {
     }
 
     private void repeatTask() {
-
-
         if (timer != null) {
             timer.cancel();
             timer.purge();
@@ -135,8 +134,6 @@ public class StatsFragment extends Fragment {
         }
 
         timer = new Timer("Timer");
-
-
 
         TimerTask task = new TimerTask() {
             public void run() {

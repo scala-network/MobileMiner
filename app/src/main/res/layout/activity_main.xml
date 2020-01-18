@@ -290,10 +290,12 @@
                     android:layout_height="45dp"
                     android:insetLeft="2dp"
                     android:insetRight="2dp"
-                    android:backgroundTint="@color/bg_lighter"
+                    android:backgroundTint="@color/bg_green"
                     android:backgroundTintMode="src_over"
                     android:textSize="15dp"
                     android:text="H"
+                    android:textColor="@color/c_white"
+                    android:enabled="false"
                     app:cornerRadius="5dp" />
 
                 <android.support.design.button.MaterialButton
@@ -302,10 +304,12 @@
                     android:layout_height="45dp"
                     android:insetLeft="2dp"
                     android:insetRight="2dp"
-                    android:backgroundTint="@color/bg_lighter"
+                    android:backgroundTint="@color/bg_black"
                     android:backgroundTintMode="src_over"
                     android:textSize="15dp"
                     android:text="P"
+                    android:textColor="@color/c_black"
+                    android:enabled="false"
                     app:cornerRadius="5dp" />
 
                 <android.support.design.button.MaterialButton
@@ -314,10 +318,12 @@
                     android:layout_height="45dp"
                     android:insetLeft="2dp"
                     android:insetRight="2dp"
-                    android:backgroundTint="@color/bg_lighter"
+                    android:backgroundTint="@color/bg_black"
                     android:backgroundTintMode="src_over"
                     android:textSize="15dp"
                     android:text="R"
+                    android:enabled="false"
+                    android:textColor="@color/c_black"
                     app:cornerRadius="5dp" />
 
             </LinearLayout>
