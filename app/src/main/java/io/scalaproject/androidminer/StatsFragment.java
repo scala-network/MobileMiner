@@ -46,13 +46,13 @@ public class StatsFragment extends Fragment {
         dataNetwork = (TextView) view.findViewById(R.id.fetchdataNetwork);
         tvStatCheckOnline = view.findViewById(R.id.statCheckOnline);
 
-        PoolItem pi = PoolManager.getSelectedPool();
-        ProviderAbstract api = pi.getInterface();
         statsListener = new ProviderListenerInterface(){
             public void onStatsChange(Data d) {
                 if (!checkValidState()) {
                     return;
                 }
+                PoolItem pm = PoolManager.getSelectedPool();
+
                 //@@TODO UI FOR DATA TO BE INSERTED
                 String dataParsedNetwork = "Block Height: " + d.getNetwork().lastBlockHeight + "\n"
                     + "Difficulty: " + d.getNetwork().difficulty + "\n"
@@ -64,7 +64,7 @@ public class StatsFragment extends Fragment {
                         + "Paid: " + d.getMiner().paid + "\n"
                         + "Last Share: " + d.getMiner().lastShare + "\n";
 
-                if(pi.getPoolType() == 1) {
+                if(pm.getPoolType() == 1) {
                     dataParsedAddress+= "Shares Accepted: " + d.getMiner().blocks;
                 } else {
                     dataParsedAddress+= "Blocks Found: " + d.getMiner().blocks;
@@ -75,12 +75,20 @@ public class StatsFragment extends Fragment {
                 dataNetwork.setText(dataParsedNetwork);
 
                 String wallet = Config.read("address");
-                String statsUrl = pi.getStatsURL();
+                String statsUrl = pm.getStatsURL();
 
                 tvStatCheckOnline.setText(Html.fromHtml("<a href=\"" + statsUrl + "?wallet=" + wallet + "\">Check Stats Online</a>"));
                 tvStatCheckOnline.setMovementMethod(LinkMovementMethod.getInstance());
             }
         };
+
+        if (!checkValidState()) {
+            return view;
+        }
+
+        PoolItem pi = PoolManager.getSelectedPool();
+
+        ProviderAbstract api = pi.getInterface();
 
         api.setStatsChangeListener(statsListener);
         api.execute();
@@ -92,7 +100,12 @@ public class StatsFragment extends Fragment {
     private boolean checkValidState() {
 
         PoolItem pi = PoolManager.getSelectedPool();
+        if(Config.read("address").equals("")) {
+            data.setText("Please go to settings");
+            tvStatCheckOnline.setText("");
+            return false;
 
+        }
         if (Config.read("init").equals("1") == false || pi == null) {
             data.setText("Start mining to view stats");
             tvStatCheckOnline.setText("");
@@ -110,17 +123,20 @@ public class StatsFragment extends Fragment {
 
     private void repeatTask() {
 
+
         if (timer != null) {
             timer.cancel();
             timer.purge();
             timer = null;
         }
 
-        timer = new Timer("Timer");
-
         if (!checkValidState()) {
             return;
         }
+
+        timer = new Timer("Timer");
+
+
 
         TimerTask task = new TimerTask() {
             public void run() {

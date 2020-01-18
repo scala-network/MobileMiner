@@ -22,7 +22,7 @@ public class Config {
     public static final String miner_xlarig = "xlarig";
     public static final String algo = "defyx";
 
-    public static final String version = "0.0.4";
+    public static final String version = "0.0.5";
     public static final Integer logMaxLength = 50000;
     public static final Integer logPruneLength = 1000;
 
