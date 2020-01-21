@@ -8,20 +8,9 @@
     android:backgroundTint="@color/bg_grey"
     >
 
-    <TextView
-        android:id="@+id/statsTitle"
-        android:layout_width="match_parent"
-        android:layout_height="32dp"
-        android:gravity="start"
-        android:text="Settings"
-        android:textColor="@color/c_white"
-        android:textStyle="bold"
-        android:textSize="24sp" />
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/statsTitle"
         android:orientation="vertical">
 
         <ScrollView
@@ -247,16 +236,15 @@
 
         <android.support.design.button.MaterialButton
             android:id="@+id/saveSettings"
-            android:backgroundTint="@color/bg_blue"
-            android:backgroundTintMode="src_over"
-            android:layout_width="100dp"
-            android:layout_height="45dp"
-            android:layout_marginRight="0dp"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
             android:layout_marginBottom="15dp"
-            android:textSize="15dp"
-            android:textAllCaps="false"
+            android:backgroundTint="@color/bg_blue"
             android:text="Save"
-            android:layout_alignParentRight="true"
+            android:textSize="20dp"
+            android:textAllCaps="false"
             app:cornerRadius="5dp" />
 
     </RelativeLayout>

@@ -84,8 +84,7 @@ public class MainActivity extends AppCompatActivity
     private DrawerLayout drawer;
     boolean accepted = false;
 
-    private TextView tvLog;
-    private TextView tvSpeed, tvHs, tvAccepted, tvCPUTemperature, tvBatteryTemperature;
+    private TextView tvSpeed, tvHs, tvAccepted, tvCPUTemperature, tvBatteryTemperature, tvLog, tvTitle;
 
     private boolean validArchitecture = true;
 
@@ -113,7 +112,6 @@ public class MainActivity extends AppCompatActivity
             Config.clear();
             Config.write("config_version", Config.version);
         }
-
 
         contextOfApplication = getApplicationContext();
 
@@ -159,10 +157,13 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        tvTitle = (TextView) findViewById(R.id.title);
+        //getSupportActionBar().setCustomView(tvTitle);
+
         drawer = findViewById(R.id.drawer_layout);
 
         NavigationView navigationView = findViewById(R.id.nav_view);
-        navigationView.getMenu().getItem(0).setChecked(true);
+        navigationView.getMenu().getItem(2).setChecked(true);
         navigationView.setNavigationItemSelectedListener(this);
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -182,9 +183,10 @@ public class MainActivity extends AppCompatActivity
         tvBatteryTemperature = findViewById(R.id.batterytemp);
         svOutput = findViewById(R.id.outputScrollView);
 
-        minerBtnH = (Button) findViewById(R.id.minerBtn1);
-        minerBtnP = (Button) findViewById(R.id.minerBtn2);
-        minerBtnR = (Button) findViewById(R.id.minerBtn3);
+        minerBtnH = (Button) findViewById(R.id.minerBtnH);
+        minerBtnP = (Button) findViewById(R.id.minerBtnP);
+        minerBtnR = (Button) findViewById(R.id.minerBtnR);
+
         updateUI();
 
         if (!Arrays.asList(Config.SUPPORTED_ARCHITECTURES).contains(Tools.getABI())) {
@@ -233,10 +235,6 @@ public class MainActivity extends AppCompatActivity
 
         setStatusText(status);
 
-        minerBtnH.setVisibility(View.VISIBLE);
-        minerBtnP.setVisibility(View.VISIBLE);
-        minerBtnR.setVisibility(View.VISIBLE);
-
         //@@TODO Update AMYAC accordingly
         updateAmyac(false);
     }
@@ -251,6 +249,9 @@ public class MainActivity extends AppCompatActivity
                 }
 
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment_stats,"fragment_stats").commit();
+
+                tvTitle.setText("Details");
+
                 break;
             case R.id.about:
                 AboutFragment fragment_about = (AboutFragment) getSupportFragmentManager().findFragmentByTag("fragment_about");
@@ -260,6 +261,9 @@ public class MainActivity extends AppCompatActivity
                 }
 
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment_about,"fragment_about").commit();
+
+                tvTitle.setText("About");
+
                 break;
             case R.id.miner: //Main view
                 for (Fragment fragment : getSupportFragmentManager().getFragments()) {
@@ -267,6 +271,9 @@ public class MainActivity extends AppCompatActivity
                         getSupportFragmentManager().beginTransaction().remove(fragment).commit();
                     }
                 }
+
+                tvTitle.setText("Miner");
+
                 updateUI();
                 break;
             case R.id.settings:
@@ -275,6 +282,9 @@ public class MainActivity extends AppCompatActivity
                     settings_fragment = new SettingsFragment();
                 }
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, settings_fragment,"settings_fragment").commit();
+
+                tvTitle.setText("Settings");
+
                 break;
 
         }
@@ -400,7 +410,13 @@ public class MainActivity extends AppCompatActivity
                 DrawableCompat.setTint(buttonDrawable, getResources().getColor(R.color.c_red));
                 btnStart.setBackground(buttonDrawable);
 
+                // Hashrate button
                 minerBtnH.setEnabled(true);
+                buttonDrawable = minerBtnH.getBackground();
+                buttonDrawable = DrawableCompat.wrap(buttonDrawable);
+                DrawableCompat.setTint(buttonDrawable, getResources().getColor(R.color.bg_green));
+                minerBtnH.setBackground(buttonDrawable);
+                minerBtnH.setTextColor(getResources().getColor(R.color.c_white));
 
                 // Pause button
                 minerBtnP.setEnabled(true);
@@ -424,7 +440,13 @@ public class MainActivity extends AppCompatActivity
                 DrawableCompat.setTint(buttonDrawable, getResources().getColor(R.color.c_blue));
                 btnStart.setBackground(buttonDrawable);
 
+                // Hashrate button
                 minerBtnH.setEnabled(false);
+                buttonDrawable = minerBtnH.getBackground();
+                buttonDrawable = DrawableCompat.wrap(buttonDrawable);
+                DrawableCompat.setTint(buttonDrawable, getResources().getColor(R.color.bg_black));
+                minerBtnH.setBackground(buttonDrawable);
+                minerBtnH.setTextColor(getResources().getColor(R.color.c_black));
 
                 // Pause button
                 minerBtnP.setEnabled(false);

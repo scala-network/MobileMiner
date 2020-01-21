@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="32dp"
         android:gravity="start"
-        android:text="About"
+        android:text="General"
         android:textColor="@color/c_white"
         android:textStyle="bold"
         android:textSize="24sp" />
