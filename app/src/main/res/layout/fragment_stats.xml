@@ -4,20 +4,9 @@
     android:layout_height="match_parent"
     android:background="@color/bg_grey">
 
-    <android.support.v7.widget.AppCompatTextView
-        android:id="@+id/statsTitle"
-        android:layout_width="match_parent"
-        android:layout_height="32dp"
-        android:gravity="start"
-        android:text="Stats"
-        android:textColor="@color/c_white"
-        android:textStyle="bold"
-        android:textSize="24sp" />
-
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/statsTitle">
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"

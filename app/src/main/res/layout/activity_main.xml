@@ -30,8 +30,19 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="horizontal"
-                    android:paddingRight="25dp"
+                    android:paddingRight="20dp"
                     android:gravity="center_vertical">
+
+                    <android.support.v7.widget.AppCompatTextView
+                        android:id="@+id/title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="15dp"
+                        android:gravity="start"
+                        android:text="Settings"
+                        android:textSize="22sp"
+                        android:textColor="@color/c_white"
+                        android:textStyle="bold" />
 
                     <Space
                         android:layout_width="0dp"
@@ -40,8 +51,8 @@
 
                     <ImageView
                         android:id="@+id/imageView3"
-                        android:layout_width="28dp"
-                        android:layout_height="28dp"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
                         android:gravity="end"
                         android:src="@mipmap/ic_logo_colors" />
 
@@ -76,9 +87,8 @@
                 android:id="@+id/hashrate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="5dp"
                 android:gravity="start"
-                android:text="Hashrate"
+                android:text="@string/hashrate"
                 android:textSize="16sp"
                 android:textColor="@color/c_white"
                 android:textStyle="bold" />
@@ -233,7 +243,9 @@
             android:id="@+id/outputScrollView"
             android:layout_width="match_parent"
             android:layout_height="158dp"
-            android:layout_marginBottom="15dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginBottom="5dp"
             android:layout_weight="1"
             android:paddingLeft="15dp"
             android:paddingRight="15dp"
@@ -261,16 +273,17 @@
             android:paddingBottom="15dp">
 
             <android.support.design.button.MaterialButton
-                android:id="@+id/start"
+                android:id="@+id/minerBtnH"
                 android:layout_width="100dp"
                 android:layout_height="45dp"
-                android:backgroundTint="@color/bg_blue"
+                android:backgroundTint="@color/bg_black"
                 android:backgroundTintMode="src_over"
                 android:paddingLeft="15dp"
                 android:paddingRight="15dp"
-                android:text="@string/start"
+                android:text="@string/hashrate"
                 android:textSize="15dp"
                 android:textAllCaps="false"
+                android:textColor="@color/c_black"
                 app:cornerRadius="5dp"
                 app:layout_constraintBaseline_toBaselineOf="parent"
                 app:layout_constraintRight_toRightOf="parent" />
@@ -285,21 +298,7 @@
                 app:layout_constraintBaseline_toBaselineOf="parent">
 
                 <android.support.design.button.MaterialButton
-                    android:id="@+id/minerBtn1"
-                    android:layout_width="45dp"
-                    android:layout_height="45dp"
-                    android:insetLeft="2dp"
-                    android:insetRight="2dp"
-                    android:backgroundTint="@color/bg_green"
-                    android:backgroundTintMode="src_over"
-                    android:textSize="15dp"
-                    android:text="H"
-                    android:textColor="@color/c_white"
-                    android:enabled="false"
-                    app:cornerRadius="5dp" />
-
-                <android.support.design.button.MaterialButton
-                    android:id="@+id/minerBtn2"
+                    android:id="@+id/minerBtnP"
                     android:layout_width="45dp"
                     android:layout_height="45dp"
                     android:insetLeft="2dp"
@@ -313,7 +312,7 @@
                     app:cornerRadius="5dp" />
 
                 <android.support.design.button.MaterialButton
-                    android:id="@+id/minerBtn3"
+                    android:id="@+id/minerBtnR"
                     android:layout_width="45dp"
                     android:layout_height="45dp"
                     android:insetLeft="2dp"
@@ -329,6 +328,20 @@
             </LinearLayout>
 
         </android.support.constraint.ConstraintLayout>
+
+        <android.support.design.button.MaterialButton
+            android:id="@+id/start"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginBottom="15dp"
+            android:backgroundTint="@color/bg_blue"
+            android:text="Start"
+            android:textAllCaps="false"
+            android:textSize="20dp"
+            app:cornerRadius="5dp" />
+
     </LinearLayout>
 
     <android.support.design.widget.NavigationView
