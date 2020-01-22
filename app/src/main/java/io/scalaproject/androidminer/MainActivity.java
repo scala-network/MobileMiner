@@ -50,6 +50,7 @@ import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
+import android.text.style.StyleSpan;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.MenuItem;
@@ -304,10 +305,10 @@ public class MainActivity extends AppCompatActivity
     private void showdialog() {
         final Dialog dialog = new Dialog(this);
         dialog.setContentView(R.layout.disclaimer);
-        dialog.setTitle("Disclaimer...");
+        dialog.setTitle("Disclaimer");
         dialog.setCancelable(false);
-        Button dialogButton = (Button) dialog.findViewById(R.id.button1);
-        Button exitButton = (Button) dialog.findViewById(R.id.button2);
+        Button dialogButton = (Button) dialog.findViewById(R.id.btnAgree);
+        Button exitButton = (Button) dialog.findViewById(R.id.btnExit);
         dialogButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -470,7 +471,7 @@ public class MainActivity extends AppCompatActivity
     private void updateHashrate(String speed) {
         String speedstr = speed;
         if (speed.equals("n/a")) {
-            speedstr = "Computing...";
+            speedstr = getResources().getString(R.string.processing);
             tvHs.setVisibility(View.INVISIBLE);
             tvSpeed.setTextColor(getResources().getColor(R.color.c_grey));
             tvSpeed.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
@@ -487,10 +488,20 @@ public class MainActivity extends AppCompatActivity
     private Spannable formatLogOutputText(String text) {
         Spannable textSpan = new SpannableString(text);
 
-        String formatText = "speed";
+        String formatText = "accepted";
         if(text.contains(formatText)) {
             int i = text.indexOf(formatText);
-            textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_blue)), i, i + formatText.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            int imax = i+ formatText.length();
+            textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_blue)), i, imax, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            textSpan.setSpan(new StyleSpan(android.graphics.Typeface.BOLD), i, imax, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+        }
+
+        formatText = "speed";
+        if(text.contains(formatText)) {
+            int i = text.indexOf(formatText);
+            int imax = i+ formatText.length();
+            textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_green)), i, i + formatText.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            textSpan.setSpan(new StyleSpan(android.graphics.Typeface.BOLD), i, imax, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
         }
 
         return textSpan;
@@ -552,8 +563,8 @@ public class MainActivity extends AppCompatActivity
                                     tvLog.setText("");
                                     tvAccepted.setText("0");
                                     updateHashrate("n/a");
-                                    tvCPUTemperature.setText("0");
-                                    tvBatteryTemperature.setText("0");
+                                    tvCPUTemperature.setText("n/a");
+                                    tvBatteryTemperature.setText("n/a");
                                 }
                                 clearMinerLog = true;
                                 Toast.makeText(contextOfApplication, "Miner Started", Toast.LENGTH_SHORT).show();
@@ -570,8 +581,13 @@ public class MainActivity extends AppCompatActivity
                             tvAccepted.setText(Integer.toString(accepted));
 
                             updateHashrate(speed);
-                            tvCPUTemperature.setText(Tools.getCurrentCPUTemperature());
-                            tvBatteryTemperature.setText(String.format("%.1f", batteryTemp));
+
+                            float cpuTemp = Tools.getCurrentCPUTemperature();
+                            if (cpuTemp != 0.0)
+                                tvCPUTemperature.setText(String.format("%.1f", cpuTemp));
+
+                            if (batteryTemp != 0.0)
+                                tvBatteryTemperature.setText(String.format("%.1f", batteryTemp));
                         });
                     }
                 });
@@ -615,7 +631,7 @@ public class MainActivity extends AppCompatActivity
                 buttonDrawable = DrawableCompat.wrap(buttonDrawable);
                 DrawableCompat.setTint(buttonDrawable, getResources().getColor(R.color.bg_lighter));
                 minerBtnR.setBackground(buttonDrawable);
-                minerBtnP.setTextColor(getResources().getColor(R.color.c_white));
+                minerBtnR.setTextColor(getResources().getColor(R.color.c_white));
 
                 minerBtnR.setEnabled(true);
             }
@@ -638,7 +654,7 @@ public class MainActivity extends AppCompatActivity
                 buttonDrawable = DrawableCompat.wrap(buttonDrawable);
                 DrawableCompat.setTint(buttonDrawable, getResources().getColor(R.color.bg_black));
                 minerBtnR.setBackground(buttonDrawable);
-                minerBtnP.setTextColor(getResources().getColor(R.color.c_black));
+                minerBtnR.setTextColor(getResources().getColor(R.color.c_black));
 
                 minerBtnR.setEnabled(false);
             }

@@ -33,7 +33,7 @@
                         android:text="@string/pool"
                         android:textColor="@color/c_white"
                         android:textStyle="bold"
-                        android:textSize="20sp" />
+                        android:textSize="18sp" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -106,7 +106,7 @@
                         android:text="@string/wallet"
                         android:textColor="@color/c_white"
                         android:textStyle="bold"
-                        android:textSize="20sp" />
+                        android:textSize="18sp" />
 
                         <android.support.v7.widget.AppCompatEditText
                             android:id="@+id/username"
@@ -121,7 +121,7 @@
                     <android.support.design.button.MaterialButton
                         android:id="@+id/buttonQrReader"
                         android:layout_width="wrap_content"
-                        android:layout_height="50dp"
+                        android:layout_height="48dp"
                         android:backgroundTint="@color/bg_lighter"
                         android:gravity="center"
                         android:layout_gravity="end"
@@ -129,7 +129,7 @@
                         android:textSize="14dp"
                         android:textColor="@color/c_lighter"
                         android:textAllCaps="false"
-                        app:icon="@drawable/ic_qr_scan"
+                        app:icon="@drawable/ic_qrcode"
                         app:cornerRadius="5dp" />
 
                     <android.support.v7.widget.AppCompatTextView
@@ -141,7 +141,7 @@
                         android:text="@string/cpu"
                         android:textColor="@color/c_white"
                         android:textStyle="bold"
-                        android:textSize="20sp" />
+                        android:textSize="18sp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -216,7 +216,6 @@
 
             </LinearLayout>
 
-
         </ScrollView>
 
     </LinearLayout>
@@ -229,15 +228,16 @@
         <android.support.design.button.MaterialButton
             android:id="@+id/saveSettings"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
+            android:layout_height="55dp"
+            android:layout_marginTop="10dp"
             android:layout_marginLeft="15dp"
             android:layout_marginRight="15dp"
             android:layout_marginBottom="15dp"
             android:backgroundTint="@color/bg_blue"
             android:text="Save"
-            android:textSize="20dp"
+            android:textSize="15dp"
             android:textAllCaps="false"
-            app:cornerRadius="5dp" />
+            app:cornerRadius="25dp" />
 
     </RelativeLayout>
 

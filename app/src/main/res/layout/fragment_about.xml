@@ -12,7 +12,7 @@
         android:text="General"
         android:textColor="@color/c_white"
         android:textStyle="bold"
-        android:textSize="24sp" />
+        android:textSize="18sp" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -139,19 +139,19 @@
             android:layout_height="wrap_content"
             android:text="System Info"
             android:layout_gravity="start"
-            android:textSize="24sp"
+            android:textSize="18sp"
             android:textColor="@color/c_white"
             android:textStyle="bold"
             android:layout_marginTop="15sp"/>
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="250dp">
 
             <android.support.v7.widget.AppCompatTextView
                 android:id="@+id/systemInfo"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="250dp"
                 android:text=""
                 android:textSize="14sp" />
 
@@ -162,7 +162,7 @@
             android:layout_height="wrap_content"
             android:text="Credits"
             android:layout_gravity="start"
-            android:textSize="24sp"
+            android:textSize="18sp"
             android:textColor="@color/c_white"
             android:textStyle="bold"
             android:layout_marginTop="0sp"/>

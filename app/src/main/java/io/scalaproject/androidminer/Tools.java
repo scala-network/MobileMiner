@@ -275,7 +275,7 @@ public class Tools {
         return abiString.toLowerCase().trim();
     }
 
-    static public String getCurrentCPUTemperature() {
+    static public float getCurrentCPUTemperature() {
         String file = readFile("/sys/devices/virtual/thermal/thermal_zone0/temp", '\n',new byte[4096]);
         float output = 0.0f;
         if (file != null) {
@@ -285,7 +285,7 @@ public class Tools {
             output = output / 1000;
         }
 
-        return String.format("%.1f", output);
+        return output;
     }
 
     static public String readFile(String file, char endChar,byte[] mBuffer) {

@@ -38,7 +38,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="start"
-                        android:text="@string/settings"
+                        android:text="@string/miner"
                         android:textSize="22sp"
                         android:textColor="@color/c_white"
                         android:textStyle="bold" />
@@ -75,12 +75,22 @@
             android:paddingRight="15dp"
             android:layout_marginBottom="7dp"/>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@drawable/corner_radius_lighter"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginBottom="10dp"
+        android:paddingTop="5dp"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingLeft="15dp"
-            android:paddingRight="15dp">
+            android:orientation="horizontal">
 
             <android.support.v7.widget.AppCompatTextView
                 android:id="@+id/hashrate"
@@ -114,8 +124,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:paddingLeft="15dp"
-            android:paddingRight="15dp"
             android:layout_marginBottom="3dp">
 
             <android.support.v7.widget.AppCompatTextView
@@ -134,7 +142,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="10dp"
-                android:textColor="@color/c_grey"
+                android:textColor="@color/c_lighter"
                 android:textSize="15dp"
                 android:text="@string/hpers" />
 
@@ -160,8 +168,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:paddingLeft="15dp"
-        android:paddingRight="15dp"
         android:layout_marginBottom="10dp">
 
         <android.support.v7.widget.AppCompatTextView
@@ -170,6 +176,7 @@
             android:layout_marginRight="5dp"
             android:textColor="@color/c_grey"
             android:text="@string/cputemp"
+            android:textStyle="bold"
             android:textSize="15sp"/>
 
         <android.support.v7.widget.AppCompatTextView
@@ -199,6 +206,7 @@
             android:layout_marginRight="5dp"
             android:textColor="@color/c_grey"
             android:text="@string/batterytemp"
+            android:textStyle="bold"
             android:textSize="15sp"/>
 
         <android.support.v7.widget.AppCompatTextView
@@ -220,11 +228,11 @@
 
         <ImageView
             android:id="@+id/arrowdown"
-            android:layout_width="18dp"
-            android:layout_height="18dp"
-            android:layout_marginTop="2dp"
+            android:layout_width="14dp"
+            android:layout_height="14dp"
+            android:layout_marginTop="1dp"
             android:layout_marginLeft="25dp"
-            android:gravity="center_vertical"
+            android:layout_gravity="center"
             android:src="@drawable/ic_arrow_down" />
 
         <android.support.v7.widget.AppCompatTextView
@@ -238,6 +246,8 @@
 
     </LinearLayout>
 
+    </LinearLayout>
+
         <ScrollView
             android:id="@+id/outputScrollView"
             android:layout_width="match_parent"
@@ -248,7 +258,8 @@
             android:layout_weight="1"
             android:paddingLeft="15dp"
             android:paddingRight="15dp"
-            android:background="@color/bg_black">
+            android:textSize="13dp"
+            android:background="@drawable/corner_radius_black">
 
             <android.support.v7.widget.AppCompatTextView
                 android:id="@+id/output"
@@ -257,7 +268,7 @@
                 android:layout_marginTop="10dp"
                 android:text=""
                 android:textSize="13dp"
-                android:textColor="@color/c_lighter"
+                android:textColor="@color/c_grey"
                 android:background="@color/bg_black"
                 android:visibility="visible" />
 
@@ -272,18 +283,18 @@
             android:paddingBottom="15dp">
 
             <android.support.design.button.MaterialButton
-                android:id="@+id/minerBtnH"
-                android:layout_width="wrap_content"
-                android:layout_height="45dp"
-                android:backgroundTint="@color/bg_black"
+                android:id="@+id/start"
+                android:layout_width="125dp"
+                android:layout_height="55dp"
+                android:backgroundTint="@color/bg_blue"
                 android:backgroundTintMode="src_over"
                 android:paddingLeft="15dp"
                 android:paddingRight="15dp"
-                android:text="@string/hashrate"
+                android:text="@string/start"
                 android:textSize="15dp"
                 android:textAllCaps="false"
-                android:textColor="@color/c_black"
-                app:cornerRadius="5dp"
+                android:textColor="@color/c_white"
+                app:cornerRadius="25dp"
                 app:layout_constraintBaseline_toBaselineOf="parent"
                 app:layout_constraintRight_toRightOf="parent" />
 
@@ -291,10 +302,22 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:paddingLeft="0dp"
-                android:paddingRight="0dp"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintBaseline_toBaselineOf="parent">
+
+                <android.support.design.button.MaterialButton
+                    android:id="@+id/minerBtnH"
+                    android:layout_width="45dp"
+                    android:layout_height="45dp"
+                    android:insetLeft="2dp"
+                    android:insetRight="2dp"
+                    android:backgroundTint="@color/bg_black"
+                    android:backgroundTintMode="src_over"
+                    android:textSize="15dp"
+                    android:text="H"
+                    android:textColor="@color/c_black"
+                    android:enabled="false"
+                    app:cornerRadius="5dp" />
 
                 <android.support.design.button.MaterialButton
                     android:id="@+id/minerBtnP"
@@ -327,19 +350,6 @@
             </LinearLayout>
 
         </android.support.constraint.ConstraintLayout>
-
-        <android.support.design.button.MaterialButton
-            android:id="@+id/start"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            android:layout_marginBottom="15dp"
-            android:backgroundTint="@color/bg_blue"
-            android:text="@string/start"
-            android:textAllCaps="false"
-            android:textSize="20dp"
-            app:cornerRadius="5dp" />
 
     </LinearLayout>
 

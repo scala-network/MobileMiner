@@ -29,8 +29,10 @@
     <string name="about">About</string>
     <string name="pool">Pool</string>
     <string name="cpu">CPU</string>
-    <string name="wallet">Wallet</string>
-    <string name="scancode">Scan code</string>
+    <string name="wallet">Wallet Address</string>
+    <string name="scancode">Scan Code</string>
+    <string name="processing">Calculating...</string>
+    <string name="disclaimer">Disclaimer</string>
 
     <string name="websiteLink">&lt;a href=&quot;https://scalaproject.io&quot;&gt;scalaproject.io&lt;/a&gt;</string>
     <string name="githubLink">&lt;a href=&quot;https://github.com/scala-network/scala_android_miner/releases&quot;&gt;Scala Android Miner&lt;/a&gt;</string>
@@ -40,7 +42,7 @@
     <string name="MoneroMinerLink">&lt;a href=&quot;https://github.com/upost/MoneroMiner&quot;&gt;MoneroMiner&lt;/a&gt;</string>
     <string name="FontAwesomeLink">&lt;a href=&quot;https://fontawesome.com/license&quot;&gt;Font Awesome&lt;/a&gt;</string>
 
-    <string name="disclaimerText">Scala Miner is an open-source cryptocurrency miner to mine Scala under Android devices.\n\nRunning your CPU at a high setting for a prolonged duration may result in negative effects such as: battery drainage, slow response time, overheating, and may cause permanent damage to your device.\n\nWe recommend only using this software on low settings (below 50% of your available device threads and below 50% CPU Usage).\n\nBy using this application, you assume full responsibility for any damage that may be caused to your device, property or self by the Scala Miner.</string>
+    <string name="disclaimerText">Scala Miner is an open-source cryptocurrency miner for all latest Android devices.\n\nRunning your CPU at a high intensity for a prolonged duration may result in negative effects such as: battery drainage, slow response time, overheating, and may cause permanent damage to your device.\n\nWe recommend only using this software on low settings.\n\nBy using this application, you assume full responsibility for any damage that may be caused to your device, property or self by the Scala Miner.</string>
     <string-array name="threadNumbers">
         <item>1</item>
         <item>2</item>
