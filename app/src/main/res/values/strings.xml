@@ -23,6 +23,14 @@
     <string name="cooling">Cooling</string>
     <string name="cancel">Cancel</string>
     <string name="hashrate">Hashrate</string>
+    <string name="miner">Miner</string>
+    <string name="stats">Details</string>
+    <string name="settings">Settings</string>
+    <string name="about">About</string>
+    <string name="pool">Pool</string>
+    <string name="cpu">CPU</string>
+    <string name="wallet">Wallet</string>
+    <string name="scancode">Scan code</string>
 
     <string name="websiteLink">&lt;a href=&quot;https://scalaproject.io&quot;&gt;scalaproject.io&lt;/a&gt;</string>
     <string name="githubLink">&lt;a href=&quot;https://github.com/scala-network/scala_android_miner/releases&quot;&gt;Scala Android Miner&lt;/a&gt;</string>

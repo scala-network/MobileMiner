@@ -25,96 +25,15 @@
                     android:layout_margin="15dp"
                     android:orientation="vertical">
 
-                    <LinearLayout
+                    <android.support.v7.widget.AppCompatTextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:orientation="vertical">
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="horizontal">
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginRight="5dp"
-                                    android:textColor="@color/c_grey"
-                                    android:textSize="14dp"
-                                    android:text="Cores" />
-
-                                <TextView
-                                    android:id="@+id/cpus"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginLeft="5dp"
-                                    android:textColor="@color/c_lighter"
-                                    android:text="" />
-
-                            </LinearLayout>
-
-                            <NumberPicker
-                                android:theme="@style/DefaultNumberPickerTheme"
-                                android:id="@+id/cores"
-                                android:layout_width="75dp"
-                                android:layout_height="75dp" />
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:orientation="vertical">
-
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:textColor="@color/c_grey"
-                                android:textSize="14dp"
-                                android:text="Threads/Core" />
-
-                            <NumberPicker
-                                android:theme="@style/DefaultNumberPickerTheme"
-                                android:id="@+id/threads"
-                                android:layout_width="75dp"
-                                android:layout_height="75dp" />
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:orientation="vertical">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:textColor="@color/c_grey"
-                                android:textSize="14dp"
-                                android:text="Intensity" />
-
-                            <NumberPicker
-                                android:theme="@style/DefaultNumberPickerTheme"
-                                android:id="@+id/intensity"
-                                android:layout_width="75dp"
-                                android:layout_height="75dp" />
-
-                        </LinearLayout>
-
-                    </LinearLayout>
-
-                    <Space
-                        android:layout_width="match_parent"
-                        android:layout_height="26dp" />
+                        android:layout_marginBottom="5dp"
+                        android:gravity="start"
+                        android:text="@string/pool"
+                        android:textColor="@color/c_white"
+                        android:textStyle="bold"
+                        android:textSize="20sp" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -138,7 +57,6 @@
                             android:layout_weight="0"
                             android:orientation="horizontal">
 
-
                             <android.support.v7.widget.AppCompatEditText
                                 android:id="@+id/pool"
                                 android:layout_width="match_parent"
@@ -150,7 +68,6 @@
                                 android:textColor="@color/c_lighter"
                                 android:textColorHint="@color/c_black"
                                 android:textSize="14dp" />
-
 
                             <android.support.v7.widget.AppCompatEditText
                                 android:id="@+id/port"
@@ -166,36 +83,7 @@
                                 android:textColorHint="@color/c_black"
                                 android:textSize="14dp" />
 
-
                         </LinearLayout>
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <android.support.v7.widget.AppCompatEditText
-                            android:id="@+id/username"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight = "1"
-                            android:hint="Your wallet address"
-                            android:textColorHint="@color/c_black"
-                            android:textColor="@color/c_lighter"
-                            android:textSize="14sp" />
-
-                        <Button
-                            android:id="@+id/buttonQrReader"
-                            android:layout_width="27dp"
-                            android:layout_height = "wrap_content"
-                            android:paddingLeft="2dp"
-                            android:paddingTop="2dp"
-                            android:paddingRight="0dp"
-                            android:paddingBottom="2dp"
-                            app:backgroundTint="#00000000"
-                            app:icon="@drawable/ic_qr_scan" />
 
                     </LinearLayout>
 
@@ -209,18 +97,122 @@
                         android:textColor="@color/c_lighter"
                         android:textSize="14dp" />
 
+                    <android.support.v7.widget.AppCompatTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginBottom="5dp"
+                        android:gravity="start"
+                        android:text="@string/wallet"
+                        android:textColor="@color/c_white"
+                        android:textStyle="bold"
+                        android:textSize="20sp" />
+
+                        <android.support.v7.widget.AppCompatEditText
+                            android:id="@+id/username"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight = "1"
+                            android:hint="Your wallet address"
+                            android:textColorHint="@color/c_black"
+                            android:textColor="@color/c_lighter"
+                            android:textSize="14sp" />
+
+                    <android.support.design.button.MaterialButton
+                        android:id="@+id/buttonQrReader"
+                        android:layout_width="wrap_content"
+                        android:layout_height="50dp"
+                        android:backgroundTint="@color/bg_lighter"
+                        android:gravity="center"
+                        android:layout_gravity="end"
+                        android:text="@string/scancode"
+                        android:textSize="14dp"
+                        android:textColor="@color/c_lighter"
+                        android:textAllCaps="false"
+                        app:icon="@drawable/ic_qr_scan"
+                        app:cornerRadius="5dp" />
+
+                    <android.support.v7.widget.AppCompatTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginBottom="5dp"
+                        android:gravity="start"
+                        android:text="@string/cpu"
+                        android:textColor="@color/c_white"
+                        android:textStyle="bold"
+                        android:textSize="20sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0"
+                    android:layout_marginBottom="5dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="5dp"
+                        android:textColor="@color/c_grey"
+                        android:textSize="14dp"
+                        android:text="Cores" />
+
+                    <Space
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"/>
+
+                    <TextView
+                        android:id="@+id/coresnb"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="1dp"
+                        android:textColor="@color/c_lighter"
+                        android:textSize="14dp"
+                        android:text="1" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="1dp"
+                        android:textColor="@color/c_lighter"
+                        android:textSize="14dp"
+                        android:text="/" />
+
+                    <TextView
+                        android:id="@+id/coresmax"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/c_lighter"
+                        android:textSize="14dp"
+                        android:text="#" />
+
+                </LinearLayout>
+
+                    <SeekBar
+                        android:id="@+id/seekbarcores"
+                        android:paddingStart="0dp"
+                        android:paddingEnd="0dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:maxHeight="40dp"
+                        android:minHeight="40dp"
+                        android:min="1"
+                        android:max="8"
+                        android:progress="1"
+                        android:thumbOffset="0dp"
+                        android:progressDrawable="@drawable/seekbar_ruler"
+                        android:thumb="@drawable/seekbar_slider"
+                        />
+
                     <android.support.v7.widget.AppCompatCheckBox
                         android:id="@+id/chkPauseOnBattery"
+                        android:layout_marginTop="5dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textColor="@color/c_lighter"
                         android:text="Pause mining on battery power" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="horizontal"></LinearLayout>
-
 
             </LinearLayout>
 

@@ -29,6 +29,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -36,6 +37,7 @@ import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.AdapterView;
 import android.widget.NumberPicker;
 import java.util.Arrays;
+import android.widget.SeekBar.OnSeekBarChangeListener;
 
 import io.scalaproject.androidminer.api.PoolItem;
 import io.scalaproject.androidminer.api.PoolManager;
@@ -57,10 +59,8 @@ public class SettingsFragment extends Fragment {
         EditText edPool, edPort;
         Spinner spPool;
 
-
-        NumberPicker npCores;
-        NumberPicker npThreads;
-        NumberPicker npIntensity;
+        SeekBar sbCores;
+        TextView tvCoresNb, tvCoresMax;
 
         PoolSpinAdapter poolAdapter;
 
@@ -79,9 +79,9 @@ public class SettingsFragment extends Fragment {
 
         spPool = view.findViewById(R.id.poolSpinner);
 
-        npCores = view.findViewById(R.id.cores);
-        npThreads = view.findViewById(R.id.threads);
-        npIntensity = view.findViewById(R.id.intensity);
+        sbCores = view.findViewById(R.id.seekbarcores);
+        tvCoresNb = view.findViewById(R.id.coresnb);
+        tvCoresMax = view.findViewById(R.id.coresmax);
 
         chkPauseOnBattery = view.findViewById(R.id.chkPauseOnBattery);
 
@@ -95,39 +95,21 @@ public class SettingsFragment extends Fragment {
         spPool.setAdapter(poolAdapter);
 
         int cores = Runtime.getRuntime().availableProcessors();
+
         // write suggested cores usage into editText
         int suggested = cores / 2;
         if (suggested == 0) suggested = 1;
-        ((TextView) view.findViewById(R.id.cpus)).setText(String.format("(%d)", cores));
 
-        npCores.setMinValue(1);
-        npCores.setMaxValue(cores);
-        npCores.setWrapSelectorWheel(true);
-
-        npThreads.setMinValue(1);
-        npThreads.setMaxValue(3);
-        npThreads.setWrapSelectorWheel(true);
-
-        npIntensity.setMinValue(1);
-        npIntensity.setMaxValue(5);
-        npIntensity.setWrapSelectorWheel(true);
+        sbCores.setMax(cores);
+        tvCoresMax.setText(Integer.toString(cores));
 
         if (Config.read("cores").equals("") == true) {
-            npCores.setValue(suggested);
+            sbCores.setProgress(suggested);
+            tvCoresNb.setText(Integer.toString(suggested));
         } else {
-            npCores.setValue(Integer.parseInt(Config.read("cores")));
-        }
-
-        if (Config.read("threads").equals("") == true) {
-            npThreads.setValue(1);
-        } else {
-            npThreads.setValue(Integer.parseInt(Config.read("threads")));
-        }
-
-        if (Config.read("intensity").equals("") == true) {
-            npIntensity.setValue(1);
-        } else {
-            npIntensity.setValue(Integer.parseInt(Config.read("intensity")));
+            int corenb = Integer.parseInt(Config.read("cores"));
+            sbCores.setProgress(corenb);
+            tvCoresNb.setText(Integer.toString(corenb));
         }
 
         boolean checkStatus = (Config.read("pauseonbattery").equals("1") == true);
@@ -143,6 +125,23 @@ public class SettingsFragment extends Fragment {
         if (Config.read("pass").equals("") == false) {
             edPass.setText(Config.read("pass"));
         }
+
+        sbCores.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                // Auto-generated method stub
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                // Auto-generated method stub
+            }
+
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                tvCoresNb.setText(Integer.toString(progress));
+            }
+        });
 
         spPool.setOnItemSelectedListener(new OnItemSelectedListener() {
 
@@ -166,13 +165,11 @@ public class SettingsFragment extends Fragment {
                     edPool.setText(poolItem.getPool());
                     edPort.setText(poolItem.getPort());
                 }
-
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> adapter) {
             }
-
         });
 
         PoolItem poolItem = null;
@@ -256,9 +253,9 @@ public class SettingsFragment extends Fragment {
                 }
 
                 Config.write("selected_pool", Integer.toString(selectedPosition));
-                Config.write("cores", Integer.toString(npCores.getValue()));
-                Config.write("threads", Integer.toString(npThreads.getValue()));
-                Config.write("intensity", Integer.toString(npIntensity.getValue()));
+                Config.write("cores", Integer.toString(sbCores.getProgress()));
+                Config.write("threads", "1"); // Default value
+                Config.write("intensity", "1"); // Default value
                 Config.write("pauseonbattery", (chkPauseOnBattery.isChecked() ? "1" : "0"));
 
                 Config.write("init", "1");
@@ -310,14 +307,13 @@ public class SettingsFragment extends Fragment {
             }
         });
 
-
         qrButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (Build.VERSION.SDK_INT >= 23) {
                     if (ContextCompat.checkSelfPermission(appContext, Manifest.permission.CAMERA)
                             == PackageManager.PERMISSION_DENIED) {
-                        Toast.makeText(appContext,"Camera Permission Denied",Toast.LENGTH_LONG);
+                        Toast.makeText(appContext,"Camera Permission Denied", Toast.LENGTH_LONG);
                         return;
                     }
                 }
@@ -326,7 +322,7 @@ public class SettingsFragment extends Fragment {
                     Intent intent = new Intent(appContext, QrCodeScannerActivity.class);
                     startActivity(intent);
                 }catch (Exception e) {
-                    Toast.makeText(appContext,e.getMessage(),Toast.LENGTH_LONG);
+                    Toast.makeText(appContext,e.getMessage(), Toast.LENGTH_LONG);
                 }
 
             }
@@ -389,7 +385,5 @@ public class SettingsFragment extends Fragment {
             label.setPadding(5, 10, 5, 10);
             return label;
         }
-
     }
-
 }

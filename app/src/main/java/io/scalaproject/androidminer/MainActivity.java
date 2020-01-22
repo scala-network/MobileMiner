@@ -57,6 +57,7 @@ import android.view.View;
 import android.widget.Button;
 import java.io.BufferedReader;
 import android.widget.ScrollView;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.support.design.widget.NavigationView;
@@ -157,9 +158,6 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        tvTitle = (TextView) findViewById(R.id.title);
-        //getSupportActionBar().setCustomView(tvTitle);
-
         drawer = findViewById(R.id.drawer_layout);
 
         NavigationView navigationView = findViewById(R.id.nav_view);
@@ -174,6 +172,8 @@ public class MainActivity extends AppCompatActivity
         enableButtons(false);
 
         // wire views
+        tvTitle = findViewById(R.id.title);
+
         tvLog = findViewById(R.id.output);
         tvSpeed = findViewById(R.id.speed);
         tvHs = findViewById(R.id.hs);
@@ -190,7 +190,7 @@ public class MainActivity extends AppCompatActivity
         updateUI();
 
         if (!Arrays.asList(Config.SUPPORTED_ARCHITECTURES).contains(Tools.getABI())) {
-            Toast.makeText(this, "Unsupported architecture, yours is " + Tools.getABI(), Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Your architecture is not supported: " + Tools.getABI(), Toast.LENGTH_LONG).show();
             validArchitecture = false;
         }
 
@@ -250,7 +250,7 @@ public class MainActivity extends AppCompatActivity
 
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment_stats,"fragment_stats").commit();
 
-                tvTitle.setText("Details");
+                tvTitle.setText(R.string.stats);
 
                 break;
             case R.id.about:
@@ -262,7 +262,7 @@ public class MainActivity extends AppCompatActivity
 
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment_about,"fragment_about").commit();
 
-                tvTitle.setText("About");
+                tvTitle.setText(R.string.about);
 
                 break;
             case R.id.miner: //Main view
@@ -272,7 +272,7 @@ public class MainActivity extends AppCompatActivity
                     }
                 }
 
-                tvTitle.setText("Miner");
+                tvTitle.setText(R.string.miner);
 
                 updateUI();
                 break;
@@ -283,7 +283,7 @@ public class MainActivity extends AppCompatActivity
                 }
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, settings_fragment,"settings_fragment").commit();
 
-                tvTitle.setText("Settings");
+                tvTitle.setText(R.string.settings);
 
                 break;
 
