@@ -42,8 +42,8 @@ public class StatsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_stats, container, false);
-        data = (TextView) view.findViewById(R.id.fetchdata);
-        dataNetwork = (TextView) view.findViewById(R.id.fetchdataNetwork);
+        /*data = (TextView) view.findViewById(R.id.fetchdata);
+        dataNetwork = (TextView) view.findViewById(R.id.fetchdataNetwork);*/
         tvStatCheckOnline = view.findViewById(R.id.statCheckOnline);
 
         statsListener = new ProviderListenerInterface(){
@@ -71,8 +71,8 @@ public class StatsFragment extends Fragment {
 
                 }
 
-                data.setText(dataParsedAddress);
-                dataNetwork.setText(dataParsedNetwork);
+                //data.setText(dataParsedAddress);
+                //dataNetwork.setText(dataParsedNetwork);
 
                 String wallet = Config.read("address");
                 String statsUrl = pm.getStatsURL();
@@ -102,13 +102,13 @@ public class StatsFragment extends Fragment {
         PoolItem pi = PoolManager.getSelectedPool();
 
         if(Config.read("address").equals("")) {
-            data.setText("Wallet address is empty");
+            //data.setText("Wallet address is empty");
             tvStatCheckOnline.setText("");
             return false;
         }
 
         if (Config.read("init").equals("1") == false || pi == null) {
-            data.setText("Start mining to view stats");
+            //data.setText("Start mining to view stats");
             tvStatCheckOnline.setText("");
             return false;
         }
