@@ -39,7 +39,7 @@
                         android:layout_height="wrap_content"
                         android:gravity="start"
                         android:text="@string/miner"
-                        android:textSize="22sp"
+                        android:textSize="18sp"
                         android:textColor="@color/c_white"
                         android:textStyle="bold" />
 
