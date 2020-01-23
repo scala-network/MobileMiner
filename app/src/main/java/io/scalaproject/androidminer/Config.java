@@ -101,7 +101,4 @@ public class Config {
             "https://xla.pool.gntl.co.uk"
         );
     }
-
-
-
 }

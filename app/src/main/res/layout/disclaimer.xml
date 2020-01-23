@@ -19,13 +19,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dip"
-                android:layout_marginBottom="5dp"
                 android:layout_marginLeft="15dip"
                 android:gravity="start"
                 android:text="@string/disclaimer"
                 android:textColor="@color/c_white"
                 android:textStyle="bold"
-                android:textSize="26sp" />
+                android:textSize="18sp" />
 
             <android.support.v7.widget.AppCompatTextView
                 android:id="@+id/textView1"
@@ -36,6 +35,7 @@
                 android:layout_marginRight="15dip"
                 android:layout_marginTop="10dip"
                 android:textColor="@color/c_lighter"
+                android:textSize="14sp"
                 android:text="@string/disclaimerText" />
 
             <LinearLayout
@@ -58,6 +58,8 @@
                     android:backgroundTint="@color/bg_lighter"
                     android:text="Exit"
                     android:textAllCaps="false"
+                    android:textSize="14sp"
+                    android:textColor="@color/c_white"
                     app:cornerRadius="25dp" />
 
                 <android.support.design.button.MaterialButton
@@ -69,6 +71,8 @@
                     android:backgroundTint="@color/bg_blue"
                     android:text="I Agree"
                     android:textAllCaps="false"
+                    android:textSize="14sp"
+                    android:textColor="@color/c_white"
                     app:cornerRadius="25dp" />
 
             </LinearLayout>

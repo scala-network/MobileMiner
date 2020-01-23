@@ -31,9 +31,9 @@ public final class PoolManager {
         if (idx.equals("") || mPools.size() < index) {
             return null;
         }
+
         return mPools.get(index);
     }
-
 
     static public PoolItem getSelectedPool() {
         String sp = Config.read("selected_pool");

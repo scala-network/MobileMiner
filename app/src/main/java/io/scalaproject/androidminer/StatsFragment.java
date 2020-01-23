@@ -5,13 +5,12 @@
 package io.scalaproject.androidminer;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.text.Html;
-import android.text.method.LinkMovementMethod;
-import android.util.Log;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,9 +44,10 @@ public class StatsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_stats, container, false);
-        /*data = (TextView) view.findViewById(R.id.fetchdata);
-        dataNetwork = (TextView) view.findViewById(R.id.fetchdataNetwork);*/
+
         bStatCheckOnline = view.findViewById(R.id.checkstatsonline);
+
+        checkValidState();
 
         statsListener = new ProviderListenerInterface(){
             public void onStatsChange(Data d) {
@@ -56,33 +56,69 @@ public class StatsFragment extends Fragment {
                 }
                 PoolItem pm = PoolManager.getSelectedPool();
 
-                //@@TODO UI FOR DATA TO BE INSERTED
-                String dataParsedNetwork = "Block Height: " + d.getNetwork().lastBlockHeight + "\n"
-                    + "Difficulty: " + d.getNetwork().difficulty + "\n"
-                    + "Last Block: " + d.getNetwork().lastBlockTime + "\n"
-                    + "Last Reward: " + d.getNetwork().lastRewardAmount;
+                String wallet = Config.read("address");
 
-                String dataParsedAddress = "Hashrate: " + d.getMiner().hashrate + "\n"
-                        + "Balance: " + d.getMiner().balance + "\n"
-                        + "Paid: " + d.getMiner().paid + "\n"
-                        + "Last Share: " + d.getMiner().lastShare + "\n";
+                // Network
+                TextView tvNetworkHashrate = view.findViewById(R.id.hashratenetwork);
+                tvNetworkHashrate.setText(d.getNetwork().hashrate);
 
-                if(pm.getPoolType() == 1) {
+                TextView tvNetworkDifficulty = view.findViewById(R.id.difficultypool);
+                tvNetworkDifficulty.setText(d.getNetwork().difficulty);
+
+                TextView tvNetworkBlocks = view.findViewById(R.id.lastblocknetwork);
+                tvNetworkBlocks.setText(d.getNetwork().lastBlockTime);
+
+                TextView tvNetworkHeight = view.findViewById(R.id.height);
+                tvNetworkHeight.setText(d.getNetwork().lastBlockHeight);
+
+                TextView tvNetworkRewards = view.findViewById(R.id.rewards);
+                tvNetworkRewards.setText(d.getNetwork().lastRewardAmount);
+
+                // Pool
+                TextView tvPoolURL = view.findViewById(R.id.poolurl);
+                tvPoolURL.setText(pm.getPool());
+
+                TextView tvPoolHashrate = view.findViewById(R.id.hashratepool);
+                tvPoolHashrate.setText(d.getPool().hashrate);
+
+                TextView tvPoolDifficulty = view.findViewById(R.id.difficultypool);
+                tvPoolDifficulty.setText(d.getPool().difficulty);
+
+                TextView tvPoolBlocks = view.findViewById(R.id.lastblockpool);
+                tvPoolBlocks.setText(d.getPool().lastBlockTime);
+
+                TextView tvPoolLastBlock = view.findViewById(R.id.blockspool);
+                tvPoolLastBlock.setText(d.getPool().blocks);
+
+                // Address
+                String addresspretty = wallet.substring(0, 7) + "..." + wallet.substring(wallet.length() - 7);
+                TextView tvWalletAddress = view.findViewById(R.id.walletaddress);
+                tvWalletAddress.setText(addresspretty);
+
+                TextView tvAddressHashrate = view.findViewById(R.id.hashrateminer);
+                tvAddressHashrate.setText(d.getMiner().hashrate);
+
+                TextView tvAddressLastShare = view.findViewById(R.id.lastshareminer);
+                tvAddressLastShare.setText(d.getMiner().lastShare);
+
+                TextView tvAddressBlocks = view.findViewById(R.id.blocksminedminer);
+                tvAddressBlocks.setText(d.getMiner().blocks);
+
+                TextView tvBalance = view.findViewById(R.id.balance);
+                tvBalance.setText(d.getMiner().balance);
+
+                TextView tvPaid = view.findViewById(R.id.paid);
+                tvPaid.setText(d.getMiner().paid);
+
+                /*if(pm.getPoolType() == 1) {
                     dataParsedAddress+= "Shares Accepted: " + d.getMiner().blocks;
                 } else {
                     dataParsedAddress+= "Blocks Found: " + d.getMiner().blocks;
 
-                }
+                }*/
 
-                //data.setText(dataParsedAddress);
-                //dataNetwork.setText(dataParsedNetwork);
-
-                String wallet = Config.read("address");
                 String statsUrl = pm.getStatsURL();
                 String statsUrlWallet = statsUrl + "?wallet=" + wallet;
-
-                //tvStatCheckOnline.setText(Html.fromHtml("<a href=\"" + statsUrl + "?wallet=" + wallet + "\">Check Stats Online</a>"));
-                //tvStatCheckOnline.setMovementMethod(LinkMovementMethod.getInstance());
 
                 bStatCheckOnline.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -110,29 +146,50 @@ public class StatsFragment extends Fragment {
         return view;
     }
 
+    private void enableOnlineStats(boolean enable) {
+        Drawable buttonDrawable = bStatCheckOnline.getBackground();
+        buttonDrawable = DrawableCompat.wrap(buttonDrawable);
+        buttonDrawable = bStatCheckOnline.getBackground();
+        buttonDrawable = DrawableCompat.wrap(buttonDrawable);
+
+        bStatCheckOnline.setEnabled(enable);
+
+        if (enable) {
+            DrawableCompat.setTint(buttonDrawable, getResources().getColor(R.color.bg_lighter));
+            bStatCheckOnline.setBackground(buttonDrawable);
+            bStatCheckOnline.setTextColor(getResources().getColor(R.color.c_white));
+        }
+        else {
+            DrawableCompat.setTint(buttonDrawable, getResources().getColor(R.color.bg_black));
+            bStatCheckOnline.setBackground(buttonDrawable);
+            bStatCheckOnline.setTextColor(getResources().getColor(R.color.c_black));
+        }
+
+    }
+
     private boolean checkValidState() {
 
         PoolItem pi = PoolManager.getSelectedPool();
 
         if(Config.read("address").equals("")) {
-            //data.setText("Wallet address is empty");
-            bStatCheckOnline.setEnabled(false);
+            Toast.makeText(getContext(),"Wallet address is empty", Toast.LENGTH_LONG);
+            enableOnlineStats(false);
             return false;
         }
 
         if (Config.read("init").equals("1") == false || pi == null) {
-            //data.setText("Start mining to view stats");
-            bStatCheckOnline.setEnabled(false);
+            Toast.makeText(getContext(),"Start mining to view statistics", Toast.LENGTH_LONG);
+            enableOnlineStats(false);
             return false;
         }
 
         if (pi.getPoolType() == 0) {
-            Toast.makeText(getContext(),"Stats are not available for custom pools",Toast.LENGTH_LONG);
-            bStatCheckOnline.setEnabled(false);
+            Toast.makeText(getContext(),"Statistics are not available for custom pools", Toast.LENGTH_LONG);
+            enableOnlineStats(false);
             return false;
         }
 
-        bStatCheckOnline.setEnabled(true);
+        enableOnlineStats(true);
 
         return true;
     }

@@ -20,11 +20,13 @@
             <android.support.v7.widget.AppCompatTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/cpu"
+                android:text="@string/network"
                 android:gravity="start"
                 android:textColor="@color/c_white"
-                android:textStyle="bold"
-                android:textSize="14sp" />
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="5dp"
+                android:textSize="14sp"
+                android:textStyle="bold" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -44,7 +46,7 @@
                     android:layout_weight="1"/>
 
                 <android.support.v7.widget.AppCompatTextView
-                    android:id="@+id/hashratecpu"
+                    android:id="@+id/hashratenetwork"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="5dp"
@@ -57,7 +59,7 @@
                 <android.support.v7.widget.AppCompatTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="H/s"
+                    android:text="kH/s"
                     android:textColor="@color/c_white"
                     android:textSize="14sp"
                     android:textStyle="bold"/>
@@ -72,7 +74,7 @@
                 <android.support.v7.widget.AppCompatTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/threads"
+                    android:text="@string/difficulty"
                     android:textColor="@color/c_grey"
                     android:textSize="14sp" />
 
@@ -82,7 +84,7 @@
                     android:layout_weight="1"/>
 
                 <android.support.v7.widget.AppCompatTextView
-                    android:id="@+id/threads"
+                    android:id="@+id/difficultynetwork"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="end"
@@ -100,7 +102,7 @@
                 <android.support.v7.widget.AppCompatTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/hugepages"
+                    android:text="@string/lastblock"
                     android:textColor="@color/c_grey"
                     android:textSize="14sp" />
 
@@ -110,7 +112,7 @@
                     android:layout_weight="1"/>
 
                 <android.support.v7.widget.AppCompatTextView
-                    android:id="@+id/hugepages"
+                    android:id="@+id/lastblocknetwork"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="end"
@@ -129,7 +131,7 @@
                 <android.support.v7.widget.AppCompatTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/memory"
+                    android:text="@string/blockheight"
                     android:textColor="@color/c_grey"
                     android:textSize="14sp"/>
 
@@ -139,7 +141,7 @@
                     android:layout_weight="1"/>
 
                 <android.support.v7.widget.AppCompatTextView
-                    android:id="@+id/memory"
+                    android:id="@+id/height"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="end"
@@ -157,7 +159,7 @@
                 <android.support.v7.widget.AppCompatTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/scratchpad"
+                    android:text="@string/blockreward"
                     android:textColor="@color/c_grey"
                     android:textSize="14sp" />
 
@@ -167,7 +169,7 @@
                     android:layout_weight="1"/>
 
                 <android.support.v7.widget.AppCompatTextView
-                    android:id="@+id/scratchpad"
+                    android:id="@+id/rewards"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="end"
@@ -177,15 +179,39 @@
 
             </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="5dp"
+            android:orientation="horizontal">
+
             <android.support.v7.widget.AppCompatTextView
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/pool"
                 android:gravity="start"
                 android:textColor="@color/c_white"
-                android:layout_marginTop="15dp"
                 android:textStyle="bold"
                 android:textSize="14sp" />
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"/>
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/poolurl"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="5dp"
+                android:gravity="end"
+                android:text="n/a"
+                android:textSize="12sp"
+                android:textColor="@color/c_black"
+                android:textStyle="italic" />
+
+        </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -281,25 +307,16 @@
 
             </LinearLayout>
 
-            <android.support.v7.widget.AppCompatTextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/network"
-                android:gravity="start"
-                android:textColor="@color/c_white"
-                android:layout_marginTop="15dp"
-                android:textSize="14sp"
-                android:textStyle="bold" />
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
                 android:orientation="horizontal">
 
                 <android.support.v7.widget.AppCompatTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/hashrate"
+                    android:text="@string/blocksmined"
                     android:textColor="@color/c_grey"
                     android:textSize="14sp" />
 
@@ -309,7 +326,69 @@
                     android:layout_weight="1"/>
 
                 <android.support.v7.widget.AppCompatTextView
-                    android:id="@+id/hashratenetwork"
+                    android:id="@+id/blockspool"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="end"
+                    android:text="n/a"
+                    android:textSize="14sp"
+                    android:textColor="@color/c_lighter" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="5dp"
+                android:orientation="horizontal">
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/address"
+                    android:gravity="start"
+                    android:textColor="@color/c_white"
+                    android:textStyle="bold"
+                    android:textSize="14sp" />
+
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"/>
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/walletaddress"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="5dp"
+                    android:gravity="end"
+                    android:text="n/a"
+                    android:textSize="12sp"
+                    android:textColor="@color/c_black"
+                    android:textStyle="italic" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/totalhashrate"
+                    android:textColor="@color/c_grey"
+                    android:textSize="14sp" />
+
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"/>
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/hashrateminer"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="5dp"
@@ -322,7 +401,110 @@
                 <android.support.v7.widget.AppCompatTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="kH/s"
+                    android:text="H/s"
+                    android:textColor="@color/c_white"
+                    android:textSize="14sp"
+                    android:textStyle="bold"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/lastshareminertitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/lastshare"
+                    android:textColor="@color/c_grey"
+                    android:textSize="14sp" />
+
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"/>
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/lastshareminer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="end"
+                    android:text="n/a"
+                    android:textSize="14sp"
+                    android:textColor="@color/c_lighter" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/blocksmined"
+                    android:textColor="@color/c_grey"
+                    android:textSize="14sp" />
+
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"/>
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/blocksminedminer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="end"
+                    android:text="n/a"
+                    android:textSize="14sp"
+                    android:textColor="@color/c_lighter" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="10dp"
+                android:id="@+id/view1"
+                android:layout_width="fill_parent"
+                android:layout_height="0.7dp"
+                android:background="@color/c_black"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/balance"
+                    android:textColor="@color/c_grey"
+                    android:textSize="14sp" />
+
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"/>
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/balance"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="5dp"
+                    android:gravity="end"
+                    android:text="n/a"
+                    android:textSize="14sp"
+                    android:textColor="@color/c_lighter" />
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="XLA"
                     android:textColor="@color/c_white"
                     android:textSize="14sp"
                     android:textStyle="bold"/>
@@ -337,8 +519,9 @@
                 <android.support.v7.widget.AppCompatTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/difficulty"
-                    android:textColor="@color/c_grey"
+                    android:text="@string/paid"
+                    android:textColor="@color/c_white"
+                    android:textStyle="bold"
                     android:textSize="14sp" />
 
                 <Space
@@ -347,98 +530,23 @@
                     android:layout_weight="1"/>
 
                 <android.support.v7.widget.AppCompatTextView
-                    android:id="@+id/difficultynetwork"
+                    android:id="@+id/paid"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginRight="5dp"
                     android:gravity="end"
                     android:text="n/a"
                     android:textSize="14sp"
-                    android:textColor="@color/c_lighter" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                    android:textColor="@color/c_green"
+                    android:textStyle="bold" />
 
                 <android.support.v7.widget.AppCompatTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/hugepages"
-                    android:textColor="@color/c_grey"
-                    android:textSize="14sp" />
-
-                <Space
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"/>
-
-                <android.support.v7.widget.AppCompatTextView
-                    android:id="@+id/lastblocknetwork"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="end"
-                    android:text="n/a"
+                    android:text="XLA"
+                    android:textColor="@color/c_green"
                     android:textSize="14sp"
-                    android:textColor="@color/c_lighter" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="10dp">
-
-                <android.support.v7.widget.AppCompatTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/height"
-                    android:textColor="@color/c_grey"
-                    android:textSize="14sp"/>
-
-                <Space
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"/>
-
-                <android.support.v7.widget.AppCompatTextView
-                    android:id="@+id/height"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="end"
-                    android:text="n/a"
-                    android:textSize="14sp"
-                    android:textColor="@color/c_lighter" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <android.support.v7.widget.AppCompatTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/rewards"
-                    android:textColor="@color/c_grey"
-                    android:textSize="14sp" />
-
-                <Space
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"/>
-
-                <android.support.v7.widget.AppCompatTextView
-                    android:id="@+id/rewards"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="end"
-                    android:text="n/a"
-                    android:textSize="14sp"
-                    android:textColor="@color/c_lighter" />
+                    android:textStyle="bold"/>
 
             </LinearLayout>
 
@@ -459,10 +567,10 @@
             android:layout_marginLeft="15dp"
             android:layout_marginRight="15dp"
             android:layout_marginBottom="15dp"
-            android:backgroundTint="@color/bg_lighter"
+            android:backgroundTint="@color/bg_black"
             android:text="@string/checkstatsonline"
             android:textSize="14dp"
-            android:textColor="@color/c_white"
+            android:textColor="@color/c_black"
             android:textAllCaps="false"
             app:cornerRadius="25dp" />
 

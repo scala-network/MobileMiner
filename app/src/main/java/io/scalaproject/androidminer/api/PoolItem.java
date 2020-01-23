@@ -18,7 +18,7 @@ public class PoolItem {
     private String mKey = "";
     private int mPoolType = 0;
 
-    public  PoolItem(String key, String pool,String port, int poolType, String poolUrl) {
+    public  PoolItem(String key, String pool, String port, int poolType, String poolUrl) {
         this.mKey = key;
         this.mPool = pool;
         this.mPort = port;
@@ -45,7 +45,7 @@ public class PoolItem {
         }
     }
 
-    public PoolItem(String key, String pool,String port, int poolType, String poolUrl,  String apiUrl,String statsUrl, String startUrl) {
+    public PoolItem(String key, String pool, String port, int poolType, String poolUrl, String apiUrl, String statsUrl, String startUrl) {
         this.mKey = key;
         this.mPool = pool;
         this.mPoolUrl = poolUrl;

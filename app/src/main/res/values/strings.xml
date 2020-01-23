@@ -46,6 +46,17 @@
     <string name="height">Height</string>
     <string name="rewards">Rewards</string>
     <string name="checkstatsonline">View statistics online</string>
+    <string name="lastshare">Last Share</string>
+    <string name="blocksmined">Blocks Found</string>
+    <string name="blockheight">Block Height</string>
+    <string name="blockreward">Block Reward</string>
+    <string name="totalhashrate">Total Hashrate</string>
+    <string name="emptyaddress">Wallet address is empty</string>
+    <string name="startmining">Start mining to view statisticss</string>
+    <string name="notavailablecustompool">Statistics are not available for custom pools</string>
+    <string name="address">Address</string>
+    <string name="balance">Balance</string>
+    <string name="paid">Paid</string>
 
     <string name="websiteLink">&lt;a href=&quot;https://scalaproject.io&quot;&gt;scalaproject.io&lt;/a&gt;</string>
     <string name="githubLink">&lt;a href=&quot;https://github.com/scala-network/scala_android_miner/releases&quot;&gt;Scala Android Miner&lt;/a&gt;</string>

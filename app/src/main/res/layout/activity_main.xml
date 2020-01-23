@@ -129,7 +129,7 @@
             <android.support.v7.widget.AppCompatTextView
                 android:id="@+id/speed"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginRight="5dp"
                 android:gravity="start"
                 android:text="0"
