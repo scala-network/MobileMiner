@@ -64,7 +64,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingLeft="15dp"
-            android:paddingTop="5dp"
+            android:paddingTop="0dp"
             android:paddingRight="15dp" />
 
         <LinearLayout
@@ -73,7 +73,7 @@
             android:orientation="horizontal"
             android:paddingLeft="15dp"
             android:paddingRight="15dp"
-            android:layout_marginBottom="7dp"/>
+            android:layout_marginBottom="10dp"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -85,7 +85,8 @@
         android:layout_marginBottom="10dp"
         android:paddingTop="5dp"
         android:paddingLeft="15dp"
-        android:paddingRight="15dp">
+        android:paddingRight="15dp"
+        android:paddingBottom="7dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -98,7 +99,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="start"
                 android:text="@string/hashrate"
-                android:textSize="16sp"
+                android:textSize="14sp"
                 android:textColor="@color/c_white"
                 android:textStyle="bold" />
 
@@ -111,10 +112,9 @@
                 android:id="@+id/shares"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="5dp"
                 android:gravity="end"
                 android:text="Shares"
-                android:textSize="16sp"
+                android:textSize="14sp"
                 android:textColor="@color/c_white"
                 android:textStyle="bold" />
 
@@ -142,8 +142,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="10dp"
-                android:textColor="@color/c_lighter"
-                android:textSize="15dp"
+                android:textColor="@color/c_grey"
+                android:textSize="14dp"
                 android:text="@string/hpers" />
 
             <Space
@@ -155,7 +155,6 @@
                 android:id="@+id/accepted"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="5dp"
                 android:gravity="end"
                 android:text="0"
                 android:textStyle="bold"
@@ -164,11 +163,17 @@
 
         </LinearLayout>
 
+        <View
+            android:layout_marginBottom="5dp"
+            android:id="@+id/view1"
+            android:layout_width="fill_parent"
+            android:layout_height="0.7dp"
+            android:background="@color/c_black"/>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginBottom="10dp">
+        android:orientation="horizontal">
 
         <android.support.v7.widget.AppCompatTextView
             android:layout_width="wrap_content"
@@ -176,8 +181,7 @@
             android:layout_marginRight="5dp"
             android:textColor="@color/c_grey"
             android:text="@string/cputemp"
-            android:textStyle="bold"
-            android:textSize="15sp"/>
+            android:textSize="14sp"/>
 
         <android.support.v7.widget.AppCompatTextView
             android:id="@+id/cputemp"
@@ -186,7 +190,7 @@
             android:layout_marginRight="3dp"
             android:gravity="end"
             android:text="n/a"
-            android:textSize="15sp"
+            android:textSize="14sp"
             android:textColor="@color/c_lighter" />
 
         <android.support.v7.widget.AppCompatTextView
@@ -194,10 +198,10 @@
             android:layout_height="wrap_content"
             android:textColor="@color/c_lighter"
             android:text="@string/celsius"
-            android:textSize="15sp"/>
+            android:textSize="14sp"/>
 
         <Space
-            android:layout_width="20dp"
+            android:layout_width="15dp"
             android:layout_height="match_parent" />
 
         <android.support.v7.widget.AppCompatTextView
@@ -206,8 +210,7 @@
             android:layout_marginRight="5dp"
             android:textColor="@color/c_grey"
             android:text="@string/batterytemp"
-            android:textStyle="bold"
-            android:textSize="15sp"/>
+            android:textSize="14sp"/>
 
         <android.support.v7.widget.AppCompatTextView
             android:id="@+id/batterytemp"
@@ -216,7 +219,7 @@
             android:layout_marginRight="3dp"
             android:gravity="end"
             android:text="n/a"
-            android:textSize="15sp"
+            android:textSize="14sp"
             android:textColor="@color/c_lighter" />
 
         <android.support.v7.widget.AppCompatTextView
@@ -224,14 +227,14 @@
             android:layout_height="wrap_content"
             android:textColor="@color/c_lighter"
             android:text="@string/celsius"
-            android:textSize="15sp"/>
+            android:textSize="14sp"/>
 
         <ImageView
             android:id="@+id/arrowdown"
             android:layout_width="14dp"
             android:layout_height="14dp"
             android:layout_marginTop="1dp"
-            android:layout_marginLeft="25dp"
+            android:layout_marginLeft="15dp"
             android:layout_gravity="center"
             android:src="@drawable/ic_arrow_down" />
 
@@ -242,7 +245,7 @@
             android:layout_marginLeft="5dp"
             android:textColor="@color/c_blue"
             android:text="@string/cooling"
-            android:textSize="15sp"/>
+            android:textSize="14sp"/>
 
     </LinearLayout>
 
@@ -258,7 +261,7 @@
             android:layout_weight="1"
             android:paddingLeft="15dp"
             android:paddingRight="15dp"
-            android:textSize="13dp"
+            android:textSize="12dp"
             android:background="@drawable/corner_radius_black">
 
             <android.support.v7.widget.AppCompatTextView
@@ -267,7 +270,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:text=""
-                android:textSize="13dp"
+                android:textSize="12dp"
                 android:textColor="@color/c_grey"
                 android:background="@color/bg_black"
                 android:visibility="visible" />
@@ -291,7 +294,7 @@
                 android:paddingLeft="15dp"
                 android:paddingRight="15dp"
                 android:text="@string/start"
-                android:textSize="15dp"
+                android:textSize="14dp"
                 android:textAllCaps="false"
                 android:textColor="@color/c_white"
                 app:cornerRadius="25dp"
@@ -313,7 +316,7 @@
                     android:insetRight="2dp"
                     android:backgroundTint="@color/bg_black"
                     android:backgroundTintMode="src_over"
-                    android:textSize="15dp"
+                    android:textSize="14dp"
                     android:text="H"
                     android:textColor="@color/c_black"
                     android:enabled="false"
@@ -327,7 +330,7 @@
                     android:insetRight="2dp"
                     android:backgroundTint="@color/bg_black"
                     android:backgroundTintMode="src_over"
-                    android:textSize="15dp"
+                    android:textSize="14dp"
                     android:text="P"
                     android:textColor="@color/c_black"
                     android:enabled="false"
@@ -341,7 +344,7 @@
                     android:insetRight="2dp"
                     android:backgroundTint="@color/bg_black"
                     android:backgroundTintMode="src_over"
-                    android:textSize="15dp"
+                    android:textSize="14dp"
                     android:text="R"
                     android:enabled="false"
                     android:textColor="@color/c_black"

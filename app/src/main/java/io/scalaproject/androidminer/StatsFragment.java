@@ -4,6 +4,8 @@
 
 package io.scalaproject.androidminer;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -13,6 +15,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,7 +32,7 @@ public class StatsFragment extends Fragment {
 
     private static final String LOG_TAG = "MiningSvc";
 
-    private TextView tvStatCheckOnline;
+    private Button bStatCheckOnline;
 
     private TextView data;
     private TextView dataNetwork;
@@ -44,7 +47,7 @@ public class StatsFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_stats, container, false);
         /*data = (TextView) view.findViewById(R.id.fetchdata);
         dataNetwork = (TextView) view.findViewById(R.id.fetchdataNetwork);*/
-        tvStatCheckOnline = view.findViewById(R.id.statCheckOnline);
+        bStatCheckOnline = view.findViewById(R.id.checkstatsonline);
 
         statsListener = new ProviderListenerInterface(){
             public void onStatsChange(Data d) {
@@ -76,9 +79,19 @@ public class StatsFragment extends Fragment {
 
                 String wallet = Config.read("address");
                 String statsUrl = pm.getStatsURL();
+                String statsUrlWallet = statsUrl + "?wallet=" + wallet;
 
-                tvStatCheckOnline.setText(Html.fromHtml("<a href=\"" + statsUrl + "?wallet=" + wallet + "\">Check Stats Online</a>"));
-                tvStatCheckOnline.setMovementMethod(LinkMovementMethod.getInstance());
+                //tvStatCheckOnline.setText(Html.fromHtml("<a href=\"" + statsUrl + "?wallet=" + wallet + "\">Check Stats Online</a>"));
+                //tvStatCheckOnline.setMovementMethod(LinkMovementMethod.getInstance());
+
+                bStatCheckOnline.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Uri uri = Uri.parse(statsUrlWallet);
+                        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                        startActivity(intent);
+                    }
+                });
             }
         };
 
@@ -103,21 +116,23 @@ public class StatsFragment extends Fragment {
 
         if(Config.read("address").equals("")) {
             //data.setText("Wallet address is empty");
-            tvStatCheckOnline.setText("");
+            bStatCheckOnline.setEnabled(false);
             return false;
         }
 
         if (Config.read("init").equals("1") == false || pi == null) {
             //data.setText("Start mining to view stats");
-            tvStatCheckOnline.setText("");
+            bStatCheckOnline.setEnabled(false);
             return false;
         }
 
         if (pi.getPoolType() == 0) {
             Toast.makeText(getContext(),"Stats are not available for custom pools",Toast.LENGTH_LONG);
-            tvStatCheckOnline.setText("");
+            bStatCheckOnline.setEnabled(false);
             return false;
         }
+
+        bStatCheckOnline.setEnabled(true);
 
         return true;
     }

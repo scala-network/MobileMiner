@@ -24,7 +24,7 @@
     <string name="cancel">Cancel</string>
     <string name="hashrate">Hashrate</string>
     <string name="miner">Miner</string>
-    <string name="stats">Stats</string>
+    <string name="stats">Statistics</string>
     <string name="settings">Settings</string>
     <string name="about">About</string>
     <string name="pool">Pool</string>
@@ -45,6 +45,7 @@
     <string name="network">Network</string>
     <string name="height">Height</string>
     <string name="rewards">Rewards</string>
+    <string name="checkstatsonline">View statistics online</string>
 
     <string name="websiteLink">&lt;a href=&quot;https://scalaproject.io&quot;&gt;scalaproject.io&lt;/a&gt;</string>
     <string name="githubLink">&lt;a href=&quot;https://github.com/scala-network/scala_android_miner/releases&quot;&gt;Scala Android Miner&lt;/a&gt;</string>

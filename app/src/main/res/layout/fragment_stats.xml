@@ -2,11 +2,12 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/bg_grey">
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -14,109 +15,7 @@
             android:orientation="vertical"
             android:layout_marginLeft="15dp"
             android:layout_marginRight="15dp"
-            android:layout_marginTop="5dp">
-
-            <android.support.v7.widget.AppCompatTextView
-                android:id="@+id/statCheckOnline"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp"
-                android:textColor="@color/c_blue"
-                android:textColorLink="@color/c_blue"
-                android:gravity="start"/>
-
-            <android.support.v7.widget.AppCompatTextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/shares"
-                android:gravity="start"
-                android:textColor="@color/c_white"
-                android:textSize="18sp" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <android.support.v7.widget.AppCompatTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/accepted"
-                android:textColor="@color/c_grey"
-                android:textSize="14sp" />
-
-            <Space
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"/>
-
-            <android.support.v7.widget.AppCompatTextView
-                android:id="@+id/accepted"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="end"
-                android:text="n/a"
-                android:textSize="14sp"
-                android:textColor="@color/c_blue"
-                android:textStyle="bold" />
-
-        </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <android.support.v7.widget.AppCompatTextView
-                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/invalid"
-                    android:textColor="@color/c_grey"
-                    android:textSize="14sp" />
-
-                <Space
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"/>
-
-                <android.support.v7.widget.AppCompatTextView
-                    android:id="@+id/invalid"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="end"
-                    android:text="n/a"
-                    android:textSize="14sp"
-                    android:textColor="@color/c_lighter" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <android.support.v7.widget.AppCompatTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/last"
-                    android:textColor="@color/c_grey"
-                    android:textSize="14sp" />
-
-                <Space
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"/>
-
-                <android.support.v7.widget.AppCompatTextView
-                    android:id="@+id/last"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="end"
-                    android:text="n/a"
-                    android:textSize="14sp"
-                    android:textColor="@color/c_lighter" />
-
-            </LinearLayout>
+            android:layout_marginTop="15dp">
 
             <android.support.v7.widget.AppCompatTextView
                 android:layout_width="match_parent"
@@ -124,8 +23,8 @@
                 android:text="@string/cpu"
                 android:gravity="start"
                 android:textColor="@color/c_white"
-                android:layout_marginTop="15dp"
-                android:textSize="18sp" />
+                android:textStyle="bold"
+                android:textSize="14sp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -285,7 +184,8 @@
                 android:gravity="start"
                 android:textColor="@color/c_white"
                 android:layout_marginTop="15dp"
-                android:textSize="18sp" />
+                android:textStyle="bold"
+                android:textSize="14sp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -381,35 +281,6 @@
 
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="10dp">
-
-                <android.support.v7.widget.AppCompatTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/nextpayout"
-                    android:textColor="@color/c_grey"
-                    android:textSize="14sp"/>
-
-                <Space
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"/>
-
-                <android.support.v7.widget.AppCompatTextView
-                    android:id="@+id/nextpayout"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="end"
-                    android:text="n/a"
-                    android:textSize="14sp"
-                    android:textColor="@color/c_lighter" />
-
-            </LinearLayout>
-
             <android.support.v7.widget.AppCompatTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -417,7 +288,8 @@
                 android:gravity="start"
                 android:textColor="@color/c_white"
                 android:layout_marginTop="15dp"
-                android:textSize="18sp" />
+                android:textSize="14sp"
+                android:textStyle="bold" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -573,5 +445,27 @@
         </LinearLayout>
 
     </ScrollView>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true">
+
+        <android.support.design.button.MaterialButton
+            android:id="@+id/checkstatsonline"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginBottom="15dp"
+            android:backgroundTint="@color/bg_lighter"
+            android:text="@string/checkstatsonline"
+            android:textSize="14dp"
+            android:textColor="@color/c_white"
+            android:textAllCaps="false"
+            app:cornerRadius="25dp" />
+
+    </RelativeLayout>
 
 </RelativeLayout>

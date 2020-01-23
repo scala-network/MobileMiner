@@ -42,6 +42,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dip"
+                android:layout_marginBottom="10dip"
+                android:layout_marginRight="15dip"
                 android:orientation="horizontal">
 
                 <View
