@@ -45,8 +45,9 @@ public class CryptonoteNodejsPool extends ProviderAbstract {
             mBlockData.getNetwork().difficulty = getReadableHashRateString(joStatsNetwork.optLong("difficulty"));
             mBlockData.getNetwork().lastBlockTime = pTime.format(new Date(joStatsNetwork.optLong("timestamp") * 1000));
             mBlockData.getNetwork().lastRewardAmount = parseCurrency(joStatsNetwork.optString("reward", "0"), coinUnits, denominationUnit, symbol);
-        }
-        catch (JSONException e) {
+            mBlockData.getPool().minPayout = joStatsConfig.optString("minPaymentThreshold");
+
+        } catch (JSONException e) {
             Log.i(LOG_TAG, "NETWORK\n"+e.toString());
             e.printStackTrace();
         }

@@ -254,9 +254,7 @@ public class MainActivity extends AppCompatActivity
                 tvBalance.setText(balance);
 
                 TextView tvPaymentThreshold = findViewById(R.id.payoutthreshold);
-                // @@TODO Retrieve payment threshold from pool settings
-                //String threshold = d.getMiner().threshold
-                String threshold = "100";
+                String threshold = d.getPool().minPayout;
                 tvPaymentThreshold.setText(threshold);
 
                 float fBalance = Utils.convertStringToFloat(balance);

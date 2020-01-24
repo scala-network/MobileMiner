@@ -6,7 +6,8 @@ public final class Data {
     }
 
     public class Pool{
-        public String lastBlockHeight,difficulty,lastRewardAmount,lastBlockTime, hashrate, blocks;
+        public String lastBlockHeight,difficulty,lastRewardAmount,
+                lastBlockTime, hashrate, blocks, minPayout;
     }
 
     public class Miner{

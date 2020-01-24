@@ -31,11 +31,13 @@ public final class NodejsPool extends ProviderAbstract {
                 String aurl = mPoolItem.getApiUrl() + "/config";
                 String aConfig  = Json.fetch(aurl);
 
-            JSONObject joStatss =  new JSONObject(aConfig);
+                JSONObject joStatss =  new JSONObject(aConfig);
 
-            mBlockData.getCoin().name = joStatss.optString("coin_code").toUpperCase();
-            mBlockData.getCoin().units = tryParseLong(joStatss.optString("coin_code"), 1L);
-            mBlockData.getCoin().symbol = joStatss.optString("symbol");
+                mBlockData.getCoin().name = joStatss.optString("coin_code").toUpperCase();
+                mBlockData.getCoin().units = tryParseLong(joStatss.optString("coin_code"), 1L);
+                mBlockData.getCoin().symbol = joStatss.optString("symbol");
+                mBlockData.getPool().minPayout = joStatss.optString("min_wallet_payout");
+
             } catch (Exception e) {
 
             }
