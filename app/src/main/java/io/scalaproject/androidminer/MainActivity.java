@@ -37,6 +37,7 @@ import android.net.Uri;
 import android.os.BatteryManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.IBinder;
 import android.os.PowerManager;
 import android.support.annotation.NonNull;
@@ -94,7 +95,7 @@ public class MainActivity extends AppCompatActivity
     private boolean payoutEnabled;
     protected ProviderListenerInterface payoutListener;
     Timer timer;
-    long delay = 30000L;
+    long delay = 180000L;
 
     private boolean validArchitecture = true;
 
@@ -242,8 +243,9 @@ public class MainActivity extends AppCompatActivity
                 }
 
                 PoolItem pi = PoolManager.getSelectedPool();
-
-                String wallet = Config.read("address");
+                if(pi == null) {
+                    return;
+                }
 
                 // Payout
                 TextView tvTotalHashrate = findViewById(R.id.totalhashrate);
@@ -259,16 +261,15 @@ public class MainActivity extends AppCompatActivity
 
                 float fBalance = Utils.convertStringToFloat(balance);
                 float fThreshold = Utils.convertStringToFloat(threshold);
-                String percentage = getResources().getString(R.string.na);
-                float fpercentage = Float.valueOf(0);
+                float fpercentage = 0;
+                String percentage = String.valueOf(fpercentage);
 
                 if(fBalance > 0 && fThreshold > 0) {
                     pbPayout.setProgress(Math.round(fBalance));
                     pbPayout.setMax(Math.round(fThreshold));
-                    fpercentage = fBalance / fThreshold * Float.valueOf(100);
-                    percentage = Integer.toString(Math.round(fpercentage));
-                }
-                else{
+                    fpercentage =(fBalance / fThreshold) * 100;
+                    percentage = String.valueOf(Math.round(fpercentage));
+                }else{
                     pbPayout.setProgress(0);
                     pbPayout.setMax(100);
                 }
@@ -279,11 +280,13 @@ public class MainActivity extends AppCompatActivity
         };
 
         //@@TODO: Retrieve pool stats at startup
-        /*ProviderAbstract api = pi.getInterface();
+        if(pi == null) {
+            return;
+        }
 
+        ProviderAbstract api = pi.getInterface();
         api.setPayoutChangeListener(payoutListener);
-        api.execute();*/
-
+        api.execute();
         repeatTask();
     }
 
@@ -319,13 +322,14 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void enablePayoutWidget() {
-        PoolItem pi = PoolManager.getSelectedPool();
 
         if(Config.read("address").equals("")) {
             llPayout.setVisibility(View.GONE);
             payoutEnabled = false;
             return;
         }
+
+        PoolItem pi = PoolManager.getSelectedPool();
 
         if (Config.read("init").equals("1") == false || pi == null) {
             llPayout.setVisibility(View.GONE);
@@ -355,7 +359,7 @@ public class MainActivity extends AppCompatActivity
         setStatusText(status);
 
         enablePayoutWidget();
-
+        appendLogOutputText("");
         //@@TODO Update AMYAC accordingly
         updateAmyac(false);
     }
@@ -646,7 +650,7 @@ public class MainActivity extends AppCompatActivity
         }
 
         if(!line.equals("")) {
-            String outputLog = line + System.lineSeparator();
+            String outputLog = line + System.getProperty("line.separator");
             tvLog.append(formatLogOutputText(outputLog));
             refresh = true;
         }

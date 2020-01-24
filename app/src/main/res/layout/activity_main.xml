@@ -336,16 +336,6 @@
                     android:textStyle="bold" />
 
                 <android.support.v7.widget.AppCompatTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="5dp"
-                    android:gravity="start"
-                    android:text="XLA"
-                    android:textSize="14sp"
-                    android:textColor="@color/c_lighter"
-                    android:textStyle="bold" />
-
-                <android.support.v7.widget.AppCompatTextView
                     android:id="@+id/percentage"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
