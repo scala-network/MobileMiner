@@ -33,6 +33,7 @@ import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.BatteryManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -53,6 +54,8 @@ import android.util.TypedValue;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -62,13 +65,18 @@ import android.text.Spannable;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /* FOR AMAYC Support */
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
 
-import io.scalaproject.androidminer.api.PoolItem;
+import io.scalaproject.androidminer.api.Data;
 import io.scalaproject.androidminer.api.PoolManager;
+import io.scalaproject.androidminer.api.PoolItem;
+import io.scalaproject.androidminer.api.ProviderAbstract;
+import io.scalaproject.androidminer.api.ProviderListenerInterface;
 
 import static android.os.PowerManager.PARTIAL_WAKE_LOCK;
 
@@ -80,6 +88,13 @@ public class MainActivity extends AppCompatActivity
     boolean accepted = false;
 
     private TextView tvSpeed, tvHs, tvAccepted, tvCPUTemperature, tvBatteryTemperature, tvLog, tvTitle;
+
+    private LinearLayout llPayout;
+    private ProgressBar pbPayout;
+    private boolean payoutEnabled;
+    protected ProviderListenerInterface payoutListener;
+    Timer timer;
+    long delay = 30000L;
 
     private boolean validArchitecture = true;
 
@@ -131,20 +146,25 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
+
         List<Fragment> frags = getSupportFragmentManager().getFragments();
-        for(int i = 0;i< frags.size();i++)
+        for(int i = 0; i< frags.size(); i++)
         Log.d(LOG_TAG,"This is the initial FRAG: "+ frags.get(i).toString());
+
         PoolItem pi = PoolManager.getSelectedPool();
+
         if (Config.read("address").equals("") || pi == null || pi.getPool().equals("") || pi.getPort().equals("")) {
             if (Build.VERSION.SDK_INT >= 23) {
                 if (checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
                     requestPermissions(new String[]{Manifest.permission.CAMERA}, 100);
                 }
             }
+
             SettingsFragment fragment = (SettingsFragment) getSupportFragmentManager().findFragmentByTag("settings_fragment");
             if(fragment != null) {
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment,"settings_fragment").commit();
-            } else {
+            }
+            else {
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new SettingsFragment(),"settings_fragment").commit();
             }
         }
@@ -165,7 +185,12 @@ public class MainActivity extends AppCompatActivity
 
         enableButtons(false);
 
-        // wire views
+        // Controls
+
+        payoutEnabled = true;
+        llPayout = (LinearLayout) findViewById(R.id.layoutpayout);
+        pbPayout = (ProgressBar) findViewById(R.id.progresspayout);
+
         tvTitle = findViewById(R.id.title);
 
         tvLog = findViewById(R.id.output);
@@ -209,13 +234,115 @@ public class MainActivity extends AppCompatActivity
                 sendInput("r");
             }
         });
+
+        payoutListener = new ProviderListenerInterface() {
+            public void onStatsChange(Data d) {
+                if (!payoutEnabled) {
+                    return;
+                }
+
+                PoolItem pi = PoolManager.getSelectedPool();
+
+                String wallet = Config.read("address");
+
+                // Payout
+                TextView tvTotalHashrate = findViewById(R.id.totalhashrate);
+                tvTotalHashrate.setText(d.getMiner().hashrate);
+
+                String balance = d.getMiner().balance;
+                TextView tvBalance = findViewById(R.id.balance);
+                tvBalance.setText(balance);
+
+                TextView tvPaymentThreshold = findViewById(R.id.payoutthreshold);
+                // @@TODO Retrieve payment threshold from pool settings
+                //String threshold = d.getMiner().threshold
+                String threshold = "100";
+                tvPaymentThreshold.setText(threshold);
+
+                float fBalance = Utils.convertStringToFloat(balance);
+                float fThreshold = Utils.convertStringToFloat(threshold);
+                String percentage = getResources().getString(R.string.na);
+                float fpercentage = Float.valueOf(0);
+
+                if(fBalance > 0 && fThreshold > 0) {
+                    pbPayout.setProgress(Math.round(fBalance));
+                    pbPayout.setMax(Math.round(fThreshold));
+                    fpercentage = fBalance / fThreshold * Float.valueOf(100);
+                    percentage = Integer.toString(Math.round(fpercentage));
+                }
+                else{
+                    pbPayout.setProgress(0);
+                    pbPayout.setMax(100);
+                }
+
+                TextView tvPercentage = findViewById(R.id.percentage);
+                tvPercentage.setText(percentage);
+            }
+        };
+
+        //@@TODO: Retrieve pool stats at startup
+        /*ProviderAbstract api = pi.getInterface();
+
+        api.setPayoutChangeListener(payoutListener);
+        api.execute();*/
+
+        repeatTask();
+    }
+
+    private void repeatTask() {
+        if (timer != null) {
+            timer.cancel();
+            timer.purge();
+            timer = null;
+        }
+
+        if (!payoutEnabled) {
+            return;
+        }
+
+        timer = new Timer("Timer");
+
+        TimerTask task = new TimerTask() {
+            public void run() {
+                ProviderAbstract process = PoolManager.getSelectedPool().getInterface();
+                process.setPayoutChangeListener(payoutListener);
+                process.execute();
+                repeatTask();
+            }
+        };
+
+        timer.schedule(task, delay);
     }
 
     private void setStatusText(String status) {
-
         if (status != null && !status.isEmpty() && !status.equals("")) {
             Toast.makeText(getApplicationContext(),status,Toast.LENGTH_SHORT);
         }
+    }
+
+    private void enablePayoutWidget() {
+        PoolItem pi = PoolManager.getSelectedPool();
+
+        if(Config.read("address").equals("")) {
+            llPayout.setVisibility(View.GONE);
+            payoutEnabled = false;
+            return;
+        }
+
+        if (Config.read("init").equals("1") == false || pi == null) {
+            llPayout.setVisibility(View.GONE);
+            payoutEnabled = false;
+            return;
+        }
+
+        if (pi.getPoolType() == 0) {
+            llPayout.setVisibility(View.GONE);
+            payoutEnabled = false;
+            return;
+        }
+
+        llPayout.setVisibility(View.VISIBLE);
+        payoutEnabled = true;
     }
 
     public void updateUI() {
@@ -228,6 +355,8 @@ public class MainActivity extends AppCompatActivity
         }
 
         setStatusText(status);
+
+        enablePayoutWidget();
 
         //@@TODO Update AMYAC accordingly
         updateAmyac(false);
@@ -369,12 +498,20 @@ public class MainActivity extends AppCompatActivity
             frag.updateAddress();
         }
         appendLogOutputText("");
+
+        repeatTask();
     }
 
     @Override
     protected void onPause() {
 
         super.onPause();
+
+        if (timer != null) {
+            timer.cancel();
+            timer.purge();
+            timer = null;
+        }
     }
 
     private void setMiningState(View view) {

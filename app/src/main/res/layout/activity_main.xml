@@ -251,6 +251,135 @@
 
     </LinearLayout>
 
+        <LinearLayout
+            android:id="@+id/layoutpayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/corner_radius_black"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginBottom="10dp"
+            android:paddingTop="5dp"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:visibility="visible"
+            android:paddingBottom="7dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="5dp"
+                    android:gravity="start"
+                    android:text="@string/total"
+                    android:textSize="14sp"
+                    android:textColor="@color/c_grey"
+                    android:textStyle="bold" />
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/totalhashrate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="3dp"
+                    android:gravity="start"
+                    android:text="@string/na"
+                    android:textSize="14sp"
+                    android:textColor="@color/c_lighter"
+                    android:textStyle="bold" />
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    android:text="H/s"
+                    android:textSize="14sp"
+                    android:textColor="@color/c_lighter" />
+
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"/>
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/balance"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="3dp"
+                    android:gravity="start"
+                    android:text="@string/na"
+                    android:textSize="14sp"
+                    android:textColor="@color/c_lighter"  />
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="3dp"
+                    android:gravity="start"
+                    android:text="/"
+                    android:textSize="14sp"
+                    android:textColor="@color/c_lighter"  />
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/payoutthreshold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="3dp"
+                    android:gravity="start"
+                    android:text="@string/na"
+                    android:textSize="14sp"
+                    android:textColor="@color/c_lighter"
+                    android:textStyle="bold" />
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="5dp"
+                    android:gravity="start"
+                    android:text="XLA"
+                    android:textSize="14sp"
+                    android:textColor="@color/c_lighter"
+                    android:textStyle="bold" />
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/percentage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    android:text="@string/na"
+                    android:textSize="14sp"
+                    android:textColor="@color/c_green"
+                    android:textStyle="bold" />
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    android:text="%"
+                    android:textSize="14sp"
+                    android:textColor="@color/c_green"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <ProgressBar
+                android:id="@+id/progresspayout"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="match_parent"
+                android:layout_height="5dp"
+                android:layout_marginTop="7dp"
+                android:layout_marginBottom="3dp"
+                android:max="100"
+                android:progress="0"
+                android:progressDrawable="@drawable/progressbar_rounded">
+            </ProgressBar>
+
+        </LinearLayout>
+
         <ScrollView
             android:id="@+id/outputScrollView"
             android:layout_width="match_parent"

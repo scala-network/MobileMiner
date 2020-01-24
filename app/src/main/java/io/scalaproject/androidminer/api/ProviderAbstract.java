@@ -15,7 +15,8 @@ public abstract class ProviderAbstract extends AsyncTask<Void, Void, Void> {
         return mBlockData;
     }
 
-    private ProviderListenerInterface listener = null;
+    private ProviderListenerInterface statslistener = null;
+    private ProviderListenerInterface payoutlistener = null;
 
     protected PoolItem mPoolItem;
 
@@ -23,36 +24,43 @@ public abstract class ProviderAbstract extends AsyncTask<Void, Void, Void> {
         mPoolItem = poolItem;
     }
 
-
     final public String getWalletAddress(){
         return Config.read("address");
     }
 
-
     final public void setStatsChangeListener(ProviderListenerInterface listener) {
-        if (this.listener != null) {
-            this.listener = null;
+        if (this.statslistener != null) {
+            this.statslistener = null;
         }
-        this.listener = listener;
+
+        this.statslistener = listener;
+    }
+
+    final public void setPayoutChangeListener(ProviderListenerInterface listener) {
+        if (this.payoutlistener != null) {
+            this.payoutlistener = null;
+        }
+
+        this.payoutlistener = listener;
     }
 
     @Override
     protected void onPostExecute(Void aVoid) {
         super.onPostExecute(aVoid);
 
-        if (listener != null){
-            listener.onStatsChange(mBlockData);
+        if (statslistener != null){
+            statslistener.onStatsChange(mBlockData);
+        }
+
+        if (payoutlistener != null){
+            payoutlistener.onStatsChange(mBlockData);
         }
     }
 
-
     abstract protected void onBackgroundFetchData();
-
 
     @Override
     protected Void doInBackground(Void... voids) {
-
-
         try {
             onBackgroundFetchData();
 
@@ -60,9 +68,6 @@ public abstract class ProviderAbstract extends AsyncTask<Void, Void, Void> {
 
         }
 
-
-
         return null;
     }
-
 }

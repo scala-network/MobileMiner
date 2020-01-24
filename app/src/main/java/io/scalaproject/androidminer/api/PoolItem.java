@@ -91,7 +91,6 @@ public class PoolItem {
             default:
                 break;
         }
-
     }
 
     public void setId(int id) {
@@ -178,7 +177,4 @@ public class PoolItem {
 
         return  mPoolInterface;
     }
-
-
-
 }

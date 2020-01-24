@@ -23,7 +23,6 @@ public final class NodejsPool extends ProviderAbstract {
         super(poolItem);
     }
 
-
     @Override
     protected void onBackgroundFetchData() {
 
@@ -42,8 +41,6 @@ public final class NodejsPool extends ProviderAbstract {
             }
         }
         PrettyTime pTime = new PrettyTime();
-
-
 //
 //
 //        long denominationUnit = mBlockData.getCoin().denominationUnit = tryParseLong(joStatsConfig.optString("denominationUnit"), 1L);
@@ -54,15 +51,12 @@ public final class NodejsPool extends ProviderAbstract {
 
             JSONObject joStats = new JSONObject(dataStatsNetwork);
 
-
-
             mBlockData.getNetwork().lastBlockHeight = joStats.optString("height");
             mBlockData.getNetwork().difficulty = joStats.optString("difficulty");
             mBlockData.getNetwork().lastBlockTime = pTime.format(new Date(joStats.optLong("ts") * 1000));
             mBlockData.getNetwork().lastRewardAmount =  parseCurrency(joStats.optString("value", "0"), 100, 100, "XLA");
-
-
-        } catch (JSONException e) {
+        }
+        catch (JSONException e) {
             Log.i(LOG_TAG, "NETWORK\n"+e.toString());
             e.printStackTrace();
         }
@@ -71,6 +65,7 @@ public final class NodejsPool extends ProviderAbstract {
         if(wallet.equals("")) {
             return;
         }
+
         String surl = mPoolItem.getApiUrl() + "/miner/" + getWalletAddress() +"/stats";
         try {
             String dataStatsNetwork  = Json.fetch(surl);
@@ -90,10 +85,10 @@ public final class NodejsPool extends ProviderAbstract {
             mBlockData.getMiner().paid = paid;
             mBlockData.getMiner().lastShare = lastShare;
             mBlockData.getMiner().blocks = blocks;
-        } catch (JSONException e) {
+        }
+        catch (JSONException e) {
             Log.i(LOG_TAG, "ADDRESS :" +surl+ "\n"+e.toString());
             e.printStackTrace();
         }
     }
-
 }

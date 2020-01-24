@@ -162,6 +162,7 @@ public class Tools {
             } catch (IOException e) {
             }
         }
+
         return isDirectory;
     }
 
@@ -175,7 +176,6 @@ public class Tools {
             if (f.isFile()) {
                 Log.i(LOG_TAG, f.getName());
             }
-
         }
     }
 
@@ -191,7 +191,6 @@ public class Tools {
                 Log.i(LOG_TAG, "Delete File: " + f.getName());
                 f.delete();
             }
-
         }
     }
 
@@ -211,7 +210,6 @@ public class Tools {
                 .replace("$urlport$", miningConfig.poolPort)
 
                 .replace("$cpuconfig$", miningConfig.cpuConfig);
-
 
         Log.i(LOG_TAG, "CONFIG: " + config);
 
@@ -252,9 +250,7 @@ public class Tools {
                         value = value.replaceAll("\\s+", " ");
 
                     output.put(key, value);
-
                 }
-
             }
 
             br.close();

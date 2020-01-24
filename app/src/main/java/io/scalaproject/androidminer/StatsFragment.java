@@ -54,9 +54,8 @@ public class StatsFragment extends Fragment {
                 if (!checkValidState()) {
                     return;
                 }
-                PoolItem pm = PoolManager.getSelectedPool();
 
-                String wallet = Config.read("address");
+                PoolItem pm = PoolManager.getSelectedPool();
 
                 // Network
                 TextView tvNetworkHashrate = view.findViewById(R.id.hashratenetwork);
@@ -91,12 +90,17 @@ public class StatsFragment extends Fragment {
                 tvPoolLastBlock.setText(d.getPool().blocks);
 
                 // Address
+                String wallet = Config.read("address");
                 String addresspretty = wallet.substring(0, 7) + "..." + wallet.substring(wallet.length() - 7);
+
                 TextView tvWalletAddress = view.findViewById(R.id.walletaddress);
                 tvWalletAddress.setText(addresspretty);
 
+                String sHashrate = d.getMiner().hashrate;
+                sHashrate.replace("H", "");
+                sHashrate.trim();
                 TextView tvAddressHashrate = view.findViewById(R.id.hashrateminer);
-                tvAddressHashrate.setText(d.getMiner().hashrate);
+                tvAddressHashrate.setText(sHashrate);
 
                 TextView tvAddressLastShare = view.findViewById(R.id.lastshareminer);
                 tvAddressLastShare.setText(d.getMiner().lastShare);
@@ -104,11 +108,17 @@ public class StatsFragment extends Fragment {
                 TextView tvAddressBlocks = view.findViewById(R.id.blocksminedminer);
                 tvAddressBlocks.setText(d.getMiner().blocks);
 
+                String sBalance = d.getMiner().balance;
+                sBalance.replace("XLA", "");
+                sBalance.trim();
                 TextView tvBalance = view.findViewById(R.id.balance);
-                tvBalance.setText(d.getMiner().balance);
+                tvBalance.setText(sBalance);
 
+                String sPaid = d.getMiner().balance;
+                sPaid.replace("XLA", "");
+                sPaid.trim();
                 TextView tvPaid = view.findViewById(R.id.paid);
-                tvPaid.setText(d.getMiner().paid);
+                tvPaid.setText(sPaid);
 
                 /*if(pm.getPoolType() == 1) {
                     dataParsedAddress+= "Shares Accepted: " + d.getMiner().blocks;
@@ -136,11 +146,11 @@ public class StatsFragment extends Fragment {
         }
 
         PoolItem pi = PoolManager.getSelectedPool();
-
         ProviderAbstract api = pi.getInterface();
 
         api.setStatsChangeListener(statsListener);
         api.execute();
+
         repeatTask();
 
         return view;
@@ -164,7 +174,6 @@ public class StatsFragment extends Fragment {
             bStatCheckOnline.setBackground(buttonDrawable);
             bStatCheckOnline.setTextColor(getResources().getColor(R.color.c_black));
         }
-
     }
 
     private boolean checkValidState() {
