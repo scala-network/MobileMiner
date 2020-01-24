@@ -6,7 +6,7 @@
     <color name="c_black">#697185</color>
     <color name="c_blue">#238bff</color>
     <color name="c_green">#2caf6e</color>
-    <color name="c_red">#ff470e</color>
+    <color name="c_red">#da2a2a</color>
     <color name="c_yellow">#eddd2c</color>
 
     <color name="colorSpinnerBackground">#961e1e1e</color>
@@ -14,7 +14,7 @@
 
     <color name="bg_blue">#238bff</color>
     <color name='bg_green'>#2a9f56</color>
-    <color name="bg_red">#ff470e</color>
+    <color name="bg_red">#da2a2a</color>
     <color name="bg_grey">#1e2832</color>
     <color name='bg_lighter'>#2d3746</color>
     <color name="bg_black">#191e26</color>

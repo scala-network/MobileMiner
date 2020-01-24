@@ -248,8 +248,11 @@ public class MainActivity extends AppCompatActivity
                 }
 
                 // Payout
+                String hashrate = d.getMiner().hashrate;
+                hashrate = hashrate.replace("H", "");
+                hashrate.trim();
                 TextView tvTotalHashrate = findViewById(R.id.totalhashrate);
-                tvTotalHashrate.setText(d.getMiner().hashrate);
+                tvTotalHashrate.setText(hashrate);
 
                 String balance = d.getMiner().balance;
                 TextView tvBalance = findViewById(R.id.balance);
@@ -547,7 +550,7 @@ public class MainActivity extends AppCompatActivity
                 minerBtnH.setEnabled(true);
                 buttonDrawable = minerBtnH.getBackground();
                 buttonDrawable = DrawableCompat.wrap(buttonDrawable);
-                DrawableCompat.setTint(buttonDrawable, getResources().getColor(R.color.bg_green));
+                DrawableCompat.setTint(buttonDrawable, getResources().getColor(R.color.bg_lighter));
                 minerBtnH.setBackground(buttonDrawable);
                 minerBtnH.setTextColor(getResources().getColor(R.color.c_white));
 
