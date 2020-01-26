@@ -38,7 +38,7 @@ public final class NodejsPool extends ProviderAbstract {
                 String symbol = mBlockData.getCoin().symbol = joStatss.optString("symbol");
                 long denominationUnit = mBlockData.getCoin().denominationUnit = 100L;
 
-                mBlockData.getPool().minPayout =  parseCurrency(joStatss.optString("min_wallet_payout", "0"),denominationUnit, denominationUnit, symbol);
+                mBlockData.getPool().minPayout =  parseCurrency(joStatss.optString("min_wallet_payout", "0"), denominationUnit, denominationUnit, symbol);
 
             } catch (Exception e) {
 

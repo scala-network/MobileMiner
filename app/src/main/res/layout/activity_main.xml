@@ -38,7 +38,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="start"
-                        android:text="@string/miner"
+                        android:text="@string/settings"
                         android:textSize="18sp"
                         android:textColor="@color/c_white"
                         android:textStyle="bold" />
@@ -293,6 +293,7 @@
                     android:textStyle="bold" />
 
                 <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/totalhashrateunit"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="start"
@@ -316,6 +317,7 @@
                     android:textColor="@color/c_lighter"  />
 
                 <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/divider"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="3dp"
@@ -336,6 +338,16 @@
                     android:textStyle="bold" />
 
                 <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/xlaunit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="3dp"
+                    android:gravity="start"
+                    android:text="XLA"
+                    android:textSize="14sp"
+                    android:textColor="@color/c_white"  />
+
+                <android.support.v7.widget.AppCompatTextView
                     android:id="@+id/percentage"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -346,6 +358,7 @@
                     android:textStyle="bold" />
 
                 <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/percentageunit"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="start"

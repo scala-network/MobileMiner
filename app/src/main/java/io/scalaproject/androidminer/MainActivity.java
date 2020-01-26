@@ -32,6 +32,7 @@ import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.BatteryManager;
@@ -95,11 +96,12 @@ public class MainActivity extends AppCompatActivity
     private boolean payoutEnabled;
     protected ProviderListenerInterface payoutListener;
     Timer timer;
-    long delay = 180000L;
+    long delay = 3000L;
 
     private boolean validArchitecture = true;
 
     private MiningService.MiningServiceBinder binder;
+    private boolean bPayoutDataReceived = false;
 
     private ScrollView svOutput;
 
@@ -247,38 +249,10 @@ public class MainActivity extends AppCompatActivity
                     return;
                 }
 
-                // Payout
-                String hashrate = d.getMiner().hashrate;
-                hashrate = hashrate.replace("H", "");
-                hashrate.trim();
-                TextView tvTotalHashrate = findViewById(R.id.totalhashrate);
-                tvTotalHashrate.setText(hashrate);
+                bPayoutDataReceived = true;
 
-                String balance = d.getMiner().balance;
-                TextView tvBalance = findViewById(R.id.balance);
-                tvBalance.setText(balance);
-
-                TextView tvPaymentThreshold = findViewById(R.id.payoutthreshold);
-                String threshold = d.getPool().minPayout;
-                tvPaymentThreshold.setText(threshold);
-
-                float fBalance = Utils.convertStringToFloat(balance);
-                float fThreshold = Utils.convertStringToFloat(threshold);
-                float fpercentage = 0;
-                String percentage = String.valueOf(fpercentage);
-
-                if(fBalance > 0 && fThreshold > 0) {
-                    pbPayout.setProgress(Math.round(fBalance));
-                    pbPayout.setMax(Math.round(fThreshold));
-                    fpercentage =(fBalance / fThreshold) * 100;
-                    percentage = String.valueOf(Math.round(fpercentage));
-                }else{
-                    pbPayout.setProgress(0);
-                    pbPayout.setMax(100);
-                }
-
-                TextView tvPercentage = findViewById(R.id.percentage);
-                tvPercentage.setText(percentage);
+                enablePayoutWidget(true, "");
+                updatePayoutWidget(d);
             }
         };
 
@@ -324,10 +298,126 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    private void enablePayoutWidget() {
+    private void updatePayoutWidget(Data d) {
+        if(d.getMiner() == null) {
+            enablePayoutWidget(false, "");
+        }
+        else if(d.getMiner().hashrate.equals("n/a")) {
+            enablePayoutWidget(false, "Loading...");
+        }
+        else {
+            enablePayoutWidget(true, "");
 
-        if(Config.read("address").equals("")) {
-            llPayout.setVisibility(View.GONE);
+            // Payout
+            String hashrate = d.getMiner().hashrate;
+            hashrate = hashrate.replace("H", "");
+            hashrate.trim();
+            TextView tvTotalHashrate = findViewById(R.id.totalhashrate);
+            tvTotalHashrate.setText(hashrate);
+
+            String balance = d.getMiner().balance;
+            balance = balance.replace("XLA", "");
+            balance.trim();
+            TextView tvBalance = findViewById(R.id.balance);
+            tvBalance.setText(balance);
+
+            TextView tvPaymentThreshold = findViewById(R.id.payoutthreshold);
+            float fThreshold = Utils.convertStringToFloat(d.getPool().minPayout);
+            String threshold = String.valueOf(Math.round(fThreshold));
+            tvPaymentThreshold.setText(threshold);
+
+            float fBalance = Utils.convertStringToFloat(balance);
+            float fpercentage = 0;
+            String percentage = String.valueOf(fpercentage);
+
+            if (fBalance > 0 && fThreshold > 0) {
+                pbPayout.setProgress(Math.round(fBalance));
+                pbPayout.setMax(Math.round(fThreshold));
+                fpercentage = (fBalance / fThreshold) * 100;
+                percentage = String.valueOf(Math.round(fpercentage));
+            } else {
+                pbPayout.setProgress(0);
+                pbPayout.setMax(100);
+            }
+
+            TextView tvPercentage = findViewById(R.id.percentage);
+            tvPercentage.setText(percentage);
+        }
+    }
+
+    public void enablePayoutWidget(boolean enable, String message) {
+        TextView tvTotalHashrate = findViewById(R.id.totalhashrate);
+
+        if (enable) {
+            if(tvTotalHashrate.getVisibility() == View.VISIBLE)
+                return;
+
+            tvTotalHashrate.setVisibility(View.VISIBLE);
+
+            TextView tvTotalHashrateUnit = findViewById(R.id.totalhashrateunit);
+            tvTotalHashrateUnit.setVisibility(View.VISIBLE);
+
+            TextView tvBalance = findViewById(R.id.balance);
+            tvBalance.setVisibility(View.VISIBLE);
+
+            TextView tvDivider = findViewById(R.id.divider);
+            tvDivider.setVisibility(View.VISIBLE);
+
+            TextView tvThreshold = findViewById(R.id.payoutthreshold);
+            tvThreshold.setVisibility(View.VISIBLE);
+
+            TextView tvXLAUnit = findViewById(R.id.xlaunit);
+            tvXLAUnit.setVisibility(View.VISIBLE);
+
+            TextView tvPercentage = findViewById(R.id.percentage);
+            tvPercentage.setVisibility(View.VISIBLE);
+
+            TextView tvPercentageUnit = findViewById(R.id.percentageunit);
+            tvPercentageUnit.setTextColor(getResources().getColor(R.color.c_green));
+            tvPercentageUnit.setTypeface(null, Typeface.BOLD);
+            tvPercentageUnit.setText("%");
+        }
+        else {
+            if(tvTotalHashrate.getVisibility() != View.INVISIBLE) {
+
+                tvTotalHashrate.setVisibility(View.INVISIBLE);
+
+                TextView tvTotalHashrateUnit = findViewById(R.id.totalhashrateunit);
+                tvTotalHashrateUnit.setVisibility(View.INVISIBLE);
+
+                TextView tvBalance = findViewById(R.id.balance);
+                tvBalance.setVisibility(View.INVISIBLE);
+
+                TextView tvDivider = findViewById(R.id.divider);
+                tvDivider.setVisibility(View.INVISIBLE);
+
+                TextView tvThreshold = findViewById(R.id.payoutthreshold);
+                tvThreshold.setVisibility(View.INVISIBLE);
+
+                TextView tvXLAUnit = findViewById(R.id.xlaunit);
+                tvXLAUnit.setVisibility(View.INVISIBLE);
+
+                TextView tvPercentage = findViewById(R.id.percentage);
+                tvPercentage.setVisibility(View.INVISIBLE);
+            }
+
+            TextView tvPercentageUnit = findViewById(R.id.percentageunit);
+            if(message.equals("")) {
+                tvPercentageUnit.setVisibility(View.INVISIBLE);
+            }
+            else {
+                tvPercentageUnit.setVisibility(View.VISIBLE);
+                tvPercentageUnit.setTextColor(getResources().getColor(R.color.c_grey));
+                tvPercentageUnit.setTypeface(null, Typeface.NORMAL);
+                tvPercentageUnit.setText(message);
+            }
+        }
+    }
+
+    private void updatePayoutWidgetStatus() {
+
+        if (Config.read("address").equals("")) {
+            enablePayoutWidget(false, "");
             payoutEnabled = false;
             return;
         }
@@ -335,18 +425,21 @@ public class MainActivity extends AppCompatActivity
         PoolItem pi = PoolManager.getSelectedPool();
 
         if (Config.read("init").equals("1") == false || pi == null) {
-            llPayout.setVisibility(View.GONE);
+            enablePayoutWidget(false, "");
             payoutEnabled = false;
             return;
         }
 
         if (pi.getPoolType() == 0) {
-            llPayout.setVisibility(View.GONE);
+            enablePayoutWidget(false, "");
             payoutEnabled = false;
             return;
         }
 
-        llPayout.setVisibility(View.VISIBLE);
+        if (!bPayoutDataReceived) {
+            enablePayoutWidget(false, "Loading...");
+        }
+
         payoutEnabled = true;
     }
 
@@ -361,10 +454,14 @@ public class MainActivity extends AppCompatActivity
 
         setStatusText(status);
 
-        enablePayoutWidget();
+        updatePayoutWidgetStatus();
         appendLogOutputText("");
         //@@TODO Update AMYAC accordingly
         updateAmyac(false);
+    }
+
+    public void setTitle(String title) {
+        tvTitle.setText(title);
     }
 
     @Override
@@ -378,7 +475,7 @@ public class MainActivity extends AppCompatActivity
 
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment_stats,"fragment_stats").commit();
 
-                tvTitle.setText(R.string.stats);
+                setTitle(getResources().getString(R.string.stats));
 
                 break;
             case R.id.about:
@@ -390,7 +487,7 @@ public class MainActivity extends AppCompatActivity
 
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment_about,"fragment_about").commit();
 
-                tvTitle.setText(R.string.about);
+                setTitle(getResources().getString(R.string.about));
 
                 break;
             case R.id.miner: //Main view
@@ -400,7 +497,7 @@ public class MainActivity extends AppCompatActivity
                     }
                 }
 
-                tvTitle.setText(R.string.miner);
+                setTitle(getResources().getString(R.string.miner));
 
                 updateUI();
                 break;
@@ -411,7 +508,7 @@ public class MainActivity extends AppCompatActivity
                 }
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, settings_fragment,"settings_fragment").commit();
 
-                tvTitle.setText(R.string.settings);
+                setTitle(getResources().getString(R.string.settings));
 
                 break;
 
