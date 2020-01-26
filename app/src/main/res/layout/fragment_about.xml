@@ -4,26 +4,30 @@
     android:layout_height="match_parent"
     android:background="@color/bg_grey">
 
-    <android.support.v7.widget.AppCompatTextView
-        android:id="@+id/aboutTitle"
-        android:layout_width="match_parent"
-        android:layout_height="32dp"
-        android:gravity="start"
-        android:text="General"
-        android:textColor="@color/c_white"
-        android:textStyle="bold"
-        android:textSize="18sp" />
-
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/aboutTitle"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
         android:orientation="vertical">
+
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/aboutTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="5dp"
+            android:gravity="start"
+            android:text="General"
+            android:textColor="@color/c_white"
+            android:textStyle="bold"
+            android:textSize="14sp" />
 
         <android.support.v7.widget.AppCompatTextView
             android:id="@+id/release"
             android:layout_width="match_parent"
-            android:layout_height="41dp"
+            android:layout_height="wrap_content"
             android:gravity="start"
             android:text="@string/buildString"
             android:textColor="@color/c_lighter"
@@ -137,9 +141,10 @@
         <android.support.v7.widget.AppCompatTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
             android:text="System Info"
             android:layout_gravity="start"
-            android:textSize="18sp"
+            android:textSize="14sp"
             android:textColor="@color/c_white"
             android:textStyle="bold"
             android:layout_marginTop="15sp"/>
@@ -160,9 +165,10 @@
         <android.support.v7.widget.AppCompatTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
             android:text="Credits"
             android:layout_gravity="start"
-            android:textSize="18sp"
+            android:textSize="14sp"
             android:textColor="@color/c_white"
             android:textStyle="bold"
             android:layout_marginTop="0sp"/>

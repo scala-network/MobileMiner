@@ -38,7 +38,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="start"
-                        android:text="@string/settings"
+                        android:text="@string/miner"
                         android:textSize="18sp"
                         android:textColor="@color/c_white"
                         android:textStyle="bold" />
@@ -314,7 +314,8 @@
                     android:gravity="start"
                     android:text="@string/na"
                     android:textSize="14sp"
-                    android:textColor="@color/c_lighter"  />
+                    android:textColor="@color/c_green"
+                    android:textStyle="bold" />
 
                 <android.support.v7.widget.AppCompatTextView
                     android:id="@+id/divider"
@@ -327,7 +328,7 @@
                     android:textColor="@color/c_lighter"  />
 
                 <android.support.v7.widget.AppCompatTextView
-                    android:id="@+id/payoutthreshold"
+                    android:id="@+id/minpayout"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="3dp"
@@ -346,26 +347,6 @@
                     android:text="XLA"
                     android:textSize="14sp"
                     android:textColor="@color/c_white"  />
-
-                <android.support.v7.widget.AppCompatTextView
-                    android:id="@+id/percentage"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="start"
-                    android:text="@string/na"
-                    android:textSize="14sp"
-                    android:textColor="@color/c_green"
-                    android:textStyle="bold" />
-
-                <android.support.v7.widget.AppCompatTextView
-                    android:id="@+id/percentageunit"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="start"
-                    android:text="%"
-                    android:textSize="14sp"
-                    android:textColor="@color/c_green"
-                    android:textStyle="bold" />
 
             </LinearLayout>
 
@@ -421,7 +402,7 @@
                 android:id="@+id/start"
                 android:layout_width="125dp"
                 android:layout_height="55dp"
-                android:backgroundTint="@color/bg_blue"
+                android:backgroundTint="@color/bg_green"
                 android:backgroundTintMode="src_over"
                 android:paddingLeft="15dp"
                 android:paddingRight="15dp"
@@ -490,13 +471,13 @@
 
     <android.support.design.widget.NavigationView
         android:id="@+id/nav_view"
-        android:layout_width="wrap_content"
+        android:layout_width="70dp"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:background="@color/bg_black"
+        android:background="@color/bg_grey"
         android:textColor="@color/c_white"
         app:headerLayout="@layout/nav_header"
-        app:itemIconTint="#FFF"
+        app:itemIconTint="@color/c_white"
         app:itemTextColor="@color/c_lighter"
         app:itemBackground="@drawable/drawer_selected_item"
         app:menu="@menu/drawermenu" />

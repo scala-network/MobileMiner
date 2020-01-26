@@ -6,16 +6,20 @@
     android:background="@color/bg_grey"
     android:gravity="bottom"
     android:orientation="vertical"
-    android:padding="16dp"
-    android:layout_marginTop="20dp"
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
-    <android.support.v7.widget.AppCompatTextView
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="20dp"
+        android:layout_marginLeft="17dp"
+        android:src="@mipmap/ic_logo_colors" />
+
+    <View
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Menu"
-        android:textSize="24dp"
-        android:textStyle="bold"
-        android:textColor="@color/c_white" />
+        android:layout_height="0.75dp"
+        android:background="@color/c_black"/>
 
 </LinearLayout>

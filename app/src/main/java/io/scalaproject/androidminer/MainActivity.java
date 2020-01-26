@@ -177,8 +177,10 @@ public class MainActivity extends AppCompatActivity
 
         drawer = findViewById(R.id.drawer_layout);
 
+        tvTitle = findViewById(R.id.title);
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.getMenu().getItem(2).setChecked(true);
+        setTitle(getResources().getString(R.string.settings));
         navigationView.setNavigationItemSelectedListener(this);
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -193,8 +195,6 @@ public class MainActivity extends AppCompatActivity
         payoutEnabled = true;
         llPayout = (LinearLayout) findViewById(R.id.layoutpayout);
         pbPayout = (ProgressBar) findViewById(R.id.progresspayout);
-
-        tvTitle = findViewById(R.id.title);
 
         tvLog = findViewById(R.id.output);
         tvSpeed = findViewById(R.id.speed);
@@ -309,39 +309,30 @@ public class MainActivity extends AppCompatActivity
             enablePayoutWidget(true, "");
 
             // Payout
-            String hashrate = d.getMiner().hashrate;
-            hashrate = hashrate.replace("H", "");
-            hashrate.trim();
+            String sHashrate = d.getMiner().hashrate;
+            sHashrate = sHashrate.replace("H", "");
             TextView tvTotalHashrate = findViewById(R.id.totalhashrate);
-            tvTotalHashrate.setText(hashrate);
+            tvTotalHashrate.setText(sHashrate.trim());
 
-            String balance = d.getMiner().balance;
-            balance = balance.replace("XLA", "");
-            balance.trim();
+            String sBalance = d.getMiner().balance;
+            sBalance = sBalance.replace("XLA", "");
+            sBalance.trim();
             TextView tvBalance = findViewById(R.id.balance);
-            tvBalance.setText(balance);
+            tvBalance.setText(sBalance);
 
-            TextView tvPaymentThreshold = findViewById(R.id.payoutthreshold);
-            float fThreshold = Utils.convertStringToFloat(d.getPool().minPayout);
-            String threshold = String.valueOf(Math.round(fThreshold));
-            tvPaymentThreshold.setText(threshold);
+            TextView tvMinPayout = findViewById(R.id.minpayout);
+            float fMinPayout = Utils.convertStringToFloat(d.getPool().minPayout);
+            String sMinPayout = String.valueOf(Math.round(fMinPayout));
+            tvMinPayout.setText(sMinPayout);
 
-            float fBalance = Utils.convertStringToFloat(balance);
-            float fpercentage = 0;
-            String percentage = String.valueOf(fpercentage);
-
-            if (fBalance > 0 && fThreshold > 0) {
+            float fBalance = Utils.convertStringToFloat(sBalance);
+            if (fBalance > 0 && fMinPayout > 0) {
                 pbPayout.setProgress(Math.round(fBalance));
-                pbPayout.setMax(Math.round(fThreshold));
-                fpercentage = (fBalance / fThreshold) * 100;
-                percentage = String.valueOf(Math.round(fpercentage));
+                pbPayout.setMax(Math.round(fMinPayout));
             } else {
                 pbPayout.setProgress(0);
                 pbPayout.setMax(100);
             }
-
-            TextView tvPercentage = findViewById(R.id.percentage);
-            tvPercentage.setText(percentage);
         }
     }
 
@@ -363,19 +354,14 @@ public class MainActivity extends AppCompatActivity
             TextView tvDivider = findViewById(R.id.divider);
             tvDivider.setVisibility(View.VISIBLE);
 
-            TextView tvThreshold = findViewById(R.id.payoutthreshold);
-            tvThreshold.setVisibility(View.VISIBLE);
+            TextView tvMinPayout = findViewById(R.id.minpayout);
+            tvMinPayout.setVisibility(View.VISIBLE);
 
             TextView tvXLAUnit = findViewById(R.id.xlaunit);
             tvXLAUnit.setVisibility(View.VISIBLE);
-
-            TextView tvPercentage = findViewById(R.id.percentage);
-            tvPercentage.setVisibility(View.VISIBLE);
-
-            TextView tvPercentageUnit = findViewById(R.id.percentageunit);
-            tvPercentageUnit.setTextColor(getResources().getColor(R.color.c_green));
-            tvPercentageUnit.setTypeface(null, Typeface.BOLD);
-            tvPercentageUnit.setText("%");
+            tvXLAUnit.setTextColor(getResources().getColor(R.color.c_white));
+            tvXLAUnit.setTypeface(null, Typeface.BOLD);
+            tvXLAUnit.setText("XLA");
         }
         else {
             if(tvTotalHashrate.getVisibility() != View.INVISIBLE) {
@@ -391,25 +377,19 @@ public class MainActivity extends AppCompatActivity
                 TextView tvDivider = findViewById(R.id.divider);
                 tvDivider.setVisibility(View.INVISIBLE);
 
-                TextView tvThreshold = findViewById(R.id.payoutthreshold);
-                tvThreshold.setVisibility(View.INVISIBLE);
-
-                TextView tvXLAUnit = findViewById(R.id.xlaunit);
-                tvXLAUnit.setVisibility(View.INVISIBLE);
-
-                TextView tvPercentage = findViewById(R.id.percentage);
-                tvPercentage.setVisibility(View.INVISIBLE);
+                TextView tvMinPayout = findViewById(R.id.minpayout);
+                tvMinPayout.setVisibility(View.INVISIBLE);
             }
 
-            TextView tvPercentageUnit = findViewById(R.id.percentageunit);
+            TextView tvXLAUnit = findViewById(R.id.xlaunit);
             if(message.equals("")) {
-                tvPercentageUnit.setVisibility(View.INVISIBLE);
+                tvXLAUnit.setVisibility(View.INVISIBLE);
             }
             else {
-                tvPercentageUnit.setVisibility(View.VISIBLE);
-                tvPercentageUnit.setTextColor(getResources().getColor(R.color.c_grey));
-                tvPercentageUnit.setTypeface(null, Typeface.NORMAL);
-                tvPercentageUnit.setText(message);
+                tvXLAUnit.setVisibility(View.VISIBLE);
+                tvXLAUnit.setTextColor(getResources().getColor(R.color.c_grey));
+                tvXLAUnit.setTypeface(null, Typeface.NORMAL);
+                tvXLAUnit.setText(message);
             }
         }
     }
@@ -634,7 +614,7 @@ public class MainActivity extends AppCompatActivity
         if (minerPaused) {
             btnStart.setText("Resume");
             updateHashrate("0");
-            DrawableCompat.setTint(buttonDrawable, getResources().getColor(R.color.c_green));
+            DrawableCompat.setTint(buttonDrawable, getResources().getColor(R.color.c_blue));
             btnStart.setBackground(buttonDrawable);
         } else {
             if (state) {
@@ -670,7 +650,7 @@ public class MainActivity extends AppCompatActivity
             } else {
                 btnStart.setText("Start");
                 updateHashrate("0");
-                DrawableCompat.setTint(buttonDrawable, getResources().getColor(R.color.c_blue));
+                DrawableCompat.setTint(buttonDrawable, getResources().getColor(R.color.c_green));
                 btnStart.setBackground(buttonDrawable);
 
                 // Hashrate button
