@@ -707,12 +707,29 @@ public class MainActivity extends AppCompatActivity
             text = sb.toString();
         }
 
+        // Remove consecutive spaces
+        text = text.replaceAll("( )+", " ");
+
         Spannable textSpan = new SpannableString(text);
+
+        List<String> listHeader = Arrays.asList("* ABOUT", "* LIBS", "* HUGE PAGES", "* 1GB PAGES", "* CPU", "* MEMORY", "* DONATE", "* POOL", "* COMMANDS");
+        for (String tmpFormat : listHeader) {
+            if(text.contains(tmpFormat)) {
+                int i = text.indexOf(tmpFormat);
+                int imax = i + tmpFormat.length();
+                textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_white)), i, imax, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                textSpan.setSpan(new StyleSpan(android.graphics.Typeface.NORMAL), i, imax, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+
+                textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_lighter)), imax, text.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                textSpan.setSpan(new StyleSpan(android.graphics.Typeface.NORMAL), imax, text.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+                break;
+            }
+        }
 
         formatText = "accepted";
         if(text.contains(formatText)) {
             int i = text.indexOf(formatText);
-            int imax = i+ formatText.length();
+            int imax = i + formatText.length();
             textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_blue)), i, imax, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             textSpan.setSpan(new StyleSpan(android.graphics.Typeface.BOLD), i, imax, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
         }
@@ -720,9 +737,25 @@ public class MainActivity extends AppCompatActivity
         formatText = "speed";
         if(text.contains(formatText)) {
             int i = text.indexOf(formatText);
-            int imax = i+ formatText.length();
-            textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_green)), i, i + formatText.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            int imax = i + formatText.length();
+            textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_green)), i, imax, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             textSpan.setSpan(new StyleSpan(android.graphics.Typeface.BOLD), i, imax, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+        }
+
+        formatText = "READY";
+        if(text.contains(formatText)) {
+            int i = text.indexOf(formatText);
+            int imax = i + formatText.length();
+            textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_white)), i, imax, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            textSpan.setSpan(new StyleSpan(android.graphics.Typeface.BOLD), i, imax, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+        }
+
+        formatText = "new job";
+        if(text.contains(formatText)) {
+            int i = text.indexOf(formatText);
+            int imax = i + formatText.length();
+            textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_blue)), i, imax, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            textSpan.setSpan(new StyleSpan(android.graphics.Typeface.NORMAL), i, imax, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
         }
 
         return textSpan;
