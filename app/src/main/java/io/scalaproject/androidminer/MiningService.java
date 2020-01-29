@@ -41,6 +41,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.net.Inet4Address;
+import java.net.Inet6Address;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Arrays;
@@ -216,11 +218,22 @@ public class MiningService extends Service {
     public static String getIpByHost(String hostName) {
         try {
             Log.i(LOG_TAG, hostName);
-            return InetAddress.getByName(hostName).getHostAddress();
+
+            InetAddress inetAddress = InetAddress.getByName(hostName);
+
+            if(!inetAddress.isLoopbackAddress()) {
+                if (inetAddress instanceof Inet6Address) {
+                    return inetAddress.getHostAddress().toString();
+                } else if (inetAddress instanceof Inet4Address) {
+                    return inetAddress.getHostAddress().toString();
+                }
+            }
         } catch (UnknownHostException e) {
             Log.i(LOG_TAG, e.toString());
             return hostName;
         }
+
+        return hostName;
     }
 
     public void startMining(MiningConfig config) {

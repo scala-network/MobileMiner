@@ -698,9 +698,18 @@ public class MainActivity extends AppCompatActivity
     }
 
     private Spannable formatLogOutputText(String text) {
+        // Remove milliseconds from log
+        String formatText = "]";
+        if(text.contains(formatText)) {
+            int i = text.indexOf(formatText);
+            StringBuilder sb = new StringBuilder(text);
+            sb.delete(i-4, i);
+            text = sb.toString();
+        }
+
         Spannable textSpan = new SpannableString(text);
 
-        String formatText = "accepted";
+        formatText = "accepted";
         if(text.contains(formatText)) {
             int i = text.indexOf(formatText);
             int imax = i+ formatText.length();
