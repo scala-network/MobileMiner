@@ -34,11 +34,9 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.BatteryManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.IBinder;
 import android.os.PowerManager;
 import android.support.annotation.NonNull;
@@ -66,7 +64,9 @@ import android.support.v4.widget.DrawerLayout;
 import android.text.Spannable;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -90,6 +90,8 @@ public class MainActivity extends AppCompatActivity
     boolean accepted = false;
 
     private TextView tvSpeed, tvHs, tvAccepted, tvCPUTemperature, tvBatteryTemperature, tvLog, tvTitle;
+
+    private Map<String, String> mapHeaderLog = new HashMap<String, String>();
 
     private LinearLayout llPayout;
     private ProgressBar pbPayout;
@@ -698,13 +700,24 @@ public class MainActivity extends AppCompatActivity
     }
 
     private Spannable formatLogOutputText(String text) {
-        // Remove milliseconds from log
+        // Remove date and milliseconds from log
         String formatText = "]";
         if(text.contains(formatText)) {
-            int i = text.indexOf(formatText);
             StringBuilder sb = new StringBuilder(text);
-            sb.delete(i-4, i);
-            text = sb.toString();
+            text = sb.delete(1, 12).toString();
+
+            int i = text.indexOf(formatText);
+            text = sb.delete(i-4, i).toString();
+        }
+
+        text = text.replace("* ", "");
+
+        if (text.contains("threads:")) {
+            text = text.replace("threads:", "THREADS ");
+        }
+
+        if (text.contains("COMMANDS")) {
+            text = text + System.getProperty("line.separator");
         }
 
         // Remove consecutive spaces
@@ -712,7 +725,7 @@ public class MainActivity extends AppCompatActivity
 
         Spannable textSpan = new SpannableString(text);
 
-        List<String> listHeader = Arrays.asList("* ABOUT", "* LIBS", "* HUGE PAGES", "* 1GB PAGES", "* CPU", "* MEMORY", "* DONATE", "* POOL", "* COMMANDS");
+        List<String> listHeader = Arrays.asList("ABOUT", "LIBS", "HUGE PAGES", "1GB PAGES", "CPU", "MEMORY", "DONATE", "POOL", "COMMANDS", "THREADS");
         for (String tmpFormat : listHeader) {
             if(text.contains(tmpFormat)) {
                 int i = text.indexOf(tmpFormat);
@@ -722,11 +735,19 @@ public class MainActivity extends AppCompatActivity
 
                 textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_lighter)), imax, text.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                 textSpan.setSpan(new StyleSpan(android.graphics.Typeface.NORMAL), imax, text.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+
                 break;
             }
         }
 
-        formatText = "accepted";
+        // Format time
+        formatText = "]";
+        if(text.contains(formatText)) {
+            textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_black)), 0, 10, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            textSpan.setSpan(new StyleSpan(android.graphics.Typeface.NORMAL), 0, 10, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+        }
+
+        formatText = "cpu accepted";
         if(text.contains(formatText)) {
             int i = text.indexOf(formatText);
             int imax = i + formatText.length();
@@ -740,9 +761,12 @@ public class MainActivity extends AppCompatActivity
             int imax = i + formatText.length();
             textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_green)), i, imax, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             textSpan.setSpan(new StyleSpan(android.graphics.Typeface.BOLD), i, imax, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+
+            textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_lighter)), imax, text.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            textSpan.setSpan(new StyleSpan(android.graphics.Typeface.NORMAL), imax, text.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
         }
 
-        formatText = "READY";
+        formatText = "cpu READY";
         if(text.contains(formatText)) {
             int i = text.indexOf(formatText);
             int imax = i + formatText.length();
@@ -750,11 +774,43 @@ public class MainActivity extends AppCompatActivity
             textSpan.setSpan(new StyleSpan(android.graphics.Typeface.BOLD), i, imax, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
         }
 
-        formatText = "new job";
+        formatText = "net new job from";
         if(text.contains(formatText)) {
             int i = text.indexOf(formatText);
             int imax = i + formatText.length();
-            textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_blue)), i, imax, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_lighter)), i, imax, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            textSpan.setSpan(new StyleSpan(android.graphics.Typeface.BOLD), i, imax, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+        }
+
+        formatText = "rx init dataset";
+        if(text.contains(formatText)) {
+            int i = text.indexOf(formatText);
+            int imax = i + formatText.length();
+            textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_lighter)), i, imax, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            textSpan.setSpan(new StyleSpan(android.graphics.Typeface.NORMAL), i, imax, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+        }
+
+        formatText = "rx allocated";
+        if(text.contains(formatText)) {
+            int i = text.indexOf(formatText);
+            int imax = i + formatText.length();
+            textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_lighter)), i, imax, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            textSpan.setSpan(new StyleSpan(android.graphics.Typeface.NORMAL), i, imax, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+        }
+
+        formatText = "rx dataset ready";
+        if(text.contains(formatText)) {
+            int i = text.indexOf(formatText);
+            int imax = i + formatText.length();
+            textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_lighter)), i, imax, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            textSpan.setSpan(new StyleSpan(android.graphics.Typeface.NORMAL), i, imax, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+        }
+
+        formatText = "cpu use profile *";
+        if(text.contains(formatText)) {
+            int i = text.indexOf(formatText);
+            int imax = i + formatText.length();
+            textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_lighter)), i, imax, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             textSpan.setSpan(new StyleSpan(android.graphics.Typeface.NORMAL), i, imax, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
         }
 
@@ -764,7 +820,7 @@ public class MainActivity extends AppCompatActivity
     private void appendLogOutputText(String line) {
         boolean refresh = false;
         if(binder != null){
-            if ((tvLog.getText().equals("") && !binder.getService().getOutput().equals("")) || tvLog.getText().length() > Config.logMaxLength ){
+            if (/*(tvLog.getText().equals("") && !binder.getService().getOutput().equals("")) || */tvLog.getText().length() > Config.logMaxLength ){
                 String outputLog = binder.getService().getOutput();
                 tvLog.setText(formatLogOutputText(outputLog));
                 refresh = true;
