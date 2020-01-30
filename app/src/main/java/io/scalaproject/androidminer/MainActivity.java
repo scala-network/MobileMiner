@@ -710,35 +710,45 @@ public class MainActivity extends AppCompatActivity
             text = sb.delete(i-4, i).toString();
         }
 
-        text = text.replace("* ", "");
-
         if (text.contains("threads:")) {
-            text = text.replace("threads:", "THREADS ");
+            text = text.replace("threads:", "* THREADS ");
         }
 
         if (text.contains("COMMANDS")) {
             text = text + System.getProperty("line.separator");
         }
 
+        boolean speed = false;
+        if (text.contains("speed")) {
+            text = text.replace("speed ", "");
+            text = text.replace("H/s ", "");
+            speed = true;
+        }
+
         // Remove consecutive spaces
         text = text.replaceAll("( )+", " ");
 
-        Spannable textSpan = new SpannableString(text);
+        if(text.contains("*")) {
+            text = text.replace("* ", "");
+            Spannable textSpan = new SpannableString(text);
 
-        List<String> listHeader = Arrays.asList("ABOUT", "LIBS", "HUGE PAGES", "1GB PAGES", "CPU", "MEMORY", "DONATE", "POOL", "COMMANDS", "THREADS");
-        for (String tmpFormat : listHeader) {
-            if(text.contains(tmpFormat)) {
-                int i = text.indexOf(tmpFormat);
-                int imax = i + tmpFormat.length();
-                textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_white)), i, imax, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-                textSpan.setSpan(new StyleSpan(android.graphics.Typeface.NORMAL), i, imax, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+            List<String> listHeader = Arrays.asList("ABOUT", "LIBS", "HUGE PAGES", "1GB PAGES", "CPU", "MEMORY", "DONATE", "POOL", "COMMANDS", "THREADS");
+            for (String tmpFormat : listHeader) {
+                if (text.contains(tmpFormat)) {
+                    int i = text.indexOf(tmpFormat);
+                    int imax = i + tmpFormat.length();
+                    textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_white)), i, imax, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    textSpan.setSpan(new StyleSpan(android.graphics.Typeface.NORMAL), i, imax, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
 
-                textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_lighter)), imax, text.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-                textSpan.setSpan(new StyleSpan(android.graphics.Typeface.NORMAL), imax, text.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+                    textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_lighter)), imax, text.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    textSpan.setSpan(new StyleSpan(android.graphics.Typeface.NORMAL), imax, text.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
 
-                break;
+                    return textSpan;
+                }
             }
         }
+
+        Spannable textSpan = new SpannableString(text);
 
         // Format time
         formatText = "]";
@@ -747,23 +757,21 @@ public class MainActivity extends AppCompatActivity
             textSpan.setSpan(new StyleSpan(android.graphics.Typeface.NORMAL), 0, 10, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
         }
 
+        if (speed) {
+            int i = text.indexOf("]");
+            int max = text.lastIndexOf("s");
+            textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_green)), i+1, max+1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            textSpan.setSpan(new StyleSpan(android.graphics.Typeface.BOLD), i+1, max+1, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+            return textSpan;
+        }
+
         formatText = "cpu accepted";
         if(text.contains(formatText)) {
             int i = text.indexOf(formatText);
             int imax = i + formatText.length();
             textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_blue)), i, imax, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             textSpan.setSpan(new StyleSpan(android.graphics.Typeface.BOLD), i, imax, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
-        }
-
-        formatText = "speed";
-        if(text.contains(formatText)) {
-            int i = text.indexOf(formatText);
-            int imax = i + formatText.length();
-            textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_green)), i, imax, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            textSpan.setSpan(new StyleSpan(android.graphics.Typeface.BOLD), i, imax, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
-
-            textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_lighter)), imax, text.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            textSpan.setSpan(new StyleSpan(android.graphics.Typeface.NORMAL), imax, text.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+            return textSpan;
         }
 
         formatText = "cpu READY";
@@ -772,6 +780,16 @@ public class MainActivity extends AppCompatActivity
             int imax = i + formatText.length();
             textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_white)), i, imax, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             textSpan.setSpan(new StyleSpan(android.graphics.Typeface.BOLD), i, imax, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+            return textSpan;
+        }
+
+        formatText = "net use pool";
+        if(text.contains(formatText)) {
+            int i = text.indexOf(formatText);
+            int imax = i + formatText.length();
+            textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_lighter)), i, imax, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            textSpan.setSpan(new StyleSpan(android.graphics.Typeface.NORMAL), i, imax, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+            return textSpan;
         }
 
         formatText = "net new job from";
@@ -779,7 +797,8 @@ public class MainActivity extends AppCompatActivity
             int i = text.indexOf(formatText);
             int imax = i + formatText.length();
             textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_lighter)), i, imax, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            textSpan.setSpan(new StyleSpan(android.graphics.Typeface.BOLD), i, imax, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+            textSpan.setSpan(new StyleSpan(android.graphics.Typeface.NORMAL), i, imax, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+            return textSpan;
         }
 
         formatText = "rx init dataset";
@@ -788,6 +807,7 @@ public class MainActivity extends AppCompatActivity
             int imax = i + formatText.length();
             textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_lighter)), i, imax, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             textSpan.setSpan(new StyleSpan(android.graphics.Typeface.NORMAL), i, imax, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+            return textSpan;
         }
 
         formatText = "rx allocated";
@@ -796,6 +816,7 @@ public class MainActivity extends AppCompatActivity
             int imax = i + formatText.length();
             textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_lighter)), i, imax, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             textSpan.setSpan(new StyleSpan(android.graphics.Typeface.NORMAL), i, imax, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+            return textSpan;
         }
 
         formatText = "rx dataset ready";
@@ -804,14 +825,16 @@ public class MainActivity extends AppCompatActivity
             int imax = i + formatText.length();
             textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_lighter)), i, imax, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             textSpan.setSpan(new StyleSpan(android.graphics.Typeface.NORMAL), i, imax, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+            return textSpan;
         }
 
-        formatText = "cpu use profile *";
+        formatText = "cpu use profile";
         if(text.contains(formatText)) {
             int i = text.indexOf(formatText);
             int imax = i + formatText.length();
             textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_lighter)), i, imax, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             textSpan.setSpan(new StyleSpan(android.graphics.Typeface.NORMAL), i, imax, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+            return textSpan;
         }
 
         return textSpan;
@@ -872,6 +895,8 @@ public class MainActivity extends AppCompatActivity
                                 if (clearMinerLog == true) {
                                     tvLog.setText("");
                                     tvAccepted.setText("0");
+                                    tvAccepted.setTextColor(getResources().getColor(R.color.c_grey));
+
                                     updateHashrate("n/a");
                                     tvCPUTemperature.setText("n/a");
                                     tvBatteryTemperature.setText("n/a");
@@ -889,6 +914,9 @@ public class MainActivity extends AppCompatActivity
                         runOnUiThread(() -> {
                             appendLogOutputText(status);
                             tvAccepted.setText(Integer.toString(accepted));
+
+                            if(accepted == 1)
+                                tvAccepted.setTextColor(getResources().getColor(R.color.c_blue));
 
                             updateHashrate(speed);
 

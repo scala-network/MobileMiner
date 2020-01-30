@@ -159,7 +159,7 @@
                 android:text="0"
                 android:textStyle="bold"
                 android:textSize="32sp"
-                android:textColor="@color/c_lighter" />
+                android:textColor="@color/c_grey" />
 
         </LinearLayout>
 
