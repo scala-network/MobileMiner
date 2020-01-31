@@ -35,7 +35,6 @@ import android.content.pm.PackageManager;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.BatteryManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.os.PowerManager;
@@ -158,22 +157,6 @@ public class MainActivity extends AppCompatActivity
 
         PoolItem pi = PoolManager.getSelectedPool();
 
-        if (Config.read("address").equals("") || pi == null || pi.getPool().equals("") || pi.getPort().equals("")) {
-            if (Build.VERSION.SDK_INT >= 23) {
-                if (checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-                    requestPermissions(new String[]{Manifest.permission.CAMERA}, 100);
-                }
-            }
-
-            SettingsFragment fragment = (SettingsFragment) getSupportFragmentManager().findFragmentByTag("settings_fragment");
-            if(fragment != null) {
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment,"settings_fragment").commit();
-            }
-            else {
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new SettingsFragment(),"settings_fragment").commit();
-            }
-        }
-
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -181,8 +164,7 @@ public class MainActivity extends AppCompatActivity
 
         tvTitle = findViewById(R.id.title);
         NavigationView navigationView = findViewById(R.id.nav_view);
-        navigationView.getMenu().getItem(2).setChecked(true);
-        setTitle(getResources().getString(R.string.settings));
+        navigationView.getMenu().getItem(0).setChecked(true);
         navigationView.setNavigationItemSelectedListener(this);
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -191,6 +173,19 @@ public class MainActivity extends AppCompatActivity
         toggle.syncState();
 
         enableButtons(false);
+
+        // Open Settings the first time the app is launched
+        if (Config.read("address").equals("") || pi == null || pi.getPool().equals("") || pi.getPort().equals("")) {
+            navigationView.getMenu().getItem(2).setChecked(true);
+            setTitle(getResources().getString(R.string.settings));
+            SettingsFragment fragment = (SettingsFragment) getSupportFragmentManager().findFragmentByTag("settings_fragment");
+            if(fragment != null) {
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment,"settings_fragment").commit();
+            }
+            else {
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new SettingsFragment(),"settings_fragment").commit();
+            }
+        }
 
         // Controls
 
@@ -437,7 +432,7 @@ public class MainActivity extends AppCompatActivity
         setStatusText(status);
 
         updatePayoutWidgetStatus();
-        appendLogOutputText("");
+        refreshLogOutputView();
         //@@TODO Update AMYAC accordingly
         updateAmyac(false);
     }
@@ -577,12 +572,13 @@ public class MainActivity extends AppCompatActivity
     protected void onResume() {
         super.onResume();
         updateUI();
+
         SettingsFragment frag = (SettingsFragment) getSupportFragmentManager().findFragmentByTag("settings_fragment");
         if(frag != null) {
             frag.updateAddress();
         }
-        appendLogOutputText("");
 
+        refreshLogOutputView();
         repeatTask();
     }
 
@@ -838,6 +834,15 @@ public class MainActivity extends AppCompatActivity
         }
 
         return textSpan;
+    }
+
+    private void refreshLogOutputView() {
+        svOutput.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                svOutput.fullScroll(View.FOCUS_DOWN);
+            }
+        }, 50);
     }
 
     private void appendLogOutputText(String line) {

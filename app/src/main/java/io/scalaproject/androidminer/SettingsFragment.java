@@ -307,8 +307,8 @@ public class SettingsFragment extends Fragment {
             public void onClick(View v) {
                 if (Build.VERSION.SDK_INT >= 23) {
                     if (ContextCompat.checkSelfPermission(appContext, Manifest.permission.CAMERA)
-                            == PackageManager.PERMISSION_DENIED) {
-                        Toast.makeText(appContext,"Camera Permission Denied", Toast.LENGTH_LONG);
+                            != PackageManager.PERMISSION_DENIED) {
+                        requestPermissions(new String[]{Manifest.permission.CAMERA}, 100);
                         return;
                     }
                 }
