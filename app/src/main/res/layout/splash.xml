@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="horizontal"
+    android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	android:background="@color/bg_grey"
+	android:gravity="center">
+
+	<ImageView
+		android:id="@+id/splashscreen"
+		android:layout_width="wrap_content"
+		android:layout_height="100dp"
+		android:src="@mipmap/ic_logo_colors"/>
+
+</LinearLayout>
