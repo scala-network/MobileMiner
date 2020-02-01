@@ -97,8 +97,7 @@ public class StatsFragment extends Fragment {
                 tvWalletAddress.setText(addresspretty);
 
                 String sHashrate = d.getMiner().hashrate;
-                sHashrate.replace("H", "");
-                sHashrate.trim();
+                sHashrate.replace("H", "").trim();
                 TextView tvAddressHashrate = view.findViewById(R.id.hashrateminer);
                 tvAddressHashrate.setText(sHashrate);
 
@@ -109,14 +108,12 @@ public class StatsFragment extends Fragment {
                 tvAddressBlocks.setText(d.getMiner().blocks);
 
                 String sBalance = d.getMiner().balance;
-                sBalance.replace("XLA", "");
-                sBalance.trim();
+                sBalance.replace("XLA", "").trim();
                 TextView tvBalance = view.findViewById(R.id.balance);
                 tvBalance.setText(sBalance);
 
-                String sPaid = d.getMiner().balance;
-                sPaid.replace("XLA", "");
-                sPaid.trim();
+                String sPaid = d.getMiner().paid;
+                sPaid.replace("XLA", "").trim();
                 TextView tvPaid = view.findViewById(R.id.paid);
                 tvPaid.setText(sPaid);
 
@@ -124,7 +121,6 @@ public class StatsFragment extends Fragment {
                     dataParsedAddress+= "Shares Accepted: " + d.getMiner().blocks;
                 } else {
                     dataParsedAddress+= "Blocks Found: " + d.getMiner().blocks;
-
                 }*/
 
                 String statsUrl = pm.getStatsURL();
