@@ -59,6 +59,7 @@
     <string name="paid">Paid</string>
     <string name="total">Total:</string>
     <string name="na">n/a</string>
+    <string name="SupportTheProject">Support the project</string>
     <string name="DonateURL">https://torque.cash/support</string>
 
     <string name="websiteLink">&lt;a href=&quot;https://scalaproject.io&quot;&gt;scalaproject.io&lt;/a&gt;</string>
