@@ -59,6 +59,7 @@
     <string name="paid">Paid</string>
     <string name="total">Total:</string>
     <string name="na">n/a</string>
+    <string name="DonateURL">https://torque.cash/support</string>
 
     <string name="websiteLink">&lt;a href=&quot;https://scalaproject.io&quot;&gt;scalaproject.io&lt;/a&gt;</string>
     <string name="githubLink">&lt;a href=&quot;https://github.com/scala-network/scala_android_miner/releases&quot;&gt;Scala Android Miner&lt;/a&gt;</string>
