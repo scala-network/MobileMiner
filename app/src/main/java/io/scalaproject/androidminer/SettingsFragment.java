@@ -305,25 +305,45 @@ public class SettingsFragment extends Fragment {
         qrButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Context appContext = MainActivity.getContextOfApplication();
                 if (Build.VERSION.SDK_INT >= 23) {
-                    if (ContextCompat.checkSelfPermission(appContext, Manifest.permission.CAMERA)
-                            != PackageManager.PERMISSION_DENIED) {
+                    if (ContextCompat.checkSelfPermission(appContext, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
                         requestPermissions(new String[]{Manifest.permission.CAMERA}, 100);
-                        return;
+                    }
+                    else {
+                        startQrCodeActivity();
                     }
                 }
-
-                try {
-                    Intent intent = new Intent(appContext, QrCodeScannerActivity.class);
-                    startActivity(intent);
-                }catch (Exception e) {
-                    Toast.makeText(appContext,e.getMessage(), Toast.LENGTH_LONG);
+                else {
+                    Toast.makeText(appContext, "This version of Android does not support Qr Code", Toast.LENGTH_LONG);
                 }
-
             }
         });
 
         return view;
+    }
+
+    private void startQrCodeActivity() {
+        Context appContext = MainActivity.getContextOfApplication();
+        try {
+            Intent intent = new Intent(appContext, QrCodeScannerActivity.class);
+            startActivity(intent);
+        }catch (Exception e) {
+            Toast.makeText(appContext, e.getMessage(), Toast.LENGTH_LONG);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        Context appContext = MainActivity.getContextOfApplication();
+        if (requestCode == 100) {
+            if (permissions[0].equals(Manifest.permission.CAMERA) && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                startQrCodeActivity();
+            }
+            else {
+                Toast.makeText(appContext,"Camera Permission Denied", Toast.LENGTH_LONG);
+            }
+        }
     }
 
     public void updateAddress() {
