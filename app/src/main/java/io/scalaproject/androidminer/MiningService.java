@@ -219,14 +219,14 @@ public class MiningService extends Service {
         try {
             Log.i(LOG_TAG, hostName);
 
-            InetAddress inetAddress = InetAddress.getByName(hostName);
+            InetAddress inetAddress = Inet4Address.getByName(hostName);
 
             if(!inetAddress.isLoopbackAddress()) {
-                if (inetAddress instanceof Inet6Address) {
+//                if (inetAddress instanceof Inet6Address) {
+//                    return inetAddress.getHostAddress().toString();
+//                } else if (inetAddress instanceof Inet4Address) {
                     return inetAddress.getHostAddress().toString();
-                } else if (inetAddress instanceof Inet4Address) {
-                    return inetAddress.getHostAddress().toString();
-                }
+//                }
             }
         } catch (UnknownHostException e) {
             Log.i(LOG_TAG, e.toString());
