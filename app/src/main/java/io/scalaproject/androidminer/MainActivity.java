@@ -431,7 +431,6 @@ public class MainActivity extends AppCompatActivity
         PoolItem pi = PoolManager.getSelectedPool();
 
         String status = "";
-
         if (pi == null || pi.getPool().equals("") || pi.getPort().equals("") || Config.read("address").equals("")) {
             status = "Update your Wallet Address in 'Settings'";
         }

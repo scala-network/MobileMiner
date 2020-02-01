@@ -23,6 +23,11 @@
             android:layout_height="?attr/actionBarSize"
             android:background="@color/bg_lighter"
             android:elevation="4dp"
+            app:contentInsetStart="0dp"
+            app:contentInsetEnd="0dp"
+            app:contentInsetLeft="0dp"
+            app:contentInsetRight="0dp"
+            app:contentInsetStartWithNavigation="0dp"
             android:theme="@style/Base.ThemeOverlay.AppCompat.Dark.ActionBar"
             android:popupTheme="@style/ThemeOverlay.AppCompat.ActionBar">
 

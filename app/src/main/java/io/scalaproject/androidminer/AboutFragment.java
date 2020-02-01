@@ -27,8 +27,6 @@ public class AboutFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_about, container, false  );
 
-        bDonate = view.findViewById(R.id.donate);
-
         TextView tvWebsite;
         TextView tvGithub;
         TextView tvDiscord;
@@ -86,15 +84,6 @@ public class AboutFragment extends Fragment {
 
         tvFontAwesome.setText(Html.fromHtml(getString(R.string.FontAwesomeLink)));
         tvFontAwesome.setMovementMethod(LinkMovementMethod.getInstance());
-
-        bDonate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Uri uri = Uri.parse(getString(R.string.DonateURL));
-                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                startActivity(intent);
-            }
-        });
 
         return view;
     }

@@ -311,22 +311,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true">
-
-        <android.support.design.button.MaterialButton
-            android:id="@+id/donate"
-            android:layout_width="match_parent"
-            android:layout_height="55dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            android:layout_marginBottom="15dp"
-            android:backgroundTint="@color/bg_blue"
-            android:text="@string/SupportTheProject"
-            android:textSize="14dp"
-            android:textAllCaps="false"
-            android:textColor="@color/c_white"
-            app:cornerRadius="25dp" />
-
     </RelativeLayout>
 
 </RelativeLayout>
