@@ -65,7 +65,9 @@ public class ProviderRequest{
     private void repeat() {
         stop();
         timer = new ProviderTimer();
-        current = new ProviderTask(mPoolItem.getInterface());
+        ProviderAbstract pa = mPoolItem.getInterface();
+        pa.mListener = mListener;
+        current = new ProviderTask(pa);
         timer.schedule(current, Config.statsDelay);
     }
 

@@ -62,6 +62,9 @@ public final class ProviderManager {
         }
 
         PoolItem pi = getSelectedPool();
+        if(pi == null) {
+            return;
+        }
         mPools.clear();
         request.mPoolItem = pi;
         data.isNew = true;

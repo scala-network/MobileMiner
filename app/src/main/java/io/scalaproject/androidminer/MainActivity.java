@@ -256,7 +256,7 @@ public class MainActivity extends AppCompatActivity
 
             @Override
             public boolean onEnabledRequest() {
-                enablePayoutWidget(true);
+//                enablePayoutWidget(true);
                 return payoutEnabled;
             }
         };
@@ -309,9 +309,7 @@ public class MainActivity extends AppCompatActivity
             }
         }
     }
-    public  void enablePayoutWidget(boolean enable) {
-        enablePayoutWidget(enable,"XLA");
-    }
+
     public void enablePayoutWidget(boolean enable, String unit) {
         TextView tvTotalHashrate = findViewById(R.id.totalhashrate);
 
@@ -432,6 +430,9 @@ public class MainActivity extends AppCompatActivity
 
                 setTitle(getResources().getString(R.string.stats));
 
+
+               //
+
                 break;
             case R.id.about:
                 AboutFragment fragment_about = (AboutFragment) getSupportFragmentManager().findFragmentByTag("fragment_about");
@@ -453,7 +454,12 @@ public class MainActivity extends AppCompatActivity
                 }
 
                 setTitle(getResources().getString(R.string.miner));
-
+                ProviderManager.afterSave();
+                ProviderManager.request.setListener(payoutListener).start();
+                if(!ProviderManager.data.isNew) {
+                    updatePayoutWidget(ProviderManager.data);
+                    enablePayoutWidget(true, "");
+                }
                 updateUI();
                 break;
             case R.id.settings:
@@ -556,9 +562,9 @@ public class MainActivity extends AppCompatActivity
             frag.updateAddress();
         }
 
-        ProviderManager.request.setListener(payoutListener).start();
         refreshLogOutputView();
     }
+
     @Override
     protected void onPause() {
 
