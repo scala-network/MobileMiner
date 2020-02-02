@@ -8,7 +8,7 @@ import org.ocpsoft.prettytime.PrettyTime;
 
 import java.util.Date;
 
-import io.scalaproject.androidminer.api.Data;
+import io.scalaproject.androidminer.api.ProviderData;
 import io.scalaproject.androidminer.api.ProviderAbstract;
 import io.scalaproject.androidminer.api.PoolItem;
 import io.scalaproject.androidminer.network.Json;
@@ -25,42 +25,40 @@ public final class NodejsPool extends ProviderAbstract {
 
     @Override
     protected void onBackgroundFetchData() {
+        ProviderData mBlockData = getBlockData();
 
-        if(getBlockData().getCoin().name == null) {
+        if(mBlockData.isNew) {
+            mBlockData.isNew = false;
             try{
                 String aurl = mPoolItem.getApiUrl() + "/config";
                 String aConfig  = Json.fetch(aurl);
 
                 JSONObject joStatss =  new JSONObject(aConfig);
 
-                mBlockData.getCoin().name = joStatss.optString("coin_code").toUpperCase();
-                mBlockData.getCoin().units = tryParseLong(joStatss.optString("coin_code"), 1L);
-                String symbol = mBlockData.getCoin().symbol = joStatss.optString("symbol");
-                long denominationUnit = mBlockData.getCoin().denominationUnit = 100L;
-
-                mBlockData.getPool().minPayout =  parseCurrency(joStatss.optString("min_wallet_payout", "0"), denominationUnit, denominationUnit, symbol);
-
+            mBlockData.coin.units = tryParseLong(joStatss.optString("coin_code"), 1L);
+            mBlockData.coin.name = joStatss.optString("coin_code").toUpperCase();
+            String symbol = mBlockData.coin.symbol = joStatss.optString("symbol");
+                long denominationUnit = mBlockData.coin.denominationUnit = 100L;
+                mBlockData.pool.minPayout =  parseCurrency(joStatss.optString("min_wallet_payout", "0"),denominationUnit, denominationUnit, symbol);
             } catch (Exception e) {
 
             }
         }
         PrettyTime pTime = new PrettyTime();
-//
-//
-//        long denominationUnit = mBlockData.getCoin().denominationUnit = tryParseLong(joStatsConfig.optString("denominationUnit"), 1L);
+
+        long denominationUnit = mBlockData.coin.denominationUnit;
+        String url = mPoolItem.getApiUrl() + "/network/stats";
+
         try {
-            String url = mPoolItem.getApiUrl() + "/network/stats";
             String dataStatsNetwork  = Json.fetch(url);
-//            Log.i(LOG_TAG, dataStatsNetwork);
 
             JSONObject joStats = new JSONObject(dataStatsNetwork);
 
-            mBlockData.getNetwork().lastBlockHeight = joStats.optString("height");
-            mBlockData.getNetwork().difficulty = joStats.optString("difficulty");
-            mBlockData.getNetwork().lastBlockTime = pTime.format(new Date(joStats.optLong("ts") * 1000));
-            mBlockData.getNetwork().lastRewardAmount =  parseCurrency(joStats.optString("value", "0"), 100, 100, "XLA");
-        }
-        catch (JSONException e) {
+            mBlockData.network.lastBlockHeight = joStats.optString("height");
+            mBlockData.network.difficulty = joStats.optString("difficulty");
+            mBlockData.network.lastBlockTime = pTime.format(new Date(joStats.optLong("ts") * 1000));
+            mBlockData.network.lastRewardAmount =  parseCurrency(joStats.optString("value", "0"), denominationUnit, denominationUnit, "XLA");
+        } catch (JSONException e) {
             Log.i(LOG_TAG, "NETWORK\n"+e.toString());
             e.printStackTrace();
         }
@@ -72,25 +70,24 @@ public final class NodejsPool extends ProviderAbstract {
 
         String surl = mPoolItem.getApiUrl() + "/miner/" + getWalletAddress() +"/stats";
         try {
+            String symbol = mBlockData.coin.symbol;
             String dataStatsNetwork  = Json.fetch(surl);
             Log.i(LOG_TAG, dataStatsNetwork);
 
             JSONObject joStatsAddress = new JSONObject(dataStatsNetwork);
 
-            Data.Coin coin = mBlockData.getCoin();
             String hashRate = getReadableHashRateString(joStatsAddress.optLong("hash"));
-            String balance = parseCurrency(joStatsAddress.optString("amtDue", "0"), 100, 100, "XLA");
-            String paid = parseCurrency(joStatsAddress.optString("amtPaid", "0"), 100, 100, "XLA");
+            String balance = parseCurrency(joStatsAddress.optString("amtDue", "0"), denominationUnit, denominationUnit, symbol);
+            String paid = parseCurrency(joStatsAddress.optString("amtPaid", "0"), denominationUnit, denominationUnit, symbol);
             String lastShare = pTime.format(new Date(joStatsAddress.optLong("lastHash") * 1000));
             String blocks = String.valueOf(tryParseLong(joStatsAddress.optString("validShares"), 0L));
 
-            mBlockData.getMiner().hashrate = hashRate;
-            mBlockData.getMiner().balance = balance;
-            mBlockData.getMiner().paid = paid;
-            mBlockData.getMiner().lastShare = lastShare;
-            mBlockData.getMiner().blocks = blocks;
-        }
-        catch (JSONException e) {
+            mBlockData.miner.hashrate = hashRate;
+            mBlockData.miner.balance = balance;
+            mBlockData.miner.paid = paid;
+            mBlockData.miner.lastShare = lastShare;
+            mBlockData.miner.blocks = blocks;
+        } catch (JSONException e) {
             Log.i(LOG_TAG, "ADDRESS :" +surl+ "\n"+e.toString());
             e.printStackTrace();
         }

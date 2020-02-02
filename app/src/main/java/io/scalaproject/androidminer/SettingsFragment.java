@@ -34,7 +34,7 @@ import java.util.Arrays;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 
 import io.scalaproject.androidminer.api.PoolItem;
-import io.scalaproject.androidminer.api.PoolManager;
+import io.scalaproject.androidminer.api.ProviderManager;
 
 
 public class SettingsFragment extends Fragment {
@@ -48,6 +48,8 @@ public class SettingsFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
+        ProviderManager.generate();
 
         Button click;
         EditText edPool, edPort;
@@ -79,7 +81,7 @@ public class SettingsFragment extends Fragment {
 
         chkPauseOnBattery = view.findViewById(R.id.chkPauseOnBattery);
 
-        PoolItem[] pools = PoolManager.getPools();
+        PoolItem[] pools = ProviderManager.getPools();
         String[] description = new String[pools.length];
         for(int i =0; i< pools.length;i++) {
             description[i] = pools[i].getKey();
@@ -153,7 +155,7 @@ public class SettingsFragment extends Fragment {
                     return;
                 }
 
-                PoolItem poolItem = PoolManager.getPoolById(position);
+                PoolItem poolItem = ProviderManager.getPoolById(position);
 
                 if(poolItem != null){
                     edPool.setText(poolItem.getPool());
@@ -172,14 +174,13 @@ public class SettingsFragment extends Fragment {
         if (poolSelected.equals("")) {
             poolSelected = Integer.toString(sp);
         }
-        poolItem = PoolManager.getPoolById(poolSelected);
+        poolItem = ProviderManager.getPoolById(poolSelected);
 
         if(poolItem == null) {
             poolSelected = Integer.toString(sp);
         }
 
-        poolItem = PoolManager.getPoolById(poolSelected);
-
+        poolItem = ProviderManager.getPoolById(poolSelected);
         if (Config.read("init").equals("1") == false) {
             poolSelected = Integer.toString(sp);
             edUser.setText(Config.DefaultWallet);
@@ -217,13 +218,12 @@ public class SettingsFragment extends Fragment {
                     password = Tools.getDeviceName();
                 }
 
-                Log.i(LOG_TAG,"Pssword : " + password);
                 Config.write("pass", password);
                 edPass.setText(password);
                 String key = (String)spPool.getSelectedItem();
 
                 int selectedPosition = Config.DefaultPoolIndex;
-                PoolItem[] pools = PoolManager.getPools();
+                PoolItem[] pools = ProviderManager.getPools();
                 for(int i = 0;i< pools.length;i++){
                     PoolItem pi = pools[i];
                     if(pi.getKey().equals(key)) {
@@ -232,7 +232,7 @@ public class SettingsFragment extends Fragment {
                     }
                 }
                 
-                PoolItem pi = PoolManager.getPoolById(selectedPosition);
+                PoolItem pi = ProviderManager.getPoolById(selectedPosition);
                 String port = edPort.getText().toString().trim();
                 String pool = edPool.getText().toString().trim();
                 if(pi.getPoolType() == 4) {
@@ -260,6 +260,7 @@ public class SettingsFragment extends Fragment {
                 for (Fragment fragment : getFragmentManager().getFragments()) {
                     if (fragment != null) {
                         getFragmentManager().beginTransaction().remove(fragment).commit();
+                        ProviderManager.afterSave();
                     }
                 }
 
@@ -283,7 +284,7 @@ public class SettingsFragment extends Fragment {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 String poolAddress = edPool.getText().toString().trim();
-                PoolItem[] pools = PoolManager.getPools();
+                PoolItem[] pools = ProviderManager.getPools();
                 int position  = spPool.getSelectedItemPosition();
 
                 if (s.length() > 0) {

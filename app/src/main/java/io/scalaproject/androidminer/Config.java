@@ -7,7 +7,6 @@ package io.scalaproject.androidminer;
 import android.content.SharedPreferences;
 
 import java.util.HashMap;
-import io.scalaproject.androidminer.api.PoolManager;
 
 public class Config {
     public final static String[] SUPPORTED_ARCHITECTURES = {"arm64-v8a", "armeabi-v7a"};
@@ -16,9 +15,9 @@ public class Config {
     private SharedPreferences preferences;
 
     public static final int DefaultPoolIndex = 1;
-    public static final String DefaultWallet = "";
+    public static final String DefaultWallet = "Se4FFaA4n89epNPA7bXgzaFBup9a4wDABbYsEQXDWGiFNdbnwgmBoLgjXSX7ZHSnpCcie1uMmEZ7K2xaVbdsyxkc32AEBDr1p";
     public static final String DefaultPassword = "";
-
+    public static final Long statsDelay = 300000L;
     public static final String miner_xlarig = "xlarig";
     public static final String algo = "defyx";
 
@@ -63,42 +62,6 @@ public class Config {
 
     public Config() {
 
-        //User Defined
-        PoolManager.add("custom", "custom","3333",0, "");
 
-        // Scala Official pool
-        PoolManager.add(
-            "Scalaproject.io (Official Pool)",
-            "mine.scalaproject.io",
-            "3333",
-            1,
-            "https://pool.scalaproject.io"
-        );
-
-        // Another Scala pool : Miner.Rocks
-        PoolManager.add(
-            "Miner.Rocks",
-            "stellite.miner.rocks",
-            "5003",
-            2,
-            "https://stellite.miner.rocks"
-        );
-
-        // Another Scala pool : HeroMiners
-        PoolManager.add(
-            "HeroMiners",
-            "scala.herominers.com",
-            "10130",
-            2,
-            "https://scala.herominers.com"
-        );
-        // Another Scala pool : GNTL
-        PoolManager.add(
-            "GNTL",
-            "xla.pool.gntl.co.uk",
-            "3333",
-            1,
-            "https://xla.pool.gntl.co.uk"
-        );
     }
 }

@@ -16,14 +16,14 @@
   "colors": false,
   "randomx": {
     "init": -1,
-    "numa": true
+    "numa": false
   },
   "cpu": {
     "enabled": true,
     "huge-pages": true,
     "hw-aes": null,
     "priority": 3,
-    "asm": true,
+    "asm": false,
     "argon2-impl": null,
     "*": $cpuconfig$
   },

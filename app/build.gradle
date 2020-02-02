@@ -10,8 +10,8 @@ android {
     }
 
     defaultConfig {
-        applicationId "scala.androidminer"
-        minSdkVersion 19
+        applicationId "io.scalaproject.androidminer"
+        minSdkVersion 17
         targetSdkVersion 26
         versionCode 1
         versionName "1.6.1"
@@ -20,7 +20,7 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }

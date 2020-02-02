@@ -9,13 +9,7 @@ import io.scalaproject.androidminer.api.providers.*;
 public class PoolItem {
 
     private int mId = 0;
-    private String mPool = "";
-    private String mPort;
-    private String mApiUrl = "";
-    private String mPoolUrl = "";
-    private String mStatsURL = "";
-    private String mStartUrl = "";
-    private String mKey = "";
+    private String mPool , mPort, mApiUrl , mPoolUrl , mStatsURL , mStartUrl , mKey;
     private int mPoolType = 0;
 
     public  PoolItem(String key, String pool, String port, int poolType, String poolUrl) {
@@ -172,7 +166,7 @@ public class PoolItem {
                 break;
             case 3:
             default:
-               mPoolInterface = new NoPool(this);
+                mPoolInterface = new NoPool(this);
         }
 
         return  mPoolInterface;

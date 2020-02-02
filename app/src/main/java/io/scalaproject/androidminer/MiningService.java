@@ -48,7 +48,7 @@ import java.net.UnknownHostException;
 import java.util.Arrays;
 
 import io.scalaproject.androidminer.api.PoolItem;
-import io.scalaproject.androidminer.api.PoolManager;
+import io.scalaproject.androidminer.api.ProviderManager;
 
 import static android.os.PowerManager.*;
 
@@ -166,7 +166,7 @@ public class MiningService extends Service {
     public MiningConfig newConfig(String username, String pass, int cores, int threads, int intensity) {
 
         MiningConfig config = new MiningConfig();
-        PoolItem pi = PoolManager.getSelectedPool();
+        PoolItem pi = ProviderManager.getSelectedPool();
         config.username = username;
 //        config.pool = pi.getPool() + ":" + pi.getPort();
         config.cores = cores;
@@ -245,7 +245,7 @@ public class MiningService extends Service {
 
         protected String getPoolHost() {
 
-            PoolItem pi = PoolManager.getSelectedPool();
+            PoolItem pi = ProviderManager.getSelectedPool();
             return getIpByHost(pi.getPool()) + ":" + pi.getPort();
         }
 

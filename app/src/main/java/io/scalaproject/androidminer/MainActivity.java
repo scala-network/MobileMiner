@@ -67,18 +67,15 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Timer;
-import java.util.TimerTask;
 
 /* FOR AMAYC Support */
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
 
-import io.scalaproject.androidminer.api.Data;
-import io.scalaproject.androidminer.api.PoolManager;
+import io.scalaproject.androidminer.api.IProviderListener;
 import io.scalaproject.androidminer.api.PoolItem;
-import io.scalaproject.androidminer.api.ProviderAbstract;
-import io.scalaproject.androidminer.api.ProviderListenerInterface;
+import io.scalaproject.androidminer.api.ProviderData;
+import io.scalaproject.androidminer.api.ProviderManager;
 
 import static android.os.PowerManager.PARTIAL_WAKE_LOCK;
 
@@ -96,9 +93,7 @@ public class MainActivity extends AppCompatActivity
     private LinearLayout llPayout;
     private ProgressBar pbPayout;
     private boolean payoutEnabled;
-    protected ProviderListenerInterface payoutListener;
-    Timer timer;
-    long delay = 3000L;
+    protected IProviderListener payoutListener;
 
     private boolean validArchitecture = true;
 
@@ -162,7 +157,7 @@ public class MainActivity extends AppCompatActivity
         for(int i = 0; i< frags.size(); i++)
         Log.d(LOG_TAG,"This is the initial FRAG: "+ frags.get(i).toString());
 
-        PoolItem pi = PoolManager.getSelectedPool();
+        PoolItem pi = ProviderManager.getSelectedPool();
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -242,13 +237,13 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-        payoutListener = new ProviderListenerInterface() {
-            public void onStatsChange(Data d) {
+        payoutListener = new IProviderListener() {
+            public void onStatsChange(ProviderData d) {
                 if (!payoutEnabled) {
                     return;
                 }
 
-                PoolItem pi = PoolManager.getSelectedPool();
+                PoolItem pi = ProviderManager.getSelectedPool();
                 if(pi == null) {
                     return;
                 }
@@ -258,43 +253,18 @@ public class MainActivity extends AppCompatActivity
                 enablePayoutWidget(true, "");
                 updatePayoutWidget(d);
             }
-        };
 
-        //@@TODO: Retrieve pool stats at startup
-        if(pi == null) {
-            return;
-        }
-
-        ProviderAbstract api = pi.getInterface();
-        api.setPayoutChangeListener(payoutListener);
-        api.execute();
-        repeatTask();
-    }
-
-    private void repeatTask() {
-        if (timer != null) {
-            timer.cancel();
-            timer.purge();
-            timer = null;
-        }
-
-        if (!payoutEnabled) {
-            return;
-        }
-
-        timer = new Timer("Timer");
-
-        TimerTask task = new TimerTask() {
-            public void run() {
-                ProviderAbstract process = PoolManager.getSelectedPool().getInterface();
-                process.setPayoutChangeListener(payoutListener);
-                process.execute();
-                repeatTask();
+            @Override
+            public boolean onEnabledRequest() {
+                enablePayoutWidget(true);
+                return payoutEnabled;
             }
         };
 
-        timer.schedule(task, delay);
+
+        ProviderManager.request.setListener(payoutListener).start();
     }
+
 
     private void setStatusText(String status) {
         if (status != null && !status.isEmpty() && !status.equals("")) {
@@ -302,30 +272,30 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    private void updatePayoutWidget(Data d) {
-        if(d.getMiner() == null) {
+    private void updatePayoutWidget(ProviderData d) {
+        if(d.isNew == true) {
             enablePayoutWidget(false, "");
         }
-        else if(d.getMiner().hashrate.equals("n/a")) {
+        else if(d.miner.hashrate.equals("n/a")) {
             enablePayoutWidget(false, "Loading...");
         }
         else {
             enablePayoutWidget(true, "");
 
             // Payout
-            String sHashrate = d.getMiner().hashrate;
+            String sHashrate = d.miner.hashrate;
             sHashrate = sHashrate.replace("H", "");
             TextView tvTotalHashrate = findViewById(R.id.totalhashrate);
             tvTotalHashrate.setText(sHashrate.trim());
 
-            String sBalance = d.getMiner().balance;
+            String sBalance = d.miner.balance;
             sBalance = sBalance.replace("XLA", "");
             sBalance.trim();
             TextView tvBalance = findViewById(R.id.balance);
             tvBalance.setText(sBalance);
 
             TextView tvMinPayout = findViewById(R.id.minpayout);
-            float fMinPayout = Utils.convertStringToFloat(d.getPool().minPayout);
+            float fMinPayout = Utils.convertStringToFloat(d.pool.minPayout);
             String sMinPayout = String.valueOf(Math.round(fMinPayout));
             tvMinPayout.setText(sMinPayout);
 
@@ -339,8 +309,10 @@ public class MainActivity extends AppCompatActivity
             }
         }
     }
-
-    public void enablePayoutWidget(boolean enable, String message) {
+    public  void enablePayoutWidget(boolean enable) {
+        enablePayoutWidget(enable,"XLA");
+    }
+    public void enablePayoutWidget(boolean enable, String unit) {
         TextView tvTotalHashrate = findViewById(R.id.totalhashrate);
 
         if (enable) {
@@ -365,7 +337,7 @@ public class MainActivity extends AppCompatActivity
             tvXLAUnit.setVisibility(View.VISIBLE);
             tvXLAUnit.setTextColor(getResources().getColor(R.color.c_white));
             tvXLAUnit.setTypeface(null, Typeface.BOLD);
-            tvXLAUnit.setText("XLA");
+            tvXLAUnit.setText(unit);
         }
         else {
             if(tvTotalHashrate.getVisibility() != View.INVISIBLE) {
@@ -386,14 +358,14 @@ public class MainActivity extends AppCompatActivity
             }
 
             TextView tvXLAUnit = findViewById(R.id.xlaunit);
-            if(message.equals("")) {
+            if(unit.equals("")) {
                 tvXLAUnit.setVisibility(View.INVISIBLE);
             }
             else {
                 tvXLAUnit.setVisibility(View.VISIBLE);
                 tvXLAUnit.setTextColor(getResources().getColor(R.color.c_grey));
                 tvXLAUnit.setTypeface(null, Typeface.NORMAL);
-                tvXLAUnit.setText(message);
+                tvXLAUnit.setText(unit);
             }
         }
     }
@@ -406,7 +378,7 @@ public class MainActivity extends AppCompatActivity
             return;
         }
 
-        PoolItem pi = PoolManager.getSelectedPool();
+        PoolItem pi = ProviderManager.getSelectedPool();
 
         if (Config.read("init").equals("1") == false || pi == null) {
             enablePayoutWidget(false, "");
@@ -428,7 +400,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void updateUI() {
-        PoolItem pi = PoolManager.getSelectedPool();
+        PoolItem pi = ProviderManager.getSelectedPool();
 
         String status = "";
         if (pi == null || pi.getPool().equals("") || pi.getPort().equals("") || Config.read("address").equals("")) {
@@ -536,7 +508,7 @@ public class MainActivity extends AppCompatActivity
     private void startMining(View view) {
         if (binder == null) return;
 
-        if (Config.read("init").equals("1") == false || PoolManager.getSelectedPool() == null) {
+        if (Config.read("init").equals("1") == false || ProviderManager.getSelectedPool() == null) {
             Toast.makeText(contextOfApplication, "Save settings before mining.", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -584,20 +556,14 @@ public class MainActivity extends AppCompatActivity
             frag.updateAddress();
         }
 
+        ProviderManager.request.setListener(payoutListener).start();
         refreshLogOutputView();
-        repeatTask();
     }
-
     @Override
     protected void onPause() {
 
         super.onPause();
 
-        if (timer != null) {
-            timer.cancel();
-            timer.purge();
-            timer = null;
-        }
     }
 
     private void setMiningState(View view) {
@@ -620,67 +586,66 @@ public class MainActivity extends AppCompatActivity
             updateHashrate("0");
             DrawableCompat.setTint(buttonDrawable, getResources().getColor(R.color.c_blue));
             btnStart.setBackground(buttonDrawable);
-        } else {
-            if (state) {
-                btnStart.setText("Stop");
-                updateHashrate("n/a");
-                DrawableCompat.setTint(buttonDrawable, getResources().getColor(R.color.c_red));
-                btnStart.setBackground(buttonDrawable);
+        } else if (state) {
+            btnStart.setText("Stop");
+            updateHashrate("n/a");
+            DrawableCompat.setTint(buttonDrawable, getResources().getColor(R.color.c_red));
+            btnStart.setBackground(buttonDrawable);
 
-                // Hashrate button
-                minerBtnH.setEnabled(true);
-                buttonDrawable = minerBtnH.getBackground();
-                buttonDrawable = DrawableCompat.wrap(buttonDrawable);
-                DrawableCompat.setTint(buttonDrawable, getResources().getColor(R.color.bg_lighter));
-                minerBtnH.setBackground(buttonDrawable);
-                minerBtnH.setTextColor(getResources().getColor(R.color.c_white));
+            // Hashrate button
+            minerBtnH.setEnabled(true);
+            buttonDrawable = minerBtnH.getBackground();
+            buttonDrawable = DrawableCompat.wrap(buttonDrawable);
+            DrawableCompat.setTint(buttonDrawable, getResources().getColor(R.color.bg_lighter));
+            minerBtnH.setBackground(buttonDrawable);
+            minerBtnH.setTextColor(getResources().getColor(R.color.c_white));
 
-                // Pause button
-                minerBtnP.setEnabled(true);
-                buttonDrawable = minerBtnP.getBackground();
-                buttonDrawable = DrawableCompat.wrap(buttonDrawable);
-                DrawableCompat.setTint(buttonDrawable, getResources().getColor(R.color.bg_lighter));
-                minerBtnP.setBackground(buttonDrawable);
-                minerBtnP.setTextColor(getResources().getColor(R.color.c_white));
+            // Pause button
+            minerBtnP.setEnabled(true);
+            buttonDrawable = minerBtnP.getBackground();
+            buttonDrawable = DrawableCompat.wrap(buttonDrawable);
+            DrawableCompat.setTint(buttonDrawable, getResources().getColor(R.color.bg_lighter));
+            minerBtnP.setBackground(buttonDrawable);
+            minerBtnP.setTextColor(getResources().getColor(R.color.c_white));
 
-                // Resume button
-                minerBtnR.setEnabled(false);
-                buttonDrawable = minerBtnR.getBackground();
-                buttonDrawable = DrawableCompat.wrap(buttonDrawable);
-                DrawableCompat.setTint(buttonDrawable, getResources().getColor(R.color.bg_black));
-                minerBtnR.setBackground(buttonDrawable);
-                minerBtnR.setTextColor(getResources().getColor(R.color.c_black));
+            // Resume button
+            minerBtnR.setEnabled(false);
+            buttonDrawable = minerBtnR.getBackground();
+            buttonDrawable = DrawableCompat.wrap(buttonDrawable);
+            DrawableCompat.setTint(buttonDrawable, getResources().getColor(R.color.bg_black));
+            minerBtnR.setBackground(buttonDrawable);
+            minerBtnR.setTextColor(getResources().getColor(R.color.c_black));
 
+                DrawableCompat.setTint(buttonDrawable, getResources().getColor(R.color.c_green));
             } else {
                 btnStart.setText("Start");
                 updateHashrate("0");
                 DrawableCompat.setTint(buttonDrawable, getResources().getColor(R.color.c_green));
                 btnStart.setBackground(buttonDrawable);
 
-                // Hashrate button
-                minerBtnH.setEnabled(false);
-                buttonDrawable = minerBtnH.getBackground();
-                buttonDrawable = DrawableCompat.wrap(buttonDrawable);
-                DrawableCompat.setTint(buttonDrawable, getResources().getColor(R.color.bg_black));
-                minerBtnH.setBackground(buttonDrawable);
-                minerBtnH.setTextColor(getResources().getColor(R.color.c_black));
+            // Hashrate button
+            minerBtnH.setEnabled(false);
+            buttonDrawable = minerBtnH.getBackground();
+            buttonDrawable = DrawableCompat.wrap(buttonDrawable);
+            DrawableCompat.setTint(buttonDrawable, getResources().getColor(R.color.bg_black));
+            minerBtnH.setBackground(buttonDrawable);
+            minerBtnH.setTextColor(getResources().getColor(R.color.c_black));
 
-                // Pause button
-                minerBtnP.setEnabled(false);
-                buttonDrawable = minerBtnP.getBackground();
-                buttonDrawable = DrawableCompat.wrap(buttonDrawable);
-                DrawableCompat.setTint(buttonDrawable, getResources().getColor(R.color.bg_black));
-                minerBtnP.setBackground(buttonDrawable);
-                minerBtnP.setTextColor(getResources().getColor(R.color.c_black));
+            // Pause button
+            minerBtnP.setEnabled(false);
+            buttonDrawable = minerBtnP.getBackground();
+            buttonDrawable = DrawableCompat.wrap(buttonDrawable);
+            DrawableCompat.setTint(buttonDrawable, getResources().getColor(R.color.bg_black));
+            minerBtnP.setBackground(buttonDrawable);
+            minerBtnP.setTextColor(getResources().getColor(R.color.c_black));
 
-                // Resume button
-                minerBtnR.setEnabled(false);
-                buttonDrawable = minerBtnR.getBackground();
-                buttonDrawable = DrawableCompat.wrap(buttonDrawable);
-                DrawableCompat.setTint(buttonDrawable, getResources().getColor(R.color.bg_black));
-                minerBtnR.setBackground(buttonDrawable);
-                minerBtnR.setTextColor(getResources().getColor(R.color.c_black));
-            }
+            // Resume button
+            minerBtnR.setEnabled(false);
+            buttonDrawable = minerBtnR.getBackground();
+            buttonDrawable = DrawableCompat.wrap(buttonDrawable);
+            DrawableCompat.setTint(buttonDrawable, getResources().getColor(R.color.bg_black));
+            minerBtnR.setBackground(buttonDrawable);
+            minerBtnR.setTextColor(getResources().getColor(R.color.c_black));
         }
     }
 

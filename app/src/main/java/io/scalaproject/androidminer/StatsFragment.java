@@ -18,14 +18,11 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.Timer;
-import java.util.TimerTask;
 
-import io.scalaproject.androidminer.api.Data;
-import io.scalaproject.androidminer.api.PoolManager;
+import io.scalaproject.androidminer.api.ProviderData;
 import io.scalaproject.androidminer.api.PoolItem;
-import io.scalaproject.androidminer.api.ProviderAbstract;
-import io.scalaproject.androidminer.api.ProviderListenerInterface;
+import io.scalaproject.androidminer.api.IProviderListener;
+import io.scalaproject.androidminer.api.ProviderManager;
 
 public class StatsFragment extends Fragment {
 
@@ -33,13 +30,7 @@ public class StatsFragment extends Fragment {
 
     private Button bStatCheckOnline;
 
-    private TextView data;
-    private TextView dataNetwork;
-
-    Timer timer;
-    long delay = 30000L;
-
-    protected ProviderListenerInterface statsListener;
+    protected IProviderListener statsListener;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -47,81 +38,75 @@ public class StatsFragment extends Fragment {
 
         bStatCheckOnline = view.findViewById(R.id.checkstatsonline);
 
-        checkValidState();
+        statsListener = new IProviderListener(){
+            public void onStatsChange(ProviderData d) {
 
-        statsListener = new ProviderListenerInterface(){
-            public void onStatsChange(Data d) {
-                if (!checkValidState()) {
-                    return;
-                }
+                PoolItem pm = ProviderManager.getSelectedPool();
 
-                PoolItem pm = PoolManager.getSelectedPool();
-
-                // Network
+//                ProviderData.Network network = d.network;
                 TextView tvNetworkHashrate = view.findViewById(R.id.hashratenetwork);
-                tvNetworkHashrate.setText(d.getNetwork().hashrate);
+                tvNetworkHashrate.setText(d.network.hashrate);
 
                 TextView tvNetworkDifficulty = view.findViewById(R.id.difficultypool);
-                tvNetworkDifficulty.setText(d.getNetwork().difficulty);
+                tvNetworkDifficulty.setText(d.network.difficulty);
 
                 TextView tvNetworkBlocks = view.findViewById(R.id.lastblocknetwork);
-                tvNetworkBlocks.setText(d.getNetwork().lastBlockTime);
-
+                tvNetworkBlocks.setText(d.network.lastBlockTime);
                 TextView tvNetworkHeight = view.findViewById(R.id.height);
-                tvNetworkHeight.setText(d.getNetwork().lastBlockHeight);
+
+                tvNetworkHeight.setText(d.network.lastBlockHeight);
 
                 TextView tvNetworkRewards = view.findViewById(R.id.rewards);
-                tvNetworkRewards.setText(d.getNetwork().lastRewardAmount);
 
+                tvNetworkRewards.setText(d.network.lastRewardAmount);
                 // Pool
                 TextView tvPoolURL = view.findViewById(R.id.poolurl);
                 tvPoolURL.setText(pm.getPool());
-
                 TextView tvPoolHashrate = view.findViewById(R.id.hashratepool);
-                tvPoolHashrate.setText(d.getPool().hashrate);
 
                 TextView tvPoolDifficulty = view.findViewById(R.id.difficultypool);
-                tvPoolDifficulty.setText(d.getPool().difficulty);
+
+                tvPoolHashrate.setText(d.pool.hashrate);
+                tvPoolDifficulty.setText(d.pool.difficulty);
+
 
                 TextView tvPoolBlocks = view.findViewById(R.id.lastblockpool);
-                tvPoolBlocks.setText(d.getPool().lastBlockTime);
+                tvPoolBlocks.setText(d.pool.lastBlockTime);
 
                 TextView tvPoolLastBlock = view.findViewById(R.id.blockspool);
-                tvPoolLastBlock.setText(d.getPool().blocks);
-
+                tvPoolLastBlock.setText(d.pool.blocks);
                 // Address
+
                 String wallet = Config.read("address");
                 String addresspretty = wallet.substring(0, 7) + "..." + wallet.substring(wallet.length() - 7);
 
                 TextView tvWalletAddress = view.findViewById(R.id.walletaddress);
                 tvWalletAddress.setText(addresspretty);
 
-                String sHashrate = d.getMiner().hashrate;
-                sHashrate.replace("H", "").trim();
+                String sHashrate = d.miner.hashrate;
+                sHashrate.replace("H", "");
+                sHashrate.trim();
                 TextView tvAddressHashrate = view.findViewById(R.id.hashrateminer);
-                tvAddressHashrate.setText(sHashrate);
 
                 TextView tvAddressLastShare = view.findViewById(R.id.lastshareminer);
-                tvAddressLastShare.setText(d.getMiner().lastShare);
-
                 TextView tvAddressBlocks = view.findViewById(R.id.blocksminedminer);
-                tvAddressBlocks.setText(d.getMiner().blocks);
+                tvAddressHashrate.setText(sHashrate);
+                tvAddressLastShare.setText(d.miner.lastShare);
 
-                String sBalance = d.getMiner().balance;
-                sBalance.replace("XLA", "").trim();
+
+                tvAddressBlocks.setText(d.miner.blocks);
+                String sBalance = d.miner.balance;
+                sBalance.replace("XLA", "");
+                sBalance.trim();
+
                 TextView tvBalance = view.findViewById(R.id.balance);
                 tvBalance.setText(sBalance);
-
-                String sPaid = d.getMiner().paid;
-                sPaid.replace("XLA", "").trim();
+                String sPaid = d.miner.balance;
+                sPaid.replace("XLA", "");
+                sPaid.trim();
                 TextView tvPaid = view.findViewById(R.id.paid);
                 tvPaid.setText(sPaid);
 
-                /*if(pm.getPoolType() == 1) {
-                    dataParsedAddress+= "Shares Accepted: " + d.getMiner().blocks;
-                } else {
-                    dataParsedAddress+= "Blocks Found: " + d.getMiner().blocks;
-                }*/
 
                 String statsUrl = pm.getStatsURL();
                 String statsUrlWallet = statsUrl + "?wallet=" + wallet;
@@ -135,19 +120,19 @@ public class StatsFragment extends Fragment {
                     }
                 });
             }
+
+            @Override
+            public boolean onEnabledRequest() {
+                return checkValidState();
+            }
         };
 
         if (!checkValidState()) {
             return view;
         }
+        ProviderManager.request.setListener(statsListener).start();
 
-        PoolItem pi = PoolManager.getSelectedPool();
-        ProviderAbstract api = pi.getInterface();
-
-        api.setStatsChangeListener(statsListener);
-        api.execute();
-
-        repeatTask();
+        enableOnlineStats(true);
 
         return view;
     }
@@ -174,13 +159,14 @@ public class StatsFragment extends Fragment {
 
     private boolean checkValidState() {
 
-        PoolItem pi = PoolManager.getSelectedPool();
 
         if(Config.read("address").equals("")) {
             Toast.makeText(getContext(),"Wallet address is empty", Toast.LENGTH_LONG);
             enableOnlineStats(false);
             return false;
         }
+
+        PoolItem pi = ProviderManager.getSelectedPool();
 
         if (Config.read("init").equals("1") == false || pi == null) {
             Toast.makeText(getContext(),"Start mining to view statistics", Toast.LENGTH_LONG);
@@ -194,50 +180,24 @@ public class StatsFragment extends Fragment {
             return false;
         }
 
-        enableOnlineStats(true);
 
         return true;
     }
 
-    private void repeatTask() {
-        if (timer != null) {
-            timer.cancel();
-            timer.purge();
-            timer = null;
-        }
-
-        if (!checkValidState()) {
-            return;
-        }
-
-        timer = new Timer("Timer");
-
-        TimerTask task = new TimerTask() {
-            public void run() {
-                ProviderAbstract process = PoolManager.getSelectedPool().getInterface();
-                process.setStatsChangeListener(statsListener);
-                process.execute();
-                repeatTask();
-            }
-        };
-
-        timer.schedule(task, delay);
-    }
 
     @Override
     public void onResume() {
         super.onResume();
-        repeatTask();
+        enableOnlineStats(true);
+
+
+        ProviderManager.request.setListener(statsListener).start();
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        if (timer != null) {
-            timer.cancel();
-            timer.purge();
-            timer = null;
-        }
+        enableOnlineStats(false);
     }
 }
 

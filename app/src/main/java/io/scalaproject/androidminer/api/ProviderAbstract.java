@@ -1,22 +1,25 @@
 package io.scalaproject.androidminer.api;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
+
+import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import io.scalaproject.androidminer.Config;
 
 public abstract class ProviderAbstract extends AsyncTask<Void, Void, Void> {
 
     protected String LOG_TAG = "MiningSvc";
+    protected Timer timer;
 
-    protected Data mBlockData = new Data();
-
-    final public Data getBlockData() {
-        return mBlockData;
+    final public ProviderData getBlockData() {
+        return ProviderManager.data;
     }
 
-    private ProviderListenerInterface statslistener = null;
-    private ProviderListenerInterface payoutlistener = null;
+    public IProviderListener mListener;
 
     protected PoolItem mPoolItem;
 
@@ -28,33 +31,17 @@ public abstract class ProviderAbstract extends AsyncTask<Void, Void, Void> {
         return Config.read("address");
     }
 
-    final public void setStatsChangeListener(ProviderListenerInterface listener) {
-        if (this.statslistener != null) {
-            this.statslistener = null;
-        }
-
-        this.statslistener = listener;
-    }
-
-    final public void setPayoutChangeListener(ProviderListenerInterface listener) {
-        if (this.payoutlistener != null) {
-            this.payoutlistener = null;
-        }
-
-        this.payoutlistener = listener;
-    }
 
     @Override
     protected void onPostExecute(Void aVoid) {
         super.onPostExecute(aVoid);
-
-        if (statslistener != null){
-            statslistener.onStatsChange(mBlockData);
+        if(mListener == null) {
+            return;
         }
-
-        if (payoutlistener != null){
-            payoutlistener.onStatsChange(mBlockData);
+        if(!mListener.onEnabledRequest()) {
+            return;
         }
+        mListener.onStatsChange(getBlockData());
     }
 
     abstract protected void onBackgroundFetchData();
@@ -63,11 +50,12 @@ public abstract class ProviderAbstract extends AsyncTask<Void, Void, Void> {
     protected Void doInBackground(Void... voids) {
         try {
             onBackgroundFetchData();
-
         } catch (Exception e) {
 
         }
 
+        getBlockData().pool.type = mPoolItem.getPoolType();
         return null;
     }
+
 }
