@@ -276,7 +276,7 @@ public class MainActivity extends AppCompatActivity
         if(d.isNew == true) {
             enablePayoutWidget(false, "");
         }
-        else if(d.miner.hashrate.equals("n/a")) {
+        else if(d.miner.paid == null) {
             enablePayoutWidget(false, "Loading...");
         }
         else {
