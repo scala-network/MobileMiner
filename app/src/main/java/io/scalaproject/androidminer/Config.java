@@ -15,13 +15,13 @@ public class Config {
     private SharedPreferences preferences;
 
     public static final int DefaultPoolIndex = 1;
-    public static final String DefaultWallet = "Se4FFaA4n89epNPA7bXgzaFBup9a4wDABbYsEQXDWGiFNdbnwgmBoLgjXSX7ZHSnpCcie1uMmEZ7K2xaVbdsyxkc32AEBDr1p";
+    public static final String DefaultWallet = "";
     public static final String DefaultPassword = "";
-    public static final Long statsDelay = 10000L;
+    public static final Long statsDelay = 30000L;
     public static final String miner_xlarig = "xlarig";
     public static final String algo = "defyx";
 
-    public static final String version = "0.0.5";
+    public static final String version = "0.0.6";
     public static final Integer logMaxLength = 50000;
     public static final Integer logPruneLength = 1000;
 
