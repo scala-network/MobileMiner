@@ -49,6 +49,7 @@ public class StatsFragment extends Fragment {
                 return checkValidState();
             }
         };
+
         ProviderManager.request.setListener(statsListener).start();
         ProviderManager.afterSave();
         updateFields(ProviderManager.data,view);
@@ -65,7 +66,6 @@ public class StatsFragment extends Fragment {
 
         // Network
 
-        ProviderData.Network network = d.network;
         TextView tvNetworkHashrate = view.findViewById(R.id.hashratenetwork);
         tvNetworkHashrate.setText(d.network.hashrate);
 
@@ -101,15 +101,14 @@ public class StatsFragment extends Fragment {
         // Address
 
         String wallet = Config.read("address");
-        String addresspretty = wallet.substring(0, 7) + "..." + wallet.substring(wallet.length() - 7);
+        String prettyaddress = wallet.substring(0, 7) + "..." + wallet.substring(wallet.length() - 7);
 
         TextView tvWalletAddress = view.findViewById(R.id.walletaddress);
-        tvWalletAddress.setText(addresspretty);
+        tvWalletAddress.setText(prettyaddress);
 
         String sHashrate = d.miner.hashrate;
         if(sHashrate != null) {
-            sHashrate.replace("H", "");
-            sHashrate.trim();
+            sHashrate = sHashrate.replace("H", "").trim();
             TextView tvAddressHashrate = view.findViewById(R.id.hashrateminer);
             tvAddressHashrate.setText(sHashrate);
 
@@ -200,5 +199,3 @@ public class StatsFragment extends Fragment {
         enableOnlineStats(false);
     }
 }
-
-
