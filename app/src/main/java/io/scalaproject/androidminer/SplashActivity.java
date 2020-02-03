@@ -16,7 +16,7 @@ public class SplashActivity extends Activity {
             return;
         }
 
-        setContentView(R.layout.splash);
+        setContentView(R.layout.splashscreen);
 
         int secondsDelayed = 3;
         new Handler().postDelayed(new Runnable() {

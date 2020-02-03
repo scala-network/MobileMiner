@@ -1,5 +1,5 @@
 <resources>
-    <string name="buildString">Scala Android Miner\nBuild: v0.9.3 (9th Jan. 2020)</string>
+    <string name="buildString">v0.9.3 (February 3, 2020)</string>
     <string name="app_name">Scala Miner</string>
     <string name="navigation_drawer_open">Open Navigation Drawer</string>
     <string name="navigation_drawer_close">Close Navigation Drawer</string>
@@ -60,13 +60,13 @@
     <string name="total">Total:</string>
     <string name="na">n/a</string>
     <string name="options">Options</string>
-    <string name="donations">Dev Fees</string>
+    <string name="donations">Donate</string>
     <string name="mininggoal">Mining Goal</string>
 
-    <string name="websiteLink">&lt;a href=&quot;https://scalaproject.io&quot;&gt;scalaproject.io&lt;/a&gt;</string>
-    <string name="githubLink">&lt;a href=&quot;https://github.com/scala-network/scala_android_miner/releases&quot;&gt;Scala Android Miner&lt;/a&gt;</string>
-    <string name="discordLink">&lt;a href=&quot;https://discord.gg/djAFVvy&quot;&gt;Scala Chat and Support&lt;/a&gt;</string>
-    <string name="emailLink">&lt;a href=mailto:&quot;hello@scalaproject.io&quot;&gt;hello@scalaproject.io&lt;/a&gt;</string>
+    <string name="websiteLink">https://scalaproject.io</string>
+    <string name="githubLink">https://github.com/scala-network/scala_android_miner/releases</string>
+    <string name="discordLink">https://discord.gg/djAFVvy</string>
+    <string name="emailLink">mailto:hello@scalaproject.io</string>
     <string name="Mine2getherLink">&lt;a href=&quot;https://github.com/Mine2Gether/m2g_android_miner&quot;&gt;Mine2gether&lt;/a&gt;</string>
     <string name="MoneroMinerLink">&lt;a href=&quot;https://github.com/upost/MoneroMiner&quot;&gt;MoneroMiner&lt;/a&gt;</string>
     <string name="FontAwesomeLink">&lt;a href=&quot;https://fontawesome.com/license&quot;&gt;Font Awesome&lt;/a&gt;</string>

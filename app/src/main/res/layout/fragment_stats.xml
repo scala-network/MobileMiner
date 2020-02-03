@@ -29,7 +29,6 @@
                     android:text="@string/network"
                     android:gravity="start"
                     android:textColor="@color/c_white"
-                    android:layout_marginTop="15dp"
                     android:layout_marginBottom="5dp"
                     android:textSize="14sp"
                     android:textStyle="bold" />
@@ -66,7 +65,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="kH/s"
-                        android:textColor="@color/c_white"
+                        android:textColor="@color/c_lighter"
                         android:textSize="14sp"
                         android:textStyle="bold"/>
 
@@ -250,7 +249,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="kH/s"
-                        android:textColor="@color/c_white"
+                        android:textColor="@color/c_lighter"
                         android:textSize="14sp"
                         android:textStyle="bold"/>
 
@@ -406,7 +405,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="H/s"
-                        android:textColor="@color/c_white"
+                        android:textColor="@color/c_lighter"
                         android:textSize="14sp"
                         android:textStyle="bold"/>
 
@@ -486,8 +485,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/balance"
-                        android:textColor="@color/c_grey"
-                        android:textSize="14sp" />
+                        android:textColor="@color/c_lighter"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
 
                     <Space
                         android:layout_width="0dp"
@@ -508,7 +508,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="XLA"
-                        android:textColor="@color/c_white"
+                        android:textColor="@color/c_lighter"
                         android:textSize="14sp"
                         android:textStyle="bold"/>
 
@@ -523,7 +523,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/paid"
-                        android:textColor="@color/c_white"
+                        android:textColor="@color/c_lighter"
                         android:textStyle="bold"
                         android:textSize="14sp" />
 
@@ -577,6 +577,7 @@
             android:textSize="14dp"
             android:textColor="@color/c_black"
             android:textAllCaps="false"
+            android:enabled="false"
             app:cornerRadius="25dp" />
 
     </RelativeLayout>

@@ -184,6 +184,7 @@ public class StatsFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        enableOnlineStats(true);
         ProviderManager.request.setListener(statsListener).start();
     }
 

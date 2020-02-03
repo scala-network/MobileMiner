@@ -36,26 +36,50 @@ public class AboutFragment extends Fragment {
         TextView tvMonerominer;
         TextView tvFontAwesome;
 
-        tvWebsite = view.findViewById(R.id.websiteURL);
-        tvGithub = view.findViewById(R.id.githubURL);
-        tvDiscord = view.findViewById(R.id.discordURL);
-        tvEmail = view.findViewById(R.id.email);
         tvSystemInfo = view.findViewById(R.id.systemInfo);
         tvMine2gether = view.findViewById(R.id.Mine2getherURL);
         tvMonerominer = view.findViewById(R.id.MoneroMinerURL);
         tvFontAwesome = view.findViewById(R.id.FontAwesomeURL);
 
-        tvWebsite.setText(Html.fromHtml(getString(R.string.websiteLink)));
-        tvWebsite.setMovementMethod(LinkMovementMethod.getInstance());
+        Button btnLink = view.findViewById(R.id.btnWebsite);
+        btnLink.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Uri uri = Uri.parse(getResources().getString(R.string.websiteLink));
+                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                startActivity(intent);
+            }
+        });
 
-        tvGithub.setText(Html.fromHtml(getString(R.string.githubLink)));
-        tvGithub.setMovementMethod(LinkMovementMethod.getInstance());
+        Button btnGitHub = view.findViewById(R.id.btnGitHub);
+        btnGitHub.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Uri uri = Uri.parse(getResources().getString(R.string.githubLink));
+                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                startActivity(intent);
+            }
+        });
 
-        tvDiscord.setText(Html.fromHtml(getString(R.string.discordLink)));
-        tvDiscord.setMovementMethod(LinkMovementMethod.getInstance());
+        Button btnDiscord = view.findViewById(R.id.btnDiscord);
+        btnDiscord.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Uri uri = Uri.parse(getResources().getString(R.string.discordLink));
+                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                startActivity(intent);
+            }
+        });
 
-        tvEmail.setText(Html.fromHtml(getString(R.string.emailLink)));
-        tvEmail.setMovementMethod(LinkMovementMethod.getInstance());
+        Button btnEmail = view.findViewById(R.id.btnEmail);
+        btnEmail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Uri uri = Uri.parse(getResources().getString(R.string.emailLink));
+                Intent intent = new Intent(Intent.ACTION_SENDTO, uri);
+                startActivity(intent);
+            }
+        });
 
         String cpuinfo = Config.read("CPUINFO");
         if(cpuinfo.isEmpty()) {
