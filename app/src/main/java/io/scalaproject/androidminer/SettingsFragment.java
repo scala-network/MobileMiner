@@ -43,15 +43,14 @@ public class SettingsFragment extends Fragment {
 
     private EditText edPass;
     private TextView edUser;
-    private Button  qrButton;
+    private Button bQrCode;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         ProviderManager.generate();
-
-        Button click;
+        Button bSave;
         EditText edPool, edPort;
         Spinner spPool;
 
@@ -64,14 +63,14 @@ public class SettingsFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_settings, container, false);
         Context appContext = MainActivity.getContextOfApplication();
-        click = view.findViewById(R.id.saveSettings);
+        bSave = view.findViewById(R.id.saveSettings);
 
         edUser = view.findViewById(R.id.username);
         edPool = view.findViewById(R.id.pool);
         edPort = view.findViewById(R.id.port);
         edPass = view.findViewById(R.id.pass);
 
-        qrButton = view.findViewById(R.id.buttonQrReader);
+        bQrCode = view.findViewById(R.id.buttonQrReader);
 
         spPool = view.findViewById(R.id.poolSpinner);
 
@@ -202,7 +201,7 @@ public class SettingsFragment extends Fragment {
 
         spPool.setSelection(Integer.valueOf(poolSelected));
 
-        click.setOnClickListener(new View.OnClickListener() {
+        bSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
@@ -218,6 +217,7 @@ public class SettingsFragment extends Fragment {
                     password = Tools.getDeviceName();
                 }
 
+                Log.i(LOG_TAG,"Password : " + password);
                 Config.write("pass", password);
                 edPass.setText(password);
                 String key = (String)spPool.getSelectedItem();
@@ -235,7 +235,9 @@ public class SettingsFragment extends Fragment {
                 PoolItem pi = ProviderManager.getPoolById(selectedPosition);
                 String port = edPort.getText().toString().trim();
                 String pool = edPool.getText().toString().trim();
-                if(pi.getPoolType() == 4) {
+
+                Log.i(LOG_TAG,"PoolType : " + Integer.toString(pi.getPoolType()));
+                if(pi.getPoolType() == 0) {
                     Config.write("custom_pool", pool);
                     Config.write("custom_port", port);
                 } else if(!port.equals("") && !pi.getPort().equals(port)) {
@@ -246,6 +248,7 @@ public class SettingsFragment extends Fragment {
                     Config.write("custom_pool", "");
                 }
 
+                Log.i(LOG_TAG,"SelectedPool : " + Integer.toString(selectedPosition));
                 Config.write("selected_pool", Integer.toString(selectedPosition));
                 Config.write("cores", Integer.toString(sbCores.getProgress()));
                 Config.write("threads", "1"); // Default value
@@ -303,7 +306,7 @@ public class SettingsFragment extends Fragment {
             }
         });
 
-        qrButton.setOnClickListener(new View.OnClickListener() {
+        bQrCode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Context appContext = MainActivity.getContextOfApplication();

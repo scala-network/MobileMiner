@@ -355,6 +355,9 @@ public class MainActivity extends AppCompatActivity
                 tvMinPayout.setVisibility(View.INVISIBLE);
             }
 
+            pbPayout.setProgress(0);
+            pbPayout.setMax(100);
+
             TextView tvXLAUnit = findViewById(R.id.xlaunit);
             if(unit.equals("")) {
                 tvXLAUnit.setVisibility(View.INVISIBLE);
