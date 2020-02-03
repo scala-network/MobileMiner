@@ -16,11 +16,11 @@ public final class ProviderManager {
         mPools.add(poolItem);
     }
 
-    static public void add(String key, String pool,String port, int poolType, String poolUrl) {
-        mPools.add(new PoolItem(key,pool,port,poolType,poolUrl ));
+    static public void add(String key, String pool,String port, int poolType, String poolUrl, String poolIP) {
+        mPools.add(new PoolItem(key, pool, port, poolType, poolUrl, poolIP));
     }
-    static public void add(String key, String pool,String port, int poolType, String poolUrl, String poolApi) {
-        mPools.add(new PoolItem(key,pool,port,poolType,poolUrl ,poolApi,"",""));
+    static public void add(String key, String pool, String port, int poolType, String poolUrl, String poolIP, String poolApi) {
+        mPools.add(new PoolItem(key, pool, port, poolType, poolUrl, poolIP, poolApi, "",""));
     }
 
     static public PoolItem[] getPools() {
@@ -73,11 +73,11 @@ public final class ProviderManager {
 
     static final public ProviderRequest request = new ProviderRequest();
     static public void generate() {
-
         request.stop();
         request.mPoolItem = null;
+
         //User Defined
-        add("custom", "custom","3333",0, "");
+        add("custom", "custom", "3333", 0, "", "");
 
         // Scala Official pool
         add(
@@ -85,7 +85,8 @@ public final class ProviderManager {
                 "mine.scalaproject.io",
                 "3333",
                 1,
-                "https://pool.scalaproject.io"
+                "https://pool.scalaproject.io",
+                "TODO"
         );
 
         // Another Scala pool : Miner.Rocks
@@ -94,7 +95,8 @@ public final class ProviderManager {
                 "stellite.miner.rocks",
                 "5003",
                 2,
-                "https://stellite.miner.rocks"
+                "https://stellite.miner.rocks",
+                "TODO"
         );
 
         // Another Scala pool : HeroMiners
@@ -103,15 +105,18 @@ public final class ProviderManager {
                 "scala.herominers.com",
                 "10130",
                 2,
-                "https://scala.herominers.com"
+                "https://scala.herominers.com",
+                "TODO"
         );
+
         // Another Scala pool : GNTL
         add(
                 "GNTL",
                 "xla.pool.gntl.co.uk",
                 "3333",
                 1,
-                "https://xla.pool.gntl.co.uk"
+                "https://xla.pool.gntl.co.uk",
+                "TODO"
         );
     }
 }

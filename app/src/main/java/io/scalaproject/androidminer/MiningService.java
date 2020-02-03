@@ -215,18 +215,19 @@ public class MiningService extends Service {
         }
     }
 
-    public static String getIpByHost(String hostName) {
+    public static String getIpByHost(PoolItem pi) {
+        String hostName = pi.getPool() + ":" + pi.getPort();
+
         try {
             Log.i(LOG_TAG, hostName);
-
             InetAddress inetAddress = Inet4Address.getByName(hostName);
 
             if(!inetAddress.isLoopbackAddress()) {
-//                if (inetAddress instanceof Inet6Address) {
-//                    return inetAddress.getHostAddress().toString();
-//                } else if (inetAddress instanceof Inet4Address) {
+                if (inetAddress instanceof Inet6Address) {
+                    return pi.getPoolIP(); // workaround for IPv6
+                } else if (inetAddress instanceof Inet4Address) {
                     return inetAddress.getHostAddress().toString();
-//                }
+                }
             }
         } catch (UnknownHostException e) {
             Log.i(LOG_TAG, e.toString());
@@ -246,7 +247,7 @@ public class MiningService extends Service {
         protected String getPoolHost() {
 
             PoolItem pi = ProviderManager.getSelectedPool();
-            return getIpByHost(pi.getPool()) + ":" + pi.getPort();
+            return getIpByHost(pi);
         }
 
         private Exception exception;

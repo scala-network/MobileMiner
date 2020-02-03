@@ -9,14 +9,15 @@ import io.scalaproject.androidminer.api.providers.*;
 public class PoolItem {
 
     private int mId = 0;
-    private String mPool , mPort, mApiUrl , mPoolUrl , mStatsURL , mStartUrl , mKey;
+    private String mPool, mPort, mApiUrl, mPoolUrl, mPoolIP, mStatsURL, mStartUrl, mKey;
     private int mPoolType = 0;
 
-    public  PoolItem(String key, String pool, String port, int poolType, String poolUrl) {
+    public PoolItem(String key, String pool, String port, int poolType, String poolUrl, String poolIP) {
         this.mKey = key;
         this.mPool = pool;
         this.mPort = port;
         this.mPoolUrl = poolUrl;
+        this.mPoolIP = poolIP;
         this.mPoolType = poolType;
 
         switch (mPoolType) {
@@ -39,10 +40,11 @@ public class PoolItem {
         }
     }
 
-    public PoolItem(String key, String pool, String port, int poolType, String poolUrl, String apiUrl, String statsUrl, String startUrl) {
+    public PoolItem(String key, String pool, String port, int poolType, String poolUrl, String poolIP, String apiUrl, String statsUrl, String startUrl) {
         this.mKey = key;
         this.mPool = pool;
         this.mPoolUrl = poolUrl;
+        this.mPoolIP = poolIP;
         this.mPort = port;
         this.mApiUrl = apiUrl;
         this.mStatsURL = statsUrl;
@@ -127,6 +129,10 @@ public class PoolItem {
 
     public String getPoolUrl() {
         return this.mPoolUrl;
+    }
+
+    public String getPoolIP() {
+        return this.mPoolIP;
     }
 
     public String getStatsURL() {
