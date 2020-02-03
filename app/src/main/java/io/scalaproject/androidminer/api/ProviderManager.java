@@ -86,7 +86,7 @@ public final class ProviderManager {
                 "3333",
                 1,
                 "https://pool.scalaproject.io",
-                "TODO"
+                "198.204.241.13"
         );
 
         // Another Scala pool : Miner.Rocks
@@ -96,7 +96,7 @@ public final class ProviderManager {
                 "5003",
                 2,
                 "https://stellite.miner.rocks",
-                "TODO"
+                "54.38.232.67"
         );
 
         // Another Scala pool : HeroMiners
@@ -106,7 +106,7 @@ public final class ProviderManager {
                 "10130",
                 2,
                 "https://scala.herominers.com",
-                "TODO"
+                "138.201.217.40"
         );
 
         // Another Scala pool : GNTL
@@ -116,7 +116,7 @@ public final class ProviderManager {
                 "3333",
                 1,
                 "https://xla.pool.gntl.co.uk",
-                "TODO"
+                "83.151.238.38"
         );
     }
 }
