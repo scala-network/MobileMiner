@@ -24,6 +24,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.NumberPicker;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -51,7 +52,7 @@ public class SettingsFragment extends Fragment {
 
         ProviderManager.generate();
         Button bSave;
-        EditText edPool, edPort;
+        EditText edPool, edPort, edDevFees, edMiningGoal;
         Spinner spPool;
 
         SeekBar sbCores;
@@ -69,6 +70,9 @@ public class SettingsFragment extends Fragment {
         edPool = view.findViewById(R.id.pool);
         edPort = view.findViewById(R.id.port);
         edPass = view.findViewById(R.id.pass);
+
+        edDevFees = view.findViewById(R.id.devfees);
+        edMiningGoal = view.findViewById(R.id.mininggoal);
 
         bQrCode = view.findViewById(R.id.buttonQrReader);
 
@@ -105,6 +109,14 @@ public class SettingsFragment extends Fragment {
             int corenb = Integer.parseInt(Config.read("cores"));
             sbCores.setProgress(corenb);
             tvCoresNb.setText(Integer.toString(corenb));
+        }
+
+        if (Config.read("devfees").equals("") == false) {
+            edDevFees.setText(Config.read("devfees"));
+        }
+
+        if (Config.read("mininggoal").equals("") == false) {
+            edMiningGoal.setText(Config.read("mininggoal"));
         }
 
         boolean checkStatus = (Config.read("pauseonbattery").equals("1") == true);
@@ -253,6 +265,16 @@ public class SettingsFragment extends Fragment {
                 Config.write("cores", Integer.toString(sbCores.getProgress()));
                 Config.write("threads", "1"); // Default value
                 Config.write("intensity", "1"); // Default value
+
+                String devfees = edDevFees.getText().toString().trim();
+                if(devfees.equals("")) devfees = "0";
+                Config.write("devfees", devfees);
+
+                String mininggoal = edMiningGoal.getText().toString().trim();
+                if(mininggoal.equals("") == false) {
+                    Config.write("mininggoal", mininggoal);
+                }
+
                 Config.write("pauseonbattery", (chkPauseOnBattery.isChecked() ? "1" : "0"));
 
                 Config.write("init", "1");

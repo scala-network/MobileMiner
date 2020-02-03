@@ -63,6 +63,8 @@ public class StatsFragment extends Fragment {
 
         PoolItem pm = ProviderManager.getSelectedPool();
 
+        // Network
+
         ProviderData.Network network = d.network;
         TextView tvNetworkHashrate = view.findViewById(R.id.hashratenetwork);
         tvNetworkHashrate.setText(d.network.hashrate);
@@ -72,29 +74,30 @@ public class StatsFragment extends Fragment {
 
         TextView tvNetworkBlocks = view.findViewById(R.id.lastblocknetwork);
         tvNetworkBlocks.setText(d.network.lastBlockTime);
-        TextView tvNetworkHeight = view.findViewById(R.id.height);
 
+        TextView tvNetworkHeight = view.findViewById(R.id.height);
         tvNetworkHeight.setText(d.network.lastBlockHeight);
 
         TextView tvNetworkRewards = view.findViewById(R.id.rewards);
-
         tvNetworkRewards.setText(d.network.lastRewardAmount);
+
         // Pool
+
         TextView tvPoolURL = view.findViewById(R.id.poolurl);
         tvPoolURL.setText(pm.getPool());
+
         TextView tvPoolHashrate = view.findViewById(R.id.hashratepool);
+        tvPoolHashrate.setText(d.pool.hashrate);
 
         TextView tvPoolDifficulty = view.findViewById(R.id.difficultypool);
-
-        tvPoolHashrate.setText(d.pool.hashrate);
         tvPoolDifficulty.setText(d.pool.difficulty);
-
 
         TextView tvPoolBlocks = view.findViewById(R.id.lastblockpool);
         tvPoolBlocks.setText(d.pool.lastBlockTime);
 
         TextView tvPoolLastBlock = view.findViewById(R.id.blockspool);
         tvPoolLastBlock.setText(d.pool.blocks);
+
         // Address
 
         String wallet = Config.read("address");
@@ -108,29 +111,24 @@ public class StatsFragment extends Fragment {
             sHashrate.replace("H", "");
             sHashrate.trim();
             TextView tvAddressHashrate = view.findViewById(R.id.hashrateminer);
-            TextView tvAddressLastShare = view.findViewById(R.id.lastshareminer);
-            TextView tvAddressBlocks = view.findViewById(R.id.blocksminedminer);
             tvAddressHashrate.setText(sHashrate);
+
+            TextView tvAddressLastShare = view.findViewById(R.id.lastshareminer);
             tvAddressLastShare.setText(d.miner.lastShare);
 
-
+            TextView tvAddressBlocks = view.findViewById(R.id.blocksminedminer);
             tvAddressBlocks.setText(d.miner.blocks);
-            String sBalance = d.miner.balance;
-            sBalance.replace("XLA", "");
-            sBalance.trim();
 
+            String sBalance = d.miner.balance.replace("XLA", "").trim();
             TextView tvBalance = view.findViewById(R.id.balance);
             tvBalance.setText(sBalance);
-            String sPaid = d.miner.balance;
-            sPaid.replace("XLA", "");
-            sPaid.trim();
+
+            String sPaid = d.miner.paid.replace("XLA", "").trim();
             TextView tvPaid = view.findViewById(R.id.paid);
             tvPaid.setText(sPaid);
         }
 
-
-        String statsUrl = pm.getStatsURL();
-        String statsUrlWallet = statsUrl + "?wallet=" + wallet;
+        String statsUrlWallet = pm.getStatsURL() + "?wallet=" + wallet;
 
         bStatCheckOnline.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -144,8 +142,6 @@ public class StatsFragment extends Fragment {
 
     private void enableOnlineStats(boolean enable) {
         Drawable buttonDrawable = bStatCheckOnline.getBackground();
-        buttonDrawable = DrawableCompat.wrap(buttonDrawable);
-        buttonDrawable = bStatCheckOnline.getBackground();
         buttonDrawable = DrawableCompat.wrap(buttonDrawable);
 
         bStatCheckOnline.setEnabled(enable);
@@ -163,8 +159,6 @@ public class StatsFragment extends Fragment {
     }
 
     private boolean checkValidState() {
-
-
         if(Config.read("address").equals("")) {
             Toast.makeText(getContext(),"Wallet address is empty", Toast.LENGTH_LONG);
             enableOnlineStats(false);
@@ -185,15 +179,12 @@ public class StatsFragment extends Fragment {
             return false;
         }
 
-
         return true;
     }
-
 
     @Override
     public void onResume() {
         super.onResume();
-//        enableOnlineStats(true);
         ProviderManager.request.setListener(statsListener).start();
     }
 

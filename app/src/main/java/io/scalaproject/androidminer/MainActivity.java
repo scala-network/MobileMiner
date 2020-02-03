@@ -250,7 +250,7 @@ public class MainActivity extends AppCompatActivity
 
                 bPayoutDataReceived = true;
 
-                enablePayoutWidget(true, "");
+                enablePayoutWidget(true, "XLA");
                 updatePayoutWidget(d);
             }
 
@@ -280,7 +280,7 @@ public class MainActivity extends AppCompatActivity
             enablePayoutWidget(false, "Loading...");
         }
         else {
-            enablePayoutWidget(true, "");
+            enablePayoutWidget(true, "XLA");
 
             // Payout
             String sHashrate = d.miner.hashrate;
@@ -289,13 +289,18 @@ public class MainActivity extends AppCompatActivity
             tvTotalHashrate.setText(sHashrate.trim());
 
             String sBalance = d.miner.balance;
-            sBalance = sBalance.replace("XLA", "");
-            sBalance.trim();
+            sBalance = sBalance.replace("XLA", "").trim();
             TextView tvBalance = findViewById(R.id.balance);
             tvBalance.setText(sBalance);
 
             TextView tvMinPayout = findViewById(R.id.minpayout);
-            float fMinPayout = Utils.convertStringToFloat(d.pool.minPayout);
+
+            float fMinPayout = 100;
+            if(Config.read("mininggoal").equals(""))
+                fMinPayout = Utils.convertStringToFloat(d.pool.minPayout);
+            else
+                fMinPayout = Utils.convertStringToFloat(Config.read("mininggoal").trim());
+
             String sMinPayout = String.valueOf(Math.round(fMinPayout));
             tvMinPayout.setText(sMinPayout);
 
@@ -310,7 +315,7 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    public void enablePayoutWidget(boolean enable, String unit) {
+    public void enablePayoutWidget(boolean enable, String text) {
         TextView tvTotalHashrate = findViewById(R.id.totalhashrate);
 
         if (enable) {
@@ -335,7 +340,7 @@ public class MainActivity extends AppCompatActivity
             tvXLAUnit.setVisibility(View.VISIBLE);
             tvXLAUnit.setTextColor(getResources().getColor(R.color.c_white));
             tvXLAUnit.setTypeface(null, Typeface.BOLD);
-            tvXLAUnit.setText(unit);
+            tvXLAUnit.setText(text);
         }
         else {
             if(tvTotalHashrate.getVisibility() != View.INVISIBLE) {
@@ -359,14 +364,14 @@ public class MainActivity extends AppCompatActivity
             pbPayout.setMax(100);
 
             TextView tvXLAUnit = findViewById(R.id.xlaunit);
-            if(unit.equals("")) {
+            if(text.equals("")) {
                 tvXLAUnit.setVisibility(View.INVISIBLE);
             }
             else {
                 tvXLAUnit.setVisibility(View.VISIBLE);
                 tvXLAUnit.setTextColor(getResources().getColor(R.color.c_grey));
                 tvXLAUnit.setTypeface(null, Typeface.NORMAL);
-                tvXLAUnit.setText(unit);
+                tvXLAUnit.setText(text);
             }
         }
     }
@@ -461,7 +466,7 @@ public class MainActivity extends AppCompatActivity
                 ProviderManager.request.setListener(payoutListener).start();
                 if(!ProviderManager.data.isNew) {
                     updatePayoutWidget(ProviderManager.data);
-                    enablePayoutWidget(true, "");
+                    enablePayoutWidget(true, "XLA");
                 }
                 updateUI();
                 break;
@@ -624,13 +629,11 @@ public class MainActivity extends AppCompatActivity
             DrawableCompat.setTint(buttonDrawable, getResources().getColor(R.color.bg_black));
             minerBtnR.setBackground(buttonDrawable);
             minerBtnR.setTextColor(getResources().getColor(R.color.c_black));
-
-                DrawableCompat.setTint(buttonDrawable, getResources().getColor(R.color.c_green));
-            } else {
-                btnStart.setText("Start");
-                updateHashrate("0");
-                DrawableCompat.setTint(buttonDrawable, getResources().getColor(R.color.c_green));
-                btnStart.setBackground(buttonDrawable);
+        } else {
+            btnStart.setText("Start");
+            updateHashrate("0");
+            DrawableCompat.setTint(buttonDrawable, getResources().getColor(R.color.c_green));
+            btnStart.setBackground(buttonDrawable);
 
             // Hashrate button
             minerBtnH.setEnabled(false);
