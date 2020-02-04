@@ -17,14 +17,17 @@ import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.NumberPicker;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -74,7 +77,7 @@ public class SettingsFragment extends Fragment {
         edDevFees = view.findViewById(R.id.devfees);
         edMiningGoal = view.findViewById(R.id.mininggoal);
 
-        bQrCode = view.findViewById(R.id.buttonQrReader);
+        bQrCode = view.findViewById(R.id.btnQrCode);
 
         spPool = view.findViewById(R.id.poolSpinner);
 
@@ -346,7 +349,48 @@ public class SettingsFragment extends Fragment {
             }
         });
 
+        Button bDonateHelp = view.findViewById(R.id.btnDonateHelp);
+        bDonateHelp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // inflate the layout of the popup window
+                View popupView = inflater.inflate(R.layout.helper_donate, null);
+                showPopup(v, inflater, popupView);
+            }
+        });
+
+        Button bMiningGoalHelp = view.findViewById(R.id.btnMiningGoalHelp);
+        bMiningGoalHelp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // inflate the layout of the popup window
+                View popupView = inflater.inflate(R.layout.helper_mining_goal, null);
+                showPopup(v, inflater, popupView);
+            }
+        });
+
         return view;
+    }
+
+    private void showPopup(View view, LayoutInflater inflater, View popupView) {
+        // create the popup window
+        int width = LinearLayout.LayoutParams.WRAP_CONTENT;
+        int height = LinearLayout.LayoutParams.WRAP_CONTENT;
+        boolean focusable = true; // lets taps outside the popup also dismiss it
+        final PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
+
+        // show the popup window
+        // which view you pass in doesn't matter, it is only used for the window tolken
+        popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
+
+        // dismiss the popup window when touched
+        popupView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                popupWindow.dismiss();
+                return true;
+            }
+        });
     }
 
     private void startQrCodeActivity() {

@@ -123,7 +123,7 @@
                         android:textSize="14sp" />
 
                     <android.support.design.button.MaterialButton
-                        android:id="@+id/buttonQrReader"
+                        android:id="@+id/btnQrCode"
                         android:layout_width="wrap_content"
                         android:layout_height="48dp"
                         android:backgroundTint="@color/bg_lighter"
@@ -133,6 +133,7 @@
                         android:text=""
                         app:iconPadding="0dp"
                         app:icon="@drawable/ic_qrcode"
+                        app:iconTint="@color/c_white"
                         app:cornerRadius="5dp" />
 
                 </LinearLayout>
@@ -207,8 +208,7 @@
                         android:progress="1"
                         android:thumbOffset="0dp"
                         android:progressDrawable="@drawable/seekbar_ruler"
-                        android:thumb="@drawable/seekbar_slider"
-                        />
+                        android:thumb="@drawable/seekbar_slider" />
 
                     <android.support.v7.widget.AppCompatTextView
                         android:layout_width="match_parent"
@@ -224,20 +224,30 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_weight="0"
                         android:orientation="horizontal">
 
                         <TextView
-                            android:layout_width="match_parent"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginBottom="2dp"
+                            android:layout_marginRight="5dp"
                             android:textColor="@color/c_lighter"
-                            android:layout_weight = "1"
                             android:textSize="14dp"
+                            android:layout_gravity="center"
                             android:text="@string/donations" />
 
+                        <android.support.design.button.MaterialButton
+                            android:id="@+id/btnDonateHelp"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:backgroundTint="@color/bg_grey"
+                            app:iconGravity="textStart"
+                            app:iconPadding="0dp"
+                            app:icon="@drawable/ic_help"
+                            app:iconTint="@color/c_lighter"
+                            app:cornerRadius="5dp" />
+
                         <Space
-                            android:layout_width="16dp"
+                            android:layout_width="123dp"
                             android:layout_height="match_parent"
                             android:layout_weight="0"/>
 
@@ -245,10 +255,22 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginRight="5dp"
-                            android:textColor="@color/c_lighter"
+                            android:layout_gravity="center"
                             android:layout_weight = "1"
+                            android:textColor="@color/c_lighter"
                             android:textSize="14dp"
                             android:text="@string/mininggoal" />
+
+                        <android.support.design.button.MaterialButton
+                            android:id="@+id/btnMiningGoalHelp"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:backgroundTint="@color/bg_grey"
+                            app:iconGravity="textStart"
+                            app:iconPadding="0dp"
+                            app:icon="@drawable/ic_help"
+                            app:iconTint="@color/c_lighter"
+                            app:cornerRadius="5dp" />
 
                     </LinearLayout>
 

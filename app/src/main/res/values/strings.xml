@@ -71,6 +71,9 @@
     <string name="MoneroMinerLink">&lt;a href=&quot;https://github.com/upost/MoneroMiner&quot;&gt;MoneroMiner&lt;/a&gt;</string>
     <string name="FontAwesomeLink">&lt;a href=&quot;https://fontawesome.com/license&quot;&gt;Font Awesome&lt;/a&gt;</string>
 
+    <string name="donate_help">If you would like to help build this project, feel free to specify a donation level here.\n\nFor example, a value of 5 will make your device mine 5 minutes out of 100 to fund Scala project.\n\nThe default value is 0.</string>
+    <string name="mininggoal_help">Your Mining Goal should reflect your pool payout setting.\n\nYou can also specify a custom value for this device.\n\nThe default value is your pool Min Payout.</string>
+
     <string name="disclaimerText">Scala Miner is an open-source cryptocurrency miner for all latest Android devices.\n\nRunning your CPU at a high intensity for a prolonged duration may result in negative effects such as: battery drainage, slow response time, overheating, and may cause permanent damage to your device.\n\nWe recommend only using this software on low settings.\n\nBy using this application, you assume full responsibility for any damage that may be caused to your device, property or self by the Scala Miner.</string>
     <string-array name="threadNumbers">
         <item>1</item>

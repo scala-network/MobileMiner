@@ -41,7 +41,7 @@ public class StatsFragment extends Fragment {
 
         statsListener = new IProviderListener(){
             public void onStatsChange(ProviderData d) {
-                updateFields(d,view);
+                updateFields(d, view);
             }
 
             @Override
@@ -52,7 +52,7 @@ public class StatsFragment extends Fragment {
 
         ProviderManager.request.setListener(statsListener).start();
         ProviderManager.afterSave();
-        updateFields(ProviderManager.data,view);
+        updateFields(ProviderManager.data, view);
 
         return view;
     }
@@ -127,8 +127,9 @@ public class StatsFragment extends Fragment {
             tvPaid.setText(sPaid);
         }
 
-        String statsUrlWallet = pm.getStatsURL() + "?wallet=" + wallet;
+        enableOnlineStats(true);
 
+        String statsUrlWallet = pm.getStatsURL() + "?wallet=" + wallet;
         bStatCheckOnline.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -184,7 +185,6 @@ public class StatsFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        enableOnlineStats(true);
         ProviderManager.request.setListener(statsListener).start();
     }
 
