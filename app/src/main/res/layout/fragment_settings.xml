@@ -226,51 +226,63 @@
                         android:layout_height="match_parent"
                         android:orientation="horizontal">
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginRight="5dp"
-                            android:textColor="@color/c_lighter"
-                            android:textSize="14dp"
-                            android:layout_gravity="center"
-                            android:text="@string/donations" />
-
-                        <android.support.design.button.MaterialButton
-                            android:id="@+id/btnDonateHelp"
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:backgroundTint="@color/bg_grey"
-                            app:iconGravity="textStart"
-                            app:iconPadding="0dp"
-                            app:icon="@drawable/ic_help"
-                            app:iconTint="@color/c_lighter"
-                            app:cornerRadius="5dp" />
-
-                        <Space
-                            android:layout_width="123dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="0"/>
-
-                        <TextView
+                        <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginRight="5dp"
-                            android:layout_gravity="center"
-                            android:layout_weight = "1"
-                            android:textColor="@color/c_lighter"
-                            android:textSize="14dp"
-                            android:text="@string/mininggoal" />
+                            android:layout_height="match_parent"
+                            android:layout_marginEnd="50px"
+                            android:layout_weight="1"
+                            android:orientation="horizontal">
 
-                        <android.support.design.button.MaterialButton
-                            android:id="@+id/btnMiningGoalHelp"
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:backgroundTint="@color/bg_grey"
-                            app:iconGravity="textStart"
-                            app:iconPadding="0dp"
-                            app:icon="@drawable/ic_help"
-                            app:iconTint="@color/c_lighter"
-                            app:cornerRadius="5dp" />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginRight="5dp"
+                                android:textColor="@color/c_lighter"
+                                android:textSize="14dp"
+                                android:layout_gravity="center"
+                                android:text="@string/donations" />
+
+                            <android.support.design.button.MaterialButton
+                                android:id="@+id/btnDonateHelp"
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:backgroundTint="@color/bg_grey"
+                                app:iconGravity="textStart"
+                                app:iconPadding="0dp"
+                                app:icon="@drawable/ic_help"
+                                app:iconTint="@color/c_lighter"
+                                app:cornerRadius="5dp" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="50px"
+                            android:layout_weight="1"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginRight="5dp"
+                                android:layout_gravity="center"
+                                android:textColor="@color/c_lighter"
+                                android:textSize="14dp"
+                                android:text="@string/mininggoal" />
+
+                            <android.support.design.button.MaterialButton
+                                android:id="@+id/btnMiningGoalHelp"
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:backgroundTint="@color/bg_grey"
+                                app:iconGravity="textStart"
+                                app:iconPadding="0dp"
+                                app:icon="@drawable/ic_help"
+                                app:iconTint="@color/c_lighter"
+                                app:cornerRadius="5dp" />
+
+                        </LinearLayout>
 
                     </LinearLayout>
 
@@ -280,48 +292,61 @@
                         android:layout_weight="0"
                         android:orientation="horizontal">
 
-                        <android.support.v7.widget.AppCompatEditText
-                            android:id="@+id/devfees"
+                        <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_weight = "1"
-                            android:hint="0"
-                            android:inputType="number"
-                            android:textColorHint="@color/c_black"
-                            android:textColor="@color/c_lighter"
-                            android:textSize="14sp" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="2dp"
-                            android:textColor="@color/c_lighter"
-                            android:textSize="14dp"
-                            android:text="%" />
-
-                        <Space
-                            android:layout_width="25dp"
                             android:layout_height="match_parent"
-                            android:layout_weight="0"/>
+                            android:layout_marginEnd="50px"
+                            android:layout_weight="1"
+                            android:orientation="horizontal">
 
-                        <android.support.v7.widget.AppCompatEditText
-                            android:id="@+id/mininggoal"
+                            <android.support.v7.widget.AppCompatEditText
+                                android:id="@+id/devfees"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight = "1"
+                                android:hint="0"
+                                android:inputType="number"
+                                android:textColorHint="@color/c_black"
+                                android:textColor="@color/c_lighter"
+                                android:textSize="14sp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="2dp"
+                                android:textColor="@color/c_lighter"
+                                android:textSize="14dp"
+                                android:text="%" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_weight = "1"
-                            android:inputType="number"
-                            android:hint="Your mining goal"
-                            android:textColorHint="@color/c_black"
-                            android:textColor="@color/c_lighter"
-                            android:textSize="14sp" />
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="50px"
+                            android:layout_weight="1"
+                            android:orientation="horizontal">
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="2dp"
-                            android:textColor="@color/c_lighter"
-                            android:textSize="14dp"
-                            android:text="XLA" />
+                            <android.support.v7.widget.AppCompatEditText
+                                android:id="@+id/mininggoal"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight = "1"
+                                android:inputType="number"
+                                android:hint="Your mining goal"
+                                android:textColorHint="@color/c_black"
+                                android:textColor="@color/c_lighter"
+                                android:textSize="14sp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="2dp"
+                                android:textColor="@color/c_lighter"
+                                android:textSize="14dp"
+                                android:text="XLA" />
+
+                        </LinearLayout>
 
                     </LinearLayout>
 
