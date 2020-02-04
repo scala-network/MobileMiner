@@ -22,7 +22,6 @@
 
 package io.scalaproject.androidminer;
 
-import android.Manifest;
 import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
@@ -31,12 +30,10 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.BatteryManager;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.IBinder;
 import android.os.PowerManager;
 import android.support.annotation.NonNull;
@@ -72,6 +69,13 @@ import java.util.Map;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
 import io.scalaproject.androidminer.api.IProviderListener;
 import io.scalaproject.androidminer.api.PoolItem;
 import io.scalaproject.androidminer.api.ProviderData;
@@ -88,9 +92,6 @@ public class MainActivity extends AppCompatActivity
 
     private TextView tvSpeed, tvHs, tvAccepted, tvCPUTemperature, tvBatteryTemperature, tvLog, tvTitle;
 
-    private Map<String, String> mapHeaderLog = new HashMap<String, String>();
-
-    private LinearLayout llPayout;
     private ProgressBar pbPayout;
     private boolean payoutEnabled;
     protected IProviderListener payoutListener;
@@ -99,6 +100,7 @@ public class MainActivity extends AppCompatActivity
 
     private MiningService.MiningServiceBinder binder;
     private boolean bPayoutDataReceived = false;
+    private boolean bDisableAMYAC = false;
 
     private ScrollView svOutput;
 
@@ -192,7 +194,6 @@ public class MainActivity extends AppCompatActivity
         // Controls
 
         payoutEnabled = true;
-        llPayout = (LinearLayout) findViewById(R.id.layoutpayout);
         pbPayout = (ProgressBar) findViewById(R.id.progresspayout);
 
         tvLog = findViewById(R.id.output);
@@ -417,8 +418,7 @@ public class MainActivity extends AppCompatActivity
 
         updatePayoutWidgetStatus();
         refreshLogOutputView();
-        //@@TODO Update AMYAC accordingly
-        updateAmyac(false);
+        updateAmyacStatus(false);
     }
 
     public void setTitle(String title) {
@@ -437,9 +437,6 @@ public class MainActivity extends AppCompatActivity
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment_stats,"fragment_stats").commit();
 
                 setTitle(getResources().getString(R.string.stats));
-
-
-               //
 
                 break;
             case R.id.about:
@@ -462,12 +459,14 @@ public class MainActivity extends AppCompatActivity
                 }
 
                 setTitle(getResources().getString(R.string.miner));
+
                 ProviderManager.afterSave();
                 ProviderManager.request.setListener(payoutListener).start();
                 if(!ProviderManager.data.isNew) {
                     updatePayoutWidget(ProviderManager.data);
                     enablePayoutWidget(true, "XLA");
                 }
+
                 updateUI();
                 break;
             case R.id.settings:
@@ -886,8 +885,7 @@ public class MainActivity extends AppCompatActivity
                                     tvAccepted.setTextColor(getResources().getColor(R.color.c_grey));
 
                                     updateHashrate("n/a");
-                                    tvCPUTemperature.setText("n/a");
-                                    tvBatteryTemperature.setText("n/a");
+                                    updateTemperature(false);
                                 }
                                 clearMinerLog = true;
                                 Toast.makeText(contextOfApplication, "Miner Started", Toast.LENGTH_SHORT).show();
@@ -907,13 +905,7 @@ public class MainActivity extends AppCompatActivity
                                 tvAccepted.setTextColor(getResources().getColor(R.color.c_blue));
 
                             updateHashrate(speed);
-
-                            float cpuTemp = Tools.getCurrentCPUTemperature();
-                            if (cpuTemp != 0.0)
-                                tvCPUTemperature.setText(String.format("%.1f", cpuTemp));
-
-                            if (batteryTemp != 0.0)
-                                tvBatteryTemperature.setText(String.format("%.1f", batteryTemp));
+                            updateTemperature(true);
                         });
                     }
                 });
@@ -927,7 +919,53 @@ public class MainActivity extends AppCompatActivity
         }
     };
 
-    private void updateAmyac(boolean enabled) {
+    private void updateTemperature(boolean enabled) {
+
+        if(enabled) {
+            float cpuTemp = Tools.getCurrentCPUTemperature();
+            if (cpuTemp != 0.0)
+                tvCPUTemperature.setText(String.format("%.1f", cpuTemp));
+
+            if (batteryTemp != 0.0)
+                tvBatteryTemperature.setText(String.format("%.1f", batteryTemp));
+
+            // Send temperatures to AMYAC engine (asynchronously)
+            if(cpuTemp != 0.0 && batteryTemp != 0.0 && !bDisableAMYAC)
+            {
+                String cpu = Integer.toString(Math.round(cpuTemp));
+                String batt = Integer.toString(Math.round(batteryTemp));
+
+                String uri = getResources().getString(R.string.amyacPostLink).replace("cpu", cpu).replace("batt", batt);
+                httpCall(uri);
+            }
+        } else {
+            tvCPUTemperature.setText("n/a");
+            tvBatteryTemperature.setText("n/a");
+        }
+    }
+
+    public void httpCall(String url) {
+        RequestQueue queue = Volley.newRequestQueue(this);
+
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        //Toast.makeText(contextOfApplication, "AMYAC: " + response, Toast.LENGTH_SHORT).show();
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                // Stop sending data
+                // bDisableAMYAC = true;
+                Toast.makeText(contextOfApplication, "AMYAC: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        queue.add(stringRequest);
+    }
+
+    private void updateAmyacStatus(boolean enabled) {
         int visible = enabled ? View.VISIBLE : View.INVISIBLE;
         findViewById(R.id.arrowdown).setVisibility(visible);
         findViewById(R.id.cooling).setVisibility(visible);
