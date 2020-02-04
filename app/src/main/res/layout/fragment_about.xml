@@ -41,7 +41,7 @@
                     android:gravity="start"
                     android:text="@string/buildString"
                     android:textColor="@color/c_lighter"
-                    android:textSize="14sp"/>
+                    android:textSize="12sp"/>
 
                 <android.support.v7.widget.AppCompatTextView
                     android:layout_width="wrap_content"
@@ -91,7 +91,7 @@
                         android:gravity="start"
                         android:text="Made with "
                         android:textColor="@color/c_lighter"
-                        android:textSize="14sp"/>
+                        android:textSize="12sp"/>
 
                     <ImageView
                         android:id="@+id/imageView3"
@@ -103,9 +103,27 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="start"
-                        android:text=" by Scala."
+                        android:text=" by "
                         android:textColor="@color/c_lighter"
-                        android:textSize="14sp"/>
+                        android:textSize="12sp"/>
+
+                    <android.support.v7.widget.AppCompatTextView
+                        android:id="@+id/ScalaURL"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="start"
+                        android:text=""
+                        android:textColor="@color/c_blue"
+                        android:textColorLink="@color/c_blue"
+                        android:textSize="12sp" />
+
+                    <android.support.v7.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="start"
+                        android:text="."
+                        android:textColor="@color/c_lighter"
+                        android:textSize="12sp"/>
 
                 </LinearLayout>
 
@@ -121,7 +139,7 @@
                     android:gravity="start"
                     android:text="Forked from "
                     android:textColor="@color/c_lighter"
-                    android:textSize="14sp"/>
+                    android:textSize="12sp"/>
 
                 <android.support.v7.widget.AppCompatTextView
                     android:id="@+id/Mine2getherURL"
@@ -131,7 +149,7 @@
                     android:text=""
                     android:textColor="@color/c_blue"
                     android:textColorLink="@color/c_blue"
-                    android:textSize="14sp" />
+                    android:textSize="12sp" />
 
                 <android.support.v7.widget.AppCompatTextView
                     android:layout_width="wrap_content"
@@ -139,7 +157,7 @@
                     android:gravity="start"
                     android:text=" and "
                     android:textColor="@color/c_lighter"
-                    android:textSize="14sp"/>
+                    android:textSize="12sp"/>
 
                 <android.support.v7.widget.AppCompatTextView
                     android:id="@+id/MoneroMinerURL"
@@ -149,7 +167,7 @@
                     android:text=""
                     android:textColor="@color/c_blue"
                     android:textColorLink="@color/c_blue"
-                    android:textSize="14sp" />
+                    android:textSize="12sp" />
 
                 <android.support.v7.widget.AppCompatTextView
                     android:layout_width="wrap_content"
@@ -157,7 +175,7 @@
                     android:gravity="start"
                     android:text="."
                     android:textColor="@color/c_lighter"
-                    android:textSize="14sp"/>
+                    android:textSize="12sp"/>
 
             </LinearLayout>
 
@@ -173,7 +191,7 @@
                         android:gravity="start"
                         android:text="Icons powered by "
                         android:textColor="@color/c_lighter"
-                        android:textSize="14sp"/>
+                        android:textSize="12sp"/>
 
                     <android.support.v7.widget.AppCompatTextView
                         android:id="@+id/FontAwesomeURL"
@@ -183,7 +201,7 @@
                         android:text=""
                         android:textColor="@color/c_blue"
                         android:textColorLink="@color/c_blue"
-                        android:textSize="14sp" />
+                        android:textSize="12sp" />
 
                     <android.support.v7.widget.AppCompatTextView
                         android:layout_width="wrap_content"
@@ -191,29 +209,25 @@
                         android:gravity="start"
                         android:text="."
                         android:textColor="@color/c_lighter"
-                        android:textSize="14sp"/>
+                        android:textSize="12sp"/>
 
                 </LinearLayout>
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:text="@string/followus"
+                    android:layout_gravity="start"
+                    android:textSize="14sp"
+                    android:textColor="@color/c_white"
+                    android:textStyle="bold"
+                    android:layout_marginTop="15sp"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10sp"
-                    android:layout_centerInParent="true"
-                    android:gravity="center"
                     android:orientation="horizontal">
-
-                    <android.support.design.button.MaterialButton
-                        android:id="@+id/btnWebsite"
-                        android:layout_width="45dp"
-                        android:layout_height="45dp"
-                        android:backgroundTint="@color/bg_lighter"
-                        android:insetLeft="2dp"
-                        android:insetRight="2dp"
-                        app:iconGravity="textStart"
-                        app:cornerRadius="5dp"
-                        app:iconPadding="0dp"
-                        app:icon="@drawable/ic_link"/>
 
                     <android.support.design.button.MaterialButton
                         android:id="@+id/btnGitHub"
@@ -241,7 +255,7 @@
                         app:icon="@drawable/ic_discord"/>
 
                     <android.support.design.button.MaterialButton
-                        android:id="@+id/btnEmail"
+                        android:id="@+id/btnMedium"
                         android:layout_width="45dp"
                         android:layout_height="45dp"
                         android:backgroundTint="@color/bg_lighter"
@@ -250,7 +264,31 @@
                         app:iconGravity="textStart"
                         app:cornerRadius="5dp"
                         app:iconPadding="0dp"
-                        app:icon="@drawable/ic_email"/>
+                        app:icon="@drawable/ic_medium"/>
+
+                    <android.support.design.button.MaterialButton
+                        android:id="@+id/btnTwitter"
+                        android:layout_width="45dp"
+                        android:layout_height="45dp"
+                        android:backgroundTint="@color/bg_lighter"
+                        android:insetLeft="2dp"
+                        android:insetRight="2dp"
+                        app:iconGravity="textStart"
+                        app:cornerRadius="5dp"
+                        app:iconPadding="0dp"
+                        app:icon="@drawable/ic_twitter"/>
+
+                    <android.support.design.button.MaterialButton
+                        android:id="@+id/btnTelegram"
+                        android:layout_width="45dp"
+                        android:layout_height="45dp"
+                        android:backgroundTint="@color/bg_lighter"
+                        android:insetLeft="2dp"
+                        android:insetRight="2dp"
+                        app:iconGravity="textStart"
+                        app:cornerRadius="5dp"
+                        app:iconPadding="0dp"
+                        app:icon="@drawable/ic_telegram"/>
 
                 </LinearLayout>
 
