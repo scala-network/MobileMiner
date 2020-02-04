@@ -51,7 +51,6 @@ import android.util.TypedValue;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -61,9 +60,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.text.Spannable;
 
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /* FOR AMAYC Support */
 import android.hardware.Sensor;
@@ -101,6 +98,8 @@ public class MainActivity extends AppCompatActivity
     private MiningService.MiningServiceBinder binder;
     private boolean bPayoutDataReceived = false;
     private boolean bDisableAMYAC = false;
+    private Integer lastCPUTemp = 0;
+    private Integer lastBattTemp = 0;
 
     private ScrollView svOutput;
 
@@ -929,11 +928,17 @@ public class MainActivity extends AppCompatActivity
             if (batteryTemp != 0.0)
                 tvBatteryTemperature.setText(String.format("%.1f", batteryTemp));
 
+            Integer nCPU = Math.round(cpuTemp);
+            Integer nBatt = Math.round(batteryTemp);
+
             // Send temperatures to AMYAC engine (asynchronously)
-            if(cpuTemp != 0.0 && batteryTemp != 0.0 && !bDisableAMYAC)
+            if(cpuTemp != 0.0 && batteryTemp != 0.0 && nCPU != lastCPUTemp && nBatt != lastBattTemp && !bDisableAMYAC)
             {
-                String cpu = Integer.toString(Math.round(cpuTemp));
-                String batt = Integer.toString(Math.round(batteryTemp));
+                lastCPUTemp = nCPU;
+                lastBattTemp = nBatt;
+
+                String cpu = Integer.toString(nCPU);
+                String batt = Integer.toString(nBatt);
 
                 String uri = getResources().getString(R.string.amyacPostLink).replace("cpu", cpu).replace("batt", batt);
                 httpCall(uri);
