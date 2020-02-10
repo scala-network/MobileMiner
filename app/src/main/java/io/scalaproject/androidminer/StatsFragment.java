@@ -59,6 +59,7 @@ public class StatsFragment extends Fragment {
 
     private void updateFields(ProviderData d, View view) {
         if(d.isNew) {
+            enableOnlineStats(false);
             return;
         }
 

@@ -34,6 +34,7 @@ import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.BatteryManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.IBinder;
 import android.os.PowerManager;
 import android.support.annotation.NonNull;
@@ -59,8 +60,11 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.text.Spannable;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /* FOR AMAYC Support */
 import android.hardware.Sensor;
@@ -72,6 +76,9 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import io.scalaproject.androidminer.api.IProviderListener;
 import io.scalaproject.androidminer.api.PoolItem;
@@ -97,9 +104,18 @@ public class MainActivity extends AppCompatActivity
 
     private MiningService.MiningServiceBinder binder;
     private boolean bPayoutDataReceived = false;
-    private boolean bDisableAMYAC = false;
-    private Integer lastCPUTemp = 0;
-    private Integer lastBattTemp = 0;
+
+    private Timer timerAMAYC = null;
+    private TimerTask timerTaskAMAYC = null;
+    private Integer DELAY_AMAYC = 10000;
+    private Integer MIN_TEMP = 33;
+    private Integer MAX_TEMP = 33;
+    private Integer MAX_NUM_ARRAY = 6;
+    private boolean minerPaused = false;
+    private boolean minerPausedAMAYC = false;
+    private List<String> listCPUTemp = new ArrayList<String>();
+    private List<String> listBatteryTemp = new ArrayList<String>();
+    private boolean isCharging = false;
 
     private ScrollView svOutput;
 
@@ -175,7 +191,7 @@ public class MainActivity extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        enableButtons(false);
+        enableStartBtn(false);
 
         // Open Settings the first time the app is launched
         if (Config.read("address").equals("") || pi == null || pi.getPool().equals("") || pi.getPort().equals("")) {
@@ -256,19 +272,45 @@ public class MainActivity extends AppCompatActivity
 
             @Override
             public boolean onEnabledRequest() {
-//                enablePayoutWidget(true);
                 return payoutEnabled;
             }
         };
 
-
         ProviderManager.request.setListener(payoutListener).start();
     }
 
+    public void startTimerAMAYC() {
+        if(timerAMAYC != null) {
+            return;
+        }
+
+        timerTaskAMAYC = new TimerTask() {
+            @Override
+            public void run() {
+                runOnUiThread(new Runnable() {
+                    public void run() {
+                        updateTemperatures();
+                    }
+                });
+            }
+        };
+
+        timerAMAYC = new Timer();
+        timerAMAYC.scheduleAtFixedRate(timerTaskAMAYC, 0, DELAY_AMAYC);
+    }
+
+    public void stoptTimerAMAYC() {
+        timerAMAYC.cancel();
+        timerAMAYC = null;
+        timerTaskAMAYC = null;
+
+        listCPUTemp.clear();
+        listBatteryTemp.clear();
+    }
 
     private void setStatusText(String status) {
         if (status != null && !status.isEmpty() && !status.equals("")) {
-            Toast.makeText(getApplicationContext(),status,Toast.LENGTH_SHORT);
+            Toast.makeText(getApplicationContext(), status, Toast.LENGTH_SHORT);
         }
     }
 
@@ -417,7 +459,7 @@ public class MainActivity extends AppCompatActivity
 
         updatePayoutWidgetStatus();
         refreshLogOutputView();
-        updateAmyacStatus(false);
+        enableAmaycStatus(false);
     }
 
     public void setTitle(String title) {
@@ -547,6 +589,8 @@ public class MainActivity extends AppCompatActivity
 
         s.startMining(cfg);
 
+        startTimerAMAYC();
+
         updateUI();
     }
 
@@ -554,7 +598,13 @@ public class MainActivity extends AppCompatActivity
         if(binder == null) {
             return;
         }
+
         binder.getService().stopMining();
+
+        stoptTimerAMAYC();
+
+        enableAmaycStatus(false);
+
         updateUI();
     }
 
@@ -573,13 +623,13 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     protected void onPause() {
-
         super.onPause();
-
     }
 
     private void setMiningState(View view) {
-        if (binder == null) return;
+        if (binder == null)
+            return;
+
         if (binder.getService().getMiningServiceState()) {
             MainActivity.this.stopMining(view);
         } else {
@@ -613,20 +663,10 @@ public class MainActivity extends AppCompatActivity
             minerBtnH.setTextColor(getResources().getColor(R.color.c_white));
 
             // Pause button
-            minerBtnP.setEnabled(true);
-            buttonDrawable = minerBtnP.getBackground();
-            buttonDrawable = DrawableCompat.wrap(buttonDrawable);
-            DrawableCompat.setTint(buttonDrawable, getResources().getColor(R.color.bg_lighter));
-            minerBtnP.setBackground(buttonDrawable);
-            minerBtnP.setTextColor(getResources().getColor(R.color.c_white));
+            enablePauseBtn(true);
 
             // Resume button
-            minerBtnR.setEnabled(false);
-            buttonDrawable = minerBtnR.getBackground();
-            buttonDrawable = DrawableCompat.wrap(buttonDrawable);
-            DrawableCompat.setTint(buttonDrawable, getResources().getColor(R.color.bg_black));
-            minerBtnR.setBackground(buttonDrawable);
-            minerBtnR.setTextColor(getResources().getColor(R.color.c_black));
+            enableResumeBtn(false);
         } else {
             btnStart.setText("Start");
             updateHashrate("0");
@@ -642,20 +682,10 @@ public class MainActivity extends AppCompatActivity
             minerBtnH.setTextColor(getResources().getColor(R.color.c_black));
 
             // Pause button
-            minerBtnP.setEnabled(false);
-            buttonDrawable = minerBtnP.getBackground();
-            buttonDrawable = DrawableCompat.wrap(buttonDrawable);
-            DrawableCompat.setTint(buttonDrawable, getResources().getColor(R.color.bg_black));
-            minerBtnP.setBackground(buttonDrawable);
-            minerBtnP.setTextColor(getResources().getColor(R.color.c_black));
+            enablePauseBtn(false);
 
             // Resume button
-            minerBtnR.setEnabled(false);
-            buttonDrawable = minerBtnR.getBackground();
-            buttonDrawable = DrawableCompat.wrap(buttonDrawable);
-            DrawableCompat.setTint(buttonDrawable, getResources().getColor(R.color.bg_black));
-            minerBtnR.setBackground(buttonDrawable);
-            minerBtnR.setTextColor(getResources().getColor(R.color.c_black));
+            enableResumeBtn(false);
         }
     }
 
@@ -857,7 +887,7 @@ public class MainActivity extends AppCompatActivity
         public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
             binder = (MiningService.MiningServiceBinder) iBinder;
             if (validArchitecture) {
-                enableButtons(true);
+                enableStartBtn(true);
 
                 findViewById(R.id.start).setOnClickListener(new View.OnClickListener() {
                     public void onClick(View v) {
@@ -884,7 +914,6 @@ public class MainActivity extends AppCompatActivity
                                     tvAccepted.setTextColor(getResources().getColor(R.color.c_grey));
 
                                     updateHashrate("n/a");
-                                    updateTemperature(false);
                                 }
                                 clearMinerLog = true;
                                 Toast.makeText(contextOfApplication, "Miner Started", Toast.LENGTH_SHORT).show();
@@ -904,7 +933,6 @@ public class MainActivity extends AppCompatActivity
                                 tvAccepted.setTextColor(getResources().getColor(R.color.c_blue));
 
                             updateHashrate(speed);
-                            updateTemperature(true);
                         });
                     }
                 });
@@ -914,55 +942,106 @@ public class MainActivity extends AppCompatActivity
         @Override
         public void onServiceDisconnected(ComponentName componentName) {
             binder = null;
-            enableButtons(false);
+            enableStartBtn(false);
         }
     };
 
-    private void updateTemperature(boolean enabled) {
-
-        if(enabled) {
-            float cpuTemp = Tools.getCurrentCPUTemperature();
-            if (cpuTemp != 0.0)
-                tvCPUTemperature.setText(String.format("%.1f", cpuTemp));
-
-            if (batteryTemp != 0.0)
-                tvBatteryTemperature.setText(String.format("%.1f", batteryTemp));
-
-            Integer nCPU = Math.round(cpuTemp);
-            Integer nBatt = Math.round(batteryTemp);
-
-            // Send temperatures to AMYAC engine (asynchronously)
-            if(cpuTemp != 0.0 && batteryTemp != 0.0 && nCPU != lastCPUTemp && nBatt != lastBattTemp && !bDisableAMYAC)
-            {
-                lastCPUTemp = nCPU;
-                lastBattTemp = nBatt;
-
-                String cpu = Integer.toString(nCPU);
-                String batt = Integer.toString(nBatt);
-
-                String uri = getResources().getString(R.string.amyacPostLink).replace("cpu", cpu).replace("batt", batt);
-                httpCall(uri);
-            }
-        } else {
+    private void updateTemperaturesText(float cpuTemp) {
+        if (cpuTemp > 0.0)
+            tvCPUTemperature.setText(String.format("%.1f", cpuTemp));
+        else
             tvCPUTemperature.setText("n/a");
+
+        if (batteryTemp > 0.0)
+            tvBatteryTemperature.setText(String.format("%.1f", batteryTemp));
+        else
             tvBatteryTemperature.setText("n/a");
+    }
+
+    private void updateTemperatures() {
+        float cpuTemp = Tools.getCurrentCPUTemperature();
+
+        updateTemperaturesText(cpuTemp);
+
+        if(minerPausedAMAYC) {
+            if (cpuTemp <= MIN_TEMP && batteryTemp <= MIN_TEMP) {
+                enableCooling(false);
+            }
+
+            return;
+        }
+
+        if(minerPaused) return;
+
+        Integer nCPU = Math.round(cpuTemp);
+        if(nCPU != 0) {
+            listCPUTemp.add(Integer.toString(nCPU));
+        }
+
+        Integer nBatt = Math.round(batteryTemp);
+        if(nBatt != 0) {
+            listBatteryTemp.add(Integer.toString(nBatt));
+        }
+
+        // Send temperatures to AMAYC engine (asynchronously)
+        if(listCPUTemp.size() >= MAX_NUM_ARRAY || listBatteryTemp.size() >= MAX_NUM_ARRAY)
+        {
+            String uri = getResources().getString(R.string.amaycPostLink);
+            if(!listCPUTemp.isEmpty() && !listBatteryTemp.isEmpty()) {
+                //https://amaycapi.hayzam.in/check2?arrayc=[35,42,45,50]&arrayb=[32,43,45,38]
+                uri = uri + "check2?arrayc=" + listCPUTemp.toString() + "&arrayb=" + listBatteryTemp.toString();
+                getAMAYCStatus(uri);
+            } else {
+                if(!listCPUTemp.isEmpty()) {
+                    uri = uri + "check1?array=" + listCPUTemp.toString();
+                    getAMAYCStatus(uri);
+                } else if(!listBatteryTemp.isEmpty()){
+                    uri = uri + "check1?array=" + listBatteryTemp.toString();
+                    getAMAYCStatus(uri);
+                }
+            }
+
+            listCPUTemp.clear();
+            listBatteryTemp.clear();
         }
     }
 
-    public void httpCall(String url) {
+    public void getAMAYCStatus(String uri) {
+        Log.i(LOG_TAG, "AMAYC uri: " + uri);
+
         RequestQueue queue = Volley.newRequestQueue(this);
 
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, uri,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        //Toast.makeText(contextOfApplication, "AMYAC: " + response, Toast.LENGTH_SHORT).show();
+                        try {
+                            Log.i(LOG_TAG, "AMAYC response: " + response);
+
+                            JSONObject obj = new JSONObject(response);
+                            JSONArray predictedNext = obj.getJSONArray("predicted_next");
+                            for(int j = 0; j < predictedNext.length(); j++){
+                                String pred = predictedNext.getString(j);
+                                if(!pred.equals("null")) {
+                                    float predTemp = Float.parseFloat(pred);
+                                    Log.i(LOG_TAG, "AMAYC predTemp: " + predTemp);
+
+                                    if (predTemp >= MAX_TEMP) {
+                                        enableCooling(true);
+                                        return;
+                                    }
+                                }
+                            }
+
+                        } catch (Exception e) {
+                            Toast.makeText(contextOfApplication, "AMAYC error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 // Stop sending data
-                // bDisableAMYAC = true;
+                // bDisableAMAYC = true;
                 Toast.makeText(contextOfApplication, "AMYAC: " + error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
@@ -970,71 +1049,116 @@ public class MainActivity extends AppCompatActivity
         queue.add(stringRequest);
     }
 
-    private void updateAmyacStatus(boolean enabled) {
+    private void enableCooling(boolean enable) {
+        enableAmaycStatus(enable);
+
+        if(enable) {
+            pauseMiner();
+            minerPausedAMAYC = true;
+            enableResumeBtn(false);
+        }
+        else {
+            if (Config.read("pauseonbattery").equals("1") == true && !isCharging) {
+                Toast.makeText(contextOfApplication, "Put device on charge to enable mining", Toast.LENGTH_SHORT).show();
+                enableResumeBtn(true);
+                return;
+            }
+
+            resumeMiner();
+            minerPausedAMAYC = false;
+        }
+    }
+
+    private void enableAmaycStatus(boolean enabled) {
         int visible = enabled ? View.VISIBLE : View.INVISIBLE;
         findViewById(R.id.arrowdown).setVisibility(visible);
         findViewById(R.id.cooling).setVisibility(visible);
     }
 
-    private void enableButtons(boolean enabled) {
+    private void enableStartBtn(boolean enabled) {
         findViewById(R.id.start).setEnabled(enabled);
     }
 
-    private void sendInput(String s) {
+    private void enablePauseBtn(boolean enable)
+    {
+        Drawable buttonDrawable = minerBtnP.getBackground();
+        buttonDrawable = DrawableCompat.wrap(buttonDrawable);
 
-        if (s.equals("p")) {
-            if (!minerPaused) {
-                minerPaused = true;
+        if(enable) {
+            DrawableCompat.setTint(buttonDrawable, getResources().getColor(R.color.bg_lighter));
+            minerBtnP.setBackground(buttonDrawable);
+            minerBtnP.setTextColor(getResources().getColor(R.color.c_white));
 
-                // Pause button
-                Drawable buttonDrawable = minerBtnP.getBackground();
-                buttonDrawable = DrawableCompat.wrap(buttonDrawable);
-                DrawableCompat.setTint(buttonDrawable, getResources().getColor(R.color.bg_black));
-                minerBtnP.setBackground(buttonDrawable);
-                minerBtnP.setTextColor(getResources().getColor(R.color.c_black));
+            minerBtnP.setEnabled(true);
+        } else {
+            DrawableCompat.setTint(buttonDrawable, getResources().getColor(R.color.bg_black));
+            minerBtnP.setBackground(buttonDrawable);
+            minerBtnP.setTextColor(getResources().getColor(R.color.c_black));
 
-                minerBtnP.setEnabled(false);
-
-                // Resume button
-                buttonDrawable = minerBtnR.getBackground();
-                buttonDrawable = DrawableCompat.wrap(buttonDrawable);
-                DrawableCompat.setTint(buttonDrawable, getResources().getColor(R.color.bg_lighter));
-                minerBtnR.setBackground(buttonDrawable);
-                minerBtnR.setTextColor(getResources().getColor(R.color.c_white));
-
-                minerBtnR.setEnabled(true);
-            }
-        }
-        else if (s.equals("r")) {
-            if (minerPaused) {
-                minerPaused = false;
-
-                // Pause button
-                Drawable buttonDrawable = minerBtnP.getBackground();
-                buttonDrawable = DrawableCompat.wrap(buttonDrawable);
-                DrawableCompat.setTint(buttonDrawable, getResources().getColor(R.color.bg_lighter));
-                minerBtnP.setBackground(buttonDrawable);
-                minerBtnP.setTextColor(getResources().getColor(R.color.c_white));
-
-                minerBtnP.setEnabled(true);
-
-                // Resume button
-                buttonDrawable = minerBtnR.getBackground();
-                buttonDrawable = DrawableCompat.wrap(buttonDrawable);
-                DrawableCompat.setTint(buttonDrawable, getResources().getColor(R.color.bg_black));
-                minerBtnR.setBackground(buttonDrawable);
-                minerBtnR.setTextColor(getResources().getColor(R.color.c_black));
-
-                minerBtnR.setEnabled(false);
-            }
-        }
-
-        if (binder != null) {
-            binder.getService().sendInput(s);
+            minerBtnP.setEnabled(false);
         }
     }
 
-    private boolean minerPaused = false;
+    private void enableResumeBtn(boolean enable)
+    {
+        Drawable buttonDrawable = minerBtnR.getBackground();
+        buttonDrawable = DrawableCompat.wrap(buttonDrawable);
+
+        if(enable) {
+            DrawableCompat.setTint(buttonDrawable, getResources().getColor(R.color.bg_lighter));
+            minerBtnR.setBackground(buttonDrawable);
+            minerBtnR.setTextColor(getResources().getColor(R.color.c_white));
+
+            minerBtnR.setEnabled(true);
+        } else {
+            DrawableCompat.setTint(buttonDrawable, getResources().getColor(R.color.bg_black));
+            minerBtnR.setBackground(buttonDrawable);
+            minerBtnR.setTextColor(getResources().getColor(R.color.c_black));
+
+            minerBtnR.setEnabled(false);
+        }
+    }
+
+    private void pauseMiner() {
+        if (!minerPaused) {
+            minerPaused = true;
+
+            enablePauseBtn(false);
+            enableResumeBtn(true);
+
+            if (binder != null) {
+                binder.getService().sendInput("p");
+            }
+        }
+    }
+
+    private void resumeMiner() {
+        if (minerPaused ) {
+            minerPaused = false;
+
+            enablePauseBtn(true);
+            enableResumeBtn(false);
+
+            if (binder != null) {
+                binder.getService().sendInput("r");
+            }
+        }
+    }
+
+    private void sendInput(String s) {
+        if (s.equals("p")) {
+            pauseMiner();
+        }
+        else if (s.equals("r")) {
+            resumeMiner();
+        }
+        else {
+            if (binder != null) {
+                binder.getService().sendInput(s);
+            }
+        }
+    }
+
     private boolean clearMinerLog = true;
     static boolean lastIsCharging = false;
     static float batteryTemp = 0.0f;
@@ -1045,35 +1169,29 @@ public class MainActivity extends AppCompatActivity
             batteryTemp = (float) (batteryStatus.getIntExtra(BatteryManager.EXTRA_TEMPERATURE, 0)) / 10;
 
             int status = batteryStatus.getIntExtra(BatteryManager.EXTRA_STATUS, -1);
-            boolean isCharging = status == BatteryManager.BATTERY_STATUS_CHARGING || status == BatteryManager.BATTERY_STATUS_FULL;
+            isCharging = status == BatteryManager.BATTERY_STATUS_CHARGING || status == BatteryManager.BATTERY_STATUS_FULL;
 
             if (lastIsCharging == isCharging) return;
             lastIsCharging = isCharging;
 
             Toast.makeText(contextOfApplication, (isCharging ? "Device Charging" : "Device on Battery"), Toast.LENGTH_SHORT).show();
 
-            if (Config.read("pauseonbattery").equals("0") == true) {
-                minerPaused = false;
-                clearMinerLog = true;
-                return;
-            }
+            if (Config.read("pauseonbattery").equals("1") == true) {
+                //minerPaused = false;
+                //clearMinerLog = true;
 
-            boolean state = false;
-            if (binder != null) {
-                state = binder.getService().getMiningServiceState();
-            }
-
-            if (isCharging) {
-                if (minerPaused) {
-                    minerPaused = false;
-                    clearMinerLog = false;
-                    startMining(null);
+                boolean state = false;
+                if (binder != null) {
+                    state = binder.getService().getMiningServiceState();
                 }
-            } else if (state) {
-                minerPaused = true;
-                stopMining(null);
-            } else {
-                minerPaused = false;
+
+                if (isCharging) {
+                    resumeMiner();
+                } else if (state) {
+                    pauseMiner();
+                } else {
+                    minerPaused = false;
+                }
             }
         }
     };

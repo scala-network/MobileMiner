@@ -73,7 +73,7 @@
     <string name="Mine2getherLink">&lt;a href=&quot;https://github.com/Mine2Gether/m2g_android_miner&quot;&gt;Mine2gether&lt;/a&gt;</string>
     <string name="MoneroMinerLink">&lt;a href=&quot;https://github.com/upost/MoneroMiner&quot;&gt;MoneroMiner&lt;/a&gt;</string>
     <string name="FontAwesomeLink">&lt;a href=&quot;https://fontawesome.com/license&quot;&gt;Font Awesome&lt;/a&gt;</string>
-    <string name="amyacPostLink">http://149.91.88.54:1909/train/cpu/batt</string>
+    <string name="amaycPostLink">https://amaycapi.hayzam.in/</string>
 
     <string name="donate_help">If you would like to help build this project, feel free to specify a donation level here.\n\nFor example, a value of 5 will make your device mine 5 minutes out of 100 to fund Scala project.\n\nThe default value is 0.</string>
     <string name="mininggoal_help">Your Mining Goal should reflect your pool payout setting.\n\nYou can also specify a custom value for this device.\n\nThe default value is your pool Min Payout.</string>
