@@ -108,8 +108,8 @@ public class MainActivity extends AppCompatActivity
     private Timer timerAMAYC = null;
     private TimerTask timerTaskAMAYC = null;
     private Integer DELAY_AMAYC = 10000;
-    private Integer MIN_TEMP = 33;
-    private Integer MAX_TEMP = 33;
+    private Integer MIN_TEMP = 35;
+    private Integer MAX_TEMP = 45;
     private Integer MAX_NUM_ARRAY = 6;
     private boolean minerPaused = false;
     private boolean minerPausedAMAYC = false;
