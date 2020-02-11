@@ -575,6 +575,11 @@ public class MainActivity extends AppCompatActivity
             return;
         }
 
+        if (Config.read("pauseonbattery").equals("1") == true && !isCharging) {
+            Toast.makeText(contextOfApplication, getResources().getString(R.string.pauseonmining), Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         int cores = Integer.parseInt(Config.read("cores"));
         int threads = Integer.parseInt(Config.read("threads"));
         int intensity = Integer.parseInt(Config.read("intensity"));
@@ -1054,18 +1059,23 @@ public class MainActivity extends AppCompatActivity
 
         if(enable) {
             pauseMiner();
+
             minerPausedAMAYC = true;
+            //appendLogOutputText(getResources().getString(R.string.amaycOn));
+
             enableResumeBtn(false);
         }
         else {
             if (Config.read("pauseonbattery").equals("1") == true && !isCharging) {
-                Toast.makeText(contextOfApplication, "Put device on charge to enable mining", Toast.LENGTH_SHORT).show();
+                Toast.makeText(contextOfApplication, getResources().getString(R.string.pauseonmining), Toast.LENGTH_SHORT).show();
                 enableResumeBtn(true);
                 return;
             }
 
             resumeMiner();
+
             minerPausedAMAYC = false;
+            //appendLogOutputText(getResources().getString(R.string.amaycOff));
         }
     }
 
@@ -1165,7 +1175,6 @@ public class MainActivity extends AppCompatActivity
     private BroadcastReceiver batteryInfoReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context c, Intent batteryStatus) {
-
             batteryTemp = (float) (batteryStatus.getIntExtra(BatteryManager.EXTRA_TEMPERATURE, 0)) / 10;
 
             int status = batteryStatus.getIntExtra(BatteryManager.EXTRA_STATUS, -1);
