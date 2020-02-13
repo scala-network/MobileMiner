@@ -13,13 +13,12 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="15dp"
             android:orientation="vertical">
 
             <android.support.v7.widget.AppCompatTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dip"
-                android:layout_marginLeft="15dip"
                 android:gravity="start"
                 android:text="@string/disclaimer"
                 android:textColor="@color/c_white"
@@ -27,12 +26,9 @@
                 android:textSize="18sp" />
 
             <android.support.v7.widget.AppCompatTextView
-                android:id="@+id/textView1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dip"
-                android:layout_marginLeft="15dip"
-                android:layout_marginRight="15dip"
                 android:layout_marginTop="10dip"
                 android:textColor="@color/c_lighter"
                 android:textSize="14sp"
@@ -43,7 +39,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dip"
                 android:layout_marginBottom="10dip"
-                android:layout_marginRight="15dip"
                 android:orientation="horizontal">
 
                 <View

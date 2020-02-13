@@ -105,11 +105,17 @@ public class MainActivity extends AppCompatActivity
     private MiningService.MiningServiceBinder binder;
     private boolean bPayoutDataReceived = false;
 
+    // Settings
+    private boolean bDisableAmayc = false;
+    private Integer nMaxCPUTemp = 0;
+    private Integer nMaxBatteryTemp = 0;
+    private Integer nCooldownThreshold = 0;
+    private Integer nSafeCPUTemp = 0;
+    private Integer nSafeBatteryTemp = 0;
+
     private Timer timerAMAYC = null;
     private TimerTask timerTaskAMAYC = null;
     private Integer DELAY_AMAYC = 10000;
-    private Integer MIN_TEMP = 35;
-    private Integer MAX_TEMP = 45;
     private Integer MAX_NUM_ARRAY = 6;
     private boolean minerPaused = false;
     private boolean minerPausedAMAYC = false;
@@ -169,10 +175,6 @@ public class MainActivity extends AppCompatActivity
         }
 
         setContentView(R.layout.activity_main);
-
-        List<Fragment> frags = getSupportFragmentManager().getFragments();
-        for(int i = 0; i< frags.size(); i++)
-        Log.d(LOG_TAG,"This is the initial FRAG: "+ frags.get(i).toString());
 
         PoolItem pi = ProviderManager.getSelectedPool();
 
@@ -280,6 +282,18 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void startTimerAMAYC() {
+        // Load AMAYC Settings
+        bDisableAmayc = Config.read("disableamayc").equals("1") == true;
+        nMaxCPUTemp = Integer.parseInt(Config.read("maxcputemp").trim());
+        nMaxBatteryTemp = Integer.parseInt(Config.read("maxbatterytemp").trim());
+        nCooldownThreshold = Integer.parseInt(Config.read("cooldownthreshold").trim());
+
+        nSafeCPUTemp = nMaxCPUTemp - Math.round(nMaxCPUTemp * nCooldownThreshold / 100);
+        nSafeBatteryTemp = nMaxBatteryTemp - Math.round(nMaxBatteryTemp * nCooldownThreshold / 100);
+
+        if(bDisableAmayc)
+            return;
+
         if(timerAMAYC != null) {
             return;
         }
@@ -300,9 +314,11 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void stoptTimerAMAYC() {
-        timerAMAYC.cancel();
-        timerAMAYC = null;
-        timerTaskAMAYC = null;
+        if(timerAMAYC != null) {
+            timerAMAYC.cancel();
+            timerAMAYC = null;
+            timerTaskAMAYC = null;
+        }
 
         listCPUTemp.clear();
         listBatteryTemp.clear();
@@ -559,7 +575,7 @@ public class MainActivity extends AppCompatActivity
         dialog.show();
     }
 
-    private void startMining(View view) {
+    private void startMining() {
         if (binder == null) return;
 
         if (Config.read("init").equals("1") == false || ProviderManager.getSelectedPool() == null) {
@@ -599,7 +615,7 @@ public class MainActivity extends AppCompatActivity
         updateUI();
     }
 
-    private void stopMining(View view) {
+    public void stopMining() {
         if(binder == null) {
             return;
         }
@@ -631,14 +647,14 @@ public class MainActivity extends AppCompatActivity
         super.onPause();
     }
 
-    private void setMiningState(View view) {
+    private void setMiningState() {
         if (binder == null)
             return;
 
         if (binder.getService().getMiningServiceState()) {
-            MainActivity.this.stopMining(view);
+            MainActivity.this.stopMining();
         } else {
-            MainActivity.this.startMining(view);
+            MainActivity.this.startMining();
         }
     }
 
@@ -648,12 +664,7 @@ public class MainActivity extends AppCompatActivity
         Drawable buttonDrawable = btnStart.getBackground();
         buttonDrawable = DrawableCompat.wrap(buttonDrawable);
 
-        if (minerPaused) {
-            btnStart.setText("Resume");
-            updateHashrate("0");
-            DrawableCompat.setTint(buttonDrawable, getResources().getColor(R.color.c_blue));
-            btnStart.setBackground(buttonDrawable);
-        } else if (state) {
+        if (state) {
             btnStart.setText("Stop");
             updateHashrate("n/a");
             DrawableCompat.setTint(buttonDrawable, getResources().getColor(R.color.c_red));
@@ -900,7 +911,7 @@ public class MainActivity extends AppCompatActivity
                             clearMinerLog = false;
                         }
                         minerPaused = false;
-                        setMiningState(v);
+                        setMiningState();
                     }
                 });
 
@@ -969,7 +980,7 @@ public class MainActivity extends AppCompatActivity
         updateTemperaturesText(cpuTemp);
 
         if(minerPausedAMAYC) {
-            if (cpuTemp <= MIN_TEMP && batteryTemp <= MIN_TEMP) {
+            if (cpuTemp <= nSafeCPUTemp && batteryTemp <= nSafeBatteryTemp) {
                 enableCooling(false);
             }
 
@@ -1025,19 +1036,30 @@ public class MainActivity extends AppCompatActivity
 
                             JSONObject obj = new JSONObject(response);
                             JSONArray predictedNext = obj.getJSONArray("predicted_next");
-                            for(int j = 0; j < predictedNext.length(); j++){
-                                String pred = predictedNext.getString(j);
-                                if(!pred.equals("null")) {
-                                    float predTemp = Float.parseFloat(pred);
-                                    Log.i(LOG_TAG, "AMAYC predTemp: " + predTemp);
 
-                                    if (predTemp >= MAX_TEMP) {
+                            if(predictedNext.length() == 2) {
+                                float cpupred = Float.parseFloat(predictedNext.getString(0));
+                                float batterypred = Float.parseFloat(predictedNext.getString(1));
+
+                                if (cpupred >= nMaxCPUTemp || batterypred >= nMaxBatteryTemp) {
+                                    enableCooling(true);
+                                    return;
+                                }
+                            } else if(predictedNext.length() == 1) {
+                                if(!listCPUTemp.isEmpty()) {
+                                    float cpupred = Float.parseFloat(predictedNext.getString(0));
+                                    if (cpupred >= nMaxCPUTemp) {
+                                        enableCooling(true);
+                                        return;
+                                    }
+                                } else if(!listBatteryTemp.isEmpty()) {
+                                    float batterypred = Float.parseFloat(predictedNext.getString(0));
+                                    if (batterypred >= nMaxBatteryTemp) {
                                         enableCooling(true);
                                         return;
                                     }
                                 }
                             }
-
                         } catch (Exception e) {
                             Toast.makeText(contextOfApplication, "AMAYC error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                         }
@@ -1185,10 +1207,10 @@ public class MainActivity extends AppCompatActivity
 
             Toast.makeText(contextOfApplication, (isCharging ? "Device Charging" : "Device on Battery"), Toast.LENGTH_SHORT).show();
 
-            if (Config.read("pauseonbattery").equals("1") == true) {
-                //minerPaused = false;
-                //clearMinerLog = true;
-
+            if (Config.read("pauseonbattery").equals("0") == true) {
+                minerPaused = false;
+                clearMinerLog = true;
+            } else {
                 boolean state = false;
                 if (binder != null) {
                     state = binder.getService().getMiningServiceState();

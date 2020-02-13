@@ -49,13 +49,28 @@ public class SettingsFragment extends Fragment {
     private TextView edUser;
     private Button bQrCode;
 
+    private Integer INCREMENT = 5;
+
+    private Integer MIN_CPU_TEMP = 55;
+    private Integer nMaxCPUTemp = 65; // 55,60,65,70,75
+
+    private Integer MIN_BATTERY_TEMP = 30;
+    private Integer nMaxBatteryTemp = 40; // 30,35,40,45,50
+
+    private Integer MIN_COOLDOWN = 5;
+    private Integer nCooldownTheshold = 10; // 5,10,15,20,25
+
+    private SeekBar sbCPUTemp, sbBatteryTemp, sbCooldown;
+    private TextView tvCPUMaxTemp, tvBatteryMaxTemp, tvCooldown;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         ProviderManager.generate();
         Button bSave;
-        EditText edPool, edPort, edDevFees, edMiningGoal;
+        EditText edPool, edPort, edMiningGoal;
+        //EditText edDevFees;
         Spinner spPool;
 
         SeekBar sbCores;
@@ -63,7 +78,7 @@ public class SettingsFragment extends Fragment {
 
         PoolSpinAdapter poolAdapter;
 
-        CheckBox chkPauseOnBattery;
+        CheckBox chkDisableAmayc, chkPauseOnBattery;
 
         View view = inflater.inflate(R.layout.fragment_settings, container, false);
         Context appContext = MainActivity.getContextOfApplication();
@@ -74,7 +89,7 @@ public class SettingsFragment extends Fragment {
         edPort = view.findViewById(R.id.port);
         edPass = view.findViewById(R.id.pass);
 
-        edDevFees = view.findViewById(R.id.devfees);
+        //edDevFees = view.findViewById(R.id.devfees);
         edMiningGoal = view.findViewById(R.id.mininggoal);
 
         bQrCode = view.findViewById(R.id.btnQrCode);
@@ -84,6 +99,17 @@ public class SettingsFragment extends Fragment {
         sbCores = view.findViewById(R.id.seekbarcores);
         tvCoresNb = view.findViewById(R.id.coresnb);
         tvCoresMax = view.findViewById(R.id.coresmax);
+
+        sbCPUTemp = view.findViewById(R.id.seekbarcputemperature);
+        tvCPUMaxTemp = view.findViewById(R.id.cpumaxtemp);
+
+        sbBatteryTemp = view.findViewById(R.id.seekbarbatterytemperature);
+        tvBatteryMaxTemp = view.findViewById(R.id.batterymaxtemp);
+
+        sbCooldown = view.findViewById(R.id.seekbarcooldownthreshold);
+        tvCooldown = view.findViewById(R.id.cooldownthreshold);
+
+        chkDisableAmayc = view.findViewById(R.id.chkAmaycOff);
 
         chkPauseOnBattery = view.findViewById(R.id.chkPauseOnBattery);
 
@@ -114,16 +140,42 @@ public class SettingsFragment extends Fragment {
             tvCoresNb.setText(Integer.toString(corenb));
         }
 
-        if (Config.read("devfees").equals("") == false) {
-            edDevFees.setText(Config.read("devfees"));
+        if (Config.read("maxcputemp").equals("") == false) {
+            nMaxCPUTemp = Integer.parseInt(Config.read("maxcputemp"));
         }
+        int nProgress = ((nMaxCPUTemp-MIN_CPU_TEMP)/INCREMENT)+1;
+        sbCPUTemp.setProgress(nProgress);
+        updateCPUTemp();
+
+        if (Config.read("maxbatterytemp").equals("") == false) {
+            nMaxBatteryTemp = Integer.parseInt(Config.read("maxbatterytemp"));
+        }
+        nProgress = ((nMaxBatteryTemp-MIN_BATTERY_TEMP)/INCREMENT)+1;
+        sbBatteryTemp.setProgress(nProgress);
+        updateBatteryTemp();
+
+        if (Config.read("cooldownthreshold").equals("") == false) {
+            nCooldownTheshold = Integer.parseInt(Config.read("cooldownthreshold"));
+        }
+        nProgress = ((nCooldownTheshold-MIN_COOLDOWN)/INCREMENT)+1;
+        sbCooldown.setProgress(nProgress);
+        updateCooldownThreshold();
+
+        boolean disableAmayc = (Config.read("disableamayc").equals("1") == true);
+        if(disableAmayc){
+            chkDisableAmayc.setChecked(disableAmayc);
+        }
+        enableAmaycControl(!disableAmayc);
+
+        /*if (Config.read("devfees").equals("") == false) {
+            edDevFees.setText(Config.read("devfees"));
+        }*/
 
         if (Config.read("mininggoal").equals("") == false) {
             edMiningGoal.setText(Config.read("mininggoal"));
         }
 
         boolean checkStatus = (Config.read("pauseonbattery").equals("1") == true);
-
         if(checkStatus){
             chkPauseOnBattery.setChecked(checkStatus);
         }
@@ -150,6 +202,72 @@ public class SettingsFragment extends Fragment {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 tvCoresNb.setText(Integer.toString(progress));
+            }
+        });
+
+        sbCPUTemp.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                // Auto-generated method stub
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                // Auto-generated method stub
+            }
+
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                updateCPUTemp();
+            }
+        });
+
+        sbBatteryTemp.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                // Auto-generated method stub
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                // Auto-generated method stub
+            }
+
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                updateBatteryTemp();
+            }
+        });
+
+        sbCooldown.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                // Auto-generated method stub
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                // Auto-generated method stub
+            }
+
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                updateCooldownThreshold();
+            }
+        });
+
+        chkDisableAmayc.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v) {
+                boolean checked = ((CheckBox)v).isChecked();
+                if (checked) {
+                    // inflate the layout of the popup window
+                    View popupView = inflater.inflate(R.layout.warning_amayc, null);
+                    showPopup(v, inflater, popupView);
+                }
+
+                enableAmaycControl(!checked);
             }
         });
 
@@ -269,9 +387,14 @@ public class SettingsFragment extends Fragment {
                 Config.write("threads", "1"); // Default value
                 Config.write("intensity", "1"); // Default value
 
-                String devfees = edDevFees.getText().toString().trim();
+                Config.write("maxcputemp", Integer.toString(getCPUTemp()));
+                Config.write("maxbatterytemp", Integer.toString(getBatteryTemp()));
+                Config.write("cooldownthreshold", Integer.toString(getCooldownTheshold()));
+                Config.write("disableamayc", (chkDisableAmayc.isChecked() ? "1" : "0"));
+
+                /*String devfees = edDevFees.getText().toString().trim();
                 if(devfees.equals("")) devfees = "0";
-                Config.write("devfees", devfees);
+                Config.write("devfees", devfees);*/
 
                 String mininggoal = edMiningGoal.getText().toString().trim();
                 if(mininggoal.equals("") == false) {
@@ -294,6 +417,8 @@ public class SettingsFragment extends Fragment {
 
                 NavigationView nav = main.findViewById(R.id.nav_view);
                 nav.getMenu().getItem(0).setChecked(true);
+
+                main.stopMining();
                 main.setTitle(getResources().getString(R.string.miner));
                 main.updateUI();
             }
@@ -349,7 +474,7 @@ public class SettingsFragment extends Fragment {
             }
         });
 
-        Button bDonateHelp = view.findViewById(R.id.btnDonateHelp);
+        /*Button bDonateHelp = view.findViewById(R.id.btnDonateHelp);
         bDonateHelp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -357,10 +482,50 @@ public class SettingsFragment extends Fragment {
                 View popupView = inflater.inflate(R.layout.helper_donate, null);
                 showPopup(v, inflater, popupView);
             }
+        });*/
+
+        Button btnCPUTempHelp = view.findViewById(R.id.btnCPUTempHelp);
+        btnCPUTempHelp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // inflate the layout of the popup window
+                View popupView = inflater.inflate(R.layout.helper_cpu_temperature, null);
+                showPopup(v, inflater, popupView);
+            }
         });
 
-        Button bMiningGoalHelp = view.findViewById(R.id.btnMiningGoalHelp);
-        bMiningGoalHelp.setOnClickListener(new View.OnClickListener() {
+        Button btnBatteryTempHelp = view.findViewById(R.id.btnBatteryTempHelp);
+        btnBatteryTempHelp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // inflate the layout of the popup window
+                View popupView = inflater.inflate(R.layout.helper_battery_temperature, null);
+                showPopup(v, inflater, popupView);
+            }
+        });
+
+        Button btnCooldownHelp = view.findViewById(R.id.btnCooldownHelp);
+        btnCooldownHelp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // inflate the layout of the popup window
+                View popupView = inflater.inflate(R.layout.helper_cooldown_threshold, null);
+                showPopup(v, inflater, popupView);
+            }
+        });
+
+        Button btnAmaycWarning = view.findViewById(R.id.btnAmaycWarning);
+        btnAmaycWarning.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // inflate the layout of the popup window
+                View popupView = inflater.inflate(R.layout.warning_amayc, null);
+                showPopup(v, inflater, popupView);
+            }
+        });
+
+        Button btnMiningGoalHelp = view.findViewById(R.id.btnMiningGoalHelp);
+        btnMiningGoalHelp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // inflate the layout of the popup window
@@ -370,6 +535,36 @@ public class SettingsFragment extends Fragment {
         });
 
         return view;
+    }
+
+    private Integer getCPUTemp() {
+        return ((sbCPUTemp.getProgress() - 1) * INCREMENT) + MIN_CPU_TEMP;
+    }
+
+    private Integer getBatteryTemp() {
+        return ((sbBatteryTemp.getProgress() - 1) * INCREMENT) + MIN_BATTERY_TEMP;
+    }
+
+    private Integer getCooldownTheshold() {
+        return ((sbCooldown.getProgress() - 1) * INCREMENT) + MIN_COOLDOWN;
+    }
+
+    private void updateCPUTemp(){
+        tvCPUMaxTemp.setText(Integer.toString(getCPUTemp()));
+    }
+
+    private void updateBatteryTemp(){
+        tvBatteryMaxTemp.setText(Integer.toString(getBatteryTemp()));
+    }
+
+    private void updateCooldownThreshold(){
+        tvCooldown.setText(Integer.toString(getCooldownTheshold()));
+    }
+
+    private void enableAmaycControl(boolean enable) {
+        sbCPUTemp.setEnabled(enable);
+        sbBatteryTemp.setEnabled(enable);
+        sbCooldown.setEnabled(enable);
     }
 
     private void showPopup(View view, LayoutInflater inflater, View popupView) {

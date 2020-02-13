@@ -77,11 +77,27 @@
     <string name="amaycOn">AMAYC: Predicted temperature increase. Mining paused until temperatures are normalized.</string>
     <string name="amaycOff">AMAYC: Temperatures normalized. Mining resumed.</string>
     <string name="pauseonmining">Put device on charge to enable mining</string>
+    <string name="mininggoalhint">Your mining goal or pool payout</string>
+    <string name="optional">(optional)</string>
+    <string name="hardwaresettings">Hardware Settings</string>
+    <string name="max">Max</string>
+    <string name="cputemperature">CPU Temperature</string>
+    <string name="batterytemperature">Battery Temperature</string>
+    <string name="cooldownthreshold">Cooldown Threshold</string>
+    <string name="degreecelsius">°C</string>
+    <string name="pauseminingonbattery">Pause mining on battery power</string>
+    <string name="turnoffamayccontrol">Disable Temperature Control</string>
+    <string name="warning">Warning!</string>
 
     <string name="donate_help">If you would like to help build this project, feel free to specify a donation level here.\n\nFor example, a value of 5 will make your device mine 5 minutes out of 100 to fund Scala project.\n\nThe default value is 0.</string>
     <string name="mininggoal_help">Your Mining Goal should reflect your pool payout setting.\n\nYou can also specify a custom value for this device.\n\nThe default value is your pool Min Payout.</string>
+    <string name="cpu_temp_help">The CPU Temperature defines the maximum temperature your CPU can reach before triggering the cooling of your device.\n\nIf your device does not have a CPU temperature sensor, this option will be ignored.</string>
+    <string name="battery_temp_help">The Battery Temperature defines the maximum temperature your battery can reach before triggering the cooling of your device.\n\nIf your device does not have a battery temperature sensor, this option will be ignored.</string>
+    <string name="cooldown_threshold_help">The Cooldown Threshold defines the safe temperature at which the miner will resume.</string>
+    <string name="amayc_warning">The As-Much-As-You-Can (AMAYC) machine learning algorithm can predict when your device will overheat and pause the miner until the device\'s temperature has normalized.</string>
+    <string name="amayc_ownrisks">Turning this feature off might cause damage to your device. Do it at your own risk!</string>
 
-    <string name="disclaimerText">Scala Miner is an open-source cryptocurrency miner for all latest Android devices.\n\nRunning your CPU at a high intensity for a prolonged duration may result in negative effects such as: battery drainage, slow response time, overheating, and may cause permanent damage to your device.\n\nWe recommend only using this software on low settings.\n\nBy using this application, you assume full responsibility for any damage that may be caused to your device, property or self by the Scala Miner.</string>
+    <string name="disclaimerText">The Scala Miner is an open-source cryptocurrency miner for all latest Android devices.\n\nRunning your CPU at a high intensity for a prolonged duration may result in negative effects such as: battery drainage, slow response time, overheating, and may cause permanent damage to your device.\n\nWe recommend only using this software on low settings.\n\nBy using this application, you assume full responsibility for any damage that may be caused to your device, property or self by the Scala Miner.</string>
     <string-array name="threadNumbers">
         <item>1</item>
         <item>2</item>
