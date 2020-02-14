@@ -1035,28 +1035,39 @@ public class MainActivity extends AppCompatActivity
                             Log.i(LOG_TAG, "AMAYC response: " + response);
 
                             JSONObject obj = new JSONObject(response);
-                            JSONArray predictedNext = obj.getJSONArray("predicted_next");
 
-                            if(predictedNext.length() == 2) {
-                                float cpupred = Float.parseFloat(predictedNext.getString(0));
-                                float batterypred = Float.parseFloat(predictedNext.getString(1));
+                            if (uri.contains("check2")) {
+                                if(obj.has("predicted_next")) {
+                                    JSONArray predictedNext = obj.getJSONArray("predicted_next");
 
-                                if (cpupred >= nMaxCPUTemp || batterypred >= nMaxBatteryTemp) {
-                                    enableCooling(true);
-                                    return;
-                                }
-                            } else if(predictedNext.length() == 1) {
-                                if(!listCPUTemp.isEmpty()) {
-                                    float cpupred = Float.parseFloat(predictedNext.getString(0));
-                                    if (cpupred >= nMaxCPUTemp) {
-                                        enableCooling(true);
-                                        return;
+                                    if (predictedNext != null) {
+                                        if (predictedNext.length() == 2) {
+                                            Integer cpupred = (int)Math.round(predictedNext.getDouble(0));
+                                            Integer batterypred = (int)Math.round(predictedNext.getDouble(1));
+
+                                            if (cpupred >= nMaxCPUTemp || batterypred >= nMaxBatteryTemp) {
+                                                enableCooling(true);
+                                                return;
+                                            }
+                                        }
                                     }
-                                } else if(!listBatteryTemp.isEmpty()) {
-                                    float batterypred = Float.parseFloat(predictedNext.getString(0));
-                                    if (batterypred >= nMaxBatteryTemp) {
-                                        enableCooling(true);
-                                        return;
+                                }
+                            } else if (uri.contains("check1")) {
+                                if(obj.has("predicted_next")) {
+                                    double predictedNext = obj.getDouble("predicted_next");
+
+                                    if (!listCPUTemp.isEmpty()) {
+                                        Integer cpupred = (int)Math.round(predictedNext);
+                                        if (cpupred >= nMaxCPUTemp) {
+                                            enableCooling(true);
+                                            return;
+                                        }
+                                    } else if (!listBatteryTemp.isEmpty()) {
+                                        Integer batterypred = (int)Math.round(predictedNext);
+                                        if (batterypred >= nMaxBatteryTemp) {
+                                            enableCooling(true);
+                                            return;
+                                        }
                                     }
                                 }
                             }
