@@ -45,7 +45,7 @@ public class SettingsFragment extends Fragment {
 
     private static final String LOG_TAG = "MiningSvc";
 
-    private EditText edPass;
+    private EditText edWorkerName;
     private TextView edUser;
     private Button bQrCode;
 
@@ -87,7 +87,7 @@ public class SettingsFragment extends Fragment {
         edUser = view.findViewById(R.id.username);
         edPool = view.findViewById(R.id.pool);
         edPort = view.findViewById(R.id.port);
-        edPass = view.findViewById(R.id.pass);
+        edWorkerName = view.findViewById(R.id.pass);
 
         //edDevFees = view.findViewById(R.id.devfees);
         edMiningGoal = view.findViewById(R.id.mininggoal);
@@ -184,8 +184,8 @@ public class SettingsFragment extends Fragment {
             edUser.setText(Config.read("address"));
         }
 
-        if (Config.read("pass").equals("") == false) {
-            edPass.setText(Config.read("pass"));
+        if (Config.read("workername").equals("") == false) {
+            edWorkerName.setText(Config.read("workername"));
         }
 
         sbCores.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
@@ -278,7 +278,7 @@ public class SettingsFragment extends Fragment {
 
                 if (Config.read("init").equals("1") == true) {
                     edUser.setText(Config.read("address"));
-                    edPass.setText(Config.read("pass"));
+                    edWorkerName.setText(Config.read("workername"));
                 }
 
                 if (position == 0){
@@ -315,8 +315,6 @@ public class SettingsFragment extends Fragment {
         poolItem = ProviderManager.getPoolById(poolSelected);
         if (Config.read("init").equals("1") == false) {
             poolSelected = Integer.toString(sp);
-            edUser.setText(Config.DefaultWallet);
-            edPass.setText(Config.DefaultPassword);
         }
 
         if(poolSelected.equals("0")) {
@@ -345,17 +343,18 @@ public class SettingsFragment extends Fragment {
                 }
                 Config.write("address", address);
 
-                String password = edPass.getText().toString().trim();
-                if(password.equals("")) {
-                    password = Tools.getDeviceName();
+                String workername = edWorkerName.getText().toString().trim();
+                if(workername.equals("")) {
+                    workername = Tools.getDeviceName();
                 }
 
-                Log.i(LOG_TAG,"Password : " + password);
-                Config.write("pass", password);
-                edPass.setText(password);
-                String key = (String)spPool.getSelectedItem();
+                Log.i(LOG_TAG,"Worker Name : " + workername);
+                Config.write("workername", workername);
+                edWorkerName.setText(workername);
 
+                String key = (String)spPool.getSelectedItem();
                 int selectedPosition = Config.DefaultPoolIndex;
+
                 PoolItem[] pools = ProviderManager.getPools();
                 for(int i = 0;i< pools.length;i++){
                     PoolItem pi = pools[i];

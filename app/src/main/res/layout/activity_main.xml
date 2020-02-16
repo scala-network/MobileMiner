@@ -12,10 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/bg_grey"
-        android:orientation="vertical"
-        android:paddingLeft="0dp"
-        android:paddingTop="0dp"
-        android:paddingRight="0dp">
+        android:orientation="vertical" >
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
@@ -80,6 +77,143 @@
             android:paddingRight="15dp"
             android:layout_marginBottom="10dp"/>
 
+        <LinearLayout
+            android:id="@+id/layoutpayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/corner_radius_black"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginBottom="10dp"
+            android:paddingTop="5dp"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:visibility="visible"
+            android:paddingBottom="5dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="5dp"
+                    android:gravity="start"
+                    android:text="@string/allworkers"
+                    android:textSize="14sp"
+                    android:textColor="@color/c_grey" />
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/totalhashrate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="3dp"
+                    android:gravity="start"
+                    android:text="@string/na"
+                    android:textSize="14sp"
+                    android:textColor="@color/c_lighter" />
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/totalhashrateunit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    android:text="H/s"
+                    android:textSize="14sp"
+                    android:textColor="@color/c_lighter" />
+
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"/>
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/balance"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="3dp"
+                    android:gravity="start"
+                    android:text="@string/na"
+                    android:textSize="14sp"
+                    android:textColor="@color/c_lighter" />
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/divider"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="3dp"
+                    android:gravity="start"
+                    android:text="/"
+                    android:textSize="14sp"
+                    android:textColor="@color/c_grey"  />
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/minpayout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="3dp"
+                    android:gravity="start"
+                    android:text="@string/na"
+                    android:textSize="14sp"
+                    android:textColor="@color/c_grey" />
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/xlaunit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="5dp"
+                    android:gravity="start"
+                    android:text="XLA"
+                    android:textSize="14sp"
+                    android:textColor="@color/c_grey"  />
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/percentage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="3dp"
+                    android:gravity="start"
+                    android:text="n/a"
+                    android:textSize="14sp"
+                    android:textColor="@color/c_yellow"  />
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/percentageunit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    android:text="%"
+                    android:textSize="14sp"
+                    android:textColor="@color/c_yellow"  />
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/payoutmessage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    android:text="Message"
+                    android:textSize="14sp"
+                    android:textColor="@color/c_grey"  />
+
+            </LinearLayout>
+
+            <ProgressBar
+                android:id="@+id/progresspayout"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="match_parent"
+                android:layout_height="5dp"
+                android:layout_marginTop="7dp"
+                android:layout_marginBottom="3dp"
+                android:max="100"
+                android:progress="0"
+                android:progressDrawable="@drawable/progressbar_rounded">
+            </ProgressBar>
+
+        </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -87,7 +221,7 @@
         android:background="@drawable/corner_radius_lighter"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
-        android:layout_marginBottom="7dp"
+        android:layout_marginBottom="10dp"
         android:paddingTop="5dp"
         android:paddingLeft="15dp"
         android:paddingRight="15dp"
@@ -99,14 +233,14 @@
             android:orientation="horizontal">
 
             <android.support.v7.widget.AppCompatTextView
-                android:id="@+id/hashrate"
+                android:id="@+id/workername"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="start"
-                android:text="@string/hashrate"
+                android:text="Worker Name"
                 android:textSize="14sp"
-                android:textColor="@color/c_white"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:textColor="@color/c_white"  />
 
             <Space
                 android:layout_width="0dp"
@@ -120,8 +254,7 @@
                 android:gravity="end"
                 android:text="Shares"
                 android:textSize="14sp"
-                android:textColor="@color/c_white"
-                android:textStyle="bold" />
+                android:textColor="@color/c_lighter"  />
 
         </LinearLayout>
 
@@ -147,7 +280,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="10dp"
-                android:textColor="@color/c_grey"
+                android:textColor="@color/c_white"
                 android:textSize="14dp"
                 android:text="@string/hpers" />
 
@@ -180,19 +313,19 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <android.support.v7.widget.AppCompatTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="5dp"
-            android:textColor="@color/c_grey"
-            android:text="@string/cputemp"
-            android:textSize="14sp"/>
+        <ImageView
+            android:layout_width="14dp"
+            android:layout_height="15dp"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_cpu" />
 
         <android.support.v7.widget.AppCompatTextView
             android:id="@+id/cputemp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
             android:layout_marginRight="3dp"
+            android:layout_gravity="center"
             android:gravity="end"
             android:text="n/a"
             android:textSize="14sp"
@@ -201,27 +334,29 @@
         <android.support.v7.widget.AppCompatTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:textColor="@color/c_lighter"
             android:text="@string/celsius"
             android:textSize="14sp"/>
 
         <Space
-            android:layout_width="15dp"
+            android:layout_width="22dp"
             android:layout_height="match_parent" />
 
-        <android.support.v7.widget.AppCompatTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="5dp"
-            android:textColor="@color/c_grey"
-            android:text="@string/batterytemp"
-            android:textSize="14sp"/>
+        <ImageView
+            android:id="@+id/battery"
+            android:layout_width="16dp"
+            android:layout_height="15dp"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_battery_100" />
 
         <android.support.v7.widget.AppCompatTextView
             android:id="@+id/batterytemp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
             android:layout_marginRight="3dp"
+            android:layout_gravity="center"
             android:gravity="end"
             android:text="n/a"
             android:textSize="14sp"
@@ -230,23 +365,28 @@
         <android.support.v7.widget.AppCompatTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:textColor="@color/c_lighter"
             android:text="@string/celsius"
             android:textSize="14sp"/>
 
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"/>
+
         <ImageView
-            android:id="@+id/arrowdown"
-            android:layout_width="14dp"
-            android:layout_height="14dp"
-            android:layout_marginTop="1dp"
-            android:layout_marginLeft="15dp"
+            android:id="@+id/amayc"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
             android:layout_gravity="center"
-            android:src="@drawable/ic_arrow_down" />
+            android:src="@drawable/ic_cooling" />
 
         <android.support.v7.widget.AppCompatTextView
-            android:id="@+id/cooling"
+            android:id="@+id/coolinglabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:layout_marginLeft="5dp"
             android:textColor="@color/c_blue"
             android:text="@string/cooling"
@@ -256,144 +396,22 @@
 
     </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/layoutpayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:background="@drawable/corner_radius_black"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            android:layout_marginBottom="7dp"
-            android:paddingTop="5dp"
-            android:paddingLeft="15dp"
-            android:paddingRight="15dp"
-            android:visibility="visible"
-            android:paddingBottom="5dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <android.support.v7.widget.AppCompatTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="5dp"
-                    android:gravity="start"
-                    android:text="@string/total"
-                    android:textSize="14sp"
-                    android:textColor="@color/c_grey"
-                    android:textStyle="bold" />
-
-                <android.support.v7.widget.AppCompatTextView
-                    android:id="@+id/totalhashrate"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="3dp"
-                    android:gravity="start"
-                    android:text="@string/na"
-                    android:textSize="14sp"
-                    android:textColor="@color/c_lighter"
-                    android:textStyle="bold" />
-
-                <android.support.v7.widget.AppCompatTextView
-                    android:id="@+id/totalhashrateunit"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="start"
-                    android:text="H/s"
-                    android:textSize="14sp"
-                    android:textColor="@color/c_lighter" />
-
-                <Space
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"/>
-
-                <android.support.v7.widget.AppCompatTextView
-                    android:id="@+id/balance"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="3dp"
-                    android:gravity="start"
-                    android:text="@string/na"
-                    android:textSize="14sp"
-                    android:textColor="@color/c_green"
-                    android:textStyle="bold" />
-
-                <android.support.v7.widget.AppCompatTextView
-                    android:id="@+id/divider"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="3dp"
-                    android:gravity="start"
-                    android:text="/"
-                    android:textSize="14sp"
-                    android:textColor="@color/c_lighter"  />
-
-                <android.support.v7.widget.AppCompatTextView
-                    android:id="@+id/minpayout"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="3dp"
-                    android:gravity="start"
-                    android:text="@string/na"
-                    android:textSize="14sp"
-                    android:textColor="@color/c_white"
-                    android:textStyle="bold" />
-
-                <android.support.v7.widget.AppCompatTextView
-                    android:id="@+id/xlaunit"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="3dp"
-                    android:gravity="start"
-                    android:text="XLA"
-                    android:textSize="14sp"
-                    android:textColor="@color/c_white"  />
-
-            </LinearLayout>
-
-            <ProgressBar
-                android:id="@+id/progresspayout"
-                style="?android:attr/progressBarStyleHorizontal"
-                android:layout_width="match_parent"
-                android:layout_height="5dp"
-                android:layout_marginTop="7dp"
-                android:layout_marginBottom="3dp"
-                android:max="100"
-                android:progress="0"
-                android:progressDrawable="@drawable/progressbar_rounded">
-            </ProgressBar>
-
-        </LinearLayout>
-
-        <ScrollView
-            android:id="@+id/outputScrollView"
-            android:layout_width="match_parent"
-            android:layout_height="158dp"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            android:layout_marginBottom="5dp"
-            android:layout_weight="1"
-            android:paddingLeft="15dp"
-            android:paddingRight="15dp"
-            android:textSize="12dp"
-            android:background="@drawable/corner_radius_black">
-
             <android.support.v7.widget.AppCompatTextView
                 android:id="@+id/output"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:text=""
+                android:layout_height="158dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginBottom="5dp"
+                android:layout_weight="1"
+                android:paddingTop="5pt"
+                android:paddingBottom="5pt"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:scrollbars = "vertical"
                 android:textSize="12dp"
                 android:textColor="@color/c_grey"
-                android:background="@color/bg_black"
-                android:visibility="visible" />
-
-        </ScrollView>
+                android:background="@drawable/corner_radius_black" />
 
         <android.support.constraint.ConstraintLayout
             android:id="@+id/linearLayout"

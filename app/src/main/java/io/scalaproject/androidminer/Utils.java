@@ -1,4 +1,6 @@
 package io.scalaproject.androidminer;
+import java.util.Calendar;
+import java.util.Locale;
 import java.util.regex.*;
 import java.text.DecimalFormat;
 import java.text.ParseException;
@@ -40,4 +42,12 @@ final class Utils {
         return total;
     }
 
+    static public String getTime() {
+        Calendar calendar = Calendar.getInstance(Locale.getDefault());
+        int hour = calendar.get(Calendar.HOUR_OF_DAY);
+        int minute = calendar.get(Calendar.MINUTE);
+        int second = calendar.get(Calendar.SECOND);
+
+        return "[" + Integer.toString(hour) + ":" + Integer.toString(minute) + ":" + Integer.toString(second) + "]";
+    }
 }

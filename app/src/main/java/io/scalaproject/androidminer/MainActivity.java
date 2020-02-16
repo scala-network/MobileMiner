@@ -30,11 +30,9 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
-import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.BatteryManager;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.IBinder;
 import android.os.PowerManager;
 import android.support.annotation.NonNull;
@@ -44,14 +42,16 @@ import android.support.v4.view.GravityCompat;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Layout;
 import android.text.SpannableString;
+import android.text.method.ScrollingMovementMethod;
 import android.text.style.ForegroundColorSpan;
-import android.text.style.StyleSpan;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -65,10 +65,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
-
-/* FOR AMAYC Support */
-import android.hardware.Sensor;
-import android.hardware.SensorManager;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -122,6 +118,7 @@ public class MainActivity extends AppCompatActivity
     private List<String> listCPUTemp = new ArrayList<String>();
     private List<String> listBatteryTemp = new ArrayList<String>();
     private boolean isCharging = false;
+    private ImageView vBatteryImage;
 
     private ScrollView svOutput;
 
@@ -211,20 +208,24 @@ public class MainActivity extends AppCompatActivity
         // Controls
 
         payoutEnabled = true;
-        pbPayout = (ProgressBar) findViewById(R.id.progresspayout);
+        pbPayout = findViewById(R.id.progresspayout);
 
         tvLog = findViewById(R.id.output);
+        tvLog.setMovementMethod(new ScrollingMovementMethod());
+
         tvSpeed = findViewById(R.id.speed);
         tvHs = findViewById(R.id.hs);
 
         tvAccepted = findViewById(R.id.accepted);
         tvCPUTemperature = findViewById(R.id.cputemp);
         tvBatteryTemperature = findViewById(R.id.batterytemp);
-        svOutput = findViewById(R.id.outputScrollView);
+        vBatteryImage = findViewById(R.id.battery);
 
-        minerBtnH = (Button) findViewById(R.id.minerBtnH);
-        minerBtnP = (Button) findViewById(R.id.minerBtnP);
-        minerBtnR = (Button) findViewById(R.id.minerBtnR);
+        //svOutput = findViewById(R.id.outputScrollView);
+
+        minerBtnH = findViewById(R.id.minerBtnH);
+        minerBtnP = findViewById(R.id.minerBtnP);
+        minerBtnR = findViewById(R.id.minerBtnR);
 
         updateUI();
 
@@ -370,11 +371,16 @@ public class MainActivity extends AppCompatActivity
                 pbPayout.setProgress(0);
                 pbPayout.setMax(100);
             }
+
+            String sPercentagePayout = String.valueOf(Math.round(fBalance / fMinPayout *100));
+            TextView tvPercentagePayout = findViewById(R.id.percentage);
+            tvPercentagePayout.setText(sPercentagePayout);
         }
     }
 
     public void enablePayoutWidget(boolean enable, String text) {
         TextView tvTotalHashrate = findViewById(R.id.totalhashrate);
+        TextView tvMessage = findViewById(R.id.payoutmessage);
 
         if (enable) {
             if(tvTotalHashrate.getVisibility() == View.VISIBLE)
@@ -396,9 +402,14 @@ public class MainActivity extends AppCompatActivity
 
             TextView tvXLAUnit = findViewById(R.id.xlaunit);
             tvXLAUnit.setVisibility(View.VISIBLE);
-            tvXLAUnit.setTextColor(getResources().getColor(R.color.c_white));
-            tvXLAUnit.setTypeface(null, Typeface.BOLD);
-            tvXLAUnit.setText(text);
+
+            TextView tvPercentage = findViewById(R.id.percentage);
+            tvPercentage.setVisibility(View.VISIBLE);
+
+            TextView tvPercentageUnit = findViewById(R.id.percentageunit);
+            tvPercentageUnit.setVisibility(View.VISIBLE);
+
+            tvMessage.setVisibility(View.GONE);
         }
         else {
             if(tvTotalHashrate.getVisibility() != View.INVISIBLE) {
@@ -416,20 +427,26 @@ public class MainActivity extends AppCompatActivity
 
                 TextView tvMinPayout = findViewById(R.id.minpayout);
                 tvMinPayout.setVisibility(View.INVISIBLE);
+
+                TextView tvXLAUnit = findViewById(R.id.xlaunit);
+                tvXLAUnit.setVisibility(View.INVISIBLE);
+
+                TextView tvPercentage = findViewById(R.id.percentage);
+                tvPercentage.setVisibility(View.INVISIBLE);
+
+                TextView tvPercentageUnit = findViewById(R.id.percentageunit);
+                tvPercentageUnit.setVisibility(View.INVISIBLE);
             }
 
             pbPayout.setProgress(0);
             pbPayout.setMax(100);
 
-            TextView tvXLAUnit = findViewById(R.id.xlaunit);
             if(text.equals("")) {
-                tvXLAUnit.setVisibility(View.INVISIBLE);
+                tvMessage.setVisibility(View.GONE);
             }
             else {
-                tvXLAUnit.setVisibility(View.VISIBLE);
-                tvXLAUnit.setTextColor(getResources().getColor(R.color.c_grey));
-                tvXLAUnit.setTypeface(null, Typeface.NORMAL);
-                tvXLAUnit.setText(text);
+                tvMessage.setVisibility(View.VISIBLE);
+                tvMessage.setText(text);
             }
         }
     }
@@ -472,6 +489,12 @@ public class MainActivity extends AppCompatActivity
         }
 
         setStatusText(status);
+
+        // Worker Name
+        TextView tvWorkerName = findViewById(R.id.workername);
+        String sWorkerName = Config.read("workername");
+        if(!sWorkerName.equals(""))
+            tvWorkerName.setText(sWorkerName);
 
         updatePayoutWidgetStatus();
         refreshLogOutputView();
@@ -761,10 +784,7 @@ public class MainActivity extends AppCompatActivity
                     int i = text.indexOf(tmpFormat);
                     int imax = i + tmpFormat.length();
                     textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_white)), i, imax, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-                    textSpan.setSpan(new StyleSpan(android.graphics.Typeface.NORMAL), i, imax, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
-
                     textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_lighter)), imax, text.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-                    textSpan.setSpan(new StyleSpan(android.graphics.Typeface.NORMAL), imax, text.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
 
                     return textSpan;
                 }
@@ -777,14 +797,12 @@ public class MainActivity extends AppCompatActivity
         formatText = "]";
         if(text.contains(formatText)) {
             textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_black)), 0, 10, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            textSpan.setSpan(new StyleSpan(android.graphics.Typeface.NORMAL), 0, 10, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
         }
 
         if (speed) {
             int i = text.indexOf("]");
             int max = text.lastIndexOf("s");
             textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_green)), i+1, max+1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            textSpan.setSpan(new StyleSpan(android.graphics.Typeface.BOLD), i+1, max+1, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
             return textSpan;
         }
 
@@ -793,7 +811,6 @@ public class MainActivity extends AppCompatActivity
             int i = text.indexOf(formatText);
             int imax = i + formatText.length();
             textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_blue)), i, imax, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            textSpan.setSpan(new StyleSpan(android.graphics.Typeface.BOLD), i, imax, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
             return textSpan;
         }
 
@@ -802,7 +819,6 @@ public class MainActivity extends AppCompatActivity
             int i = text.indexOf(formatText);
             int imax = i + formatText.length();
             textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_white)), i, imax, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            textSpan.setSpan(new StyleSpan(android.graphics.Typeface.BOLD), i, imax, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
             return textSpan;
         }
 
@@ -811,7 +827,6 @@ public class MainActivity extends AppCompatActivity
             int i = text.indexOf(formatText);
             int imax = i + formatText.length();
             textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_lighter)), i, imax, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            textSpan.setSpan(new StyleSpan(android.graphics.Typeface.NORMAL), i, imax, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
             return textSpan;
         }
 
@@ -820,7 +835,6 @@ public class MainActivity extends AppCompatActivity
             int i = text.indexOf(formatText);
             int imax = i + formatText.length();
             textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_lighter)), i, imax, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            textSpan.setSpan(new StyleSpan(android.graphics.Typeface.NORMAL), i, imax, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
             return textSpan;
         }
 
@@ -829,7 +843,6 @@ public class MainActivity extends AppCompatActivity
             int i = text.indexOf(formatText);
             int imax = i + formatText.length();
             textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_lighter)), i, imax, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            textSpan.setSpan(new StyleSpan(android.graphics.Typeface.NORMAL), i, imax, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
             return textSpan;
         }
 
@@ -838,7 +851,6 @@ public class MainActivity extends AppCompatActivity
             int i = text.indexOf(formatText);
             int imax = i + formatText.length();
             textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_lighter)), i, imax, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            textSpan.setSpan(new StyleSpan(android.graphics.Typeface.NORMAL), i, imax, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
             return textSpan;
         }
 
@@ -847,7 +859,6 @@ public class MainActivity extends AppCompatActivity
             int i = text.indexOf(formatText);
             int imax = i + formatText.length();
             textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_lighter)), i, imax, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            textSpan.setSpan(new StyleSpan(android.graphics.Typeface.NORMAL), i, imax, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
             return textSpan;
         }
 
@@ -856,7 +867,15 @@ public class MainActivity extends AppCompatActivity
             int i = text.indexOf(formatText);
             int imax = i + formatText.length();
             textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_lighter)), i, imax, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            textSpan.setSpan(new StyleSpan(android.graphics.Typeface.NORMAL), i, imax, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+            return textSpan;
+        }
+
+        formatText = "AMAYC";
+        if(text.contains(formatText)) {
+            int i = text.indexOf(formatText);
+            int imax = i + formatText.length();
+            textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_white)), i, imax, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
             return textSpan;
         }
 
@@ -864,12 +883,16 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void refreshLogOutputView() {
-        svOutput.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                svOutput.fullScroll(View.FOCUS_DOWN);
+        if(tvLog != null){
+            final Layout layout = tvLog.getLayout();
+            if(layout != null) {
+                final int scrollAmount = layout.getHeight() - tvLog.getHeight() + tvLog.getPaddingBottom();
+                if (scrollAmount > 0)
+                    tvLog.scrollTo(0, scrollAmount);
+                else
+                    tvLog.scrollTo(0, 0);
             }
-        }, 50);
+        }
     }
 
     private void appendLogOutputText(String line) {
@@ -889,12 +912,7 @@ public class MainActivity extends AppCompatActivity
         }
 
         if(refresh) {
-            svOutput.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    svOutput.fullScroll(View.FOCUS_DOWN);
-                }
-            }, 50);
+            refreshLogOutputView();
         }
     }
 
@@ -1094,9 +1112,8 @@ public class MainActivity extends AppCompatActivity
             pauseMiner();
 
             minerPausedAMAYC = true;
-            //appendLogOutputText(getResources().getString(R.string.amaycOn));
 
-            enableResumeBtn(false);
+            appendLogOutputText(Utils.getTime() + " " + getResources().getString(R.string.amaycOn));
         }
         else {
             if (Config.read("pauseonbattery").equals("1") == true && !isCharging) {
@@ -1108,14 +1125,15 @@ public class MainActivity extends AppCompatActivity
             resumeMiner();
 
             minerPausedAMAYC = false;
-            //appendLogOutputText(getResources().getString(R.string.amaycOff));
+
+            appendLogOutputText(Utils.getTime() + " " + getResources().getString(R.string.amaycOff));
         }
     }
 
     private void enableAmaycStatus(boolean enabled) {
         int visible = enabled ? View.VISIBLE : View.INVISIBLE;
-        findViewById(R.id.arrowdown).setVisibility(visible);
-        findViewById(R.id.cooling).setVisibility(visible);
+        findViewById(R.id.amayc).setVisibility(visible);
+        findViewById(R.id.coolinglabel).setVisibility(visible);
     }
 
     private void enableStartBtn(boolean enabled) {
@@ -1176,7 +1194,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void resumeMiner() {
-        if (minerPaused ) {
+        if (minerPaused && !minerPausedAMAYC ) {
             minerPaused = false;
 
             enablePauseBtn(true);
@@ -1209,11 +1227,30 @@ public class MainActivity extends AppCompatActivity
         @Override
         public void onReceive(Context c, Intent batteryStatus) {
             batteryTemp = (float) (batteryStatus.getIntExtra(BatteryManager.EXTRA_TEMPERATURE, 0)) / 10;
+            int batteryLevel = batteryStatus.getIntExtra(BatteryManager.EXTRA_LEVEL, 0);
 
             int status = batteryStatus.getIntExtra(BatteryManager.EXTRA_STATUS, -1);
             isCharging = status == BatteryManager.BATTERY_STATUS_CHARGING || status == BatteryManager.BATTERY_STATUS_FULL;
 
-            if (lastIsCharging == isCharging) return;
+            if(isCharging) {
+                vBatteryImage.setImageDrawable(getResources().getDrawable(R.drawable.ic_plugged));
+            }
+            else {
+                if (batteryLevel <= 5)
+                    vBatteryImage.setImageDrawable(getResources().getDrawable(R.drawable.ic_battery_0));
+                else if (batteryLevel > 5 && batteryLevel <= 25)
+                    vBatteryImage.setImageDrawable(getResources().getDrawable(R.drawable.ic_battery_25));
+                else if (batteryLevel > 25 && batteryLevel <= 50)
+                    vBatteryImage.setImageDrawable(getResources().getDrawable(R.drawable.ic_battery_50));
+                else if (batteryLevel > 50 && batteryLevel <= 75)
+                    vBatteryImage.setImageDrawable(getResources().getDrawable(R.drawable.ic_battery_75));
+                else
+                    vBatteryImage.setImageDrawable(getResources().getDrawable(R.drawable.ic_battery_100));
+            }
+
+            if (lastIsCharging == isCharging)
+                return;
+
             lastIsCharging = isCharging;
 
             Toast.makeText(contextOfApplication, (isCharging ? "Device Charging" : "Device on Battery"), Toast.LENGTH_SHORT).show();
