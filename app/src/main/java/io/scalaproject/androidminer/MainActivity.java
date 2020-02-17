@@ -875,7 +875,6 @@ public class MainActivity extends AppCompatActivity
             int i = text.indexOf(formatText);
             int imax = i + formatText.length();
             textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_white)), i, imax, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-
             return textSpan;
         }
 
@@ -1113,7 +1112,8 @@ public class MainActivity extends AppCompatActivity
 
             minerPausedAMAYC = true;
 
-            appendLogOutputText(Utils.getTime() + " " + getResources().getString(R.string.amaycOn));
+            String sAmayc = "[" + Utils.getDateTime() + "] " + getResources().getString(R.string.amaycOn);
+            appendLogOutputText(sAmayc);
         }
         else {
             if (Config.read("pauseonbattery").equals("1") == true && !isCharging) {
@@ -1126,7 +1126,8 @@ public class MainActivity extends AppCompatActivity
 
             minerPausedAMAYC = false;
 
-            appendLogOutputText(Utils.getTime() + " " + getResources().getString(R.string.amaycOff));
+            String sAmayc = "[" + Utils.getDateTime() + "] " + getResources().getString(R.string.amaycOff);
+            appendLogOutputText(sAmayc);
         }
     }
 
@@ -1194,7 +1195,12 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void resumeMiner() {
-        if (minerPaused && !minerPausedAMAYC ) {
+        if (minerPaused) {
+            if(minerPausedAMAYC) {
+                Toast.makeText(contextOfApplication, getResources().getString(R.string.amaycpaused), Toast.LENGTH_SHORT).show();
+                return;
+            }
+
             minerPaused = false;
 
             enablePauseBtn(true);

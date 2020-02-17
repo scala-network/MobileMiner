@@ -1,4 +1,6 @@
 package io.scalaproject.androidminer;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 import java.util.regex.*;
@@ -42,12 +44,11 @@ final class Utils {
         return total;
     }
 
-    static public String getTime() {
-        Calendar calendar = Calendar.getInstance(Locale.getDefault());
-        int hour = calendar.get(Calendar.HOUR_OF_DAY);
-        int minute = calendar.get(Calendar.MINUTE);
-        int second = calendar.get(Calendar.SECOND);
+    static public String getDateTime() {
+        Calendar date = Calendar.getInstance(Locale.getDefault());
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+        String sDate = dateFormat.format(date.getTime());
 
-        return "[" + Integer.toString(hour) + ":" + Integer.toString(minute) + ":" + Integer.toString(second) + "]";
+        return sDate ;
     }
 }
