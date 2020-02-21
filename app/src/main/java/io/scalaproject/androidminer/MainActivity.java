@@ -832,7 +832,7 @@ public class MainActivity extends AppCompatActivity
             text = sb.delete(i-4, i).toString();
         }
 
-        if(text.contains("paused, press")) {
+        if(m_nCurrentState == STATE_COOLING && text.contains("paused, press")) {
             text = text.replace("paused, press", getResources().getString(R.string.miningpaused));
             text = text.replace("to resume", "");
             text = text.replace("r ", "");
