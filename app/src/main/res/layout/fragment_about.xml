@@ -35,6 +35,15 @@
                     android:textSize="14sp" />
 
                 <android.support.v7.widget.AppCompatTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:gravity="start"
+                    android:text="@string/aboutapplication"
+                    android:textColor="@color/c_white"
+                    android:textSize="12sp"/>
+
+                <android.support.v7.widget.AppCompatTextView
                     android:id="@+id/release"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

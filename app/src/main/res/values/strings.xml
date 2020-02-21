@@ -103,7 +103,8 @@
     <string name="amayc_ownrisks">Turning this feature off might cause damage to your device. Do it at your own risk!</string>
     <string name="shares_help">Your mining reward is based on the amount of shares that contributed to the resolution of a block.</string>
 
-    <string name="disclaimerText">The Scala Miner is an open-source cryptocurrency miner for all latest Android devices.\n\nRunning your CPU at a high intensity for a prolonged duration may result in negative effects such as: battery drainage, slow response time, overheating, and may cause permanent damage to your device.\n\nWe recommend only using this software on low settings.\n\nBy using this application, you assume full responsibility for any damage that may be caused to your device, property or self by the Scala Miner.</string>
+    <string name="aboutapplication">The Scala Miner is an open-source cryptocurrency miner for all latest Android devices</string>
+    <string name="disclaimerText">Running your CPU at a high intensity for a prolonged duration may result in negative effects such as: battery drainage, slow response time, overheating, and may cause permanent damage to your device.\n\nWe recommend using the Tempetature Settings and a low amount of CPU Cores to prevent your device from being damaged.\n\nBy using this application, you assume full responsibility for any damage that may be caused to your device, property or self by this application.</string>
     <string-array name="threadNumbers">
         <item>1</item>
         <item>2</item>

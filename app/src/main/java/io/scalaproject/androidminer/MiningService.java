@@ -393,24 +393,24 @@ public class MiningService extends Service {
         }
 
         private void processLogLine(String line) {
-            output.append(line + System.lineSeparator());
+            output.append(line + System.getProperty("line.separator"));
 
             String lineCompare = line.toLowerCase();
             if (lineCompare.contains("accepted")) {
                 accepted++;
             } else if (lineCompare.contains("speed")) {
                 String[] split = TextUtils.split(line, " ");
-                speed = split[6];
+                speed = split[4];
                 if (speed.equals("n/a")) {
                     speed = split[5];
                     if (speed.equals("n/a")) {
-                        speed = split[4];
+                        speed = split[6];
                     }
                 }
             }
 
             if (output.length() > Config.logMaxLength) {
-                output.delete(0, output.indexOf(System.lineSeparator(), Config.logPruneLength) + 1);
+                output.delete(0, output.indexOf(System.getProperty("line.separator"), Config.logPruneLength) + 1);
             }
 
             raiseMiningServiceStatusChange(line, speed, accepted);
