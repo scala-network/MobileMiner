@@ -64,10 +64,7 @@
         <FrameLayout
             android:id="@+id/fragment_container"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingLeft="15dp"
-            android:paddingTop="0dp"
-            android:paddingRight="15dp" />
+            android:layout_height="wrap_content" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -103,7 +100,7 @@
                     android:layout_marginRight="5dp"
                     android:gravity="start"
                     android:text="@string/allworkers"
-                    android:textSize="14sp"
+                    android:textSize="12sp"
                     android:textColor="@color/c_grey" />
 
                 <android.support.v7.widget.AppCompatTextView
@@ -113,7 +110,7 @@
                     android:layout_marginRight="3dp"
                     android:gravity="start"
                     android:text="@string/na"
-                    android:textSize="14sp"
+                    android:textSize="12sp"
                     android:textColor="@color/c_lighter" />
 
                 <android.support.v7.widget.AppCompatTextView
@@ -122,7 +119,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="start"
                     android:text="H/s"
-                    android:textSize="14sp"
+                    android:textSize="12sp"
                     android:textColor="@color/c_lighter" />
 
                 <Space
@@ -137,28 +134,8 @@
                     android:layout_marginRight="3dp"
                     android:gravity="start"
                     android:text="@string/na"
-                    android:textSize="14sp"
+                    android:textSize="12sp"
                     android:textColor="@color/c_lighter" />
-
-                <android.support.v7.widget.AppCompatTextView
-                    android:id="@+id/divider"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="3dp"
-                    android:gravity="start"
-                    android:text="/"
-                    android:textSize="14sp"
-                    android:textColor="@color/c_grey"  />
-
-                <android.support.v7.widget.AppCompatTextView
-                    android:id="@+id/minpayout"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="3dp"
-                    android:gravity="start"
-                    android:text="@string/na"
-                    android:textSize="14sp"
-                    android:textColor="@color/c_grey" />
 
                 <android.support.v7.widget.AppCompatTextView
                     android:id="@+id/xlaunit"
@@ -167,8 +144,8 @@
                     android:layout_marginRight="5dp"
                     android:gravity="start"
                     android:text="XLA"
-                    android:textSize="14sp"
-                    android:textColor="@color/c_grey"  />
+                    android:textSize="12sp"
+                    android:textColor="@color/c_lighter"  />
 
                 <android.support.v7.widget.AppCompatTextView
                     android:id="@+id/percentage"
@@ -177,7 +154,7 @@
                     android:layout_marginRight="3dp"
                     android:gravity="start"
                     android:text="n/a"
-                    android:textSize="14sp"
+                    android:textSize="12sp"
                     android:textColor="@color/c_yellow"  />
 
                 <android.support.v7.widget.AppCompatTextView
@@ -186,7 +163,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="start"
                     android:text="%"
-                    android:textSize="14sp"
+                    android:textSize="12sp"
                     android:textColor="@color/c_yellow"  />
 
                 <android.support.v7.widget.AppCompatTextView
@@ -195,7 +172,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="start"
                     android:text="Message"
-                    android:textSize="14sp"
+                    android:textSize="12sp"
                     android:textColor="@color/c_grey"  />
 
             </LinearLayout>
@@ -236,6 +213,7 @@
                 android:id="@+id/workername"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:gravity="start"
                 android:text="Worker Name"
                 android:textSize="14sp"
@@ -251,10 +229,24 @@
                 android:id="@+id/shares"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:gravity="end"
                 android:text="Shares"
                 android:textSize="14sp"
                 android:textColor="@color/c_lighter"  />
+
+            <android.support.design.button.MaterialButton
+                android:id="@+id/btnSharesHelp"
+                android:layout_width="18dp"
+                android:layout_height="24dp"
+                android:layout_gravity="center"
+                android:layout_marginStart="5dp"
+                android:backgroundTint="@color/bg_lighter"
+                app:cornerRadius="5dp"
+                app:icon="@drawable/ic_help"
+                app:iconGravity="textStart"
+                app:iconPadding="0dp"
+                app:iconTint="@color/c_lighter" />
 
         </LinearLayout>
 
@@ -264,25 +256,61 @@
             android:orientation="horizontal"
             android:layout_marginBottom="3dp">
 
-            <android.support.v7.widget.AppCompatTextView
-                android:id="@+id/speed"
+            <LinearLayout
+                android:id="@+id/layoutstatus"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="5dp"
-                android:gravity="start"
-                android:text="0"
-                android:textColor="@color/c_green"
-                android:textSize="32sp"
-                android:textStyle="bold" />
+                android:layout_gravity="bottom"
+                android:layout_marginBottom="5dp"
+                android:orientation="horizontal"
+                android:visibility="gone" >
 
-            <android.support.v7.widget.AppCompatTextView
-                android:id="@+id/hs"
+                <ImageView
+                    android:id="@+id/statusicon"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:src="@drawable/ic_cooling_grey" />
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:includeFontPadding="false"
+                    android:textAlignment="center"
+                    android:textColor="@color/c_lighter"
+                    android:text="Status"
+                    android:textSize="14sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layouthashrate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="10dp"
-                android:textColor="@color/c_white"
-                android:textSize="14dp"
-                android:text="@string/hpers" />
+                android:orientation="horizontal"
+                android:visibility="visible" >
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/speed"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="5dp"
+                    android:text="0"
+                    android:textColor="@color/c_grey"
+                    android:textSize="32sp"
+                    android:textStyle="bold" />
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/hs"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:textColor="@color/c_white"
+                    android:textSize="14dp"
+                    android:text="@string/hpers" />
+
+            </LinearLayout>
 
             <Space
                 android:layout_width="0dp"
@@ -295,7 +323,6 @@
                 android:layout_height="wrap_content"
                 android:gravity="end"
                 android:text="0"
-                android:textStyle="bold"
                 android:textSize="32sp"
                 android:textColor="@color/c_grey" />
 
@@ -314,6 +341,29 @@
         android:orientation="horizontal">
 
         <ImageView
+            android:layout_width="12dp"
+            android:layout_height="15dp"
+            android:layout_marginRight="2dp"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_cores" />
+
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/nbcores"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="7dp"
+            android:layout_marginRight="3dp"
+            android:layout_gravity="center"
+            android:gravity="end"
+            android:text="n/a"
+            android:textSize="14sp"
+            android:textColor="@color/c_lighter" />
+
+        <Space
+            android:layout_width="20dp"
+            android:layout_height="match_parent" />
+
+        <ImageView
             android:layout_width="14dp"
             android:layout_height="15dp"
             android:layout_gravity="center"
@@ -323,7 +373,38 @@
             android:id="@+id/cputemp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
+            android:layout_marginLeft="7dp"
+            android:layout_marginRight="3dp"
+            android:layout_gravity="center"
+            android:gravity="end"
+            android:text="n/a"
+            android:textSize="14sp"
+            android:textColor="@color/c_lighter" />
+
+        <android.support.v7.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textColor="@color/c_lighter"
+            android:text="@string/celsius"
+            android:textSize="14sp"/>
+
+        <Space
+            android:layout_width="20dp"
+            android:layout_height="match_parent" />
+
+        <ImageView
+            android:id="@+id/battery"
+            android:layout_width="16dp"
+            android:layout_height="15dp"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_battery_100" />
+
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/batterytemp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="7dp"
             android:layout_marginRight="3dp"
             android:layout_gravity="center"
             android:gravity="end"
@@ -343,54 +424,7 @@
             android:layout_width="22dp"
             android:layout_height="match_parent" />
 
-        <ImageView
-            android:id="@+id/battery"
-            android:layout_width="16dp"
-            android:layout_height="15dp"
-            android:layout_gravity="center"
-            android:src="@drawable/ic_battery_100" />
 
-        <android.support.v7.widget.AppCompatTextView
-            android:id="@+id/batterytemp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="3dp"
-            android:layout_gravity="center"
-            android:gravity="end"
-            android:text="n/a"
-            android:textSize="14sp"
-            android:textColor="@color/c_lighter" />
-
-        <android.support.v7.widget.AppCompatTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:textColor="@color/c_lighter"
-            android:text="@string/celsius"
-            android:textSize="14sp"/>
-
-        <Space
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"/>
-
-        <ImageView
-            android:id="@+id/amayc"
-            android:layout_width="16dp"
-            android:layout_height="16dp"
-            android:layout_gravity="center"
-            android:src="@drawable/ic_cooling" />
-
-        <android.support.v7.widget.AppCompatTextView
-            android:id="@+id/coolinglabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginLeft="5dp"
-            android:textColor="@color/c_blue"
-            android:text="@string/cooling"
-            android:textSize="14sp"/>
 
     </LinearLayout>
 

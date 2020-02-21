@@ -16,7 +16,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="5dip"
             android:gravity="start"
-            android:text="@string/batterytemperature"
+            android:text="@string/shares"
             android:textColor="@color/c_white"
             android:textStyle="bold"
             android:textSize="14sp" />
@@ -27,7 +27,7 @@
             android:layout_centerInParent="true"
             android:textSize="14sp"
             android:textColor="@color/c_lighter"
-            android:text="@string/battery_temp_help"/>
+            android:text="@string/shares_help"/>
 
     </LinearLayout>
 

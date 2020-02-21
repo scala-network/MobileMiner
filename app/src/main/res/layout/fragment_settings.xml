@@ -207,7 +207,7 @@
                     android:paddingEnd="0dp"
                     android:progress="1"
                     android:progressDrawable="@drawable/seekbar_ruler"
-                    android:thumb="@drawable/seekbar_slider_grey"
+                    android:thumb="@drawable/seekbar_slider_cores"
                     android:thumbOffset="0dp" />
 
                 <LinearLayout
@@ -284,7 +284,7 @@
                     android:paddingEnd="0dp"
                     android:progress="3"
                     android:progressDrawable="@drawable/seekbar_ruler"
-                    android:thumb="@drawable/seekbar_slider_grey"
+                    android:thumb="@drawable/seekbar_slider_cpu"
                     android:thumbOffset="0dp" />
 
                 <LinearLayout
@@ -361,7 +361,7 @@
                     android:paddingEnd="0dp"
                     android:progress="3"
                     android:progressDrawable="@drawable/seekbar_ruler"
-                    android:thumb="@drawable/seekbar_slider_grey"
+                    android:thumb="@drawable/seekbar_slider_battery"
                     android:thumbOffset="0dp" />
 
                 <LinearLayout
@@ -438,7 +438,7 @@
                     android:paddingEnd="0dp"
                     android:progress="3"
                     android:progressDrawable="@drawable/seekbar_ruler"
-                    android:thumb="@drawable/seekbar_slider_grey"
+                    android:thumb="@drawable/seekbar_slider_cooldown"
                     android:thumbOffset="0dp" />
 
             <LinearLayout

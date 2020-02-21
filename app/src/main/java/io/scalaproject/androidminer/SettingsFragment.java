@@ -17,17 +17,13 @@ import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.PopupWindow;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -264,7 +260,7 @@ public class SettingsFragment extends Fragment {
                 if (checked) {
                     // inflate the layout of the popup window
                     View popupView = inflater.inflate(R.layout.warning_amayc, null);
-                    showPopup(v, inflater, popupView);
+                    Utils.showPopup(v, inflater, popupView);
                 }
 
                 enableAmaycControl(!checked);
@@ -407,6 +403,10 @@ public class SettingsFragment extends Fragment {
                 Toast.makeText(appContext, "Settings Saved", Toast.LENGTH_SHORT).show();
 
                 MainActivity main = (MainActivity) getActivity();
+                main.stopMining();
+                main.loadSettings();
+                main.setTitle(getResources().getString(R.string.miner));
+
                 for (Fragment fragment : getFragmentManager().getFragments()) {
                     if (fragment != null) {
                         getFragmentManager().beginTransaction().remove(fragment).commit();
@@ -417,8 +417,6 @@ public class SettingsFragment extends Fragment {
                 NavigationView nav = main.findViewById(R.id.nav_view);
                 nav.getMenu().getItem(0).setChecked(true);
 
-                main.stopMining();
-                main.setTitle(getResources().getString(R.string.miner));
                 main.updateUI();
             }
         });
@@ -479,7 +477,7 @@ public class SettingsFragment extends Fragment {
             public void onClick(View v) {
                 // inflate the layout of the popup window
                 View popupView = inflater.inflate(R.layout.helper_donate, null);
-                showPopup(v, inflater, popupView);
+                Utils.showPopup(v, inflater, popupView);
             }
         });*/
 
@@ -489,7 +487,7 @@ public class SettingsFragment extends Fragment {
             public void onClick(View v) {
                 // inflate the layout of the popup window
                 View popupView = inflater.inflate(R.layout.helper_cpu_temperature, null);
-                showPopup(v, inflater, popupView);
+                Utils.showPopup(v, inflater, popupView);
             }
         });
 
@@ -499,7 +497,7 @@ public class SettingsFragment extends Fragment {
             public void onClick(View v) {
                 // inflate the layout of the popup window
                 View popupView = inflater.inflate(R.layout.helper_battery_temperature, null);
-                showPopup(v, inflater, popupView);
+                Utils.showPopup(v, inflater, popupView);
             }
         });
 
@@ -509,7 +507,7 @@ public class SettingsFragment extends Fragment {
             public void onClick(View v) {
                 // inflate the layout of the popup window
                 View popupView = inflater.inflate(R.layout.helper_cooldown_threshold, null);
-                showPopup(v, inflater, popupView);
+                Utils.showPopup(v, inflater, popupView);
             }
         });
 
@@ -519,7 +517,7 @@ public class SettingsFragment extends Fragment {
             public void onClick(View v) {
                 // inflate the layout of the popup window
                 View popupView = inflater.inflate(R.layout.warning_amayc, null);
-                showPopup(v, inflater, popupView);
+                Utils.showPopup(v, inflater, popupView);
             }
         });
 
@@ -529,7 +527,7 @@ public class SettingsFragment extends Fragment {
             public void onClick(View v) {
                 // inflate the layout of the popup window
                 View popupView = inflater.inflate(R.layout.helper_mining_goal, null);
-                showPopup(v, inflater, popupView);
+                Utils.showPopup(v, inflater, popupView);
             }
         });
 
@@ -564,27 +562,6 @@ public class SettingsFragment extends Fragment {
         sbCPUTemp.setEnabled(enable);
         sbBatteryTemp.setEnabled(enable);
         sbCooldown.setEnabled(enable);
-    }
-
-    private void showPopup(View view, LayoutInflater inflater, View popupView) {
-        // create the popup window
-        int width = LinearLayout.LayoutParams.WRAP_CONTENT;
-        int height = LinearLayout.LayoutParams.WRAP_CONTENT;
-        boolean focusable = true; // lets taps outside the popup also dismiss it
-        final PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
-
-        // show the popup window
-        // which view you pass in doesn't matter, it is only used for the window tolken
-        popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
-
-        // dismiss the popup window when touched
-        popupView.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                popupWindow.dismiss();
-                return true;
-            }
-        });
     }
 
     private void startQrCodeActivity() {
