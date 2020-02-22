@@ -458,6 +458,18 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void updatePayoutWidgetStatus() {
+        // For now, Payout widget only works with Official Pool
+        LinearLayout llPayoutWidget = findViewById(R.id.layoutpayout);
+        if(Config.read("selected_pool").equals("1") == true) {
+            if(llPayoutWidget.getVisibility() != View.VISIBLE)
+                llPayoutWidget.setVisibility(View.VISIBLE);
+        }
+        else {
+            if(llPayoutWidget.getVisibility() != View.GONE)
+                llPayoutWidget.setVisibility(View.GONE);
+
+            return;
+        }
 
         if (Config.read("address").equals("")) {
             enablePayoutWidget(false, "");
@@ -998,8 +1010,8 @@ public class MainActivity extends AppCompatActivity
         if(text.contains(formatText)) {
             int i = text.indexOf(formatText);
             int imax = i + formatText.length();
-            textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_green)), i, imax, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            textSpan.setSpan(new StyleSpan(android.graphics.Typeface.NORMAL), i, imax, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+            textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_white)), i, imax, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            textSpan.setSpan(new StyleSpan(android.graphics.Typeface.BOLD), i, imax, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
             return textSpan;
         }
 

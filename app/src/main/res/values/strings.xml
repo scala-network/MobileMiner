@@ -95,10 +95,10 @@
     <string name="miningpaused">Mining paused until temperatures have returned to normal.</string>
 
     <string name="donate_help">If you would like to help build this project, feel free to specify a donation level here.\n\nFor example, a value of 5 will make your device mine 5 minutes out of 100 to fund Scala project.\n\nThe default value is 0.</string>
-    <string name="mininggoal_help">Your Mining Goal should reflect your pool payout setting.\n\nYou can also specify a custom value for this device.\n\nThe default value is your pool Min Payout.</string>
-    <string name="cpu_temp_help">The CPU Temperature defines the maximum temperature your CPU can reach before triggering the cooling of your device.\n\nIf your device does not have a CPU temperature sensor, this option will be ignored.</string>
-    <string name="battery_temp_help">The Battery Temperature defines the maximum temperature your battery can reach before triggering the cooling of your device.\n\nIf your device does not have a battery temperature sensor, this option will be ignored.</string>
-    <string name="cooldown_threshold_help">The Cooldown Threshold defines the safe temperature at which the miner will resume.</string>
+    <string name="mininggoal_help">The mining goal should reflect the pool payout setting, but you can also specify a custom value for your device.\n\nThe default value is the minimum payout value of the specified mining pool.</string>
+    <string name="cpu_temp_help">Your device will start cooling when the CPU reaches the specified temperature.\n\nIf your device does not have a CPU temperature sensor, this option will be ignored.</string>
+    <string name="battery_temp_help">Your device will start cooling when the battery reaches the specified temperature.\n\nIf your device does not have a battery temperature sensor, this option will be ignored.</string>
+    <string name="cooldown_threshold_help">Defines the temperature at which the application will resume the mining process.</string>
     <string name="amayc_warning">The As-Much-As-You-Can (AMAYC) machine learning algorithm can predict when your device will overheat and pause the miner until the device\'s temperature has normalized.</string>
     <string name="amayc_ownrisks">Turning this feature off might cause damage to your device. Do it at your own risk!</string>
     <string name="shares_help">Your mining reward is based on the amount of shares that contributed to the resolution of a block.</string>
