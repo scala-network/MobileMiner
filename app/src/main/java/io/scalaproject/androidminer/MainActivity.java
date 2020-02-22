@@ -285,10 +285,6 @@ public class MainActivity extends AppCompatActivity
             public void onClick(View v) {
                 // inflate the layout of the popup window
                 View popupView = inflater.inflate(R.layout.helper_shares, null);
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    popupView.setElevation(20);
-                }
-
                 Utils.showPopup(v, inflater, popupView);
             }
         });
