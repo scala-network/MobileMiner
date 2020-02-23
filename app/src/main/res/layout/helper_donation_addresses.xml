@@ -3,6 +3,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:layout_marginLeft="25dp"
+    android:layout_marginRight="25dp"
     android:background="@drawable/corner_radius_lighter">
 
     <LinearLayout
@@ -16,28 +18,18 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="5dip"
             android:gravity="start"
-            android:text="@string/warning"
-            android:textColor="@color/c_yellow"
+            android:text="@string/donationadresses"
+            android:textColor="@color/c_white"
             android:textStyle="bold"
             android:textSize="14sp" />
 
-        <android.support.v7.widget.AppCompatTextView
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:layout_marginBottom="10dip"
-            android:textColor="@color/c_lighter"
             android:textSize="12sp"
-            android:text="@string/temp_control_warning" />
-
-        <android.support.v7.widget.AppCompatTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
             android:textColor="@color/c_lighter"
-            android:textSize="12sp"
-            android:textStyle="bold"
-            android:text="@string/temp_control_ownrisks" />
+            android:text="@string/donation_addresses_help"/>
 
     </LinearLayout>
 

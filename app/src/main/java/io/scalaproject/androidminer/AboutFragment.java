@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.Map;
 
@@ -85,7 +86,44 @@ public class AboutFragment extends Fragment {
             }
         });
 
-        String cpuinfo = Config.read("CPUINFO");
+        Button btnDonationAddressesHelp = view.findViewById(R.id.btnDonationsHelp);
+        btnDonationAddressesHelp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // inflate the layout of the popup window
+                View popupView = inflater.inflate(R.layout.helper_donation_addresses, null);
+                Utils.showPopup(v, inflater, popupView);
+            }
+        });
+
+        Button btnDonateBTC = view.findViewById(R.id.btnDonateBTC);
+        btnDonateBTC.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Utils.copyToClipboard("Scala BTC Donation Address", Utils.SCALA_BTC_ADDRESS);
+                Toast.makeText(getContext(), getResources().getString(R.string.donationadressbtc_copied), Toast.LENGTH_SHORT);
+            }
+        });
+
+        Button btnDonateETH = view.findViewById(R.id.btnDonateETH);
+        btnDonateETH.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Utils.copyToClipboard("Scala ETH Donation Address", Utils.SCALA_ETH_ADDRESS);
+                Toast.makeText(getContext(), getResources().getString(R.string.donationadresseth_copied), Toast.LENGTH_SHORT);
+            }
+        });
+
+        Button btnDonateXLA = view.findViewById(R.id.btnDonateXLA);
+        btnDonateXLA.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Utils.copyToClipboard("Scala XLA Donation Address", Utils.SCALA_XLA_ADDRESS);
+                Toast.makeText(getContext(), getResources().getString(R.string.donationadressxla_copied), Toast.LENGTH_SHORT);
+            }
+        });
+
+        String cpuinfo = Config.read("CPUINFO").trim();
         if(cpuinfo.isEmpty()) {
             try {
                 Map<String, String> m = Tools.getCPUInfo();
@@ -99,7 +137,7 @@ public class AboutFragment extends Fragment {
                 cpuinfo = "";
             }
 
-            Config.write("CPUINFO", cpuinfo);
+            Config.write("CPUINFO", cpuinfo.trim());
         }
 
         tvSystemInfo.setText(cpuinfo);

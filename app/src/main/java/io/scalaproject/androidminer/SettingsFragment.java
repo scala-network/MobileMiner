@@ -42,7 +42,7 @@ public class SettingsFragment extends Fragment {
     private static final String LOG_TAG = "MiningSvc";
 
     private EditText edWorkerName;
-    private TextView edUser;
+    private TextView edAddress;
     private Button bQrCode;
 
     private Integer INCREMENT = 5;
@@ -80,10 +80,10 @@ public class SettingsFragment extends Fragment {
         Context appContext = MainActivity.getContextOfApplication();
         bSave = view.findViewById(R.id.saveSettings);
 
-        edUser = view.findViewById(R.id.username);
+        edAddress = view.findViewById(R.id.address);
         edPool = view.findViewById(R.id.pool);
         edPort = view.findViewById(R.id.port);
-        edWorkerName = view.findViewById(R.id.pass);
+        edWorkerName = view.findViewById(R.id.workername);
 
         //edDevFees = view.findViewById(R.id.devfees);
         edMiningGoal = view.findViewById(R.id.mininggoal);
@@ -177,7 +177,7 @@ public class SettingsFragment extends Fragment {
         }
 
         if (Config.read("address").equals("") == false) {
-            edUser.setText(Config.read("address"));
+            edAddress.setText(Config.read("address"));
         }
 
         if (Config.read("workername").equals("") == false) {
@@ -273,7 +273,7 @@ public class SettingsFragment extends Fragment {
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
 
                 if (Config.read("init").equals("1") == true) {
-                    edUser.setText(Config.read("address"));
+                    edAddress.setText(Config.read("address"));
                     edWorkerName.setText(Config.read("workername"));
                 }
 
@@ -332,7 +332,7 @@ public class SettingsFragment extends Fragment {
             @Override
             public void onClick(View view) {
 
-                String address = edUser.getText().toString().trim();
+                String address = edAddress.getText().toString().trim();
                 if (!Utils.verifyAddress(address)) {
                     Toast.makeText(appContext, "Invalid wallet address.", Toast.LENGTH_SHORT).show();
                     return;
@@ -359,7 +359,7 @@ public class SettingsFragment extends Fragment {
                         break;
                     }
                 }
-                
+
                 PoolItem pi = ProviderManager.getPoolById(selectedPosition);
                 String port = edPort.getText().toString().trim();
                 String pool = edPool.getText().toString().trim();
@@ -453,6 +453,14 @@ public class SettingsFragment extends Fragment {
             }
         });
 
+        Button btnPasteAddress = view.findViewById(R.id.btnPasteAddress);
+        btnPasteAddress.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                edAddress.setText(Utils.pasteFromClipboard());
+            }
+        });
+
         bQrCode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -534,6 +542,10 @@ public class SettingsFragment extends Fragment {
         return view;
     }
 
+    private void saveConfig() {
+
+    }
+
     private Integer getCPUTemp() {
         return ((sbCPUTemp.getProgress() - 1) * INCREMENT) + MIN_CPU_TEMP;
     }
@@ -589,11 +601,11 @@ public class SettingsFragment extends Fragment {
 
     public void updateAddress() {
         String address =  Config.read("address");
-        if (edUser == null || address.equals("")) {
+        if (edAddress == null || address.equals("")) {
             return;
         }
 
-        edUser.setText(address);
+        edAddress.setText(address);
     }
 
     public class PoolSpinAdapter extends ArrayAdapter<String> {

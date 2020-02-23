@@ -1,4 +1,7 @@
 package io.scalaproject.androidminer;
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -14,7 +17,13 @@ import java.util.regex.*;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 
+import static android.content.ClipDescription.MIMETYPE_TEXT_PLAIN;
+
 final class Utils {
+
+    static public String SCALA_BTC_ADDRESS = "1XTLY5LqdBXRW6hcHtnuMU7c68mAyW6qm";
+    static public String SCALA_ETH_ADDRESS = "0x133a15dF7177823Dd407ca87A190bbE4585a379e";
+    static public String SCALA_XLA_ADDRESS = "SEiTBcLGpfm3uj5b5RaZDGSUoAGnLCyG5aJjAwko67jqRwWEH26NFPd26EUpdL1zh4RTmTdRWLz8WCmk5F4umYaFByMtJT6RLjD6vzApQJWfi";
 
     static public boolean verifyAddress(String input) {
         Pattern p = Pattern.compile("^Se[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]{95}$");
@@ -78,5 +87,29 @@ final class Utils {
                 return true;
             }
         });
+    }
+
+    static public void copyToClipboard(String label, String text) {
+        ClipboardManager clipboard = (ClipboardManager) MainActivity.getContextOfApplication().getSystemService(Context.CLIPBOARD_SERVICE);
+        ClipData clip = ClipData.newPlainText(label, text);
+        clipboard.setPrimaryClip(clip);
+    }
+
+    static public String pasteFromClipboard() {
+        ClipboardManager clipboard = (ClipboardManager) MainActivity.getContextOfApplication().getSystemService(Context.CLIPBOARD_SERVICE);
+
+        String pasteData = "";
+
+        // If it does contain data
+        if (!(clipboard.hasPrimaryClip())) {
+            // Ignore
+        } else if (!(clipboard.getPrimaryClipDescription().hasMimeType(MIMETYPE_TEXT_PLAIN))) {
+            // Ignore, since the clipboard has data but it is not plain text
+        } else {
+            ClipData.Item item = clipboard.getPrimaryClip().getItemAt(0);
+            pasteData = item.getText().toString();
+        }
+
+        return pasteData;
     }
 }

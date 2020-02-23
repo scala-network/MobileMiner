@@ -86,7 +86,7 @@
                 </LinearLayout>
 
                 <android.support.v7.widget.AppCompatEditText
-                    android:id="@+id/pass"
+                    android:id="@+id/workername"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Worker name or pool options"
@@ -113,7 +113,7 @@
                     android:orientation="horizontal">
 
                     <android.support.v7.widget.AppCompatEditText
-                        android:id="@+id/username"
+                        android:id="@+id/address"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -123,17 +123,26 @@
                         android:textSize="14sp" />
 
                     <android.support.design.button.MaterialButton
-                        android:id="@+id/btnQrCode"
-                        android:layout_width="42dp"
+                        android:id="@+id/btnPasteAddress"
+                        android:layout_width="32dp"
                         android:layout_height="24dp"
                         android:layout_gravity="center_vertical|center_horizontal"
-                        android:layout_weight="1"
+                        android:backgroundTint="@color/bg_grey"
+                        app:cornerRadius="5dp"
+                        app:icon="@drawable/ic_paste"
+                        app:iconGravity="textStart"
+                        app:iconPadding="0dp" />
+
+                    <android.support.design.button.MaterialButton
+                        android:id="@+id/btnQrCode"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_gravity="center_vertical|center_horizontal"
                         android:backgroundTint="@color/bg_grey"
                         app:cornerRadius="5dp"
                         app:icon="@drawable/ic_qrcode"
                         app:iconGravity="textStart"
-                        app:iconPadding="0dp"
-                        app:iconTint="@color/c_white" />
+                        app:iconPadding="0dp" />
 
                 </LinearLayout>
 
