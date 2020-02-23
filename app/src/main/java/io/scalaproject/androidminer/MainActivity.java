@@ -254,7 +254,11 @@ public class MainActivity extends BaseActivity
         updateUI();
 
         if (!Arrays.asList(Config.SUPPORTED_ARCHITECTURES).contains(Tools.getABI())) {
-            Toast.makeText(this, "Your architecture is not supported: " + Tools.getABI(), Toast.LENGTH_LONG).show();
+            String sArchError = "Your architecture is not supported: " + Tools.getABI();
+            appendLogOutputFormattedText(sArchError);
+            refreshLogOutputView();
+            Toast.makeText(this, sArchError, Toast.LENGTH_LONG).show();
+
             validArchitecture = false;
         }
 

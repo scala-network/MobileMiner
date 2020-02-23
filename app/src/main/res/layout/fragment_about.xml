@@ -63,19 +63,14 @@
                     android:textStyle="bold"
                     android:layout_marginTop="20sp"/>
 
-                <ScrollView
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/systemInfo"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <android.support.v7.widget.AppCompatTextView
-                        android:id="@+id/systemInfo"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text=""
-                        android:textSize="12sp"
-                        android:textColor="@color/c_grey"/>
-
-                </ScrollView>
+                    android:layout_height="wrap_content"
+                    android:scrollbars = "vertical"
+                    android:text=""
+                    android:textSize="12sp"
+                    android:textColor="@color/c_grey"/>
 
                 <android.support.v7.widget.AppCompatTextView
                     android:layout_width="wrap_content"
