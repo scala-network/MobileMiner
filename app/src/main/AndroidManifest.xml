@@ -38,6 +38,11 @@
             android:parentActivityName="io.scalaproject.androidminer.MainActivity">
         </activity>
 
+        <activity
+            android:name="io.scalaproject.androidminer.BaseActivity"
+            android:parentActivityName="io.scalaproject.androidminer.MainActivity">
+        </activity>
+
         <service
             android:name="io.scalaproject.androidminer.MiningService"
             android:enabled="true"/>

@@ -93,6 +93,8 @@
     <string name="amaycpaused">Cannot resume mining when device is cooling</string>
     <string name="amaycerror">AMAYC: Cannot reach distant server.</string>
     <string name="miningpaused">Mining paused until temperatures have returned to normal.</string>
+    <string name="miningbackground">Scala Miner is still mining in the background.</string>
+    <string name="donationsinfo">Donations support the contributors and help pay for the project infrastructure.</string>
 
     <string name="donate_help">If you would like to help build this project, feel free to specify a donation level here.\n\nFor example, a value of 5 will make your device mine 5 minutes out of 100 to fund Scala project.\n\nThe default value is 0.</string>
     <string name="mininggoal_help">The mining goal should reflect the pool payout setting, but you can also specify a custom value for your device.\n\nThe default value is the minimum payout value of the specified mining pool.</string>

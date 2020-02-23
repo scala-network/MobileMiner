@@ -103,7 +103,6 @@
                         android:textSize="12sp"/>
 
                     <ImageView
-                        android:id="@+id/imageView3"
                         android:layout_width="16dp"
                         android:layout_height="16dp"
                         android:src="@drawable/ic_heart" />
@@ -300,6 +299,89 @@
                         app:icon="@drawable/ic_telegram"/>
 
                 </LinearLayout>
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:text="@string/donations"
+                    android:layout_gravity="start"
+                    android:textSize="14sp"
+                    android:textColor="@color/c_white"
+                    android:textStyle="bold"
+                    android:layout_marginTop="15sp"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <android.support.design.button.MaterialButton
+                        android:id="@+id/btnDonateBTC"
+                        android:layout_width="100dp"
+                        android:layout_height="45dp"
+                        android:backgroundTint="@color/bg_lighter"
+                        android:insetLeft="2dp"
+                        android:insetRight="2dp"
+                        android:text="BTC"
+                        android:textSize="12dp"
+                        android:textColor="@color/c_white"
+                        app:cornerRadius="5dp"
+                        app:iconPadding="0dp"
+                        app:icon="@drawable/ic_copy"/>
+
+                    <android.support.design.button.MaterialButton
+                        android:id="@+id/btnDonateETH"
+                        android:layout_width="100dp"
+                        android:layout_height="45dp"
+                        android:backgroundTint="@color/bg_lighter"
+                        android:insetLeft="2dp"
+                        android:insetRight="2dp"
+                        android:text="ETH"
+                        android:textSize="12dp"
+                        android:textColor="@color/c_white"
+                        app:cornerRadius="5dp"
+                        app:iconPadding="0dp"
+                        app:icon="@drawable/ic_copy"/>
+
+                    <android.support.design.button.MaterialButton
+                        android:id="@+id/btnDonateXLA"
+                        android:layout_width="100dp"
+                        android:layout_height="45dp"
+                        android:backgroundTint="@color/bg_lighter"
+                        android:insetLeft="2dp"
+                        android:insetRight="2dp"
+                        android:text="XLA"
+                        android:textSize="12dp"
+                        android:textColor="@color/c_white"
+                        app:cornerRadius="5dp"
+                        app:iconPadding="0dp"
+                        app:icon="@drawable/ic_copy"/>
+
+                </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="start|center"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="5dp"
+                    android:layout_height="12dp"
+                    android:layout_marginBottom="5dp"
+                    android:src="@drawable/ic_info" />
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="7dp"
+                    android:gravity="start"
+                    android:text="@string/donationsinfo"
+                    android:textColor="@color/c_grey"
+                    android:textSize="12sp"/>
+
+            </LinearLayout>
 
             </LinearLayout>
 

@@ -86,7 +86,7 @@ import io.scalaproject.androidminer.api.ProviderManager;
 
 import static android.os.PowerManager.PARTIAL_WAKE_LOCK;
 
-public class MainActivity extends AppCompatActivity
+public class MainActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener
 {
     private static final String LOG_TAG = "MiningSvc";
@@ -140,15 +140,18 @@ public class MainActivity extends AppCompatActivity
 
     private Button minerBtnH, minerBtnP, minerBtnR;
 
-    private final int STATE_STOPPED = 0;
-    private final int STATE_MINING = 1;
-    private final int STATE_PAUSED = 2;
-    private final int STATE_COOLING = 3;
-    private final int STATE_CALCULATING = 4;
+    private final static int STATE_STOPPED = 0;
+    private final static int STATE_MINING = 1;
+    private final static int STATE_PAUSED = 2;
+    private final static int STATE_COOLING = 3;
+    private final static int STATE_CALCULATING = 4;
 
-    private int m_nCurrentState = STATE_STOPPED;
+    private static int m_nCurrentState = STATE_STOPPED;
     public int getCurrentState() { return m_nCurrentState; }
 
+    public static boolean isDeviceMiningBackground() {
+        return (m_nCurrentState == STATE_CALCULATING || m_nCurrentState == STATE_MINING || m_nCurrentState == STATE_COOLING);
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         SharedPreferences preferences = getSharedPreferences(getPackageName() + "_preferences", MODE_PRIVATE);

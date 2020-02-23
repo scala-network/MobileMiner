@@ -3,12 +3,12 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="@color/bg_lighter">
+    android:background="@drawable/corner_radius_lighter">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="25dp"
+        android:layout_margin="15dp"
         android:orientation="vertical">
 
         <android.support.v7.widget.AppCompatTextView
@@ -27,7 +27,7 @@
             android:layout_centerInParent="true"
             android:layout_marginBottom="5dip"
             android:textColor="@color/c_lighter"
-            android:textSize="14sp"
+            android:textSize="12sp"
             android:text="@string/amayc_warning" />
 
         <android.support.v7.widget.AppCompatTextView
@@ -35,7 +35,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:textColor="@color/c_lighter"
-            android:textSize="14sp"
+            android:textSize="12sp"
             android:textStyle="bold"
             android:text="@string/amayc_ownrisks" />
 
