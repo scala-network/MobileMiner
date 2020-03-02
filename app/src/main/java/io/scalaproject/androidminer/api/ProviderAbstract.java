@@ -57,5 +57,4 @@ public abstract class ProviderAbstract extends AsyncTask<Void, Void, Void> {
         getBlockData().pool.type = mPoolItem.getPoolType();
         return null;
     }
-
 }

@@ -1,11 +1,6 @@
 package io.scalaproject.androidminer.api;
 
-import android.util.Log;
-
 import java.util.ArrayList;
-import java.util.Timer;
-import java.util.TimerTask;
-
 import io.scalaproject.androidminer.Config;
 
 public final class ProviderManager {
@@ -19,6 +14,7 @@ public final class ProviderManager {
     static public void add(String key, String pool,String port, int poolType, String poolUrl, String poolIP) {
         mPools.add(new PoolItem(key, pool, port, poolType, poolUrl, poolIP));
     }
+
     static public void add(String key, String pool, String port, int poolType, String poolUrl, String poolIP, String poolApi) {
         mPools.add(new PoolItem(key, pool, port, poolType, poolUrl, poolIP, poolApi, "",""));
     }
@@ -65,6 +61,7 @@ public final class ProviderManager {
         if(pi == null) {
             return;
         }
+
         mPools.clear();
         request.mPoolItem = pi;
         data.isNew = true;
@@ -72,6 +69,7 @@ public final class ProviderManager {
     }
 
     static final public ProviderRequest request = new ProviderRequest();
+
     static public void generate() {
         request.stop();
         request.mPoolItem = null;
@@ -79,9 +77,19 @@ public final class ProviderManager {
         //User Defined
         add("custom", "custom", "3333", 0, "", "");
 
+        // Scala Mobile Official pool
+        add(
+                "Scala Project (Mobile Official Pool)",
+                "mobile.pool.scalaproject.io",
+                "3333",
+                2,
+                "http://mobile.pool.scalaproject.io",
+                "173.212.239.241"
+        );
+
         // Scala Official pool
         add(
-                "Scalaproject.io (Official Pool)",
+                "Scala Project (Official Pool)",
                 "mine.scalaproject.io",
                 "3333",
                 1,

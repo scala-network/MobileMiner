@@ -464,10 +464,19 @@ public class MainActivity extends BaseActivity
         }
     }
 
+    private boolean doesPoolSupportAPI() {
+        PoolItem pi = ProviderManager.getSelectedPool();
+
+        if(pi == null)
+            return false;
+
+        return (pi.getPoolType() != 0);
+    }
+
     private void updatePayoutWidgetStatus() {
         // For now, Payout widget only works with Official Pool
         LinearLayout llPayoutWidget = findViewById(R.id.layoutpayout);
-        if(Config.read("selected_pool").equals("1") == true) {
+        if(doesPoolSupportAPI()) {
             if(llPayoutWidget.getVisibility() != View.VISIBLE)
                 llPayoutWidget.setVisibility(View.VISIBLE);
         }

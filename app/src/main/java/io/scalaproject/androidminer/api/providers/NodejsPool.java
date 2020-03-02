@@ -41,7 +41,8 @@ public final class NodejsPool extends ProviderAbstract {
                 long denominationUnit = mBlockData.coin.denominationUnit = 100L;
                 mBlockData.pool.minPayout =  parseCurrency(joStatss.optString("min_wallet_payout", "0"),denominationUnit, denominationUnit, symbol);
             } catch (Exception e) {
-
+                Log.i(LOG_TAG, "COIN\n" + e.toString());
+                e.printStackTrace();
             }
         }
         PrettyTime pTime = new PrettyTime();
@@ -59,7 +60,7 @@ public final class NodejsPool extends ProviderAbstract {
             mBlockData.network.lastBlockTime = pTime.format(new Date(joStats.optLong("ts") * 1000));
             mBlockData.network.lastRewardAmount =  parseCurrency(joStats.optString("value", "0"), denominationUnit, denominationUnit, "XLA");
         } catch (JSONException e) {
-            Log.i(LOG_TAG, "NETWORK\n"+e.toString());
+            Log.i(LOG_TAG, "NETWORK\n" + e.toString());
             e.printStackTrace();
         }
 
@@ -69,6 +70,7 @@ public final class NodejsPool extends ProviderAbstract {
         }
 
         String surl = mPoolItem.getApiUrl() + "/miner/" + getWalletAddress() +"/stats";
+
         try {
             String symbol = mBlockData.coin.symbol;
             String dataStatsNetwork  = Json.fetch(surl);
@@ -88,7 +90,7 @@ public final class NodejsPool extends ProviderAbstract {
             mBlockData.miner.lastShare = lastShare;
             mBlockData.miner.blocks = blocks;
         } catch (JSONException e) {
-            Log.i(LOG_TAG, "ADDRESS :" +surl+ "\n"+e.toString());
+            Log.i(LOG_TAG, "ADDRESS :" + surl + "\n"+e.toString());
             e.printStackTrace();
         }
     }

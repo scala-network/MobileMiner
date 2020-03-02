@@ -1,20 +1,20 @@
 package io.scalaproject.androidminer.api;
 
 public final class ProviderData {
-    public class Network{
-        public String lastBlockHeight,difficulty,lastRewardAmount,lastBlockTime, hashrate;
+    public class Network {
+        public String lastBlockHeight, difficulty, lastRewardAmount, lastBlockTime, hashrate;
     }
 
-    public class Pool{
-        public String lastBlockHeight,difficulty,lastRewardAmount,lastBlockTime, hashrate, blocks, minPayout;
+    public class Pool {
+        public String lastBlockHeight, difficulty, lastRewardAmount, lastBlockTime, hashrate, blocks, minPayout;
         public int type;
     }
 
-    public class Miner{
+    public class Miner {
         public String hashrate, balance, paid, lastShare, blocks;
     }
 
-    public class Coin{
+    public class Coin {
         public String name, symbol;
         public long units, denominationUnit;
     }
@@ -24,5 +24,4 @@ public final class ProviderData {
     final public Coin coin = new Coin();
     final public Miner miner = new Miner();
     public boolean isNew = true;
-
 }

@@ -3,6 +3,8 @@
 // Please see the included LICENSE file for more information.
 
 package io.scalaproject.androidminer.api;
+import android.util.Log;
+
 import io.scalaproject.androidminer.Config;
 import io.scalaproject.androidminer.api.providers.*;
 
@@ -65,7 +67,7 @@ public class PoolItem {
                 break;
             case 2:
                 if(startUrl.isEmpty()) {
-                    this.mStatsURL = poolUrl + "/#my_stats";
+                    this.mStatsURL = poolUrl + "/api/stats";
                 }
                 if(apiUrl.isEmpty()) {
                     this.mApiUrl = poolUrl + "/api";
