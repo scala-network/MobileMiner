@@ -79,7 +79,7 @@ public final class ProviderManager {
 
         // Scala Mobile Official pool
         add(
-                "Scala Project (Mobile Official Pool)",
+                "Scala Project (Official Mobile Pool)",
                 "mobile.pool.scalaproject.io",
                 "3333",
                 2,

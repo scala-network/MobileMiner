@@ -39,7 +39,7 @@ public class StatsFragment extends Fragment {
 
         bStatCheckOnline = view.findViewById(R.id.checkstatsonline);
 
-        statsListener = new IProviderListener(){
+        statsListener = new IProviderListener() {
             public void onStatsChange(ProviderData d) {
                 updateFields(d, view);
             }
@@ -58,6 +58,9 @@ public class StatsFragment extends Fragment {
     }
 
     private void updateFields(ProviderData d, View view) {
+        if(view == null || view.getContext() == null)
+            return;
+
         if(d.isNew) {
             enableOnlineStats(false);
             return;
@@ -68,9 +71,10 @@ public class StatsFragment extends Fragment {
         // Network
 
         TextView tvNetworkHashrate = view.findViewById(R.id.hashratenetwork);
+        Log.i("Stats", "d.network.hashrate: " + d.network.hashrate);
         tvNetworkHashrate.setText(d.network.hashrate);
 
-        TextView tvNetworkDifficulty = view.findViewById(R.id.difficultypool);
+        TextView tvNetworkDifficulty = view.findViewById(R.id.difficultynetwork);
         tvNetworkDifficulty.setText(d.network.difficulty);
 
         TextView tvNetworkBlocks = view.findViewById(R.id.lastblocknetwork);
@@ -159,7 +163,10 @@ public class StatsFragment extends Fragment {
         }
     }
 
-    private boolean checkValidState() {
+    public boolean checkValidState() {
+        if(getContext() == null)
+            return false;
+
         if(Config.read("address").equals("")) {
             Toast.makeText(getContext(),"Wallet address is empty", Toast.LENGTH_LONG);
             enableOnlineStats(false);
@@ -179,6 +186,8 @@ public class StatsFragment extends Fragment {
             enableOnlineStats(false);
             return false;
         }
+
+        enableOnlineStats(true);
 
         return true;
     }
