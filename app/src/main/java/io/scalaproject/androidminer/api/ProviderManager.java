@@ -30,9 +30,10 @@ public final class ProviderManager {
     static public PoolItem getPoolById(String idx) {
         int index = Integer.parseInt(idx);
 
-        if (idx.equals("") || mPools.size() < index) {
+        if (idx.equals("") || mPools.size() < index || mPools.size() == 0) {
             return null;
         }
+
         return mPools.get(index);
     }
 
@@ -77,7 +78,7 @@ public final class ProviderManager {
         //User Defined
         add("custom", "custom", "3333", 0, "", "");
 
-        // Scala Mobile Official pool
+        // Scala Official Mobile Pool
         add(
                 "Scala Project (Official Mobile Pool)",
                 "mobile.pool.scalaproject.io",
