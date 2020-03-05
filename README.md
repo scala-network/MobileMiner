@@ -2,7 +2,7 @@
 
 A high performance and open source application for mining Scala on Android mobile devices.
 
-![Screenshots](https://scalaproject.io/preview/assets/img/mobile-miner.png)
+![Screenshot](https://cdn.discordapp.com/attachments/598881537789919252/684935916921290857/scala-miner.png)
 
 ## Supported CPU instruction sets
 - **armeabi-v7a**
