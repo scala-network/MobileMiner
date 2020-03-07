@@ -78,16 +78,6 @@ public final class ProviderManager {
         //User Defined
         add("custom", "custom", "3333", 0, "", "");
 
-        // Scala Official Mobile Pool
-        add(
-                "Scala Project (Official Mobile Pool)",
-                "mobile.pool.scalaproject.io",
-                "3333",
-                2,
-                "http://mobile.pool.scalaproject.io",
-                "173.212.239.241"
-        );
-
         // Scala Official pool
         add(
                 "Scala Project (Official Pool)",
