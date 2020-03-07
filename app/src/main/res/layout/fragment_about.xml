@@ -41,16 +41,31 @@
                     android:gravity="start"
                     android:text="@string/aboutapplication"
                     android:textColor="@color/c_white"
-                    android:textSize="12sp"/>
+                    android:textSize="14sp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="start"
+                android:orientation="horizontal">
 
                 <android.support.v7.widget.AppCompatTextView
-                    android:id="@+id/release"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Build: "
+                    android:textColor="@color/c_lighter"
+                    android:textSize="14sp"/>
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/build"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="start"
-                    android:text="@string/buildString"
+                    android:text=""
                     android:textColor="@color/c_lighter"
-                    android:textSize="12sp"/>
+                    android:textSize="14sp"/>
+
+            </LinearLayout>
 
                 <android.support.v7.widget.AppCompatTextView
                     android:layout_width="wrap_content"
@@ -69,7 +84,7 @@
                     android:layout_height="wrap_content"
                     android:scrollbars = "vertical"
                     android:text=""
-                    android:textSize="12sp"
+                    android:textSize="14sp"
                     android:textColor="@color/c_grey"/>
 
                 <android.support.v7.widget.AppCompatTextView
@@ -95,7 +110,7 @@
                         android:gravity="start"
                         android:text="Made with "
                         android:textColor="@color/c_lighter"
-                        android:textSize="12sp"/>
+                        android:textSize="14sp"/>
 
                     <ImageView
                         android:layout_width="16dp"
@@ -108,7 +123,7 @@
                         android:gravity="start"
                         android:text=" by "
                         android:textColor="@color/c_lighter"
-                        android:textSize="12sp"/>
+                        android:textSize="14sp"/>
 
                     <android.support.v7.widget.AppCompatTextView
                         android:id="@+id/ScalaURL"
@@ -118,7 +133,7 @@
                         android:text=""
                         android:textColor="@color/c_blue"
                         android:textColorLink="@color/c_blue"
-                        android:textSize="12sp" />
+                        android:textSize="14sp" />
 
                     <android.support.v7.widget.AppCompatTextView
                         android:layout_width="wrap_content"
@@ -126,7 +141,7 @@
                         android:gravity="start"
                         android:text="."
                         android:textColor="@color/c_lighter"
-                        android:textSize="12sp"/>
+                        android:textSize="14sp"/>
 
                 </LinearLayout>
 
@@ -142,7 +157,7 @@
                     android:gravity="start"
                     android:text="Forked from "
                     android:textColor="@color/c_lighter"
-                    android:textSize="12sp"/>
+                    android:textSize="14sp"/>
 
                 <android.support.v7.widget.AppCompatTextView
                     android:id="@+id/Mine2getherURL"
@@ -152,7 +167,7 @@
                     android:text=""
                     android:textColor="@color/c_blue"
                     android:textColorLink="@color/c_blue"
-                    android:textSize="12sp" />
+                    android:textSize="14sp" />
 
                 <android.support.v7.widget.AppCompatTextView
                     android:layout_width="wrap_content"
@@ -160,7 +175,7 @@
                     android:gravity="start"
                     android:text=" and "
                     android:textColor="@color/c_lighter"
-                    android:textSize="12sp"/>
+                    android:textSize="14sp"/>
 
                 <android.support.v7.widget.AppCompatTextView
                     android:id="@+id/MoneroMinerURL"
@@ -170,7 +185,7 @@
                     android:text=""
                     android:textColor="@color/c_blue"
                     android:textColorLink="@color/c_blue"
-                    android:textSize="12sp" />
+                    android:textSize="14sp" />
 
                 <android.support.v7.widget.AppCompatTextView
                     android:layout_width="wrap_content"
@@ -178,7 +193,7 @@
                     android:gravity="start"
                     android:text="."
                     android:textColor="@color/c_lighter"
-                    android:textSize="12sp"/>
+                    android:textSize="14sp"/>
 
             </LinearLayout>
 
@@ -194,7 +209,7 @@
                         android:gravity="start"
                         android:text="Icons powered by "
                         android:textColor="@color/c_lighter"
-                        android:textSize="12sp"/>
+                        android:textSize="14sp"/>
 
                     <android.support.v7.widget.AppCompatTextView
                         android:id="@+id/FontAwesomeURL"
@@ -204,7 +219,7 @@
                         android:text=""
                         android:textColor="@color/c_blue"
                         android:textColorLink="@color/c_blue"
-                        android:textSize="12sp" />
+                        android:textSize="14sp" />
 
                     <android.support.v7.widget.AppCompatTextView
                         android:layout_width="wrap_content"
@@ -212,7 +227,7 @@
                         android:gravity="start"
                         android:text="."
                         android:textColor="@color/c_lighter"
-                        android:textSize="12sp"/>
+                        android:textSize="14sp"/>
 
                 </LinearLayout>
 

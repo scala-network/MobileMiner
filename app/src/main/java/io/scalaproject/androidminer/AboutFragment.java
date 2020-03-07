@@ -5,6 +5,7 @@ package io.scalaproject.androidminer;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -29,7 +30,9 @@ public class AboutFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_about, container, false);
 
-        TextView tvSystemInfo, tvScala, tvMine2gether, tvMonerominer, tvFontAwesome;
+        TextView tvBuild, tvSystemInfo, tvScala, tvMine2gether, tvMonerominer, tvFontAwesome;
+
+        tvBuild = view.findViewById(R.id.build);
 
         tvSystemInfo = view.findViewById(R.id.systemInfo);
         tvSystemInfo.setMovementMethod(new ScrollingMovementMethod());
@@ -135,13 +138,14 @@ public class AboutFragment extends Fragment {
                 for (Map.Entry<String, String> pair : m.entrySet()) {
                     cpuinfo += pair.getKey() + ": " + pair.getValue() + "\n";
                 }
-
             } catch (Exception e) {
                 cpuinfo = "";
             }
 
             Config.write("CPUINFO", cpuinfo.trim());
         }
+
+        tvBuild.setText(BuildConfig.VERSION_NAME + " (" + BuildConfig.BUILD_TIME + ")");
 
         tvSystemInfo.setText(cpuinfo);
 

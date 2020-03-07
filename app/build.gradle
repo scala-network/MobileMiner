@@ -14,7 +14,8 @@ android {
         minSdkVersion 17
         targetSdkVersion 28
         versionCode 1
-        versionName "1.6.1"
+        versionName "1.0.0"
+        buildConfigField 'String', 'BUILD_TIME', 'java.text.DateFormat.getDateInstance(java.text.DateFormat.LONG, java.util.Locale.getDefault()).format(new java.util.Date(' + System.currentTimeMillis() +'L))'
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 
