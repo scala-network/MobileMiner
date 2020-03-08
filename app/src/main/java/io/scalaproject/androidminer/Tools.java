@@ -38,6 +38,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.math.BigDecimal;
+import java.nio.charset.StandardCharsets;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.HashMap;
@@ -47,7 +48,7 @@ public class Tools {
 
     private static final String LOG_TAG = "MiningSvc";
 
-    public static String loadConfigTemplate(Context context, String path) {
+    static String loadConfigTemplate(Context context, String path) {
         try {
             StringBuilder buf = new StringBuilder();
             InputStream json = context.getAssets().open(path);
@@ -65,7 +66,7 @@ public class Tools {
         }
     }
 
-    public static void copyFile(Context context, String assetFilePath, String localFilePath) {
+    private static void copyFile(Context context, String assetFilePath, String localFilePath) {
         try {
             InputStream in = context.getAssets().open(assetFilePath);
             FileOutputStream out = new FileOutputStream(localFilePath);
@@ -85,7 +86,7 @@ public class Tools {
         }
     }
 
-    public static void copyDirectoryContents(Context context, String assetFilePath, String localFilePath) {
+    static void copyDirectoryContents(Context context, String assetFilePath, String localFilePath) {
 
         String[] folder;
 
@@ -95,11 +96,12 @@ public class Tools {
             return;
         }
 
+        assert folder != null;
         for (final String f : folder) {
 
-            Boolean isDirectory = isAssetDirectory(context,assetFilePath + "/" + f);
+            boolean isDirectory = isAssetDirectory(context,assetFilePath + "/" + f);
 
-            if (isDirectory == false) {
+            if (!isDirectory) {
                 Log.i(LOG_TAG, "copy file: source:" + assetFilePath + "/" + f + " dest:" + localFilePath + "/" + f);
                 File file = new File(localFilePath + "/" + f);
                 if (file.exists() && file.isFile()) {
@@ -107,7 +109,7 @@ public class Tools {
                     file.delete();
                 }
                 copyFile(context, assetFilePath + "/" + f, localFilePath + "/" + f);
-            } else if (isDirectory == true) {
+            } else if (isDirectory) {
                 Log.i(LOG_TAG, "make directory: source:" + assetFilePath + "/" + f + " dest:" + localFilePath + "/" + f);
                 File dir = new File(localFilePath + "/" + f);
                 dir.mkdir();
@@ -116,7 +118,7 @@ public class Tools {
         }
 
     }
-    public static String getDeviceName() {
+    static String getDeviceName() {
         String manufacturer = Build.MANUFACTURER;
         String model = Build.MODEL;
         if (model.startsWith(manufacturer)) {
@@ -149,7 +151,7 @@ public class Tools {
     private static boolean isAssetDirectory(Context context, String pathInAssetsDir){
 
         InputStream inputStream = null;
-        Boolean isDirectory = false;
+        boolean isDirectory = false;
         try {
             inputStream = context.getAssets().open(pathInAssetsDir);
         }  catch(IOException e) {
@@ -159,14 +161,14 @@ public class Tools {
                 if (inputStream != null) {
                     inputStream.close();
                 }
-            } catch (IOException e) {
+            } catch (IOException ignored) {
             }
         }
 
         return isDirectory;
     }
 
-    public static void logDirectoryFiles(final File folder) {
+    static void logDirectoryFiles(final File folder) {
         for (final File f : folder.listFiles()) {
 
             if (f.isDirectory()) {
@@ -179,7 +181,7 @@ public class Tools {
         }
     }
 
-    public static void deleteDirectoryContents(final File folder) {
+    static void deleteDirectoryContents(final File folder) {
         for (final File f : folder.listFiles()) {
 
             if (f.isDirectory()) {
@@ -194,7 +196,7 @@ public class Tools {
         }
     }
 
-    public static void writeConfig(String configTemplate, MiningService.MiningConfig miningConfig, String privatePath) {
+    static void writeConfig(String configTemplate, MiningService.MiningConfig miningConfig, String privatePath) {
 
         String config = configTemplate
                 .replace("$algo$", miningConfig.algo)
@@ -213,20 +215,14 @@ public class Tools {
 
         Log.i(LOG_TAG, "CONFIG: " + config);
 
-        PrintWriter writer = null;
-
-        try {
-            writer = new PrintWriter(new FileOutputStream(privatePath + "/config.json"));
+        try (PrintWriter writer = new PrintWriter(new FileOutputStream(privatePath + "/config.json"))) {
             writer.write(config);
         } catch (IOException e) {
             throw new RuntimeException(e);
-        } finally {
-            if (writer != null) writer.close();
         }
     }
 
-    public static Map<String, String> getCPUInfo() {
-
+    static Map<String, String> getCPUInfo() {
         Map<String, String> output = new HashMap<>();
 
         try {
@@ -261,7 +257,7 @@ public class Tools {
         return output;
     }
 
-    public static String getABI() {
+    static String getABI() {
         String abiString;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             abiString = Build.SUPPORTED_ABIS[0];
@@ -271,7 +267,7 @@ public class Tools {
         return abiString.toLowerCase().trim();
     }
 
-    static public float getCurrentCPUTemperature() {
+    static float getCurrentCPUTemperature() {
         String file = readFile("/sys/devices/virtual/thermal/thermal_zone0/temp", '\n',new byte[4096]);
         float output = 0.0f;
         if (file != null) {
@@ -284,12 +280,10 @@ public class Tools {
         return output;
     }
 
-    static public String readFile(String file, char endChar,byte[] mBuffer) {
+    private static String readFile(String file, char endChar, byte[] mBuffer) {
 
         StrictMode.ThreadPolicy savedPolicy = StrictMode.allowThreadDiskReads();
-        FileInputStream is = null;
-        try {
-            is = new FileInputStream(file);
+        try (FileInputStream is = new FileInputStream(file)) {
             int len = is.read(mBuffer);
             is.close();
 
@@ -302,23 +296,16 @@ public class Tools {
                 }
                 return new String(mBuffer, 0, i);
             }
-        } catch (java.io.FileNotFoundException e) {
-        } catch (java.io.IOException e) {
+        } catch (java.io.FileNotFoundException ignored) {
+        } catch (IOException ignored) {
         } finally {
-            if (is != null) {
-                try {
-                    is.close();
-                } catch (java.io.IOException e) {
-                }
-            }
             StrictMode.setThreadPolicy(savedPolicy);
         }
         return null;
     }
 
     static public String parseCurrency(String value, long coinUnits, long denominationUnits, String symbol) {
-
-        double base = tryParseDouble(value, 1D);
+        double base = tryParseDouble(value);
         double d = base / (double) coinUnits;
         double d2 = Math.round(d * (double) denominationUnits) / (double) denominationUnits;
 
@@ -338,11 +325,11 @@ public class Tools {
         }
     }
 
-    static public  Double tryParseDouble(String s, Double fallback) {
+    private static Double tryParseDouble(String s) {
         try {
             return Double.parseDouble(s);
         } catch (Exception e) {
-            return fallback;
+            return 1.0;
         }
     }
 
@@ -352,7 +339,7 @@ public class Tools {
         BigDecimal bnThousand = new BigDecimal(1000);
 
         int i = 0;
-        String byteUnits[] = {"H", "KH", "MH", "GH", "TH", "PH"};
+        String[] byteUnits = {"H", "KH", "MH", "GH", "TH", "PH"};
 
         while (bn.compareTo(bnThousand) > 0) {
             bn = bn.divide(bnThousand);
@@ -363,5 +350,4 @@ public class Tools {
 
         return decimalFormat.format(bn) + ' ' + byteUnits[i];
     }
-
 }

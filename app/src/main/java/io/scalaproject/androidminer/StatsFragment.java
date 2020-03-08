@@ -71,37 +71,36 @@ public class StatsFragment extends Fragment {
         // Network
 
         TextView tvNetworkHashrate = view.findViewById(R.id.hashratenetwork);
-        Log.i("Stats", "d.network.hashrate: " + d.network.hashrate);
-        tvNetworkHashrate.setText(d.network.hashrate);
+        tvNetworkHashrate.setText(d.network.hashrate.isEmpty() ? "n/a" : d.network.hashrate);
 
         TextView tvNetworkDifficulty = view.findViewById(R.id.difficultynetwork);
-        tvNetworkDifficulty.setText(d.network.difficulty);
+        tvNetworkDifficulty.setText(d.network.difficulty.isEmpty() ? "n/a" : d.network.difficulty);
 
         TextView tvNetworkBlocks = view.findViewById(R.id.lastblocknetwork);
-        tvNetworkBlocks.setText(d.network.lastBlockTime);
+        tvNetworkBlocks.setText(d.network.lastBlockTime.isEmpty() ? "n/a" : d.network.lastBlockTime);
 
         TextView tvNetworkHeight = view.findViewById(R.id.height);
-        tvNetworkHeight.setText(d.network.lastBlockHeight);
+        tvNetworkHeight.setText(d.network.lastBlockHeight.isEmpty() ? "n/a" : d.network.lastBlockHeight);
 
         TextView tvNetworkRewards = view.findViewById(R.id.rewards);
-        tvNetworkRewards.setText(d.network.lastRewardAmount);
+        tvNetworkRewards.setText(d.network.lastRewardAmount.isEmpty() ? "n/a" : d.network.lastRewardAmount);
 
         // Pool
 
         TextView tvPoolURL = view.findViewById(R.id.poolurl);
-        tvPoolURL.setText(pm.getPool());
+        tvPoolURL.setText(pm.getPool() == null ? "" : pm.getPool());
 
         TextView tvPoolHashrate = view.findViewById(R.id.hashratepool);
-        tvPoolHashrate.setText(d.pool.hashrate);
+        tvPoolHashrate.setText(d.pool.hashrate.isEmpty() ? "n/a" : d.pool.hashrate);
 
         TextView tvPoolDifficulty = view.findViewById(R.id.difficultypool);
-        tvPoolDifficulty.setText(d.pool.difficulty);
+        tvPoolDifficulty.setText(d.pool.difficulty.isEmpty() ? "n/a" : d.pool.difficulty);
 
         TextView tvPoolBlocks = view.findViewById(R.id.lastblockpool);
-        tvPoolBlocks.setText(d.pool.lastBlockTime);
+        tvPoolBlocks.setText(d.pool.lastBlockTime.isEmpty() ? "n/a" : d.pool.lastBlockTime);
 
         TextView tvPoolLastBlock = view.findViewById(R.id.blockspool);
-        tvPoolLastBlock.setText(d.pool.blocks);
+        tvPoolLastBlock.setText(d.pool.blocks.isEmpty() ? "n/a" : d.pool.blocks);
 
         // Address
 
@@ -118,10 +117,10 @@ public class StatsFragment extends Fragment {
             tvAddressHashrate.setText(sHashrate);
 
             TextView tvAddressLastShare = view.findViewById(R.id.lastshareminer);
-            tvAddressLastShare.setText(d.miner.lastShare);
+            tvAddressLastShare.setText(d.miner.lastShare.isEmpty() ? "n/a" : d.miner.lastShare);
 
             TextView tvAddressBlocks = view.findViewById(R.id.blocksminedminer);
-            tvAddressBlocks.setText(d.miner.blocks);
+            tvAddressBlocks.setText(d.miner.blocks.isEmpty() ? "n/a" : d.miner.blocks);
 
             String sBalance = d.miner.balance.replace("XLA", "").trim();
             TextView tvBalance = view.findViewById(R.id.balance);
@@ -168,21 +167,21 @@ public class StatsFragment extends Fragment {
             return false;
 
         if(Config.read("address").equals("")) {
-            Toast.makeText(getContext(),"Wallet address is empty", Toast.LENGTH_LONG);
+            Toast.makeText(getContext(),"Wallet address is empty.", Toast.LENGTH_LONG).show();
             enableOnlineStats(false);
             return false;
         }
 
         PoolItem pi = ProviderManager.getSelectedPool();
 
-        if (Config.read("init").equals("1") == false || pi == null) {
-            Toast.makeText(getContext(),"Start mining to view statistics", Toast.LENGTH_LONG);
+        if (!Config.read("init").equals("1") || pi == null) {
+            Toast.makeText(getContext(),"Start mining to view statistics.", Toast.LENGTH_LONG).show();
             enableOnlineStats(false);
             return false;
         }
 
         if (pi.getPoolType() == 0) {
-            Toast.makeText(getContext(),"Statistics are not available for custom pools", Toast.LENGTH_LONG);
+            Toast.makeText(getContext(),"Statistics are not available for custom pools.", Toast.LENGTH_LONG).show();
             enableOnlineStats(false);
             return false;
         }

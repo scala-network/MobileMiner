@@ -106,7 +106,7 @@ public class AboutFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Utils.copyToClipboard("Scala BTC Donation Address", Utils.SCALA_BTC_ADDRESS);
-                Toast.makeText(getContext(), getResources().getString(R.string.donationadressbtc_copied), Toast.LENGTH_SHORT);
+                Toast.makeText(getContext(), getResources().getString(R.string.donationadressbtc_copied), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -115,7 +115,7 @@ public class AboutFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Utils.copyToClipboard("Scala ETH Donation Address", Utils.SCALA_ETH_ADDRESS);
-                Toast.makeText(getContext(), getResources().getString(R.string.donationadresseth_copied), Toast.LENGTH_SHORT);
+                Toast.makeText(getContext(), getResources().getString(R.string.donationadresseth_copied), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -124,7 +124,7 @@ public class AboutFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Utils.copyToClipboard("Scala XLA Donation Address", Utils.SCALA_XLA_ADDRESS);
-                Toast.makeText(getContext(), getResources().getString(R.string.donationadressxla_copied), Toast.LENGTH_SHORT);
+                Toast.makeText(getContext(), getResources().getString(R.string.donationadressxla_copied), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -143,7 +143,7 @@ public class AboutFragment extends Fragment {
 
             Config.write("CPUINFO", cpuinfo.trim());
         }
-        
+
         tvBuild.setText(BuildConfig.VERSION_NAME + " (" + BuildConfig.BUILD_TIME + ")");
 
         tvSystemInfo.setText(cpuinfo);
@@ -169,7 +169,7 @@ public class AboutFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Utils.copyToClipboard("Scala Miner Debug Info", sDebugInfo);
-                Toast.makeText(getContext(), getResources().getString(R.string.debuginfo_copied), Toast.LENGTH_SHORT);
+                Toast.makeText(getContext(), getResources().getString(R.string.debuginfo_copied), Toast.LENGTH_SHORT).show();
             }
         });
 

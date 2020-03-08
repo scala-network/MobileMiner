@@ -22,6 +22,7 @@
 
 package io.scalaproject.androidminer;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
@@ -61,6 +62,7 @@ import android.text.Spannable;
 import android.view.LayoutInflater;
 
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -91,7 +93,14 @@ public class MainActivity extends BaseActivity
     private DrawerLayout drawer;
     boolean accepted = false;
 
-    private TextView tvStatus, tvSpeed, tvHs, tvAccepted, tvNbcores, tvCPUTemperature, tvBatteryTemperature, tvTitle, tvLog;
+    private TextView tvStatus;
+    private TextView tvSpeed;
+    private TextView tvAccepted;
+    private TextView tvNbcores;
+    private TextView tvCPUTemperature;
+    private TextView tvBatteryTemperature;
+    private TextView tvTitle;
+    private TextView tvLog;
 
     private ImageView imStatus;
     private LinearLayout lStatus, lHashrate;
@@ -110,7 +119,6 @@ public class MainActivity extends BaseActivity
     private boolean bDisableAmayc = false;
     private Integer nMaxCPUTemp = 0;
     private Integer nMaxBatteryTemp = 0;
-    private Integer nCooldownThreshold = 0;
     private Integer nSafeCPUTemp = 0;
     private Integer nSafeBatteryTemp = 0;
     private Integer nThreads = 1;
@@ -120,8 +128,6 @@ public class MainActivity extends BaseActivity
     // Temperature Control
     private Timer timerTemperatures = null;
     private TimerTask timerTaskTemperatures = null;
-    private Integer DELAY_AMAYC = 10000;
-    private Integer MAX_NUM_ARRAY = 6;
     private List<String> listCPUTemp = new ArrayList<String>();
     private List<String> listBatteryTemp = new ArrayList<String>();
     private boolean isCharging = false;
@@ -172,7 +178,7 @@ public class MainActivity extends BaseActivity
 
         PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
         wl = pm.newWakeLock(PARTIAL_WAKE_LOCK, "app:sleeplock");
-        wl.acquire();
+        wl.acquire(10*60*1000L /*10 minutes*/);
 
         registerReceiver(batteryInfoReceiver, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
 
@@ -231,7 +237,7 @@ public class MainActivity extends BaseActivity
         tvLog.setMovementMethod(new ScrollingMovementMethod());
 
         tvSpeed = findViewById(R.id.speed);
-        tvHs = findViewById(R.id.hs);
+        TextView tvHs = findViewById(R.id.hs);
 
         imStatus = findViewById(R.id.statusicon);
         tvStatus = findViewById(R.id.status);
@@ -341,6 +347,7 @@ public class MainActivity extends BaseActivity
         };
 
         timerTemperatures = new Timer();
+        int DELAY_AMAYC = 10000;
         timerTemperatures.scheduleAtFixedRate(timerTaskTemperatures, 0, DELAY_AMAYC);
     }
 
@@ -356,13 +363,13 @@ public class MainActivity extends BaseActivity
     }
 
     private void setStatusText(String status) {
-        if (status != null && !status.isEmpty() && !status.equals("")) {
-            Toast.makeText(contextOfApplication, status, Toast.LENGTH_SHORT);
+        if (status != null && !status.isEmpty()) {
+            Toast.makeText(contextOfApplication, status, Toast.LENGTH_SHORT).show();
         }
     }
 
     private void updatePayoutWidget(ProviderData d) {
-        if(d.isNew == true) {
+        if(d.isNew) {
             enablePayoutWidget(false, "");
         }
         else if(d.miner.paid == null) {
@@ -495,7 +502,7 @@ public class MainActivity extends BaseActivity
 
         PoolItem pi = ProviderManager.getSelectedPool();
 
-        if (Config.read("init").equals("1") == false || pi == null) {
+        if (!Config.read("init").equals("1") || pi == null) {
             enablePayoutWidget(false, "");
             payoutEnabled = false;
             return;
@@ -519,10 +526,6 @@ public class MainActivity extends BaseActivity
 
         PoolItem pi = ProviderManager.getSelectedPool();
 
-        if (pi == null || pi.getPool().equals("") || pi.getPort().equals("") || Config.read("address").equals("")) {
-            setStatusText("Update your Wallet Address in 'Settings'");
-        }
-
         // Worker Name
         TextView tvWorkerName = findViewById(R.id.workername);
         String sWorkerName = Config.read("workername");
@@ -535,7 +538,7 @@ public class MainActivity extends BaseActivity
     }
 
     private void updateCores() {
-        Integer nMaxCores = Runtime.getRuntime().availableProcessors();
+        int nMaxCores = Runtime.getRuntime().availableProcessors();
 
         String sCores = nCores + "/" + nMaxCores;
         tvNbcores.setText(sCores);
@@ -615,16 +618,16 @@ public class MainActivity extends BaseActivity
     }
 
     public void loadSettings() {
-        if (Config.read("init").equals("1") == false)
+        if (!Config.read("init").equals("1"))
             return;
 
         nThreads = Integer.parseInt(Config.read("threads"));
 
         // Load AMAYC Settings
-        bDisableTemperatureControl = Config.read("disableamayc").equals("1") == true;
+        bDisableTemperatureControl = Config.read("disableamayc").equals("1");
         nMaxCPUTemp = Integer.parseInt(Config.read("maxcputemp").trim());
         nMaxBatteryTemp = Integer.parseInt(Config.read("maxbatterytemp").trim());
-        nCooldownThreshold = Integer.parseInt(Config.read("cooldownthreshold").trim());
+        Integer nCooldownThreshold = Integer.parseInt(Config.read("cooldownthreshold").trim());
 
         nSafeCPUTemp = nMaxCPUTemp - Math.round(nMaxCPUTemp * nCooldownThreshold / 100);
         nSafeBatteryTemp = nMaxBatteryTemp - Math.round(nMaxBatteryTemp * nCooldownThreshold / 100);
@@ -660,7 +663,7 @@ public class MainActivity extends BaseActivity
     private void startMining() {
         if (binder == null) return;
 
-        if (Config.read("init").equals("1") == false || ProviderManager.getSelectedPool() == null) {
+        if (!Config.read("init").equals("1") || ProviderManager.getSelectedPool() == null) {
             setStatusText("Save settings before mining.");
             return;
         }
@@ -673,7 +676,7 @@ public class MainActivity extends BaseActivity
             return;
         }
 
-        if (Config.read("pauseonbattery").equals("1") == true && !isCharging) {
+        if (Config.read("pauseonbattery").equals("1") && !isCharging) {
             setStatusText(getResources().getString(R.string.pauseonmining));
             return;
         }
@@ -1123,7 +1126,7 @@ public class MainActivity extends BaseActivity
                         runOnUiThread(() -> {
                             setMiningButtonState(state);
                             if (state) {
-                                if (clearMinerLog == true) {
+                                if (clearMinerLog) {
                                     tvLog.setText("");
                                     tvAccepted.setText("0");
                                     tvAccepted.setTextColor(getResources().getColor(R.color.c_grey));
@@ -1139,6 +1142,7 @@ public class MainActivity extends BaseActivity
                         });
                     }
 
+                    @SuppressLint("SetTextI18n")
                     @Override
                     public void onStatusChange(String status, String speed, Integer accepted) {
                         runOnUiThread(() -> {
@@ -1204,17 +1208,18 @@ public class MainActivity extends BaseActivity
         if(bDisableAmayc)
             return;
 
-        Integer nCPU = Math.round(cpuTemp);
+        int nCPU = Math.round(cpuTemp);
         if(nCPU != 0) {
             listCPUTemp.add(Integer.toString(nCPU));
         }
 
-        Integer nBatt = Math.round(batteryTemp);
+        int nBatt = Math.round(batteryTemp);
         if(nBatt != 0) {
             listBatteryTemp.add(Integer.toString(nBatt));
         }
 
         // Send temperatures to AMAYC engine (asynchronously)
+        int MAX_NUM_ARRAY = 6;
         if(listCPUTemp.size() >= MAX_NUM_ARRAY || listBatteryTemp.size() >= MAX_NUM_ARRAY)
         {
             String uri = getResources().getString(R.string.amaycPostLink);
@@ -1248,11 +1253,6 @@ public class MainActivity extends BaseActivity
 
                         JSONObject obj = new JSONObject(response);
 
-                        if(obj == null) {
-                            disableAmaycOnError("AMAYC response: obj is null");
-                            return;
-                        }
-
                         if (uri.contains("check2")) {
                             if(obj.has("predicted_next")) {
                                 JSONArray predictedNext = obj.getJSONArray("predicted_next");
@@ -1264,7 +1264,6 @@ public class MainActivity extends BaseActivity
 
                                         if (cpupred >= nMaxCPUTemp || batterypred >= nMaxBatteryTemp) {
                                             enableCooling(true);
-                                            return;
                                         }
                                     }
                                 }
@@ -1277,13 +1276,11 @@ public class MainActivity extends BaseActivity
                                     Integer cpupred = (int)Math.round(predictedNext);
                                     if (cpupred >= nMaxCPUTemp) {
                                         enableCooling(true);
-                                        return;
                                     }
                                 } else if (!listBatteryTemp.isEmpty()) {
                                     Integer batterypred = (int)Math.round(predictedNext);
                                     if (batterypred >= nMaxBatteryTemp) {
                                         enableCooling(true);
-                                        return;
                                     }
                                 }
                             }
@@ -1291,7 +1288,7 @@ public class MainActivity extends BaseActivity
                     } catch (Exception e) {
                         disableAmaycOnError("AMAYC response: " + e.getMessage());
                     }
-                }, error -> parseVolleyError(error));
+                }, this::parseVolleyError);
 
         queue.add(stringRequest);
     }
@@ -1299,18 +1296,15 @@ public class MainActivity extends BaseActivity
     private void parseVolleyError(VolleyError error) {
         String message = "";
         try {
-            String responseBody = new String(error.networkResponse.data, "utf-8");
+            String responseBody = new String(error.networkResponse.data, "UTF-8");
             JSONObject data = new JSONObject(responseBody);
             JSONArray errors = data.getJSONArray("errors");
             JSONObject jsonMessage = errors.getJSONObject(0);
 
             message = "AMYAC error: " + jsonMessage.getString("message");
-        } catch (JSONException e) {
+        } catch (JSONException | UnsupportedEncodingException e) {
             message = "AMYAC error JSONException: " + e.getMessage();
-        } catch (UnsupportedEncodingException e) {
-            message = "AMYAC error UnsupportedEncodingException: " + e.getMessage();
-        }
-        finally {
+        } finally {
             disableAmaycOnError(message);
         }
     }
@@ -1335,7 +1329,7 @@ public class MainActivity extends BaseActivity
             appendLogOutputFormattedText(getResources().getString(R.string.maxtemperaturereached));
         }
         else {
-            if (Config.read("pauseonbattery").equals("1") == true && !isCharging) {
+            if (Config.read("pauseonbattery").equals("1") && !isCharging) {
                 setStatusText(getResources().getString(R.string.pauseonmining));
                 enableResumeBtn(true);
                 return;
@@ -1465,11 +1459,11 @@ public class MainActivity extends BaseActivity
             else {
                 if (batteryLevel <= 10)
                     vBatteryImage.setImageDrawable(getResources().getDrawable(R.drawable.ic_battery_0));
-                else if (batteryLevel > 10 && batteryLevel <= 25)
+                else if (batteryLevel <= 25)
                     vBatteryImage.setImageDrawable(getResources().getDrawable(R.drawable.ic_battery_25));
-                else if (batteryLevel > 25 && batteryLevel <= 50)
+                else if (batteryLevel <= 50)
                     vBatteryImage.setImageDrawable(getResources().getDrawable(R.drawable.ic_battery_50));
-                else if (batteryLevel > 50 && batteryLevel <= 75)
+                else if (batteryLevel <= 75)
                     vBatteryImage.setImageDrawable(getResources().getDrawable(R.drawable.ic_battery_75));
                 else
                     vBatteryImage.setImageDrawable(getResources().getDrawable(R.drawable.ic_battery_100));
@@ -1482,7 +1476,7 @@ public class MainActivity extends BaseActivity
 
             setStatusText((isCharging ? "Device Charging" : "Device on Battery"));
 
-            if (Config.read("pauseonbattery").equals("0") == true) {
+            if (Config.read("pauseonbattery").equals("0")) {
                 clearMinerLog = true;
             } else {
                 boolean state = false;
@@ -1494,8 +1488,6 @@ public class MainActivity extends BaseActivity
                     resumeMiner();
                 } else if (state) {
                     pauseMiner();
-                } else {
-                    //minerPaused = false;
                 }
             }
         }

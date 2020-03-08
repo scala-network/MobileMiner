@@ -78,7 +78,7 @@ public class QrCodeScannerActivity extends AppCompatActivity  implements Barcode
 
         for (int index = 0; index < barcodeGraphics.size(); index++) {
             Barcode barcode = barcodeGraphics.get(index).getBarcode();
-            message.append((index + 1) + ". " + barcode.displayValue + "\n");
+            message.append(index + 1).append(". ").append(barcode.displayValue).append("\n");
         }
         Log.d("CONSOLE:QRCODE:MULTIPLE", message.toString());
 
@@ -103,6 +103,5 @@ public class QrCodeScannerActivity extends AppCompatActivity  implements Barcode
     @Override
     public void onPermissionRequestDenied(){
         Log.e("CONSOLE:QRCODE:FAIL", "DENIED");
-
     }
 }

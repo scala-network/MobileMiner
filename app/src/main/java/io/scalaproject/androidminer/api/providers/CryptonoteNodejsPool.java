@@ -45,7 +45,6 @@ public class CryptonoteNodejsPool extends ProviderAbstract {
             String symbol = mBlockData.coin.symbol = joStatsConfig.optString("symbol").toUpperCase();
             long denominationUnit = mBlockData.coin.denominationUnit = tryParseLong(joStatsConfig.optString("denominationUnit"), 1L);
 
-            //lastBlockHeight, difficulty, lastRewardAmount, lastBlockTime, hashrate, blocks, minPayout
             mBlockData.pool.lastBlockHeight = joStatsPool.optString("height");
             mBlockData.pool.difficulty = getReadableHashRateString(joStatsPool.optLong("totalDiff"));
             mBlockData.pool.lastBlockTime = pTime.format(new Date(joStatsLastBlock.optLong("timestamp") * 1000));

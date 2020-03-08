@@ -61,7 +61,6 @@ public class MiningService extends Service {
     private OutputReaderThread outputHandler;
     private InputReaderThread inputHandler;
     private ProcessMonitor procMon;
-    private PowerManager pm;
     private PowerManager.WakeLock wl;
     private int accepted = 0;
     private String speed = "0";
@@ -126,7 +125,7 @@ public class MiningService extends Service {
         Log.i(LOG_TAG, "LAST ASSET PATH: " + lastAssetPath);
         Log.i(LOG_TAG, "ABI: " + abi);
 
-        if (assetPath.equals(lastAssetPath) == false) {
+        if (!assetPath.equals(lastAssetPath)) {
             Tools.deleteDirectoryContents(new File(privatePath));
             Tools.copyDirectoryContents(this, libraryPath, privatePath);
             Tools.copyDirectoryContents(this, assetPath, privatePath);
@@ -136,8 +135,8 @@ public class MiningService extends Service {
         }
     }
 
-    public class MiningServiceBinder extends Binder {
-        public MiningService getService() {
+    class MiningServiceBinder extends Binder {
+        MiningService getService() {
             return MiningService.this;
         }
     }
@@ -148,7 +147,7 @@ public class MiningService extends Service {
 
         for (int i = 0; i < cores; i++) {
             for (int j = 0; j < threads; j++) {
-                if (cpuConfig.equals("") == false) {
+                if (!cpuConfig.equals("")) {
                     cpuConfig += ",";
                 }
                 cpuConfig += "[" + Integer.toString(intensity) + "," + Integer.toString(i) + "]";
@@ -158,7 +157,7 @@ public class MiningService extends Service {
         return "[" + cpuConfig + "]";
     }
 
-    public static class MiningConfig {
+    static class MiningConfig {
         String username, pool, pass, algo, assetExtension, cpuConfig, poolHost, poolPort;
         int cores, threads, intensity, legacyThreads, legacyIntensity;
     }
@@ -179,6 +178,7 @@ public class MiningService extends Service {
         config.legacyThreads = threads * cores;
         config.legacyIntensity = intensity;
 
+        assert pi != null;
         config.poolHost = pi.getPool();
         config.poolPort = pi.getPort();
 
@@ -244,13 +244,13 @@ public class MiningService extends Service {
 
     class startMiningAsync extends AsyncTask<MiningConfig, Void, String> {
 
-        protected String getPoolHost() {
+        String getPoolHost() {
 
             PoolItem pi = ProviderManager.getSelectedPool();
+            assert pi != null;
             return getIpByHost(pi);
         }
 
-        private Exception exception;
         private MiningConfig config;
 
         protected String doInBackground(MiningConfig... config) {
@@ -260,9 +260,6 @@ public class MiningService extends Service {
                 this.config.pool = getPoolHost();
                 return "success";
             } catch (Exception e) {
-                this.exception = e;
-            } finally {
-
             }
             return null;
         }
@@ -289,9 +286,9 @@ public class MiningService extends Service {
             wl = null;
         }
 
-        pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
+        PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
         wl = pm.newWakeLock(PARTIAL_WAKE_LOCK, "app:sleeplock");
-        wl.acquire();
+        wl.acquire(10*60*1000L /*10 minutes*/);
 
         try {
             Tools.writeConfig(configTemplate, config, privatePath);

@@ -26,57 +26,76 @@ public final class NodejsPool extends ProviderAbstract {
     @Override
     protected void onBackgroundFetchData() {
         ProviderData mBlockData = getBlockData();
+        String url = "";
 
+        long denominationUnit = 100L;
+
+        // Config
         if(mBlockData.isNew) {
             mBlockData.isNew = false;
-            try{
-                String aurl = mPoolItem.getApiUrl() + "/config";
-                String aConfig  = Json.fetch(aurl);
+            try {
+                url = mPoolItem.getApiUrl() + "/config";
+                String aConfig  = Json.fetch(url);
+                JSONObject joConfig =  new JSONObject(aConfig);
 
-                JSONObject joStatss =  new JSONObject(aConfig);
+                mBlockData.coin.units = tryParseLong(joConfig.optString("coin_code"), 1L);
+                mBlockData.coin.name = joConfig.optString("coin_code").toUpperCase();
 
-            mBlockData.coin.units = tryParseLong(joStatss.optString("coin_code"), 1L);
-            mBlockData.coin.name = joStatss.optString("coin_code").toUpperCase();
-            String symbol = mBlockData.coin.symbol = joStatss.optString("symbol");
-                long denominationUnit = mBlockData.coin.denominationUnit = 100L;
-                mBlockData.pool.minPayout =  parseCurrency(joStatss.optString("min_wallet_payout", "0"),denominationUnit, denominationUnit, symbol);
+                String symbol = mBlockData.coin.symbol = joConfig.optString("coin_code");
+                mBlockData.coin.denominationUnit = denominationUnit;
+
+                mBlockData.pool.minPayout =  parseCurrency(joConfig.optString("min_wallet_payout", "0"), denominationUnit, denominationUnit, symbol);
             } catch (Exception e) {
                 Log.i(LOG_TAG, "COIN\n" + e.toString());
                 e.printStackTrace();
             }
         }
+
         PrettyTime pTime = new PrettyTime();
 
-        long denominationUnit = mBlockData.coin.denominationUnit;
-        String url = mPoolItem.getApiUrl() + "/network/stats";
-
+        // Network
         try {
+            url = mPoolItem.getApiUrl() + "/network/stats";
             String dataStatsNetwork  = Json.fetch(url);
+            JSONObject joNetworkStats = new JSONObject(dataStatsNetwork);
 
-            JSONObject joStats = new JSONObject(dataStatsNetwork);
-
-            mBlockData.network.lastBlockHeight = joStats.optString("height");
-            mBlockData.network.difficulty = joStats.optString("difficulty");
-            mBlockData.network.lastBlockTime = pTime.format(new Date(joStats.optLong("ts") * 1000));
-            mBlockData.network.lastRewardAmount =  parseCurrency(joStats.optString("value", "0"), denominationUnit, denominationUnit, "XLA");
+            mBlockData.network.lastBlockHeight = joNetworkStats.optString("height");
+            mBlockData.network.difficulty = joNetworkStats.optString("difficulty");
+            mBlockData.network.lastBlockTime = pTime.format(new Date(joNetworkStats.optLong("ts") * 1000));
+            mBlockData.network.lastRewardAmount =  parseCurrency(joNetworkStats.optString("value", "0"), denominationUnit, denominationUnit, "XLA");
         } catch (JSONException e) {
             Log.i(LOG_TAG, "NETWORK\n" + e.toString());
             e.printStackTrace();
         }
 
+        // Pool
+        try {
+            url = mPoolItem.getApiUrl() + "/pool/stats";
+            String dataStatsPool  = Json.fetch(url);
+            JSONObject joPoolStats = new JSONObject(dataStatsPool).getJSONObject("pool_statistics");
+
+            mBlockData.pool.lastBlockHeight = joPoolStats.optString("lastBlockFound");
+            //mBlockData.pool.difficulty = getReadableHashRateString(joPoolStats.optLong("totalDiff"));
+            mBlockData.pool.lastBlockTime = pTime.format(new Date(joPoolStats.optLong("lastBlockFoundTime") * 1000));
+            //mBlockData.pool.lastRewardAmount = parseCurrency(joPoolStats.optString("reward", "0"), mBlockData.coin.units, denominationUnit, mBlockData.coin.symbol);
+            mBlockData.pool.hashrate = String.valueOf(tryParseLong(joPoolStats.optString("hashRate"),0L) / 1000L);
+            mBlockData.pool.blocks = joPoolStats.optString("totalBlocksFound", "0");
+        } catch (JSONException e) {
+            Log.i(LOG_TAG, "POOL\n" + e.toString());
+            e.printStackTrace();
+        }
+
+        // Address
         String wallet = getWalletAddress();
         if(wallet.equals("")) {
             return;
         }
 
-        String surl = mPoolItem.getApiUrl() + "/miner/" + getWalletAddress() +"/stats";
-
         try {
+            url = mPoolItem.getApiUrl() + "/miner/" + getWalletAddress() +"/stats";
             String symbol = mBlockData.coin.symbol;
-            String dataStatsNetwork  = Json.fetch(surl);
-            Log.i(LOG_TAG, dataStatsNetwork);
-
-            JSONObject joStatsAddress = new JSONObject(dataStatsNetwork);
+            String dataStatsAddress  = Json.fetch(url);
+            JSONObject joStatsAddress = new JSONObject(dataStatsAddress);
 
             String hashRate = getReadableHashRateString(joStatsAddress.optLong("hash"));
             String balance = parseCurrency(joStatsAddress.optString("amtDue", "0"), denominationUnit, denominationUnit, symbol);
@@ -90,7 +109,7 @@ public final class NodejsPool extends ProviderAbstract {
             mBlockData.miner.lastShare = lastShare;
             mBlockData.miner.blocks = blocks;
         } catch (JSONException e) {
-            Log.i(LOG_TAG, "ADDRESS :" + surl + "\n"+e.toString());
+            Log.i(LOG_TAG, "ADDRESS :" + url + "\n"+e.toString());
             e.printStackTrace();
         }
     }

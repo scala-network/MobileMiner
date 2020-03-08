@@ -28,5 +28,4 @@ public abstract class BaseActivity extends AppCompatActivity {
                 Toast.makeText(contextOfApplication, getResources().getString(R.string.miningbackground), Toast.LENGTH_SHORT).show();
         }
     }
-
 }

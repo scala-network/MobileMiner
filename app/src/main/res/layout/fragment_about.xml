@@ -41,7 +41,7 @@
                     android:gravity="start"
                     android:text="@string/aboutapplication"
                     android:textColor="@color/c_white"
-                    android:textSize="12sp"/>
+                    android:textSize="14sp"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -54,7 +54,7 @@
                     android:layout_height="wrap_content"
                     android:text="Build: "
                     android:textColor="@color/c_lighter"
-                    android:textSize="12sp"/>
+                    android:textSize="14sp"/>
 
                 <android.support.v7.widget.AppCompatTextView
                     android:id="@+id/build"
@@ -63,7 +63,7 @@
                     android:gravity="start"
                     android:text=""
                     android:textColor="@color/c_lighter"
-                    android:textSize="12sp"/>
+                    android:textSize="14sp"/>
 
             </LinearLayout>
 
@@ -81,12 +81,16 @@
                 <android.support.v7.widget.AppCompatTextView
                     android:id="@+id/systemInfo"
                     android:layout_width="match_parent"
-                    android:layout_height="100dp"
+                    android:layout_height="75dp"
                     android:layout_marginBottom="5dp"
                     android:scrollbars="vertical"
-                    android:text=""
                     android:textSize="12sp"
-                    android:textColor="@color/c_grey"/>
+                    android:textColor="@color/c_grey"
+                    android:paddingTop="5pt"
+                    android:paddingBottom="5pt"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp"
+                    android:background="@drawable/corner_radius_black"/>
 
                 <android.support.design.button.MaterialButton
                     android:id="@+id/btnDebugInfo"
@@ -96,7 +100,7 @@
                     android:insetLeft="2dp"
                     android:insetRight="2dp"
                     android:text="@string/debuginfo"
-                    android:textSize="12sp"
+                    android:textSize="14sp"
                     android:textColor="@color/c_white"
                     android:textAllCaps="false"
                     app:cornerRadius="5dp"
@@ -126,7 +130,7 @@
                         android:gravity="start"
                         android:text="Made with "
                         android:textColor="@color/c_lighter"
-                        android:textSize="12sp"/>
+                        android:textSize="14sp"/>
 
                     <ImageView
                         android:layout_width="16dp"
@@ -139,7 +143,7 @@
                         android:gravity="start"
                         android:text=" by "
                         android:textColor="@color/c_lighter"
-                        android:textSize="12sp"/>
+                        android:textSize="14sp"/>
 
                     <android.support.v7.widget.AppCompatTextView
                         android:id="@+id/ScalaURL"
@@ -149,7 +153,7 @@
                         android:text=""
                         android:textColor="@color/c_blue"
                         android:textColorLink="@color/c_blue"
-                        android:textSize="12sp" />
+                        android:textSize="14sp" />
 
                     <android.support.v7.widget.AppCompatTextView
                         android:layout_width="wrap_content"
@@ -157,7 +161,7 @@
                         android:gravity="start"
                         android:text="."
                         android:textColor="@color/c_lighter"
-                        android:textSize="12sp"/>
+                        android:textSize="14sp"/>
 
                 </LinearLayout>
 
@@ -173,7 +177,7 @@
                     android:gravity="start"
                     android:text="Forked from "
                     android:textColor="@color/c_lighter"
-                    android:textSize="12sp"/>
+                    android:textSize="14sp"/>
 
                 <android.support.v7.widget.AppCompatTextView
                     android:id="@+id/Mine2getherURL"
@@ -183,7 +187,7 @@
                     android:text=""
                     android:textColor="@color/c_blue"
                     android:textColorLink="@color/c_blue"
-                    android:textSize="12sp" />
+                    android:textSize="14sp" />
 
                 <android.support.v7.widget.AppCompatTextView
                     android:layout_width="wrap_content"
@@ -191,7 +195,7 @@
                     android:gravity="start"
                     android:text=" and "
                     android:textColor="@color/c_lighter"
-                    android:textSize="12sp"/>
+                    android:textSize="14sp"/>
 
                 <android.support.v7.widget.AppCompatTextView
                     android:id="@+id/MoneroMinerURL"
@@ -201,7 +205,7 @@
                     android:text=""
                     android:textColor="@color/c_blue"
                     android:textColorLink="@color/c_blue"
-                    android:textSize="12sp" />
+                    android:textSize="14sp" />
 
                 <android.support.v7.widget.AppCompatTextView
                     android:layout_width="wrap_content"
@@ -209,7 +213,7 @@
                     android:gravity="start"
                     android:text="."
                     android:textColor="@color/c_lighter"
-                    android:textSize="12sp"/>
+                    android:textSize="14sp"/>
 
             </LinearLayout>
 
@@ -225,7 +229,7 @@
                         android:gravity="start"
                         android:text="Icons powered by "
                         android:textColor="@color/c_lighter"
-                        android:textSize="12sp"/>
+                        android:textSize="14sp"/>
 
                     <android.support.v7.widget.AppCompatTextView
                         android:id="@+id/FontAwesomeURL"
@@ -235,7 +239,7 @@
                         android:text=""
                         android:textColor="@color/c_blue"
                         android:textColorLink="@color/c_blue"
-                        android:textSize="12sp" />
+                        android:textSize="14sp" />
 
                     <android.support.v7.widget.AppCompatTextView
                         android:layout_width="wrap_content"
@@ -243,7 +247,7 @@
                         android:gravity="start"
                         android:text="."
                         android:textColor="@color/c_lighter"
-                        android:textSize="12sp"/>
+                        android:textSize="14sp"/>
 
                 </LinearLayout>
 
@@ -337,7 +341,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:text="@string/donationadresses"
-                    android:textSize="12sp"
+                    android:textSize="14sp"
                     android:textColor="@color/c_white"
                     android:textStyle="bold"/>
 
@@ -367,7 +371,7 @@
                         android:insetLeft="2dp"
                         android:insetRight="2dp"
                         android:text="BTC"
-                        android:textSize="12sp"
+                        android:textSize="14sp"
                         android:textColor="@color/c_white"
                         app:cornerRadius="5dp"
                         app:iconPadding="0dp"
@@ -381,7 +385,7 @@
                         android:insetLeft="2dp"
                         android:insetRight="2dp"
                         android:text="ETH"
-                        android:textSize="12sp"
+                        android:textSize="14sp"
                         android:textColor="@color/c_white"
                         app:cornerRadius="5dp"
                         app:iconPadding="0dp"
@@ -395,7 +399,7 @@
                         android:insetLeft="2dp"
                         android:insetRight="2dp"
                         android:text="XLA"
-                        android:textSize="12sp"
+                        android:textSize="14sp"
                         android:textColor="@color/c_white"
                         app:cornerRadius="5dp"
                         app:iconPadding="0dp"
@@ -408,10 +412,5 @@
         </ScrollView>
 
     </LinearLayout>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"/>
 
 </RelativeLayout>

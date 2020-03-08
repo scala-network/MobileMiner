@@ -25,7 +25,7 @@ public class Json {
 
     public static String fetch(String url) {
 
-        String data = "";
+        StringBuilder data = new StringBuilder();
         try {
 
             URL urlFetch = new URL(url);
@@ -34,7 +34,7 @@ public class Json {
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
             String line;
             while ((line = bufferedReader.readLine()) != null) {
-                    data += line;
+                    data.append(line);
             }
 
         } catch (MalformedURLException e) {
@@ -45,6 +45,6 @@ public class Json {
 //            e.printStackTrace();
         }
 
-        return data;
+        return data.toString();
     }
 }

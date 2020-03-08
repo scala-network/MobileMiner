@@ -65,7 +65,7 @@
                             android:singleLine="true"
                             android:textColor="@color/c_lighter"
                             android:textColorHint="@color/c_black"
-                            android:textSize="14dp" />
+                            android:textSize="14sp" />
 
                         <android.support.v7.widget.AppCompatEditText
                             android:id="@+id/port"
@@ -79,7 +79,7 @@
                             android:singleLine="true"
                             android:textColor="@color/c_lighter"
                             android:textColorHint="@color/c_black"
-                            android:textSize="14dp" />
+                            android:textSize="14sp" />
 
                     </LinearLayout>
 
@@ -93,7 +93,7 @@
                     android:text=""
                     android:textColor="@color/c_lighter"
                     android:textColorHint="@color/c_black"
-                    android:textSize="14dp" />
+                    android:textSize="14sp" />
 
                 <android.support.v7.widget.AppCompatTextView
                     android:layout_width="match_parent"
@@ -170,7 +170,7 @@
                         android:layout_height="wrap_content"
                         android:text="CPU Cores"
                         android:textColor="@color/c_lighter"
-                        android:textSize="14dp" />
+                        android:textSize="14sp" />
 
                     <Space
                         android:layout_width="0dp"
@@ -181,18 +181,18 @@
                         android:id="@+id/coresnb"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginRight="1dp"
+                        android:layout_marginEnd="1dp"
                         android:text="1"
                         android:textColor="@color/c_lighter"
-                        android:textSize="14dp" />
+                        android:textSize="14sp" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginRight="1dp"
+                        android:layout_marginEnd="1dp"
                         android:text="/"
                         android:textColor="@color/c_lighter"
-                        android:textSize="14dp" />
+                        android:textSize="14sp" />
 
                     <TextView
                         android:id="@+id/coresmax"
@@ -200,7 +200,7 @@
                         android:layout_height="wrap_content"
                         android:text="#"
                         android:textColor="@color/c_lighter"
-                        android:textSize="14dp" />
+                        android:textSize="14sp" />
 
                 </LinearLayout>
 
@@ -231,10 +231,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:layout_marginRight="5dp"
+                        android:layout_marginEnd="5dp"
                         android:text="@string/cputemperature"
                         android:textColor="@color/c_lighter"
-                        android:textSize="14dp" />
+                        android:textSize="14sp" />
 
                     <android.support.design.button.MaterialButton
                         android:id="@+id/btnCPUTempHelp"
@@ -256,20 +256,20 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:layout_marginRight="3dp"
+                        android:layout_marginEnd="3dp"
                         android:text="@string/max"
                         android:textColor="@color/c_lighter"
-                        android:textSize="14dp" />
+                        android:textSize="14sp" />
 
                     <TextView
                         android:id="@+id/cpumaxtemp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:layout_marginRight="2dp"
+                        android:layout_marginEnd="2dp"
                         android:text="#"
                         android:textColor="@color/c_lighter"
-                        android:textSize="14dp" />
+                        android:textSize="14sp" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -277,7 +277,7 @@
                         android:layout_gravity="center"
                         android:text="@string/degreecelsius"
                         android:textColor="@color/c_lighter"
-                        android:textSize="14dp" />
+                        android:textSize="14sp" />
 
                 </LinearLayout>
 
@@ -308,10 +308,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:layout_marginRight="5dp"
+                        android:layout_marginEnd="5dp"
                         android:text="@string/batterytemperature"
                         android:textColor="@color/c_lighter"
-                        android:textSize="14dp" />
+                        android:textSize="14sp" />
 
                     <android.support.design.button.MaterialButton
                         android:id="@+id/btnBatteryTempHelp"
@@ -333,20 +333,20 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:layout_marginRight="3dp"
+                        android:layout_marginEnd="3dp"
                         android:text="@string/max"
                         android:textColor="@color/c_lighter"
-                        android:textSize="14dp" />
+                        android:textSize="14sp" />
 
                     <TextView
                         android:id="@+id/batterymaxtemp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:layout_marginRight="2dp"
+                        android:layout_marginEnd="2dp"
                         android:text="#"
                         android:textColor="@color/c_lighter"
-                        android:textSize="14dp" />
+                        android:textSize="14sp" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -354,7 +354,7 @@
                         android:layout_gravity="center"
                         android:text="@string/degreecelsius"
                         android:textColor="@color/c_lighter"
-                        android:textSize="14dp" />
+                        android:textSize="14sp" />
 
                 </LinearLayout>
 
@@ -385,10 +385,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:layout_marginRight="5dp"
+                        android:layout_marginEnd="5dp"
                         android:text="@string/cooldownthreshold"
                         android:textColor="@color/c_lighter"
-                        android:textSize="14dp" />
+                        android:textSize="14sp" />
 
                     <android.support.design.button.MaterialButton
                         android:id="@+id/btnCooldownHelp"
@@ -410,20 +410,20 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:layout_marginRight="3dp"
+                        android:layout_marginEnd="3dp"
                         android:text="-"
                         android:textColor="@color/c_lighter"
-                        android:textSize="14dp" />
+                        android:textSize="14sp" />
 
                     <TextView
                         android:id="@+id/cooldownthreshold"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:layout_marginRight="2dp"
+                        android:layout_marginEnd="2dp"
                         android:text="#"
                         android:textColor="@color/c_lighter"
-                        android:textSize="14dp" />
+                        android:textSize="14sp" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -431,7 +431,7 @@
                         android:layout_gravity="center"
                         android:text="%"
                         android:textColor="@color/c_lighter"
-                        android:textSize="14dp" />
+                        android:textSize="14sp" />
 
                 </LinearLayout>
 
@@ -463,7 +463,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/turnoffamayccontrol"
                     android:textColor="@color/c_lighter"
-                    android:textSize="14dp"
+                    android:textSize="14sp"
                     android:checked="false"
                     app:buttonTint="@color/c_lighter" />
 
@@ -500,7 +500,8 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:baselineAligned="false">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -512,19 +513,19 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:layout_marginRight="5dp"
+                            android:layout_marginEnd="5dp"
                             android:text="@string/mininggoal"
                             android:textColor="@color/c_lighter"
-                            android:textSize="14dp" />
+                            android:textSize="14sp" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:layout_marginRight="5dp"
+                            android:layout_marginEnd="5dp"
                             android:text="@string/optional"
                             android:textColor="@color/c_black"
-                            android:textSize="14dp" />
+                            android:textSize="14sp" />
 
                         <android.support.design.button.MaterialButton
                             android:id="@+id/btnMiningGoalHelp"
@@ -545,7 +546,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="0"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:baselineAligned="false">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -570,7 +572,7 @@
                             android:layout_marginBottom="2dp"
                             android:text="XLA"
                             android:textColor="@color/c_lighter"
-                            android:textSize="14dp" />
+                            android:textSize="14sp" />
 
                     </LinearLayout>
 
@@ -583,7 +585,7 @@
                     android:layout_marginTop="5dp"
                     android:text="@string/pauseminingonbattery"
                     android:textColor="@color/c_lighter"
-                    android:textSize="14dp"
+                    android:textSize="14sp"
                     app:buttonTint="@color/c_lighter"/>
 
             </LinearLayout>
@@ -607,7 +609,7 @@
             android:layout_marginBottom="15dp"
             android:backgroundTint="@color/bg_blue"
             android:text="Save"
-            android:textSize="14dp"
+            android:textSize="14sp"
             android:textAllCaps="false"
             android:textColor="@color/c_white"
             app:cornerRadius="25dp" />

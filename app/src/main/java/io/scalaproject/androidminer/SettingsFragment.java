@@ -8,6 +8,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.content.ContextCompat;
 import android.content.Context;
@@ -36,14 +37,12 @@ import android.widget.SeekBar.OnSeekBarChangeListener;
 import io.scalaproject.androidminer.api.PoolItem;
 import io.scalaproject.androidminer.api.ProviderManager;
 
-
 public class SettingsFragment extends Fragment {
 
     private static final String LOG_TAG = "MiningSvc";
 
     private EditText edWorkerName;
     private TextView edAddress;
-    private Button bQrCode;
 
     private Integer INCREMENT = 5;
 
@@ -88,7 +87,7 @@ public class SettingsFragment extends Fragment {
         //edDevFees = view.findViewById(R.id.devfees);
         edMiningGoal = view.findViewById(R.id.mininggoal);
 
-        bQrCode = view.findViewById(R.id.btnQrCode);
+        Button bQrCode = view.findViewById(R.id.btnQrCode);
 
         spPool = view.findViewById(R.id.poolSpinner);
 
@@ -127,7 +126,7 @@ public class SettingsFragment extends Fragment {
         sbCores.setMax(cores);
         tvCoresMax.setText(Integer.toString(cores));
 
-        if (Config.read("cores").equals("") == true) {
+        if (Config.read("cores").equals("")) {
             sbCores.setProgress(suggested);
             tvCoresNb.setText(Integer.toString(suggested));
         } else {
@@ -136,28 +135,28 @@ public class SettingsFragment extends Fragment {
             tvCoresNb.setText(Integer.toString(corenb));
         }
 
-        if (Config.read("maxcputemp").equals("") == false) {
+        if (!Config.read("maxcputemp").equals("")) {
             nMaxCPUTemp = Integer.parseInt(Config.read("maxcputemp"));
         }
         int nProgress = ((nMaxCPUTemp-MIN_CPU_TEMP)/INCREMENT)+1;
         sbCPUTemp.setProgress(nProgress);
         updateCPUTemp();
 
-        if (Config.read("maxbatterytemp").equals("") == false) {
+        if (!Config.read("maxbatterytemp").equals("")) {
             nMaxBatteryTemp = Integer.parseInt(Config.read("maxbatterytemp"));
         }
         nProgress = ((nMaxBatteryTemp-MIN_BATTERY_TEMP)/INCREMENT)+1;
         sbBatteryTemp.setProgress(nProgress);
         updateBatteryTemp();
 
-        if (Config.read("cooldownthreshold").equals("") == false) {
+        if (!Config.read("cooldownthreshold").equals("")) {
             nCooldownTheshold = Integer.parseInt(Config.read("cooldownthreshold"));
         }
         nProgress = ((nCooldownTheshold-MIN_COOLDOWN)/INCREMENT)+1;
         sbCooldown.setProgress(nProgress);
         updateCooldownThreshold();
 
-        boolean disableAmayc = (Config.read("disableamayc").equals("1") == true);
+        boolean disableAmayc = (Config.read("disableamayc").equals("1"));
         if(disableAmayc){
             chkDisableAmayc.setChecked(disableAmayc);
         }
@@ -167,20 +166,20 @@ public class SettingsFragment extends Fragment {
             edDevFees.setText(Config.read("devfees"));
         }*/
 
-        if (Config.read("mininggoal").equals("") == false) {
+        if (!Config.read("mininggoal").equals("")) {
             edMiningGoal.setText(Config.read("mininggoal"));
         }
 
-        boolean checkStatus = (Config.read("pauseonbattery").equals("1") == true);
+        boolean checkStatus = (Config.read("pauseonbattery").equals("1"));
         if(checkStatus){
             chkPauseOnBattery.setChecked(checkStatus);
         }
 
-        if (Config.read("address").equals("") == false) {
+        if (!Config.read("address").equals("")) {
             edAddress.setText(Config.read("address"));
         }
 
-        if (Config.read("workername").equals("") == false) {
+        if (!Config.read("workername").equals("")) {
             edWorkerName.setText(Config.read("workername"));
         }
 
@@ -272,7 +271,7 @@ public class SettingsFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
 
-                if (Config.read("init").equals("1") == true) {
+                if (Config.read("init").equals("1")) {
                     edAddress.setText(Config.read("address"));
                     edWorkerName.setText(Config.read("workername"));
                 }
@@ -309,7 +308,7 @@ public class SettingsFragment extends Fragment {
         }
 
         poolItem = ProviderManager.getPoolById(poolSelected);
-        if (Config.read("init").equals("1") == false) {
+        if (!Config.read("init").equals("1")) {
             poolSelected = Integer.toString(sp);
         }
 
@@ -317,6 +316,7 @@ public class SettingsFragment extends Fragment {
             edPool.setText(Config.read("custom_pool"));
             edPort.setText(Config.read("custom_port"));
         } else if(!Config.read("custom_port").equals("")) {
+            assert poolItem != null;
             edPool.setText(poolItem.getKey());
             edPort.setText(Config.read("custom_port"));
         }else{
@@ -392,7 +392,7 @@ public class SettingsFragment extends Fragment {
                 Config.write("devfees", devfees);*/
 
                 String mininggoal = edMiningGoal.getText().toString().trim();
-                if(mininggoal.equals("") == false) {
+                if(!mininggoal.equals("")) {
                     Config.write("mininggoal", mininggoal);
                 }
 
@@ -403,14 +403,17 @@ public class SettingsFragment extends Fragment {
                 Toast.makeText(appContext, "Settings Saved", Toast.LENGTH_SHORT).show();
 
                 MainActivity main = (MainActivity) getActivity();
+                assert main != null;
                 main.stopMining();
                 main.loadSettings();
                 main.setTitle(getResources().getString(R.string.miner));
 
-                for (Fragment fragment : getFragmentManager().getFragments()) {
-                    if (fragment != null) {
-                        getFragmentManager().beginTransaction().remove(fragment).commit();
-                        ProviderManager.afterSave();
+                if (getFragmentManager() != null) {
+                    for (Fragment fragment : getFragmentManager().getFragments()) {
+                        if (fragment != null) {
+                            getFragmentManager().beginTransaction().remove(fragment).commit();
+                            ProviderManager.afterSave();
+                        }
                     }
                 }
 
@@ -474,7 +477,7 @@ public class SettingsFragment extends Fragment {
                     }
                 }
                 else {
-                    Toast.makeText(appContext, "This version of Android does not support Qr Code", Toast.LENGTH_LONG);
+                    Toast.makeText(appContext, "This version of Android does not support Qr Code.", Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -582,7 +585,7 @@ public class SettingsFragment extends Fragment {
             Intent intent = new Intent(appContext, QrCodeScannerActivity.class);
             startActivity(intent);
         }catch (Exception e) {
-            Toast.makeText(appContext, e.getMessage(), Toast.LENGTH_LONG);
+            Toast.makeText(appContext, e.getMessage(), Toast.LENGTH_LONG).show();
         }
     }
 
@@ -594,7 +597,7 @@ public class SettingsFragment extends Fragment {
                 startQrCodeActivity();
             }
             else {
-                Toast.makeText(appContext,"Camera Permission Denied", Toast.LENGTH_LONG);
+                Toast.makeText(appContext,"Camera Permission Denied.", Toast.LENGTH_LONG).show();
             }
         }
     }
@@ -608,14 +611,12 @@ public class SettingsFragment extends Fragment {
         edAddress.setText(address);
     }
 
-    public class PoolSpinAdapter extends ArrayAdapter<String> {
+    public static class PoolSpinAdapter extends ArrayAdapter<String> {
 
-        private Context context;
         private String[] values;
 
-        public PoolSpinAdapter(Context c, int textViewResourceId, String[] values) {
+        PoolSpinAdapter(Context c, int textViewResourceId, String[] values) {
             super(c, textViewResourceId, values);
-            this.context = c;
             this.values = values;
         }
 
@@ -638,8 +639,9 @@ public class SettingsFragment extends Fragment {
             return position;
         }
 
+        @NonNull
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
+        public View getView(int position, View convertView, @NonNull ViewGroup parent) {
 
             TextView label = (TextView) super.getView(position, convertView, parent);
             label.setText(values[position]);
@@ -647,7 +649,7 @@ public class SettingsFragment extends Fragment {
         }
 
         @Override
-        public View getDropDownView(int position, View convertView, ViewGroup parent) {
+        public View getDropDownView(int position, View convertView, @NonNull ViewGroup parent) {
             TextView label = (TextView) super.getDropDownView(position, convertView, parent);
             label.setText(values[position]);
             label.setPadding(5, 10, 5, 10);
