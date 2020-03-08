@@ -46,6 +46,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
                 android:gravity="start"
                 android:orientation="horizontal">
 
@@ -66,31 +67,6 @@
                     android:textSize="14sp"/>
 
             </LinearLayout>
-
-                <android.support.v7.widget.AppCompatTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dp"
-                    android:text="System Info"
-                    android:layout_gravity="start"
-                    android:textSize="14sp"
-                    android:textColor="@color/c_white"
-                    android:textStyle="bold"
-                    android:layout_marginTop="20sp"/>
-
-                <android.support.v7.widget.AppCompatTextView
-                    android:id="@+id/systemInfo"
-                    android:layout_width="match_parent"
-                    android:layout_height="75dp"
-                    android:layout_marginBottom="5dp"
-                    android:scrollbars="vertical"
-                    android:textSize="12sp"
-                    android:textColor="@color/c_grey"
-                    android:paddingTop="5pt"
-                    android:paddingBottom="5pt"
-                    android:paddingLeft="15dp"
-                    android:paddingRight="15dp"
-                    android:background="@drawable/corner_radius_black"/>
 
                 <android.support.design.button.MaterialButton
                     android:id="@+id/btnDebugInfo"
@@ -412,5 +388,10 @@
         </ScrollView>
 
     </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"/>
 
 </RelativeLayout>

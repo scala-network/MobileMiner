@@ -10,20 +10,15 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
-import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.Map;
 
 public class AboutFragment extends Fragment {
-
-    private Button bDonate;
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -32,9 +27,6 @@ public class AboutFragment extends Fragment {
         TextView tvBuild, tvSystemInfo, tvScala, tvMine2gether, tvMonerominer, tvFontAwesome;
 
         tvBuild = view.findViewById(R.id.build);
-
-        tvSystemInfo = view.findViewById(R.id.systemInfo);
-        tvSystemInfo.setMovementMethod(new ScrollingMovementMethod());
 
         tvScala = view.findViewById(R.id.ScalaURL);
         tvMine2gether = view.findViewById(R.id.Mine2getherURL);
@@ -106,7 +98,6 @@ public class AboutFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Utils.copyToClipboard("Scala BTC Donation Address", Utils.SCALA_BTC_ADDRESS);
-                Toast.makeText(getContext(), getResources().getString(R.string.donationadressbtc_copied), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -115,7 +106,6 @@ public class AboutFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Utils.copyToClipboard("Scala ETH Donation Address", Utils.SCALA_ETH_ADDRESS);
-                Toast.makeText(getContext(), getResources().getString(R.string.donationadresseth_copied), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -124,29 +114,26 @@ public class AboutFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Utils.copyToClipboard("Scala XLA Donation Address", Utils.SCALA_XLA_ADDRESS);
-                Toast.makeText(getContext(), getResources().getString(R.string.donationadressxla_copied), Toast.LENGTH_SHORT).show();
             }
         });
 
-        String cpuinfo = Config.read("CPUINFO").trim();
-        if(cpuinfo.isEmpty()) {
+        StringBuilder cpuinfo = new StringBuilder(Config.read("CPUINFO").trim());
+        if(cpuinfo.length() == 0) {
             try {
                 Map<String, String> m = Tools.getCPUInfo();
 
-                cpuinfo = "ABI: " + Tools.getABI() + "\n";
+                cpuinfo = new StringBuilder("ABI: " + Tools.getABI() + "\n");
                 for (Map.Entry<String, String> pair : m.entrySet()) {
-                    cpuinfo += pair.getKey() + ": " + pair.getValue() + "\n";
+                    cpuinfo.append(pair.getKey()).append(": ").append(pair.getValue()).append("\n");
                 }
             } catch (Exception e) {
-                cpuinfo = "";
+                cpuinfo = new StringBuilder();
             }
 
-            Config.write("CPUINFO", cpuinfo.trim());
+            Config.write("CPUINFO", cpuinfo.toString().trim());
         }
 
         tvBuild.setText(BuildConfig.VERSION_NAME + " (" + BuildConfig.BUILD_TIME + ")");
-
-        tvSystemInfo.setText(cpuinfo);
 
         tvScala.setText(Html.fromHtml(getString(R.string.ScalaLink)));
         tvScala.setMovementMethod(LinkMovementMethod.getInstance());
@@ -169,7 +156,6 @@ public class AboutFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Utils.copyToClipboard("Scala Miner Debug Info", sDebugInfo);
-                Toast.makeText(getContext(), getResources().getString(R.string.debuginfo_copied), Toast.LENGTH_SHORT).show();
             }
         });
 
