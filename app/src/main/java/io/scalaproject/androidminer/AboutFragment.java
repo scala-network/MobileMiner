@@ -5,7 +5,6 @@ package io.scalaproject.androidminer;
 
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -144,7 +143,7 @@ public class AboutFragment extends Fragment {
 
             Config.write("CPUINFO", cpuinfo.trim());
         }
-
+        
         tvBuild.setText(BuildConfig.VERSION_NAME + " (" + BuildConfig.BUILD_TIME + ")");
 
         tvSystemInfo.setText(cpuinfo);
@@ -160,6 +159,19 @@ public class AboutFragment extends Fragment {
 
         tvFontAwesome.setText(Html.fromHtml(getString(R.string.FontAwesomeLink)));
         tvFontAwesome.setMovementMethod(LinkMovementMethod.getInstance());
+
+        String sDebugInfo = "Version Code: " + BuildConfig.VERSION_CODE + "\n" +
+                "Version Name: " + BuildConfig.VERSION_NAME + "\n" +
+                "Build Time: " + BuildConfig.BUILD_TIME + "\n\n" +
+                "CPU Info: " + cpuinfo;
+        Button btnDebugInfo = view.findViewById(R.id.btnDebugInfo);
+        btnDebugInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Utils.copyToClipboard("Scala Miner Debug Info", sDebugInfo);
+                Toast.makeText(getContext(), getResources().getString(R.string.debuginfo_copied), Toast.LENGTH_SHORT);
+            }
+        });
 
         return view;
     }

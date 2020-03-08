@@ -95,10 +95,12 @@
     <string name="miningbackground">Scala Miner is still mining in the background.</string>
     <string name="donationsinfo">Donations support the contributors and help pay for the project infrastructure.</string>
     <string name="donationadresses">Donation Addresses</string>
-    <string name="donationadressbtc_copied">BTC Donation Address copied!</string>
-    <string name="donationadresseth_copied">ETH Donation Address copied!</string>
-    <string name="donationadressxla_copied">XLA Donation Address copied!</string>
+    <string name="donationadressbtc_copied">BTC Donation Address copied.</string>
+    <string name="donationadresseth_copied">ETH Donation Address copied.</string>
+    <string name="donationadressxla_copied">XLA Donation Address copied.</string>
     <string name="statictempcontrol">Switched to static temperature control.</string>
+    <string name="debuginfo">Debug Info</string>
+    <string name="debuginfo_copied">Debug Information copied.</string>
 
     <string name="donate_help">If you would like to help build this project, feel free to specify a donation level here.\n\nFor example, a value of 5 will make your device mine 5 minutes out of 100 to fund Scala project.\n\nThe default value is 0.</string>
     <string name="mininggoal_help">The mining goal should reflect the pool payout setting, but you can also specify a custom value for your device.\n\nThe default value is the minimum payout value of the specified mining pool.</string>
@@ -110,6 +112,6 @@
     <string name="shares_help">Your mining reward is based on the amount of shares that contributed to the resolution of a block.</string>
     <string name="donation_addresses_help">If you would like to help build this project, you can send BTC, ETH or XLA to the project\'s wallet.\n\nDonations support the contributors and help the team pay for the project expenses. Thanks for your support!</string>
 
-    <string name="aboutapplication">The Scala Miner is an open-source cryptocurrency miner for all latest Android devices</string>
-    <string name="disclaimerText">Running your CPU at a high intensity for a prolonged duration may result in negative effects such as: battery drainage, slow response time, overheating, and may cause permanent damage to your device.\n\nWe recommend using the Tempetature Settings and a low amount of CPU Cores to prevent your device from being damaged.\n\nBy using this application, you assume full responsibility for any damage that may be caused to your device, property or self.</string>
+    <string name="aboutapplication">An open-source cryptocurrency miner for Android devices</string>
+    <string name="disclaimerText">Running your CPU at a high intensity for a prolonged duration may result in negative effects such as: battery drainage, slow response time, overheating, and may cause permanent damage to your device.\n\nWe recommend using the Temperature Settings and a low amount of CPU Cores to prevent your device from being damaged.\n\nBy using this application, you assume full responsibility for any damage that may be caused to your device, property or self.</string>
 </resources>
