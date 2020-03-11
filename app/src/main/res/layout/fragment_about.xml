@@ -227,6 +227,84 @@
 
                 </LinearLayout>
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="5dp"
+                    android:orientation="horizontal">
+
+                    <android.support.v7.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="@string/donationadresses"
+                        android:textSize="14sp"
+                        android:textColor="@color/c_white"
+                        android:textStyle="bold"/>
+
+                    <android.support.design.button.MaterialButton
+                        android:id="@+id/btnDonationsHelp"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:backgroundTint="@color/bg_grey"
+                        app:cornerRadius="5dp"
+                        app:icon="@drawable/ic_help"
+                        app:iconGravity="textStart"
+                        app:iconPadding="0dp"
+                        app:iconTint="@color/c_lighter" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <android.support.design.button.MaterialButton
+                        android:id="@+id/btnDonateBTC"
+                        android:layout_width="100dp"
+                        android:layout_height="45dp"
+                        android:backgroundTint="@color/bg_lighter"
+                        android:insetLeft="2dp"
+                        android:insetRight="2dp"
+                        android:text="BTC"
+                        android:textSize="14sp"
+                        android:textColor="@color/c_white"
+                        app:cornerRadius="5dp"
+                        app:iconPadding="0dp"
+                        app:icon="@drawable/ic_copy"/>
+
+                    <android.support.design.button.MaterialButton
+                        android:id="@+id/btnDonateETH"
+                        android:layout_width="100dp"
+                        android:layout_height="45dp"
+                        android:backgroundTint="@color/bg_lighter"
+                        android:insetLeft="2dp"
+                        android:insetRight="2dp"
+                        android:text="ETH"
+                        android:textSize="14sp"
+                        android:textColor="@color/c_white"
+                        app:cornerRadius="5dp"
+                        app:iconPadding="0dp"
+                        app:icon="@drawable/ic_copy"/>
+
+                    <android.support.design.button.MaterialButton
+                        android:id="@+id/btnDonateXLA"
+                        android:layout_width="100dp"
+                        android:layout_height="45dp"
+                        android:backgroundTint="@color/bg_lighter"
+                        android:insetLeft="2dp"
+                        android:insetRight="2dp"
+                        android:text="XLA"
+                        android:textSize="14sp"
+                        android:textColor="@color/c_white"
+                        app:cornerRadius="5dp"
+                        app:iconPadding="0dp"
+                        app:icon="@drawable/ic_copy"/>
+
+                </LinearLayout>
+
                 <android.support.v7.widget.AppCompatTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -302,84 +380,6 @@
                         app:cornerRadius="5dp"
                         app:iconPadding="0dp"
                         app:icon="@drawable/ic_telegram"/>
-
-                </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="5dp"
-                android:orientation="horizontal">
-
-                <android.support.v7.widget.AppCompatTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:text="@string/donationadresses"
-                    android:textSize="14sp"
-                    android:textColor="@color/c_white"
-                    android:textStyle="bold"/>
-
-                <android.support.design.button.MaterialButton
-                    android:id="@+id/btnDonationsHelp"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:backgroundTint="@color/bg_grey"
-                    app:cornerRadius="5dp"
-                    app:icon="@drawable/ic_help"
-                    app:iconGravity="textStart"
-                    app:iconPadding="0dp"
-                    app:iconTint="@color/c_lighter" />
-
-            </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <android.support.design.button.MaterialButton
-                        android:id="@+id/btnDonateBTC"
-                        android:layout_width="100dp"
-                        android:layout_height="45dp"
-                        android:backgroundTint="@color/bg_lighter"
-                        android:insetLeft="2dp"
-                        android:insetRight="2dp"
-                        android:text="BTC"
-                        android:textSize="14sp"
-                        android:textColor="@color/c_white"
-                        app:cornerRadius="5dp"
-                        app:iconPadding="0dp"
-                        app:icon="@drawable/ic_copy"/>
-
-                    <android.support.design.button.MaterialButton
-                        android:id="@+id/btnDonateETH"
-                        android:layout_width="100dp"
-                        android:layout_height="45dp"
-                        android:backgroundTint="@color/bg_lighter"
-                        android:insetLeft="2dp"
-                        android:insetRight="2dp"
-                        android:text="ETH"
-                        android:textSize="14sp"
-                        android:textColor="@color/c_white"
-                        app:cornerRadius="5dp"
-                        app:iconPadding="0dp"
-                        app:icon="@drawable/ic_copy"/>
-
-                    <android.support.design.button.MaterialButton
-                        android:id="@+id/btnDonateXLA"
-                        android:layout_width="100dp"
-                        android:layout_height="45dp"
-                        android:backgroundTint="@color/bg_lighter"
-                        android:insetLeft="2dp"
-                        android:insetRight="2dp"
-                        android:text="XLA"
-                        android:textSize="14sp"
-                        android:textColor="@color/c_white"
-                        app:cornerRadius="5dp"
-                        app:iconPadding="0dp"
-                        app:icon="@drawable/ic_copy"/>
 
                 </LinearLayout>
 

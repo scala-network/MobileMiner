@@ -15,7 +15,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
 import java.util.Map;
 
 public class AboutFragment extends Fragment {
@@ -24,7 +29,7 @@ public class AboutFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_about, container, false);
 
-        TextView tvBuild, tvSystemInfo, tvScala, tvMine2gether, tvMonerominer, tvFontAwesome;
+        TextView tvBuild, tvScala, tvMine2gether, tvMonerominer, tvFontAwesome;
 
         tvBuild = view.findViewById(R.id.build);
 
@@ -98,6 +103,7 @@ public class AboutFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Utils.copyToClipboard("Scala BTC Donation Address", Utils.SCALA_BTC_ADDRESS);
+                Toast.makeText(getContext(), getResources().getString(R.string.donationadressbtc_copied), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -106,6 +112,7 @@ public class AboutFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Utils.copyToClipboard("Scala ETH Donation Address", Utils.SCALA_ETH_ADDRESS);
+                Toast.makeText(getContext(), getResources().getString(R.string.donationadresseth_copied), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -114,6 +121,7 @@ public class AboutFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Utils.copyToClipboard("Scala XLA Donation Address", Utils.SCALA_XLA_ADDRESS);
+                Toast.makeText(getContext(), getResources().getString(R.string.donationadressxla_copied), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -133,7 +141,12 @@ public class AboutFragment extends Fragment {
             Config.write("CPUINFO", cpuinfo.toString().trim());
         }
 
-        tvBuild.setText(BuildConfig.VERSION_NAME + " (" + BuildConfig.BUILD_TIME + ")");
+        // Convert build time to readable date
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(BuildConfig.BUILD_TIME);
+        String build_time = DateFormat.getDateInstance(DateFormat.LONG).format(calendar.getTime());
+
+        tvBuild.setText(BuildConfig.VERSION_NAME + " (" + build_time + ")");
 
         tvScala.setText(Html.fromHtml(getString(R.string.ScalaLink)));
         tvScala.setMovementMethod(LinkMovementMethod.getInstance());
@@ -147,15 +160,20 @@ public class AboutFragment extends Fragment {
         tvFontAwesome.setText(Html.fromHtml(getString(R.string.FontAwesomeLink)));
         tvFontAwesome.setMovementMethod(LinkMovementMethod.getInstance());
 
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy hh:mm", Locale.ENGLISH);
+        String build_time_debug = formatter.format(calendar.getTime());
+
         String sDebugInfo = "Version Code: " + BuildConfig.VERSION_CODE + "\n" +
                 "Version Name: " + BuildConfig.VERSION_NAME + "\n" +
-                "Build Time: " + BuildConfig.BUILD_TIME + "\n\n" +
+                "Build Time: " + build_time_debug + "\n\n" +
                 "CPU Info: " + cpuinfo;
+
         Button btnDebugInfo = view.findViewById(R.id.btnDebugInfo);
         btnDebugInfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Utils.copyToClipboard("Scala Miner Debug Info", sDebugInfo);
+                Toast.makeText(getContext(), getResources().getString(R.string.debuginfo_copied), Toast.LENGTH_SHORT).show();
             }
         });
 
