@@ -85,6 +85,7 @@ Donations setting has been set to 0% in the XLArig lib embedded within the appli
 * Original code from [MoneroMiner](https://github.com/upost/MoneroMiner)
 
 ## Contacts
+* [website](https://scalaproject.io/)
 * hello@scalaproject.io
 * [Discord](https://discord.gg/djAFVvy)
 * [Twitter](https://twitter.com/scalahq)
