@@ -101,6 +101,9 @@
     <string name="statictempcontrol">Switched to static temperature control.</string>
     <string name="debuginfo">Debug Info</string>
     <string name="debuginfo_copied">Debug Information copied.</string>
+    <string name="pooloptions">Pool Options</string>
+    <string name="usernameparametershint">Username parameters</string>
+    <string name="workernamehint">Worker name or password</string>
 
     <string name="donate_help">If you would like to help build this project, feel free to specify a donation level here.\n\nFor example, a value of 5 will make your device mine 5 minutes out of 100 to fund Scala project.\n\nThe default value is 0.</string>
     <string name="mininggoal_help">The mining goal should reflect the pool payout setting, but you can also specify a custom value for your device.\n\nThe default value is the minimum payout value of the specified mining pool.</string>
@@ -111,6 +114,7 @@
     <string name="temp_control_ownrisks">Turning this feature off might cause damage to your device. Do it at your own risk!</string>
     <string name="shares_help">Your mining reward is based on the amount of shares that contributed to the resolution of a block.</string>
     <string name="donation_addresses_help">If you would like to help build this project, you can send BTC, ETH or XLA to the project\'s wallet.\n\nDonations support the contributors and help the team pay for the project expenses. Thanks for your support!</string>
+    <string name="pool_options_help">These parameters are optional, you can leave them blank if you don\'t know what they represent.\n\nTo add a fixed difficulty or a paymentid, specify it in the \'Username parameters\' field.\n\nFor example, enter \'+35000\' to configure a static difficulty of 35000. Make sure you follow the selected pool configuration.</string>
 
     <string name="aboutapplication">An open-source cryptocurrency miner for Android devices</string>
     <string name="disclaimerText">Running your CPU at a high intensity for a prolonged duration may result in negative effects such as: battery drainage, slow response time, overheating, and may cause permanent damage to your device.\n\nWe recommend using the Temperature Settings and a low amount of CPU Cores to prevent your device from being damaged.\n\nBy using this application, you assume full responsibility for any damage that may be caused to your device, property or self.</string>

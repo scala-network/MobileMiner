@@ -11,7 +11,7 @@ import java.util.HashMap;
 public class Config {
     final static String[] SUPPORTED_ARCHITECTURES = {"arm64-v8a", "armeabi-v7a"};
 
-    private static Config mSettings ;
+    private static Config mSettings;
     private SharedPreferences preferences;
 
     static final int DefaultPoolIndex = 1;
@@ -19,7 +19,7 @@ public class Config {
     static final String miner_xlarig = "xlarig";
     static final String algo = "defyx";
 
-    public static final String version = "1.0.0";
+    public static final String version = "2";
     static final Integer logMaxLength = 50000;
     static final Integer logPruneLength = 1000;
 
@@ -34,6 +34,7 @@ public class Config {
         if(!key.startsWith("system:")) {
             mSettings.preferences.edit().putString(key, value).apply();
         }
+
         if(value.isEmpty()) {
             return;
         }
@@ -47,7 +48,6 @@ public class Config {
     }
 
     public static String read(String key) {
-
         if(!key.startsWith("system:")) {
             return mSettings.preferences.getString(key, "");
         }

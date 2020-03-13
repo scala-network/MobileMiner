@@ -166,6 +166,7 @@ public class AboutFragment extends Fragment {
         String sDebugInfo = "Version Code: " + BuildConfig.VERSION_CODE + "\n" +
                 "Version Name: " + BuildConfig.VERSION_NAME + "\n" +
                 "Build Time: " + build_time_debug + "\n\n" +
+                "Device Name: " + Tools.getDeviceName() + "\n" +
                 "CPU Info: " + cpuinfo;
 
         Button btnDebugInfo = view.findViewById(R.id.btnDebugInfo);

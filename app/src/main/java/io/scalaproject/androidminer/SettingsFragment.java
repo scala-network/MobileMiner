@@ -41,8 +41,7 @@ public class SettingsFragment extends Fragment {
 
     private static final String LOG_TAG = "MiningSvc";
 
-    private EditText edWorkerName;
-    private TextView edAddress;
+    private EditText edAddress, edWorkerName, edUsernameparameters;
 
     private Integer INCREMENT = 5;
 
@@ -61,8 +60,8 @@ public class SettingsFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
         ProviderManager.generate();
+
         Button bSave;
         EditText edPool, edPort, edMiningGoal;
         //EditText edDevFees;
@@ -82,6 +81,7 @@ public class SettingsFragment extends Fragment {
         edAddress = view.findViewById(R.id.address);
         edPool = view.findViewById(R.id.pool);
         edPort = view.findViewById(R.id.port);
+        edUsernameparameters = view.findViewById(R.id.usernameparameters);
         edWorkerName = view.findViewById(R.id.workername);
 
         //edDevFees = view.findViewById(R.id.devfees);
@@ -179,6 +179,10 @@ public class SettingsFragment extends Fragment {
             edAddress.setText(Config.read("address"));
         }
 
+        if (!Config.read("usernameparameters").equals("")) {
+            edUsernameparameters.setText(Config.read("usernameparameters"));
+        }
+
         if (!Config.read("workername").equals("")) {
             edWorkerName.setText(Config.read("workername"));
         }
@@ -270,9 +274,9 @@ public class SettingsFragment extends Fragment {
 
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
-
                 if (Config.read("init").equals("1")) {
                     edAddress.setText(Config.read("address"));
+                    edUsernameparameters.setText(Config.read("usernameparameters"));
                     edWorkerName.setText(Config.read("workername"));
                 }
 
@@ -339,6 +343,8 @@ public class SettingsFragment extends Fragment {
                 }
                 Config.write("address", address);
 
+                Config.write("usernameparameters", edUsernameparameters.getText().toString().trim());
+
                 String workername = edWorkerName.getText().toString().trim();
                 if(workername.equals("")) {
                     workername = Tools.getDeviceName();
@@ -364,7 +370,7 @@ public class SettingsFragment extends Fragment {
                 String port = edPort.getText().toString().trim();
                 String pool = edPool.getText().toString().trim();
 
-                Log.i(LOG_TAG,"PoolType : " + Integer.toString(pi.getPoolType()));
+                Log.i(LOG_TAG,"PoolType : " + pi.getPoolType());
                 if(pi.getPoolType() == 0) {
                     Config.write("custom_pool", pool);
                     Config.write("custom_port", port);
@@ -376,7 +382,7 @@ public class SettingsFragment extends Fragment {
                     Config.write("custom_pool", "");
                 }
 
-                Log.i(LOG_TAG,"SelectedPool : " + Integer.toString(selectedPosition));
+                Log.i(LOG_TAG,"SelectedPool : " + selectedPosition);
                 Config.write("selected_pool", Integer.toString(selectedPosition));
                 Config.write("cores", Integer.toString(sbCores.getProgress()));
                 Config.write("threads", "1"); // Default value
@@ -482,6 +488,16 @@ public class SettingsFragment extends Fragment {
             }
         });
 
+        Button btnPoolOptionsHelp = view.findViewById(R.id.btnPoolOptionsHelp);
+        btnPoolOptionsHelp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // inflate the layout of the popup window
+                View popupView = inflater.inflate(R.layout.helper_pool_options, null);
+                Utils.showPopup(v, inflater, popupView);
+            }
+        });
+
         /*Button bDonateHelp = view.findViewById(R.id.btnDonateHelp);
         bDonateHelp.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -545,10 +561,6 @@ public class SettingsFragment extends Fragment {
         return view;
     }
 
-    private void saveConfig() {
-
-    }
-
     private Integer getCPUTemp() {
         return ((sbCPUTemp.getProgress() - 1) * INCREMENT) + MIN_CPU_TEMP;
     }
@@ -585,7 +597,7 @@ public class SettingsFragment extends Fragment {
             Intent intent = new Intent(appContext, QrCodeScannerActivity.class);
             startActivity(intent);
         }catch (Exception e) {
-            Toast.makeText(appContext, e.getMessage(), Toast.LENGTH_LONG).show();
+            Toast.makeText(appContext, e.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -642,7 +654,6 @@ public class SettingsFragment extends Fragment {
         @NonNull
         @Override
         public View getView(int position, View convertView, @NonNull ViewGroup parent) {
-
             TextView label = (TextView) super.getView(position, convertView, parent);
             label.setText(values[position]);
             return label;

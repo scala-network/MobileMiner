@@ -118,12 +118,15 @@ public class Tools {
         }
 
     }
+
     static String getDeviceName() {
         String manufacturer = Build.MANUFACTURER;
         String model = Build.MODEL;
+
         if (model.startsWith(manufacturer)) {
             return capitalize(model);
         }
+
         return capitalize(manufacturer) + " " + model;
     }
 
@@ -202,7 +205,7 @@ public class Tools {
                 .replace("$algo$", miningConfig.algo)
                 .replace("$url$", miningConfig.pool)
                 .replace("$username$", miningConfig.username)
-                .replace("$pass$", miningConfig.pass)
+                .replace("$pass$", miningConfig.password)
 
                 .replace("$legacythreads$", Integer.toString(miningConfig.legacyThreads))
                 .replace("$legacyintensity$", Integer.toString(miningConfig.legacyIntensity))
@@ -264,15 +267,18 @@ public class Tools {
         } else {
             abiString = Build.CPU_ABI;
         }
+
         return abiString.toLowerCase().trim();
     }
 
     static float getCurrentCPUTemperature() {
         String file = readFile("/sys/devices/virtual/thermal/thermal_zone0/temp", '\n',new byte[4096]);
         float output = 0.0f;
+
         if (file != null) {
             output = (float) Long.parseLong(file);
         }
+
         if(output > 0.0f && Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
             output = output / 1000;
         }
@@ -281,8 +287,8 @@ public class Tools {
     }
 
     private static String readFile(String file, char endChar, byte[] mBuffer) {
-
         StrictMode.ThreadPolicy savedPolicy = StrictMode.allowThreadDiskReads();
+
         try (FileInputStream is = new FileInputStream(file)) {
             int len = is.read(mBuffer);
             is.close();
@@ -301,6 +307,7 @@ public class Tools {
         } finally {
             StrictMode.setThreadPolicy(savedPolicy);
         }
+
         return null;
     }
 
@@ -334,7 +341,6 @@ public class Tools {
     }
 
     static public  String getReadableHashRateString(long hashrate) {
-
         BigDecimal bn = new BigDecimal(hashrate);
         BigDecimal bnThousand = new BigDecimal(1000);
 

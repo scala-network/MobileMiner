@@ -85,27 +85,6 @@
 
                 </LinearLayout>
 
-                <android.support.v7.widget.AppCompatEditText
-                    android:id="@+id/workername"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Worker name or pool options"
-                    android:text=""
-                    android:textColor="@color/c_lighter"
-                    android:textColorHint="@color/c_black"
-                    android:textSize="14sp" />
-
-                <android.support.v7.widget.AppCompatTextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginBottom="5dp"
-                    android:gravity="start"
-                    android:text="@string/wallet"
-                    android:textColor="@color/c_white"
-                    android:textSize="14sp"
-                    android:textStyle="bold" />
-
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -117,7 +96,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:hint="Your wallet address"
+                        android:hint="Wallet address"
                         android:textColor="@color/c_lighter"
                         android:textColorHint="@color/c_black"
                         android:textSize="14sp" />
@@ -145,6 +124,56 @@
                         app:iconPadding="0dp" />
 
                 </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginEnd="5dp"
+                        android:text="@string/options"
+                        android:textColor="@color/c_grey"
+                        android:textStyle="bold"
+                        android:textSize="14sp" />
+
+                    <android.support.design.button.MaterialButton
+                        android:id="@+id/btnPoolOptionsHelp"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:backgroundTint="@color/bg_grey"
+                        app:cornerRadius="5dp"
+                        app:icon="@drawable/ic_help"
+                        app:iconGravity="textStart"
+                        app:iconPadding="0dp"
+                        app:iconTint="@color/c_grey" />
+
+                </LinearLayout>
+
+                <android.support.v7.widget.AppCompatEditText
+                    android:id="@+id/usernameparameters"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/usernameparametershint"
+                    android:text=""
+                    android:textColor="@color/c_lighter"
+                    android:textColorHint="@color/c_black"
+                    android:textSize="14sp" />
+
+                <android.support.v7.widget.AppCompatEditText
+                    android:id="@+id/workername"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/workernamehint"
+                    android:text=""
+                    android:textColor="@color/c_lighter"
+                    android:textColorHint="@color/c_black"
+                    android:textSize="14sp" />
 
                 <android.support.v7.widget.AppCompatTextView
                     android:layout_width="match_parent"

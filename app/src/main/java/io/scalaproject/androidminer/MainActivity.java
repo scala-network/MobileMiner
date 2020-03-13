@@ -62,7 +62,6 @@ import android.text.Spannable;
 import android.view.LayoutInflater;
 
 import java.io.UnsupportedEncodingException;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -237,7 +236,6 @@ public class MainActivity extends BaseActivity
         tvLog.setMovementMethod(new ScrollingMovementMethod());
 
         tvSpeed = findViewById(R.id.speed);
-        TextView tvHs = findViewById(R.id.hs);
 
         imStatus = findViewById(R.id.statusicon);
         tvStatus = findViewById(R.id.status);
@@ -668,7 +666,7 @@ public class MainActivity extends BaseActivity
             return;
         }
 
-        String pass = Config.read("pass");
+        String password = Config.read("workername");
         String address = Config.read("address");
 
         if (!Utils.verifyAddress(address)) {
@@ -681,12 +679,14 @@ public class MainActivity extends BaseActivity
             return;
         }
 
+        String username = address + Config.read("usernameparameters");
+
         resetOptions();
 
         MiningService s = binder.getService();
         MiningService.MiningConfig cfg = s.newConfig(
-                address,
-                pass,
+                username,
+                password,
                 nCores,
                 nThreads,
                 nIntensity

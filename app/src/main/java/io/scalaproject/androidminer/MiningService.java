@@ -158,20 +158,18 @@ public class MiningService extends Service {
     }
 
     static class MiningConfig {
-        String username, pool, pass, algo, assetExtension, cpuConfig, poolHost, poolPort;
+        String username, pool, password, algo, assetExtension, cpuConfig, poolHost, poolPort;
         int cores, threads, intensity, legacyThreads, legacyIntensity;
     }
 
-    public MiningConfig newConfig(String username, String pass, int cores, int threads, int intensity) {
-
+    public MiningConfig newConfig(String address, String password, int cores, int threads, int intensity) {
         MiningConfig config = new MiningConfig();
         PoolItem pi = ProviderManager.getSelectedPool();
-        config.username = username;
-//        config.pool = pi.getPool() + ":" + pi.getPort();
+        config.username = address;
         config.cores = cores;
         config.threads = threads;
         config.intensity = intensity;
-        config.pass = pass;
+        config.password = password;
         config.algo = Config.algo;
         config.assetExtension = Config.miner_xlarig;
 
