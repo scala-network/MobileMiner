@@ -1,6 +1,6 @@
 # Scala Android Miner
 
-A high performance and open source application for mining Scala on Android mobile devices.
+A high performance and open-source application for mining Scala on Android mobile devices.
 
 <p align="left">
   <img src="https://scalaproject.io/assets/img/mobile-miner.png" width="350" title="hover text">
@@ -85,7 +85,7 @@ Donations setting has been set to 0% in the XLArig lib embedded within the appli
 * Original code from [MoneroMiner](https://github.com/upost/MoneroMiner)
 
 ## Contacts
-* [website](https://scalaproject.io/)
+* [Website](https://scalaproject.io/)
 * hello@scalaproject.io
 * [Discord](https://discord.gg/djAFVvy)
 * [Twitter](https://twitter.com/scalahq)
