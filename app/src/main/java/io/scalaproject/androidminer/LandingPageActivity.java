@@ -104,13 +104,12 @@ public class LandingPageActivity extends BaseActivity {
         dialog.setTitle("Disclaimer");
         dialog.setCancelable(false);
 
-        Config.write("disclaimer_agreed", "1");
-
         Button btnOK = dialog.findViewById(R.id.btnAgree);
 
         btnOK.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Config.write("disclaimer_agreed", "1");
                 dialog.dismiss();
             }
         });
