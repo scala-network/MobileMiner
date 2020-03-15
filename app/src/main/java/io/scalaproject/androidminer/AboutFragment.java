@@ -160,7 +160,7 @@ public class AboutFragment extends Fragment {
         tvFontAwesome.setText(Html.fromHtml(getString(R.string.FontAwesomeLink)));
         tvFontAwesome.setMovementMethod(LinkMovementMethod.getInstance());
 
-        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy hh:mm", Locale.ENGLISH);
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy hh:mm a", Locale.ENGLISH);
         String build_time_debug = formatter.format(calendar.getTime());
 
         String sDebugInfo = "Version Code: " + BuildConfig.VERSION_CODE + "\n" +

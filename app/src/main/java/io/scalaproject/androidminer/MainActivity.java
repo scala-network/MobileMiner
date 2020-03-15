@@ -158,15 +158,6 @@ public class MainActivity extends BaseActivity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        SharedPreferences preferences = getSharedPreferences(getPackageName() + "_preferences", MODE_PRIVATE);
-        Config.initialize(preferences);
-
-        String configversion = Config.read("config_version");
-        if(!configversion.equals(Config.version)) {
-            Config.clear();
-            Config.write("config_version", Config.version);
-        }
-
         contextOfApplication = getApplicationContext();
 
         if (wl != null) {
@@ -180,12 +171,6 @@ public class MainActivity extends BaseActivity
         wl.acquire(10*60*1000L /*10 minutes*/);
 
         registerReceiver(batteryInfoReceiver, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
-
-        String isshowagain = Config.read("show_again");
-
-        if (isshowagain.equals("")) {
-            showDisclaimer();
-        }
 
         super.onCreate(savedInstanceState);
         if ((getIntent().getFlags() & Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT) != 0) {
@@ -602,7 +587,9 @@ public class MainActivity extends BaseActivity
                 break;
 
         }
+
         drawer.closeDrawer(GravityCompat.START);
+
         return true;
     }
 
@@ -632,30 +619,6 @@ public class MainActivity extends BaseActivity
 
         nCores = Integer.parseInt(Config.read("cores"));
         nIntensity = Integer.parseInt(Config.read("intensity"));
-    }
-
-    private void showDisclaimer() {
-        final Dialog dialog = new Dialog(this);
-        dialog.setContentView(R.layout.disclaimer);
-        dialog.setTitle("Disclaimer");
-        dialog.setCancelable(false);
-        Button dialogButton = (Button) dialog.findViewById(R.id.btnAgree);
-        Button exitButton = (Button) dialog.findViewById(R.id.btnExit);
-        dialogButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                accepted = true;
-                Config.write("show_again", "1");
-                dialog.dismiss();
-            }
-        });
-        exitButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                MainActivity.this.finish();
-            }
-        });
-        dialog.show();
     }
 
     private void startMining() {

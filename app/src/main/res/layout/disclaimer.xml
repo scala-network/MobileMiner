@@ -38,44 +38,20 @@
                 android:textSize="14sp"
                 android:text="@string/disclaimerText" />
 
-            <LinearLayout
+            <android.support.design.button.MaterialButton
+                android:id="@+id/btnAgree"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dip"
-                android:layout_marginBottom="10dip"
-                android:layout_marginRight="15dip"
-                android:orientation="horizontal">
-
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_weight="1" />
-
-                <android.support.design.button.MaterialButton
-                    android:id="@+id/btnExit"
-                    android:layout_width="150dp"
-                    android:layout_height="55dp"
-                    android:backgroundTint="@color/bg_lighter"
-                    android:text="Exit"
-                    android:textAllCaps="false"
-                    android:textSize="14sp"
-                    android:textColor="@color/c_white"
-                    app:cornerRadius="25dp" />
-
-                <android.support.design.button.MaterialButton
-                    android:id="@+id/btnAgree"
-                    android:layout_width="150dp"
-                    android:layout_height="55dp"
-                    android:layout_marginLeft="5dip"
-                    android:layout_marginRight="5dip"
-                    android:backgroundTint="@color/bg_blue"
-                    android:text="I Agree"
-                    android:textAllCaps="false"
-                    android:textSize="14sp"
-                    android:textColor="@color/c_white"
-                    app:cornerRadius="25dp" />
-
-            </LinearLayout>
+                android:layout_height="55dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginBottom="15dp"
+                android:backgroundTint="@color/bg_blue"
+                android:text="@string/ok"
+                android:textSize="14sp"
+                android:textAllCaps="false"
+                android:textColor="@color/c_white"
+                app:cornerRadius="25dp" />
 
         </LinearLayout>
 

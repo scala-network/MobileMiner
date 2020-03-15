@@ -40,6 +40,11 @@
         </activity>
 
         <activity
+            android:name="io.scalaproject.androidminer.LandingPageActivity"
+            android:parentActivityName="io.scalaproject.androidminer.MainActivity">
+        </activity>
+
+        <activity
             android:name="io.scalaproject.androidminer.BaseActivity"
             android:parentActivityName="io.scalaproject.androidminer.MainActivity">
         </activity>
