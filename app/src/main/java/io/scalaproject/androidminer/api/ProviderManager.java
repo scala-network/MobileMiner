@@ -78,6 +78,7 @@ public final class ProviderManager {
     static public void generate() {
         request.stop();
         request.mPoolItem = null;
+        mPools.clear();
 
         //User Defined
         add("custom", "custom", "3333", 0, "", "");

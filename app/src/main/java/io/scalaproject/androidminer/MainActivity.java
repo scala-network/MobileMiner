@@ -531,12 +531,11 @@ public class MainActivity extends BaseActivity
             tvWorkerName.setText(sWorkerName);
 
         updatePayoutWidgetStatus();
-        updateStartButton();
         refreshLogOutputView();
         updateCores();
     }
 
-    private void updateStartButton() {
+    public void updateStartButton() {
         if (isValidConfig()) {
             enableStartBtn(true);
         }
@@ -590,15 +589,9 @@ public class MainActivity extends BaseActivity
                 }
 
                 setTitle(getResources().getString(R.string.miner));
-
-                ProviderManager.afterSave();
-                ProviderManager.request.setListener(payoutListener).start();
-                if(!ProviderManager.data.isNew) {
-                    updatePayoutWidget(ProviderManager.data);
-                    enablePayoutWidget(true, "XLA");
-                }
-
+                updateStatsListener();
                 updateUI();
+
                 break;
             case R.id.settings:
                 SettingsFragment settings_fragment = (SettingsFragment) getSupportFragmentManager().findFragmentByTag("settings_fragment");
@@ -616,6 +609,16 @@ public class MainActivity extends BaseActivity
         drawer.closeDrawer(GravityCompat.START);
 
         return true;
+    }
+
+    public void updateStatsListener() {
+        ProviderManager.afterSave();
+        ProviderManager.request.setListener(payoutListener).start();
+
+        if(!ProviderManager.data.isNew) {
+            updatePayoutWidget(ProviderManager.data);
+            enablePayoutWidget(true, "XLA");
+        }
     }
 
     @Override
@@ -741,44 +744,51 @@ public class MainActivity extends BaseActivity
         Drawable buttonDrawable = btnStart.getBackground();
         buttonDrawable = DrawableCompat.wrap(buttonDrawable);
 
-        if (state) {
-            updateHashrate("n/a");
-            DrawableCompat.setTint(buttonDrawable, getResources().getColor(R.color.bg_lighter));
-            btnStart.setBackground(buttonDrawable);
-            btnStart.setText("Stop");
+        if(isValidConfig()) {
+            enableStartBtn(true);
 
-            // Hashrate button
-            btnMinerH.setEnabled(true);
-            buttonDrawable = btnMinerH.getBackground();
-            buttonDrawable = DrawableCompat.wrap(buttonDrawable);
-            DrawableCompat.setTint(buttonDrawable, getResources().getColor(R.color.bg_lighter));
-            btnMinerH.setBackground(buttonDrawable);
-            btnMinerH.setTextColor(getResources().getColor(R.color.c_white));
+            if (state) {
+                updateHashrate("n/a");
+                DrawableCompat.setTint(buttonDrawable, getResources().getColor(R.color.bg_lighter));
+                btnStart.setBackground(buttonDrawable);
+                btnStart.setText("Stop");
 
-            // Pause button
-            enablePauseBtn(true);
+                // Hashrate button
+                btnMinerH.setEnabled(true);
+                buttonDrawable = btnMinerH.getBackground();
+                buttonDrawable = DrawableCompat.wrap(buttonDrawable);
+                DrawableCompat.setTint(buttonDrawable, getResources().getColor(R.color.bg_lighter));
+                btnMinerH.setBackground(buttonDrawable);
+                btnMinerH.setTextColor(getResources().getColor(R.color.c_white));
 
-            // Resume button
-            enableResumeBtn(false);
-        } else {
-            updateHashrate("0");
-            DrawableCompat.setTint(buttonDrawable, getResources().getColor(R.color.bg_green));
-            btnStart.setBackground(buttonDrawable);
-            btnStart.setText("Start");
+                // Pause button
+                enablePauseBtn(true);
 
-            // Hashrate button
-            btnMinerH.setEnabled(false);
-            buttonDrawable = btnMinerH.getBackground();
-            buttonDrawable = DrawableCompat.wrap(buttonDrawable);
-            DrawableCompat.setTint(buttonDrawable, getResources().getColor(R.color.bg_black));
-            btnMinerH.setBackground(buttonDrawable);
-            btnMinerH.setTextColor(getResources().getColor(R.color.c_black));
+                // Resume button
+                enableResumeBtn(false);
+            } else {
+                updateHashrate("0");
+                DrawableCompat.setTint(buttonDrawable, getResources().getColor(R.color.bg_green));
+                btnStart.setBackground(buttonDrawable);
+                btnStart.setText("Start");
 
-            // Pause button
-            enablePauseBtn(false);
+                // Hashrate button
+                btnMinerH.setEnabled(false);
+                buttonDrawable = btnMinerH.getBackground();
+                buttonDrawable = DrawableCompat.wrap(buttonDrawable);
+                DrawableCompat.setTint(buttonDrawable, getResources().getColor(R.color.bg_black));
+                btnMinerH.setBackground(buttonDrawable);
+                btnMinerH.setTextColor(getResources().getColor(R.color.c_black));
 
-            // Resume button
-            enableResumeBtn(false);
+                // Pause button
+                enablePauseBtn(false);
+
+                // Resume button
+                enableResumeBtn(false);
+            }
+        }
+        else {
+            enableStartBtn(false);
         }
     }
 

@@ -430,6 +430,8 @@ public class SettingsFragment extends Fragment {
                 NavigationView nav = main.findViewById(R.id.nav_view);
                 nav.getMenu().getItem(0).setChecked(true);
 
+                main.updateStartButton();
+                main.updateStatsListener();
                 main.updateUI();
             }
         });

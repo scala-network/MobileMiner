@@ -280,13 +280,15 @@ public class Tools {
 
         String file = readFile("/sys/devices/virtual/thermal/thermal_zone0/temp", '\n',new byte[4096]);
         if (file != null) {
-            output = Float.parseFloat(file);
+            output = (float) Long.parseLong(file);
+        }
+
+        if(output > 0.0f && Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
             output = output / 1000;
         }
 
-        /*if(output > 0.0f && Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
-            output = output / 1000;
-        }*/
+        if(output > 100.0f) // ugly temporary workaround
+            output = 0.0f;
 
         return output;
     }
@@ -329,7 +331,7 @@ public class Tools {
         return nf.format(d2) + " " + symbol.toUpperCase();
     }
 
-    static public  Long tryParseLong(String s, Long fallback) {
+    static public Long tryParseLong(String s, Long fallback) {
         try {
             return Long.parseLong(s);
         } catch (Exception e) {
@@ -345,7 +347,7 @@ public class Tools {
         }
     }
 
-    static public  String getReadableHashRateString(long hashrate) {
+    static public String getReadableHashRateString(long hashrate) {
         BigDecimal bn = new BigDecimal(hashrate);
         BigDecimal bnThousand = new BigDecimal(1000);
 

@@ -44,27 +44,27 @@ public class CryptonoteNodejsPool extends ProviderAbstract {
 
             JSONObject joStats = new JSONObject(dataStatsNetwork);
             JSONObject joStatsConfig = joStats.getJSONObject("config");
-            JSONObject joStatsLastBlock = joStats.getJSONObject("lastblock");
+            //JSONObject joStatsLastBlock = joStats.getJSONObject("lastblock");
             JSONObject joStatsNetwork = joStats.getJSONObject("network");
             JSONObject joStatsPool = joStats.getJSONObject("pool");
 
             mBlockData.coin.name = joStatsConfig.optString("coin").toUpperCase();
-            long coinUnits = mBlockData.coin.units = tryParseLong(joStatsConfig.optString("coinUnits"), 1L);
-            String symbol = mBlockData.coin.symbol = joStatsConfig.optString("symbol").toUpperCase();
-            long denominationUnit = mBlockData.coin.denominationUnit = tryParseLong(joStatsConfig.optString("denominationUnit"), 1L);
+            mBlockData.coin.units = tryParseLong(joStatsConfig.optString("coinUnits"), 1L);
+            mBlockData.coin.symbol = joStatsConfig.optString("symbol").toUpperCase();
+            mBlockData.coin.denominationUnit = tryParseLong(joStatsConfig.optString("denominationUnit"), 1L);
 
-            mBlockData.pool.lastBlockHeight = joStatsPool.optString("height");
+            //mBlockData.pool.lastBlockHeight = joStatsPool.optString("height");
             mBlockData.pool.difficulty = getReadableHashRateString(joStatsPool.optLong("totalDiff"));
-            mBlockData.pool.lastBlockTime = pTime.format(new Date(joStatsLastBlock.optLong("timestamp") * 1000));
-            mBlockData.pool.lastRewardAmount = parseCurrency(joStatsLastBlock.optString("reward", "0"), coinUnits, denominationUnit, symbol);
+            mBlockData.pool.lastBlockTime = pTime.format(new Date(joStatsPool.optLong("lastBlockFound")));
+            //mBlockData.pool.lastRewardAmount = parseCurrency(joStatsLastBlock.optString("reward", "0"), mBlockData.coin.units, mBlockData.coin.denominationUnit, mBlockData.coin.symbol);
             mBlockData.pool.hashrate = String.valueOf(tryParseLong(joStatsPool.optString("hashrate"),0L) / 1000L);
-            mBlockData.pool.blocks = joStatsPool.optString("totalBlocks", "0");
-            mBlockData.pool.minPayout = parseCurrency(joStatsConfig.optString("minPaymentThreshold", "0"), coinUnits, denominationUnit, symbol);
+            mBlockData.pool.blocks = joStatsPool.optString("roundHashes", "0");
+            mBlockData.pool.minPayout = parseCurrency(joStatsConfig.optString("minPaymentThreshold", "0"), mBlockData.coin.units, mBlockData.coin.denominationUnit, mBlockData.coin.symbol);
 
-            mBlockData.network.lastBlockHeight = joStatsLastBlock.optString("height");
+            mBlockData.network.lastBlockHeight = joStatsNetwork.optString("height");
             mBlockData.network.difficulty = getReadableHashRateString(joStatsNetwork.optLong("difficulty"));
-            mBlockData.network.lastBlockTime = pTime.format(new Date(joStatsLastBlock.optLong("timestamp") * 1000));
-            mBlockData.network.lastRewardAmount = parseCurrency(joStatsLastBlock.optString("reward", "0"), coinUnits, denominationUnit, symbol);
+            mBlockData.network.lastBlockTime = pTime.format(new Date(joStatsNetwork.optLong("timestamp") * 1000));
+            mBlockData.network.lastRewardAmount = parseCurrency(joStatsNetwork.optString("reward", "0"), mBlockData.coin.units, mBlockData.coin.denominationUnit, mBlockData.coin.symbol);
         } catch (JSONException e) {
             Log.i(LOG_TAG, "NETWORK\n" + e.toString());
             e.printStackTrace();
