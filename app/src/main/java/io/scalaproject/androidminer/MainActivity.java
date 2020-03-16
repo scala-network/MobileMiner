@@ -1,3 +1,4 @@
+
 /*
  *  Monero Miner App (c) 2018 Uwe Post
  *  based on the XMRig Monero Miner https://github.com/xmrig/xmrig
@@ -16,6 +17,10 @@
  *    along with this program. If not, see <http://www.gnu.org/licenses/>.
  *
  */
+// Copyright (c) 2019, Mine2Gether.com
+//
+// Please see the included LICENSE file for more information.
+//
 // Copyright (c) 2020; Scala Project
 //
 // Please see the included LICENSE file for more information.

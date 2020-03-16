@@ -1,12 +1,11 @@
+// Copyright (c) 2020, Scala Project
+//
+// Please see the included LICENSE file for more information.
+
 package io.scalaproject.androidminer.api;
 
 import android.os.AsyncTask;
-import android.util.Log;
-
-
-import java.util.ArrayList;
 import java.util.Timer;
-import java.util.TimerTask;
 
 import io.scalaproject.androidminer.Config;
 
@@ -30,7 +29,6 @@ public abstract class ProviderAbstract extends AsyncTask<Void, Void, Void> {
     final public String getWalletAddress(){
         return Config.read("address");
     }
-
 
     @Override
     protected void onPostExecute(Void aVoid) {

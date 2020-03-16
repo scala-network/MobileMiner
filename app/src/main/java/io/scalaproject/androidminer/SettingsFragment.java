@@ -1,4 +1,8 @@
-// Copyright (c) 2020, Scala Project
+// Copyright (c) 2019, Mine2Gether.com
+//
+// Please see the included LICENSE file for more information.
+//
+// Copyright (c) 2020, Scala
 //
 // Please see the included LICENSE file for more information.
 

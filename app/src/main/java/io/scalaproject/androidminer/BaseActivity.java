@@ -1,3 +1,7 @@
+// Copyright (c) 2020, Scala Project
+//
+// Please see the included LICENSE file for more information.
+
 package io.scalaproject.androidminer;
 
 import android.support.v7.app.AppCompatActivity;

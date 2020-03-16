@@ -1,3 +1,11 @@
+// Copyright (c) 2019, Mine2Gether.com
+//
+// Please see the included LICENSE file for more information.
+//
+// Copyright (c) 2020, Scala Project
+//
+// Please see the included LICENSE file for more information.
+
 package io.scalaproject.androidminer.api.providers;
 
 import android.util.Log;

@@ -1,6 +1,6 @@
 /*
- *  File Tools for Monero Miner
- *  (c) 2018 Uwe Post
+ *  Monero Miner App (c) 2018 Uwe Post
+ *  based on the XMRig Monero Miner https://github.com/xmrig/xmrig
  *
  *    This program is free software: you can redistribute it and/or modify
  *    it under the terms of the GNU General Public License as published by
@@ -16,7 +16,11 @@
  *    along with this program. If not, see <http://www.gnu.org/licenses/>.
  * /
  */
-// Copyright (c) 2020, Scala Project
+// Copyright (c) 2019, Mine2Gether.com
+//
+// Please see the included LICENSE file for more information.
+//
+// Copyright (c) 2020, Scala
 //
 // Please see the included LICENSE file for more information.
 
