@@ -509,6 +509,16 @@ public class MainActivity extends BaseActivity
         payoutEnabled = true;
     }
 
+    private boolean isValidConfig() {
+        PoolItem pi = ProviderManager.getSelectedPool();
+
+        return  Config.read("init").equals("1") &&
+                !Config.read("address").equals("") &&
+                pi != null &&
+                !pi.getPool().equals("") &&
+                !pi.getPort().equals("");
+    }
+
     public void updateUI() {
         loadSettings();
 
@@ -521,8 +531,18 @@ public class MainActivity extends BaseActivity
             tvWorkerName.setText(sWorkerName);
 
         updatePayoutWidgetStatus();
+        updateStartButton();
         refreshLogOutputView();
         updateCores();
+    }
+
+    private void updateStartButton() {
+        if (isValidConfig()) {
+            enableStartBtn(true);
+        }
+        else {
+            enableStartBtn(false);
+        }
     }
 
     private void updateCores() {
@@ -722,10 +742,10 @@ public class MainActivity extends BaseActivity
         buttonDrawable = DrawableCompat.wrap(buttonDrawable);
 
         if (state) {
-            btnStart.setText("Stop");
             updateHashrate("n/a");
-            DrawableCompat.setTint(buttonDrawable, getResources().getColor(R.color.c_red));
+            DrawableCompat.setTint(buttonDrawable, getResources().getColor(R.color.bg_lighter));
             btnStart.setBackground(buttonDrawable);
+            btnStart.setText("Stop");
 
             // Hashrate button
             btnMinerH.setEnabled(true);
@@ -741,10 +761,10 @@ public class MainActivity extends BaseActivity
             // Resume button
             enableResumeBtn(false);
         } else {
-            btnStart.setText("Start");
             updateHashrate("0");
-            DrawableCompat.setTint(buttonDrawable, getResources().getColor(R.color.c_green));
+            DrawableCompat.setTint(buttonDrawable, getResources().getColor(R.color.bg_green));
             btnStart.setBackground(buttonDrawable);
+            btnStart.setText("Start");
 
             // Hashrate button
             btnMinerH.setEnabled(false);
@@ -1073,8 +1093,6 @@ public class MainActivity extends BaseActivity
         public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
             binder = (MiningService.MiningServiceBinder) iBinder;
             if (validArchitecture) {
-                enableStartBtn(true);
-
                 btnStart.setOnClickListener(new View.OnClickListener() {
                     public void onClick(View v) {
                         if (isDevicePaused()) {

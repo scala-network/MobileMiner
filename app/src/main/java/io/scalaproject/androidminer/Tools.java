@@ -276,16 +276,17 @@ public class Tools {
     }
 
     static float getCurrentCPUTemperature() {
-        String file = readFile("/sys/devices/virtual/thermal/thermal_zone0/temp", '\n',new byte[4096]);
         float output = 0.0f;
 
+        String file = readFile("/sys/devices/virtual/thermal/thermal_zone0/temp", '\n',new byte[4096]);
         if (file != null) {
-            output = (float) Long.parseLong(file);
-        }
-
-        if(output > 0.0f && Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
+            output = Float.parseFloat(file);
             output = output / 1000;
         }
+
+        /*if(output > 0.0f && Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
+            output = output / 1000;
+        }*/
 
         return output;
     }
