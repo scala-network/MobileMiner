@@ -7,6 +7,7 @@
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.CAMERA" />
+
     <application
         android:allowBackup="true"
         android:usesCleartextTraffic="true"
@@ -15,9 +16,17 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
 
-	<meta-data
-            android:name="com.google.android.gms.vision.DEPENDENCIES"
-            android:value="barcode" />
+        <meta-data
+                android:name="com.google.android.gms.vision.DEPENDENCIES"
+                android:value="barcode" />
+
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/ic_notification" />
+
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_color"
+            android:resource="@color/c_white" />
 
         <activity
             android:name="io.scalaproject.androidminer.MainActivity"
@@ -52,6 +61,16 @@
         <service
             android:name="io.scalaproject.androidminer.MiningService"
             android:enabled="true"/>
+
+        <receiver
+            android:name="io.scalaproject.androidminer.NotificationsReceiver"
+            android:enabled="true">
+            <intent-filter>
+                <action android:name="OPEN_ACTION"/>
+                <action android:name="STOP_ACTION"/>
+            </intent-filter>
+        </receiver>
+
     </application>
 
 </manifest>

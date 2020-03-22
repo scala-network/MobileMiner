@@ -1,4 +1,3 @@
-
 /*
  *  Monero Miner App (c) 2018 Uwe Post
  *  based on the XMRig Monero Miner https://github.com/xmrig/xmrig
@@ -28,21 +27,25 @@
 package io.scalaproject.androidminer;
 
 import android.annotation.SuppressLint;
-import android.app.Dialog;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
-import android.content.SharedPreferences;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.os.BatteryManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.os.PowerManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.NotificationCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -95,7 +98,6 @@ public class MainActivity extends BaseActivity
 {
     private static final String LOG_TAG = "MiningSvc";
     private DrawerLayout drawer;
-    boolean accepted = false;
 
     private TextView tvStatus;
     private TextView tvSpeed;
@@ -156,6 +158,8 @@ public class MainActivity extends BaseActivity
     private static int m_nLastCurrentState = STATE_STOPPED;
     private static int m_nCurrentState = STATE_STOPPED;
     public int getCurrentState() { return m_nCurrentState; }
+
+    private NotificationManager notificationManager = null;
 
     public static boolean isDeviceMiningBackground() {
         return (m_nCurrentState == STATE_CALCULATING || m_nCurrentState == STATE_MINING || m_nCurrentState == STATE_COOLING);
@@ -316,6 +320,8 @@ public class MainActivity extends BaseActivity
         ProviderManager.request.setListener(payoutListener).start();
 
         startTimerTemperatures();
+
+        createNotificationManager();
     }
 
     public void startTimerTemperatures() {
@@ -685,6 +691,8 @@ public class MainActivity extends BaseActivity
 
         s.startMining(cfg);
 
+        showNotification();
+
         setMinerStatus(STATE_MINING);
 
         updateUI();
@@ -704,6 +712,8 @@ public class MainActivity extends BaseActivity
         setMinerStatus(STATE_STOPPED);
 
         binder.getService().stopMining();
+
+        hideNotifications();
 
         resetOptions();
 
@@ -1435,6 +1445,60 @@ public class MainActivity extends BaseActivity
                 binder.getService().sendInput(s);
             }
         }
+    }
+
+    public static final String OPEN_ACTION = "OPEN_ACTION";
+    public static final String STOP_ACTION = "STOP_ACTION";
+    private final String CHANNEL_ID = "CHANNEL_1";
+
+    private void createNotificationManager() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+        {
+            NotificationChannel notificationChannel = new NotificationChannel(CHANNEL_ID, "ScalaNotifications", NotificationManager.IMPORTANCE_HIGH);
+            notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(notificationChannel);
+        }
+        else
+            notificationManager =  (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+    }
+
+    private void showNotification() {
+        if(notificationManager == null)
+            createNotificationManager();
+
+        NotificationsReceiver.activity = this;
+
+        // Open intent
+        Intent openIntent = new Intent(this, MainActivity.class);
+        openIntent.setAction(OPEN_ACTION);
+        PendingIntent pendingIntentOpen = PendingIntent.getActivity(contextOfApplication, 1, openIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        // Stop intent
+        Intent stopIntent = new Intent(this, NotificationsReceiver.class);
+        stopIntent.setAction(STOP_ACTION);
+        PendingIntent pendingIntentStop = PendingIntent.getBroadcast(contextOfApplication, 1, stopIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(contextOfApplication, CHANNEL_ID);
+        notificationBuilder.setContentText("Your device is currently mining.");
+        notificationBuilder.setContentTitle("Mining Status");
+        notificationBuilder.setContentIntent(pendingIntentOpen);
+        notificationBuilder.addAction(android.R.drawable.ic_menu_view,"Open", pendingIntentOpen);
+        notificationBuilder.addAction(android.R.drawable.ic_lock_power_off,"Stop", pendingIntentStop);
+        notificationBuilder.setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher_round));
+        notificationBuilder.setSmallIcon(R.drawable.ic_notification);
+        notificationBuilder.setOngoing(true);
+        notificationBuilder.build();
+
+        /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+            notificationBuilder.setChannelId(CHANNEL_ID);*/
+
+        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager.notify(1, notificationBuilder.build());
+    }
+
+    private void hideNotifications() {
+        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager.cancelAll();
     }
 
     private boolean clearMinerLog = true;
