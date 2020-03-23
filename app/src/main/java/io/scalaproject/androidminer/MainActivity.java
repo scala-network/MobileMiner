@@ -1459,7 +1459,7 @@ public class MainActivity extends BaseActivity
     private void createNotificationManager() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
         {
-            NotificationChannel notificationChannel = new NotificationChannel(CHANNEL_ID, getResources().getString(R.string.miningstatus), NotificationManager.IMPORTANCE_HIGH);
+            NotificationChannel notificationChannel = new NotificationChannel(CHANNEL_ID, getResources().getString(R.string.miningstatus), NotificationManager.IMPORTANCE_LOW);
             notificationManager = getSystemService(NotificationManager.class);
             notificationManager.createNotificationChannel(notificationChannel);
         }
