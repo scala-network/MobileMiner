@@ -161,6 +161,7 @@ public class MainActivity extends BaseActivity
     public int getCurrentState() { return m_nCurrentState; }
 
     private NotificationManager notificationManager = null;
+    private NotificationCompat.Builder notificationBuilder = null;
 
     public static boolean isDeviceMiningBackground() {
         return (m_nCurrentState == STATE_CALCULATING || m_nCurrentState == STATE_MINING || m_nCurrentState == STATE_COOLING);
@@ -176,6 +177,14 @@ public class MainActivity extends BaseActivity
             }
         }
 
+        super.onCreate(savedInstanceState);
+        if ((getIntent().getFlags() & Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT) != 0) {
+            // Activity was brought to front and not created,
+            // Thus finishing this will get us to the last viewed activity
+            finish();
+            return;
+        }
+
         PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
         wl = pm.newWakeLock(PARTIAL_WAKE_LOCK, "app:sleeplock");
         wl.acquire(10*60*1000L /*10 minutes*/);
@@ -183,14 +192,6 @@ public class MainActivity extends BaseActivity
         if(!isBatteryReceiverRegistered) {
             registerReceiver(batteryInfoReceiver, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
             isBatteryReceiverRegistered = true;
-        }
-
-        super.onCreate(savedInstanceState);
-        if ((getIntent().getFlags() & Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT) != 0) {
-            // Activity was brought to front and not created,
-            // Thus finishing this will get us to the last viewed activity
-            finish();
-            return;
         }
 
         setContentView(R.layout.activity_main);
@@ -717,8 +718,6 @@ public class MainActivity extends BaseActivity
 
         binder.getService().stopMining();
 
-        hideNotifications();
-
         resetOptions();
 
         updateUI();
@@ -840,6 +839,8 @@ public class MainActivity extends BaseActivity
 
         m_nLastCurrentState = m_nCurrentState;
         m_nCurrentState = status;
+
+        updateNotification();
     }
 
     private boolean isDeviceMining() {
@@ -1464,6 +1465,8 @@ public class MainActivity extends BaseActivity
         }
         else
             notificationManager =  (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+        notificationBuilder = new NotificationCompat.Builder(contextOfApplication, CHANNEL_ID);
     }
 
     private void showNotification() {
@@ -1482,27 +1485,45 @@ public class MainActivity extends BaseActivity
         stopIntent.setAction(STOP_ACTION);
         PendingIntent pendingIntentStop = PendingIntent.getBroadcast(contextOfApplication, 1, stopIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(contextOfApplication, CHANNEL_ID);
-        notificationBuilder.setContentText("Your device is currently mining.");
-        notificationBuilder.setContentTitle("Mining Status");
+        notificationBuilder.setContentTitle(getResources().getString(R.string.devicemining));
+        //notificationBuilder.setContentText(getResources().getString(R.string.hashrate) + ": " + tvSpeed.getText().toString() + " H/s");
         notificationBuilder.setContentIntent(pendingIntentOpen);
         notificationBuilder.addAction(android.R.drawable.ic_menu_view,"Open", pendingIntentOpen);
         notificationBuilder.addAction(android.R.drawable.ic_lock_power_off,"Stop", pendingIntentStop);
         notificationBuilder.setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher_round));
         notificationBuilder.setSmallIcon(R.drawable.ic_notification);
         notificationBuilder.setOngoing(true);
+        notificationBuilder.setOnlyAlertOnce(true);
         notificationBuilder.build();
 
         /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
             notificationBuilder.setChannelId(CHANNEL_ID);*/
 
-        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        //NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.notify(1, notificationBuilder.build());
     }
 
     private void hideNotifications() {
-        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.cancelAll();
+    }
+
+    private void updateNotification() {
+        if(notificationManager == null)
+            return;
+
+        if(!isDeviceMiningBackground()) {
+            hideNotifications();
+            return;
+        }
+
+        String status = "";
+        if(lStatus.getVisibility() == View.VISIBLE)
+            status = tvStatus.getText().toString();
+        else
+            status = "Hashrate: " + tvSpeed.getText().toString() + " H/s";
+
+        notificationBuilder.setContentText(status);
+        notificationManager.notify(1, notificationBuilder.build());
     }
 
     private boolean clearMinerLog = true;
