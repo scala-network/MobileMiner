@@ -1,4 +1,4 @@
-// Copyright (c) 2020, Scala Project
+// Copyright (c) 2020, Scala
 //
 // Please see the included LICENSE file for more information.
 
@@ -80,7 +80,7 @@ public final class ProviderManager {
         request.mPoolItem = null;
         mPools.clear();
 
-        //User Defined
+        // User Defined
         add("custom", "custom", "3333", 0, "", "");
 
         // Scala Official pool

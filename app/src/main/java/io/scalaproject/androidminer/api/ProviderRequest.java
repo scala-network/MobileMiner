@@ -1,4 +1,4 @@
-// Copyright (c) 2020, Scala Project
+// Copyright (c) 2020, Scala
 //
 // Please see the included LICENSE file for more information.
 
@@ -20,7 +20,7 @@ public class ProviderRequest{
             return this;
         }
         mListener = listener;
-//        stop();
+
         PoolItem pi = ProviderManager.getSelectedPool();
         if(pi == null) {
             return this;
