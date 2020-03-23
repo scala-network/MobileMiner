@@ -63,6 +63,7 @@
     <string name="donations">Donate</string>
     <string name="mininggoal">Mining Goal</string>
     <string name="followus">Follow Us</string>
+    <string name="miningstatus">Mining Status</string>
 
     <string name="githubLink">https://github.com/scala-network/MobileMiner/releases</string>
     <string name="discordLink">https://discord.gg/djAFVvy</string>

@@ -1454,12 +1454,12 @@ public class MainActivity extends BaseActivity
 
     public static final String OPEN_ACTION = "OPEN_ACTION";
     public static final String STOP_ACTION = "STOP_ACTION";
-    private final String CHANNEL_ID = "CHANNEL_1";
+    private final String CHANNEL_ID = "MINING_STATUS";
 
     private void createNotificationManager() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
         {
-            NotificationChannel notificationChannel = new NotificationChannel(CHANNEL_ID, "Mining Status", NotificationManager.IMPORTANCE_HIGH);
+            NotificationChannel notificationChannel = new NotificationChannel(CHANNEL_ID, getResources().getString(R.string.miningstatus), NotificationManager.IMPORTANCE_HIGH);
             notificationManager = getSystemService(NotificationManager.class);
             notificationManager.createNotificationChannel(notificationChannel);
         }
