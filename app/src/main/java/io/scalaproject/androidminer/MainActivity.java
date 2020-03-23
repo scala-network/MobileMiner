@@ -141,6 +141,7 @@ public class MainActivity extends BaseActivity
 
     public static Context contextOfApplication;
 
+    private boolean isBatteryReceiverRegistered = false;
     private PowerManager.WakeLock wl;
 
     public static Context getContextOfApplication() {
@@ -179,7 +180,10 @@ public class MainActivity extends BaseActivity
         wl = pm.newWakeLock(PARTIAL_WAKE_LOCK, "app:sleeplock");
         wl.acquire(10*60*1000L /*10 minutes*/);
 
-        registerReceiver(batteryInfoReceiver, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
+        if(!isBatteryReceiverRegistered) {
+            registerReceiver(batteryInfoReceiver, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
+            isBatteryReceiverRegistered = true;
+        }
 
         super.onCreate(savedInstanceState);
         if ((getIntent().getFlags() & Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT) != 0) {
@@ -1506,11 +1510,14 @@ public class MainActivity extends BaseActivity
     static float batteryTemp = 0.0f;
     private BroadcastReceiver batteryInfoReceiver = new BroadcastReceiver() {
         @Override
-        public void onReceive(Context c, Intent batteryStatus) {
-            batteryTemp = (float) (batteryStatus.getIntExtra(BatteryManager.EXTRA_TEMPERATURE, 0)) / 10;
-            int batteryLevel = batteryStatus.getIntExtra(BatteryManager.EXTRA_LEVEL, 0);
+        public void onReceive(Context context, Intent batteryStatusIntent) {
+            if(context == null || batteryStatusIntent == null || vBatteryImage == null)
+                return;
 
-            int status = batteryStatus.getIntExtra(BatteryManager.EXTRA_STATUS, -1);
+            batteryTemp = (float) (batteryStatusIntent.getIntExtra(BatteryManager.EXTRA_TEMPERATURE, 0)) / 10;
+            int batteryLevel = batteryStatusIntent.getIntExtra(BatteryManager.EXTRA_LEVEL, 0);
+
+            int status = batteryStatusIntent.getIntExtra(BatteryManager.EXTRA_STATUS, -1);
             isCharging = status == BatteryManager.BATTERY_STATUS_CHARGING || status == BatteryManager.BATTERY_STATUS_FULL;
 
             if(isCharging) {
