@@ -3,7 +3,7 @@ The Scala Miner is an intuitive and user-friendly cryptocurrency miner designed 
 You can start mining in a few minutes! No complex setup. Download, install, create your wallet and mine!
 
 <ul type="square">
-  <li>Mine on any Android device: phone, tablet, TV, car, etc.
+  <li>Mine on any Android device: phone, tablet, TV, car, etc.</li>
   <li>Quick guide to setup your wallet</li>
   <li>Many predefined mining pools already integrated</li>
   <li>Custom mining pools support</li>
