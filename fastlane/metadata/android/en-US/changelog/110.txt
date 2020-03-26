@@ -1,0 +1,5 @@
+- Added support for username parameters (static difficulty, paymentID)
+- Changed default port for GNTL pool to 8080
+- Added pool options tooltip
+- Added new landing page that gives more information on how to create a wallet
+- Bug fixes
