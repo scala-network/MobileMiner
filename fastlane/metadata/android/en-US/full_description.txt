@@ -3,21 +3,21 @@
   It is very simple to setup and prevents your device from overheating.
 </p>
 
-<p>Informative interface</p>
+<p>Intuitive Interface</p>
 <ul>
-  <li>Notification widget with live hashrate</li>
-  <li>Detailled mining log</li>
+  <li>Notification with real-time hashrate</li>
+  <li>Detailed mining log</li>
   <li>Pool & Network live statistics</li>
 </ul>
 
-<p>Pool settings</p>
+<p>Pool Settings</p>
 <ul>
   <li>Predefined & custom mining pools</li>
   <li>Customizable payout widget</li>
   <li>Custom difficulty</li>
 </ul>
 
-<p>Temperature control</p>
+<p>Temperature Control</p>
 <ul>
   <li>Machine-learning algorithm which prevents overheating</li>
   <li>CPU & Battery temperature settings</li> 

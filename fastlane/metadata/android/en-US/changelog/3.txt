@@ -1,0 +1,1 @@
+- Added Notification with real-time hashrate
