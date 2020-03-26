@@ -1,1 +1,1 @@
-A high performance application for mining Scala cryptocurrency on your Android device.
+Start mining Scala cryptocurrency on all latest Android devices.
