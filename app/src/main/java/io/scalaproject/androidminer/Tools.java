@@ -119,7 +119,6 @@ public class Tools {
                 copyDirectoryContents(context, assetFilePath + "/" + f, localFilePath + "/" + f);
             }
         }
-
     }
 
     static String getDeviceName() {
