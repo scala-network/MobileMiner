@@ -87,6 +87,7 @@
     <string name="cooldownthreshold">Cooldown Threshold</string>
     <string name="degreecelsius">°C</string>
     <string name="pauseminingonbattery">Pause mining on battery power</string>
+    <string name="keepscreenonwhenmining">Keep screen ON when mining</string>
     <string name="turnoffamayccontrol">Disable Temperature Control</string>
     <string name="warning">Warning!</string>
     <string name="allworkers">All workers:</string>

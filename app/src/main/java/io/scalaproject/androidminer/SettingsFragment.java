@@ -76,7 +76,7 @@ public class SettingsFragment extends Fragment {
 
         PoolSpinAdapter poolAdapter;
 
-        CheckBox chkDisableAmayc, chkPauseOnBattery;
+        CheckBox chkDisableAmayc, chkPauseOnBattery,chkKeepScreenOnWhenMining;
 
         View view = inflater.inflate(R.layout.fragment_settings, container, false);
         Context appContext = MainActivity.getContextOfApplication();
@@ -111,6 +111,7 @@ public class SettingsFragment extends Fragment {
         chkDisableAmayc = view.findViewById(R.id.chkAmaycOff);
 
         chkPauseOnBattery = view.findViewById(R.id.chkPauseOnBattery);
+        chkKeepScreenOnWhenMining = view.findViewById(R.id.chkKeepScreenOnWhenMining);
 
         PoolItem[] pools = ProviderManager.getPools();
         String[] description = new String[pools.length];
@@ -177,6 +178,11 @@ public class SettingsFragment extends Fragment {
         boolean checkStatus = (Config.read("pauseonbattery").equals("1"));
         if(checkStatus){
             chkPauseOnBattery.setChecked(checkStatus);
+        }
+
+        boolean checkStatusScreenOn = (Config.read("keepscreenonwhenmining").equals("1"));
+        if(checkStatusScreenOn){
+            chkKeepScreenOnWhenMining.setChecked(checkStatusScreenOn);
         }
 
         if (!Config.read("address").equals("")) {
@@ -407,6 +413,7 @@ public class SettingsFragment extends Fragment {
                 }
 
                 Config.write("pauseonbattery", (chkPauseOnBattery.isChecked() ? "1" : "0"));
+                Config.write("keepscreenonwhenmining", (chkKeepScreenOnWhenMining.isChecked() ? "1" : "0"));
 
                 Config.write("init", "1");
 

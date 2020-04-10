@@ -811,6 +811,9 @@ public class MainActivity extends BaseActivity
             lHashrate.setVisibility(View.VISIBLE);
             tvSpeed.setText("0");
             tvSpeed.setTextColor(getResources().getColor(R.color.c_grey));
+
+            View v = findViewById(R.id.drawer_layout);
+            v.setKeepScreenOn(false);
         }
         else if(status == STATE_MINING) {
 
@@ -819,6 +822,12 @@ public class MainActivity extends BaseActivity
             } else {
                 lStatus.setVisibility(View.GONE);
                 lHashrate.setVisibility(View.VISIBLE);
+            }
+
+            if (Config.read("keepscreenonwhenmining").equals("1")) {
+                View v = findViewById(R.id.drawer_layout);
+                v.setKeepScreenOn(true);
+                return;
             }
         }
         else {
