@@ -123,7 +123,6 @@ public class PoolItem {
             return custom_port;
         }
 
-
         if(custom_port.equals("") || custom_port.equals(this.mPort)) {
             return this.mPort;
         }
