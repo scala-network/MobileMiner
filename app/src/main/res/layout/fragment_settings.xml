@@ -617,6 +617,16 @@
                     android:textSize="14sp"
                     app:buttonTint="@color/c_lighter"/>
 
+                <android.support.v7.widget.AppCompatCheckBox
+                    android:id="@+id/chkKeepScreenOnWhenMining"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="@string/keepscreenonwhenmining"
+                    android:textColor="@color/c_lighter"
+                    android:textSize="14sp"
+                    app:buttonTint="@color/c_lighter"/>
+
             </LinearLayout>
 
         </ScrollView>
