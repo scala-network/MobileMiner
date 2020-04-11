@@ -47,7 +47,7 @@
     <string name="rewards">Rewards</string>
     <string name="checkstatsonline">View statistics online</string>
     <string name="lastshare">Last Share</string>
-    <string name="blocksmined">Blocks Found</string>
+    <string name="sharesubmitted">Submitted Shares</string>
     <string name="blockheight">Block Height</string>
     <string name="blockreward">Block Reward</string>
     <string name="totalhashrate">Total Hashrate</string>
