@@ -96,19 +96,12 @@ import static android.os.PowerManager.PARTIAL_WAKE_LOCK;
 public class MainActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener
 {
-    private static final String LOG_TAG = "MiningSvc";
+    private static final String LOG_TAG = "MainActivity";
     private DrawerLayout drawer;
 
-    private TextView tvStatus;
-    private TextView tvSpeed;
-    private TextView tvAccepted;
-    private TextView tvNbcores;
-    private TextView tvCPUTemperature;
-    private TextView tvBatteryTemperature;
-    private TextView tvTitle;
-    private TextView tvLog;
+    private TextView tvStatus, tvSpeed, tvSpeedNM, tvAccepted, tvNbcores, tvCPUTemperature, tvCPUTemperatureNM, tvBatteryTemperature, tvBatteryTemperatureNM, tvTitle, tvLog;
 
-    private ImageView imStatus;
+    private ImageView imgStatus, imgNightMode;
     private LinearLayout lStatus, lHashrate;
 
     private ProgressBar pbPayout;
@@ -137,7 +130,7 @@ public class MainActivity extends BaseActivity
     private List<String> listCPUTemp = new ArrayList<String>();
     private List<String> listBatteryTemp = new ArrayList<String>();
     private boolean isCharging = false;
-    private ImageView vBatteryImage;
+    private ImageView vBatteryImage, vBatteryImageNM;
 
     public static Context contextOfApplication;
 
@@ -149,6 +142,8 @@ public class MainActivity extends BaseActivity
     }
 
     private Button btnMinerH, btnMinerP, btnMinerR, btnStart;
+
+    private boolean isDayMode = true;
 
     private final static int STATE_STOPPED = 0;
     private final static int STATE_MINING = 1;
@@ -235,8 +230,9 @@ public class MainActivity extends BaseActivity
         tvLog.setMovementMethod(new ScrollingMovementMethod());
 
         tvSpeed = findViewById(R.id.speed);
+        tvSpeedNM = findViewById(R.id.speedNM);
 
-        imStatus = findViewById(R.id.statusicon);
+        imgStatus = findViewById(R.id.statusicon);
         tvStatus = findViewById(R.id.status);
         lStatus = findViewById(R.id.layoutstatus);
         lHashrate = findViewById(R.id.layouthashrate);
@@ -244,8 +240,11 @@ public class MainActivity extends BaseActivity
         tvAccepted = findViewById(R.id.accepted);
         tvNbcores = findViewById(R.id.nbcores);
         tvCPUTemperature = findViewById(R.id.cputemp);
+        tvCPUTemperatureNM = findViewById(R.id.cputempNM);
         tvBatteryTemperature = findViewById(R.id.batterytemp);
+        tvBatteryTemperatureNM = findViewById(R.id.batterytempNM);
         vBatteryImage = findViewById(R.id.battery);
+        vBatteryImageNM = findViewById(R.id.batteryNM);
 
         btnMinerH = findViewById(R.id.minerBtnH);
         btnMinerP = findViewById(R.id.minerBtnP);
@@ -299,6 +298,28 @@ public class MainActivity extends BaseActivity
             }
         });
 
+        imgNightMode =  findViewById(R.id.imgNightMode);
+        imgNightMode.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(isDeviceMining())
+                    toggleDayNightMode();
+                else {
+                    // inflate the layout of the popup window
+                    View popupView = inflater.inflate(R.layout.helper_nightmode, null);
+                    Utils.showPopup(v, inflater, popupView);
+                }
+            }
+        });
+
+        ImageView imgDayMode =  findViewById(R.id.imgDayMode);
+        imgDayMode.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toggleDayNightMode();
+            }
+        });
+
         payoutListener = new IProviderListener() {
             public void onStatsChange(ProviderData d) {
                 if (!payoutEnabled) {
@@ -327,6 +348,21 @@ public class MainActivity extends BaseActivity
         startTimerTemperatures();
 
         createNotificationManager();
+    }
+
+    private void toggleDayNightMode() {
+        LinearLayout layoutDayMode = findViewById(R.id.layoutDayMode);
+        LinearLayout layoutNightMode = findViewById(R.id.layoutNightMode);
+
+        if(isDayMode) {
+            layoutDayMode.setVisibility(View.GONE);
+            layoutNightMode.setVisibility(View.VISIBLE);
+        } else {
+            layoutDayMode.setVisibility(View.VISIBLE);
+            layoutNightMode.setVisibility(View.GONE);
+        }
+
+        isDayMode = !isDayMode;
     }
 
     public void startTimerTemperatures() {
@@ -814,36 +850,50 @@ public class MainActivity extends BaseActivity
 
             View v = findViewById(R.id.drawer_layout);
             v.setKeepScreenOn(false);
+
+            imgNightMode.setColorFilter(getResources().getColor(R.color.c_grey));
         }
         else if(status == STATE_MINING) {
-
             if(tvSpeed.getText().equals("0") || tvSpeed.getText().equals("n/a")) {
                 setMinerStatus(STATE_CALCULATING);
             } else {
                 lStatus.setVisibility(View.GONE);
                 lHashrate.setVisibility(View.VISIBLE);
+
+                tvSpeedNM.setTextSize(68.0f);
+                tvSpeedNM.setTextColor(getResources().getColor(R.color.c_green));
             }
 
             if (Config.read("keepscreenonwhenmining").equals("1")) {
                 View v = findViewById(R.id.drawer_layout);
                 v.setKeepScreenOn(true);
-                return;
             }
+
+            imgNightMode.setColorFilter(getResources().getColor(R.color.c_lighter));
         }
         else {
             lStatus.setVisibility(View.VISIBLE);
             lHashrate.setVisibility(View.GONE);
 
             if (status == STATE_PAUSED && isDeviceMining()) {
-                imStatus.setImageDrawable(getResources().getDrawable(R.drawable.ic_pause));
+                imgStatus.setImageDrawable(getResources().getDrawable(R.drawable.ic_pause));
                 tvStatus.setText(getResources().getString(R.string.paused));
+
+                tvSpeedNM.setTextColor(getResources().getColor(R.color.c_lighter));
             } else if (status == STATE_COOLING && isDeviceMining()) {
-                imStatus.setImageDrawable(getResources().getDrawable(R.drawable.ic_cooling_grey));
+                imgStatus.setImageDrawable(getResources().getDrawable(R.drawable.ic_cooling_grey));
                 tvStatus.setText(getResources().getString(R.string.cooling));
+
+                tvSpeedNM.setTextColor(getResources().getColor(R.color.c_blue));
             } else if (status == STATE_CALCULATING) {
-                imStatus.setImageDrawable(getResources().getDrawable(R.drawable.ic_hourglass));
+                imgStatus.setImageDrawable(getResources().getDrawable(R.drawable.ic_hourglass));
                 tvStatus.setText(getResources().getString(R.string.processing));
+
+                tvSpeedNM.setTextColor(getResources().getColor(R.color.c_lighter));
             }
+
+            tvSpeedNM.setTextSize(24.0f);
+            tvSpeedNM.setText(tvStatus.getText());
         }
 
         m_nLastCurrentState = m_nCurrentState;
@@ -869,12 +919,16 @@ public class MainActivity extends BaseActivity
             return;
 
         tvSpeed.setText(speed);
+        tvSpeedNM.setText(speed);
         setMinerStatus(STATE_MINING);
 
-        if(speed.equals("0"))
+        if(speed.equals("0")) {
             tvSpeed.setTextColor(getResources().getColor(R.color.c_grey));
-        else
+            tvSpeedNM.setTextColor(getResources().getColor(R.color.c_grey));
+        }
+        else {
             tvSpeed.setTextColor(getResources().getColor(R.color.c_green));
+        }
     }
 
     private Spannable formatLogOutputText(String text) {
@@ -1187,15 +1241,23 @@ public class MainActivity extends BaseActivity
     };
 
     private void updateTemperaturesText(float cpuTemp) {
-        if (cpuTemp > 0.0)
+        if (cpuTemp > 0.0) {
             tvCPUTemperature.setText(String.format("%.1f", cpuTemp));
-        else
+            tvCPUTemperatureNM.setText(String.format("%.1f", cpuTemp));
+        }
+        else {
             tvCPUTemperature.setText("n/a");
+            tvCPUTemperatureNM.setText("n/a");
+        }
 
-        if (batteryTemp > 0.0)
+        if (batteryTemp > 0.0) {
             tvBatteryTemperature.setText(String.format("%.1f", batteryTemp));
-        else
+            tvBatteryTemperatureNM.setText(String.format("%.1f", batteryTemp));
+        }
+        else {
             tvBatteryTemperature.setText("n/a");
+            tvBatteryTemperatureNM.setText("n/a");
+        }
     }
 
     private void updateTemperatures() {
@@ -1552,18 +1614,29 @@ public class MainActivity extends BaseActivity
 
             if(isCharging) {
                 vBatteryImage.setImageDrawable(getResources().getDrawable(R.drawable.ic_plugged));
+                vBatteryImageNM.setImageDrawable(getResources().getDrawable(R.drawable.ic_plugged));
             }
             else {
-                if (batteryLevel <= 10)
+                if (batteryLevel <= 10) {
                     vBatteryImage.setImageDrawable(getResources().getDrawable(R.drawable.ic_battery_0));
-                else if (batteryLevel <= 25)
+                    vBatteryImageNM.setImageDrawable(getResources().getDrawable(R.drawable.ic_battery_0));
+                }
+                else if (batteryLevel <= 25) {
                     vBatteryImage.setImageDrawable(getResources().getDrawable(R.drawable.ic_battery_25));
-                else if (batteryLevel <= 50)
+                    vBatteryImageNM.setImageDrawable(getResources().getDrawable(R.drawable.ic_battery_25));
+                }
+                else if (batteryLevel <= 50) {
                     vBatteryImage.setImageDrawable(getResources().getDrawable(R.drawable.ic_battery_50));
-                else if (batteryLevel <= 75)
+                    vBatteryImageNM.setImageDrawable(getResources().getDrawable(R.drawable.ic_battery_50));
+                }
+                else if (batteryLevel <= 75) {
                     vBatteryImage.setImageDrawable(getResources().getDrawable(R.drawable.ic_battery_75));
-                else
+                    vBatteryImageNM.setImageDrawable(getResources().getDrawable(R.drawable.ic_battery_75));
+                }
+                else {
                     vBatteryImage.setImageDrawable(getResources().getDrawable(R.drawable.ic_battery_100));
+                    vBatteryImageNM.setImageDrawable(getResources().getDrawable(R.drawable.ic_battery_100));
+                }
             }
 
             if (lastIsCharging == isCharging)

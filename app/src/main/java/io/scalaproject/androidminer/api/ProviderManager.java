@@ -97,7 +97,7 @@ public final class ProviderManager {
         add(
                 "Miner.Rocks",
                 "stellite.miner.rocks",
-                "5003",
+                "30092",
                 2,
                 "https://stellite.miner.rocks",
                 "54.38.232.67"
