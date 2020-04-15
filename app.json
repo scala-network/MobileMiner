@@ -1,0 +1,26 @@
+{
+  pools : [
+    {
+      key:"Scala Project (Official Pool)",
+      url:"https://pool.scalaproject.io",
+      type:1,
+      locations:[
+        port:"3333",
+        address:"198.204.241.13",
+        region:"all"
+      ]
+    }
+  ],
+  miners : [
+    {
+      version:"5.0.2",
+      description:"Build with tls and optimized",
+      url:"https://github.com/scala-network/MobileMiner/blob/master/app/src/main/assets/xlarig/${ARCH}/xlarig?raw=true"
+    },
+    {
+      version:"5.0.1",
+      description:"Initial release for Mobile Miner",
+      url:"https://github.com/scala-network/MobileMiner/blob/ef2c3778ba38c1cbf96d6e42b9b0c1c243f5ccb4/app/src/main/assets/xlarig/${ARCH}/xlarig?raw=true"
+    }
+  ]
+}
