@@ -350,6 +350,15 @@ public class MainActivity extends BaseActivity
         createNotificationManager();
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unbindService(serverConnection);
+        unregisterReceiver(batteryInfoReceiver);
+        stopMining();
+        hideNotifications();
+    }
+
     private void toggleDayNightMode() {
         LinearLayout layoutDayMode = findViewById(R.id.layoutDayMode);
         LinearLayout layoutNightMode = findViewById(R.id.layoutNightMode);
