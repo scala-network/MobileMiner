@@ -1,0 +1,3 @@
+- Added option to keep screen on when mining
+- Fixed some pool connection issues
+- Added a Night mode to save the battery life 
