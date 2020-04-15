@@ -37,6 +37,14 @@ import android.util.Log;
 import android.widget.Toast;
 import android.os.AsyncTask;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.RequestFuture;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -50,6 +58,9 @@ import java.net.Inet6Address;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Arrays;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 import io.scalaproject.androidminer.api.PoolItem;
 import io.scalaproject.androidminer.api.ProviderManager;
@@ -70,12 +81,17 @@ public class MiningService extends Service {
     private String speed = "0";
     private String lastAssetPath;
     private String lastOutput = "";
+    private static RequestQueue reqQueue;
+
+    private static String API_IP = "https://json.geoiplookup.io/";
 
     @Override
     public void onCreate() {
         super.onCreate();
         privatePath = getFilesDir().getAbsolutePath();
         Tools.deleteDirectoryContents(new File(privatePath));
+
+        reqQueue = Volley.newRequestQueue(this);
     }
 
     private MiningServiceStateListener listener = null;
@@ -146,7 +162,6 @@ public class MiningService extends Service {
     }
 
     private static String createCpuConfig(int cores, int threads, int intensity) {
-
         String cpuConfig = "";
 
         for (int i = 0; i < cores; i++) {
@@ -218,30 +233,27 @@ public class MiningService extends Service {
     }
 
     public static String getIpByHost(PoolItem pi) {
-        return pi.getPoolIP();
+        String hostIP = "";
 
-        /*String hostName = pi.getPool() + ":" + pi.getPort();
-
+        RequestFuture<JSONObject> future = RequestFuture.newFuture();
+        JsonObjectRequest request = new JsonObjectRequest(API_IP + pi.getPool(), new JSONObject(), future, future);
+        reqQueue.add(request);
 
         try {
-            Log.i(LOG_TAG, hostName);
-            InetAddress inetAddress = Inet4Address.getByName(hostName);
-
-            return inetAddress.getHostAddress();
-
-            if(!inetAddress.isLoopbackAddress()) {
-                if (inetAddress instanceof Inet6Address) {
-                    return pi.getPoolIP(); // workaround for IPv6
-                } else if (inetAddress instanceof Inet4Address) {
-                    return inetAddress.getHostAddress();
-                }
-            }
-        } catch (UnknownHostException e) {
-            Log.i(LOG_TAG, e.toString());
-            return hostName;
+            JSONObject response = future.get(5, TimeUnit.SECONDS); // Sync call
+            hostIP = response.optString("ip");
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (TimeoutException e) {
+            e.printStackTrace();
         }
 
-        return hostName;*/
+        if(hostIP.equals(""))
+            hostIP = pi.getPoolIP();
+
+        return hostIP + ":" + pi.getPort();
     }
 
     public void startMining(MiningConfig config) {
