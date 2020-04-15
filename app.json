@@ -5,9 +5,11 @@
       "url":"https://pool.scalaproject.io",
       "type":1,
       "locations":[
-        "port":"3333",
-        "address":"198.204.241.13",
-        "region":"all"
+        {
+          "port":"3333",
+          "address":"198.204.241.13",
+          "region":"all"
+        }
       ]
     }
   ],
