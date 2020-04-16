@@ -26,6 +26,7 @@
 
 package io.scalaproject.androidminer;
 
+import android.app.NotificationManager;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -86,7 +87,8 @@ public class MiningService extends Service {
     private static String API_IP = "https://json.geoiplookup.io/";
 
     @Override
-    public void onCreate() {
+    public void onCreate()
+    {
         super.onCreate();
         privatePath = getFilesDir().getAbsolutePath();
         Tools.deleteDirectoryContents(new File(privatePath));
@@ -94,12 +96,19 @@ public class MiningService extends Service {
         reqQueue = Volley.newRequestQueue(this);
     }
 
+    @Override
+    public void onTaskRemoved(Intent rootIntent) {
+        super.onTaskRemoved(rootIntent);
+
+        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager.cancelAll();
+    }
+
     private MiningServiceStateListener listener = null;
 
     public interface MiningServiceStateListener {
-        public void onStateChange(Boolean state);
-
-        public void onStatusChange(String status, String speed, Integer accepted);
+        void onStateChange(Boolean state);
+        void onStatusChange(String status, String speed, Integer accepted);
     }
 
     public void setMiningServiceStateListener(MiningServiceStateListener listener) {

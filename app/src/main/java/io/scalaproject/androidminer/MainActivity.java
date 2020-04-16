@@ -26,6 +26,7 @@
 
 package io.scalaproject.androidminer;
 
+import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -124,6 +125,8 @@ public class MainActivity extends BaseActivity
     private Integer nCores = 1;
     private Integer nIntensity = 1;
 
+    private Integer nLastShareCount = 0;
+
     // Temperature Control
     private Timer timerTemperatures = null;
     private TimerTask timerTaskTemperatures = null;
@@ -134,7 +137,9 @@ public class MainActivity extends BaseActivity
 
     public static Context contextOfApplication;
 
+    private boolean isServerConnectionBound = false;
     private boolean isBatteryReceiverRegistered = false;
+
     private PowerManager.WakeLock wl;
 
     public static Context getContextOfApplication() {
@@ -187,6 +192,13 @@ public class MainActivity extends BaseActivity
         if(!isBatteryReceiverRegistered) {
             registerReceiver(batteryInfoReceiver, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
             isBatteryReceiverRegistered = true;
+        }
+
+        if(!isServerConnectionBound) {
+            Intent intent = new Intent(this, MiningService.class);
+            bindService(intent, serverConnection, BIND_AUTO_CREATE);
+            startService(intent);
+            isServerConnectionBound = true;
         }
 
         setContentView(R.layout.activity_main);
@@ -253,8 +265,6 @@ public class MainActivity extends BaseActivity
 
         enableStartBtn(false);
 
-        updateUI();
-
         if (!Arrays.asList(Config.SUPPORTED_ARCHITECTURES).contains(Tools.getABI())) {
             String sArchError = "Your architecture is not supported: " + Tools.getABI();
             appendLogOutputFormattedText(sArchError);
@@ -263,10 +273,6 @@ public class MainActivity extends BaseActivity
 
             validArchitecture = false;
         }
-
-        Intent intent = new Intent(this, MiningService.class);
-        bindService(intent, serverConnection, BIND_AUTO_CREATE);
-        startService(intent);
 
         btnMinerH.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -348,15 +354,13 @@ public class MainActivity extends BaseActivity
         startTimerTemperatures();
 
         createNotificationManager();
+
+        updateUI();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        unbindService(serverConnection);
-        unregisterReceiver(batteryInfoReceiver);
-        stopMining();
-        hideNotifications();
     }
 
     private void toggleDayNightMode() {
@@ -372,6 +376,24 @@ public class MainActivity extends BaseActivity
         }
 
         isDayMode = !isDayMode;
+    }
+
+    private void showAcceptedShareNM() {
+        TextView txtAcceptedSharesNM = findViewById(R.id.acceptedshareNM);
+
+        txtAcceptedSharesNM.setAlpha(1.0f);
+
+        ValueAnimator valueAnimator = ValueAnimator.ofFloat(1f, 0f);
+        valueAnimator.setDuration(5000);
+        valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                float alpha = (float) animation.getAnimatedValue();
+                txtAcceptedSharesNM.setAlpha(alpha);
+            }
+        });
+
+        valueAnimator.start();
     }
 
     public void startTimerTemperatures() {
@@ -588,7 +610,13 @@ public class MainActivity extends BaseActivity
 
         updatePayoutWidgetStatus();
         refreshLogOutputView();
+        updateNightModeButton();
         updateCores();
+    }
+
+    public void updateNightModeButton() {
+        int visibility = tvTitle.getText().equals(getResources().getString(R.string.miner)) ? View.VISIBLE : View.GONE;
+        imgNightMode.setVisibility(visibility);
     }
 
     public void updateStartButton() {
@@ -661,6 +689,8 @@ public class MainActivity extends BaseActivity
                 break;
 
         }
+
+        updateUI();
 
         drawer.closeDrawer(GravityCompat.START);
 
@@ -752,6 +782,8 @@ public class MainActivity extends BaseActivity
         bDisableAmayc = false;
         listCPUTemp.clear();
         listBatteryTemp.clear();
+
+        nLastShareCount = 0;
     }
 
     public void stopMining() {
@@ -772,6 +804,18 @@ public class MainActivity extends BaseActivity
     protected void onResume() {
         super.onResume();
         updateUI();
+
+        if(!isBatteryReceiverRegistered) {
+            registerReceiver(batteryInfoReceiver, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
+            isBatteryReceiverRegistered = true;
+        }
+
+        if(!isServerConnectionBound) {
+            Intent intent = new Intent(this, MiningService.class);
+            bindService(intent, serverConnection, BIND_AUTO_CREATE);
+            startService(intent);
+            isServerConnectionBound = true;
+        }
 
         SettingsFragment frag = (SettingsFragment) getSupportFragmentManager().findFragmentByTag("settings_fragment");
         if(frag != null) {
@@ -1232,6 +1276,11 @@ public class MainActivity extends BaseActivity
                             appendLogOutputText(status);
                             tvAccepted.setText(Integer.toString(accepted));
 
+                            if(nLastShareCount != accepted) {
+                                showAcceptedShareNM();
+                                nLastShareCount = accepted;
+                            }
+
                             if(accepted == 1)
                                 tvAccepted.setTextColor(getResources().getColor(R.color.c_blue));
 
@@ -1584,7 +1633,8 @@ public class MainActivity extends BaseActivity
     }
 
     private void hideNotifications() {
-        notificationManager.cancelAll();
+        if(notificationManager != null)
+            notificationManager.cancelAll();
     }
 
     private void updateNotification() {
