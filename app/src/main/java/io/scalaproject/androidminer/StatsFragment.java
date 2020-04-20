@@ -9,6 +9,7 @@
 package io.scalaproject.androidminer;
 
 import android.content.Intent;
+import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -33,15 +34,13 @@ public class StatsFragment extends Fragment {
 
     private static final String LOG_TAG = "MiningSvc";
 
-    private Button bStatCheckOnline;
+    private TextView tvViewStatsOnline;
 
     protected IProviderListener statsListener;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_stats, container, false);
-
-        bStatCheckOnline = view.findViewById(R.id.checkstatsonline);
 
         statsListener = new IProviderListener() {
             public void onStatsChange(ProviderData d) {
@@ -53,6 +52,11 @@ public class StatsFragment extends Fragment {
                 return checkValidState();
             }
         };
+
+        tvViewStatsOnline = view.findViewById(R.id.checkstatsonline);
+        tvViewStatsOnline.setPaintFlags(tvViewStatsOnline.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+        tvViewStatsOnline.setEnabled(false);
+        tvViewStatsOnline.setTextColor(getResources().getColor(R.color.c_grey));
 
         ProviderManager.request.setListener(statsListener).start();
         ProviderManager.afterSave();
@@ -138,7 +142,7 @@ public class StatsFragment extends Fragment {
         enableOnlineStats(true);
 
         String statsUrlWallet = pm.getStatsURL() + "?wallet=" + wallet;
-        bStatCheckOnline.setOnClickListener(new View.OnClickListener() {
+        tvViewStatsOnline.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Uri uri = Uri.parse(statsUrlWallet);
@@ -149,20 +153,13 @@ public class StatsFragment extends Fragment {
     }
 
     private void enableOnlineStats(boolean enable) {
-        Drawable buttonDrawable = bStatCheckOnline.getBackground();
-        buttonDrawable = DrawableCompat.wrap(buttonDrawable);
-
-        bStatCheckOnline.setEnabled(enable);
+        tvViewStatsOnline.setEnabled(enable);
 
         if (enable) {
-            DrawableCompat.setTint(buttonDrawable, getResources().getColor(R.color.bg_lighter));
-            bStatCheckOnline.setBackground(buttonDrawable);
-            bStatCheckOnline.setTextColor(getResources().getColor(R.color.c_white));
+            tvViewStatsOnline.setTextColor(getResources().getColor(R.color.c_blue));
         }
         else {
-            DrawableCompat.setTint(buttonDrawable, getResources().getColor(R.color.bg_black));
-            bStatCheckOnline.setBackground(buttonDrawable);
-            bStatCheckOnline.setTextColor(getResources().getColor(R.color.c_black));
+            tvViewStatsOnline.setTextColor(getResources().getColor(R.color.c_grey));
         }
     }
 

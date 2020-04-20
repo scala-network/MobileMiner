@@ -8,10 +8,10 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="5dp"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
-        android:layout_marginBottom="15dp"
+        android:layout_marginBottom="5dp"
         android:orientation="vertical">
 
         <android.support.v7.widget.AppCompatTextView
@@ -178,8 +178,10 @@
                 <android.support.v7.widget.AppCompatTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="3dp"
+                    android:layout_marginEnd="3dp"
                     android:gravity="start"
-                    android:text=" and "
+                    android:text="@string/and"
                     android:textColor="@color/c_lighter"
                     android:textSize="14sp"/>
 
@@ -212,6 +214,7 @@
                     <android.support.v7.widget.AppCompatTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginEnd="3dp"
                         android:gravity="start"
                         android:text="@string/icons_by"
                         android:textColor="@color/c_lighter"
@@ -230,6 +233,8 @@
                     <android.support.v7.widget.AppCompatTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="3dp"
+                        android:layout_marginEnd="3dp"
                         android:gravity="start"
                         android:text="@string/and"
                         android:textColor="@color/c_lighter"

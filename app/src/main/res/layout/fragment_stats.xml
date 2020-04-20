@@ -8,21 +8,46 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="5dp"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
         android:layout_marginBottom="90dp"
         android:orientation="vertical">
 
-        <android.support.v7.widget.AppCompatTextView
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="15dp"
-            android:gravity="start"
-            android:text="@string/stats"
-            android:textColor="@color/c_white"
-            android:textStyle="bold"
-            android:textSize="20sp" />
+            android:orientation="horizontal">
+
+            <android.support.v7.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="15dp"
+                android:gravity="start"
+                android:text="@string/stats"
+                android:textColor="@color/c_white"
+                android:textStyle="bold"
+                android:textSize="20sp" />
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"/>
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/checkstatsonline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="end"
+                android:text="@string/checkstatsonline"
+                android:textSize="12sp"
+                android:selectAllOnFocus="false"
+                android:linksClickable="true"
+                android:autoLink="all"
+                android:onClick="onShowCores"
+                android:textColor="@color/c_blue"/>
+
+        </LinearLayout>
 
         <ScrollView
             android:layout_width="match_parent"
@@ -578,24 +603,6 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true">
-
-        <android.support.design.button.MaterialButton
-            android:id="@+id/checkstatsonline"
-            android:layout_width="match_parent"
-            android:layout_height="55dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            android:layout_marginBottom="15dp"
-            android:backgroundTint="@color/bg_black"
-            android:text="@string/checkstatsonline"
-            android:textSize="14dp"
-            android:textColor="@color/c_black"
-            android:textAllCaps="false"
-            android:enabled="false"
-            app:cornerRadius="5dp" />
-
-    </RelativeLayout>
+        android:layout_alignParentBottom="true"/>
 
 </RelativeLayout>
