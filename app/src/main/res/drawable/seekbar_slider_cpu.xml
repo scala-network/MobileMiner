@@ -17,8 +17,8 @@
         </shape>
     </item>
     <item
-        android:drawable="@drawable/ic_cpu"
+        android:drawable="@drawable/ic_miner"
         android:gravity="center"
-        android:width="16dp"
-        android:height="18dp" />
+        android:width="24dp"
+        android:height="24dp" />
 </layer-list>

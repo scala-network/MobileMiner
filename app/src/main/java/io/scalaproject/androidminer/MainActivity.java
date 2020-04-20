@@ -38,18 +38,20 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.graphics.BitmapFactory;
+import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.os.BatteryManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.IBinder;
 import android.os.PowerManager;
 import android.support.annotation.NonNull;
+import android.support.design.button.MaterialButton;
+import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
-import android.support.v4.view.GravityCompat;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.text.Layout;
 import android.text.SpannableString;
@@ -66,7 +68,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.support.design.widget.NavigationView;
-import android.support.v4.widget.DrawerLayout;
 import android.text.Spannable;
 import android.view.LayoutInflater;
 
@@ -95,15 +96,15 @@ import io.scalaproject.androidminer.api.ProviderManager;
 import static android.os.PowerManager.PARTIAL_WAKE_LOCK;
 
 public class MainActivity extends BaseActivity
-        implements NavigationView.OnNavigationItemSelectedListener
+        implements BottomNavigationView.OnNavigationItemSelectedListener
 {
     private static final String LOG_TAG = "MainActivity";
-    private DrawerLayout drawer;
 
-    private TextView tvStatus, tvSpeed, tvSpeedNM, tvAccepted, tvNbcores, tvCPUTemperature, tvCPUTemperatureNM, tvBatteryTemperature, tvBatteryTemperatureNM, tvTitle, tvLog;
+    private TextView tvStatus, tvSpeed, tvSpeedNM, tvSpeedUnitNM, tvAccepted, tvNbcores, tvCPUTemperature, tvCPUTemperatureNM, tvBatteryTemperature, tvBatteryTemperatureNM, tvTitle, tvLog;
 
-    private ImageView imgStatus, imgNightMode;
-    private LinearLayout lStatus, lHashrate;
+    private ImageView imgStatus;
+    private MaterialButton btnNightMode;
+    private LinearLayout lStatus, lHashrate, lMiner;
 
     private ProgressBar pbPayout;
     private boolean payoutEnabled;
@@ -133,7 +134,6 @@ public class MainActivity extends BaseActivity
     private List<String> listCPUTemp = new ArrayList<String>();
     private List<String> listBatteryTemp = new ArrayList<String>();
     private boolean isCharging = false;
-    private ImageView vBatteryImage, vBatteryImageNM;
 
     public static Context contextOfApplication;
 
@@ -146,7 +146,7 @@ public class MainActivity extends BaseActivity
         return contextOfApplication;
     }
 
-    private Button btnMinerH, btnMinerP, btnMinerR, btnStart;
+    private MaterialButton btnMinerPR, btnStart;
 
     private boolean isDayMode = true;
 
@@ -203,27 +203,15 @@ public class MainActivity extends BaseActivity
 
         setContentView(R.layout.activity_main);
 
-        PoolItem pi = ProviderManager.getSelectedPool();
-
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-        drawer = findViewById(R.id.drawer_layout);
-
         tvTitle = findViewById(R.id.title);
-        NavigationView navigationView = findViewById(R.id.nav_view);
+        BottomNavigationView navigationView = findViewById(R.id.main_navigation);
         navigationView.getMenu().getItem(0).setChecked(true);
-        navigationView.setNavigationItemSelectedListener(this);
-
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-
-        drawer.addDrawerListener(toggle);
-        toggle.syncState();
+        navigationView.setOnNavigationItemSelectedListener(this);
 
         // Open Settings the first time the app is launched
-        if (Config.read("address").equals("") || pi == null || pi.getPool().equals("") || pi.getPort().equals("")) {
+        if (Config.read("address").equals("")) {
             navigationView.getMenu().getItem(2).setChecked(true);
-            setTitle(getResources().getString(R.string.settings));
+
             SettingsFragment fragment = (SettingsFragment) getSupportFragmentManager().findFragmentByTag("settings_fragment");
             if(fragment != null) {
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment,"settings_fragment").commit();
@@ -234,7 +222,6 @@ public class MainActivity extends BaseActivity
         }
 
         // Controls
-
         payoutEnabled = true;
         pbPayout = findViewById(R.id.progresspayout);
 
@@ -243,11 +230,13 @@ public class MainActivity extends BaseActivity
 
         tvSpeed = findViewById(R.id.speed);
         tvSpeedNM = findViewById(R.id.speedNM);
+        tvSpeedUnitNM = findViewById(R.id.hashrateNM);
 
         imgStatus = findViewById(R.id.statusicon);
         tvStatus = findViewById(R.id.status);
         lStatus = findViewById(R.id.layoutstatus);
         lHashrate = findViewById(R.id.layouthashrate);
+        lMiner = findViewById(R.id.layoutMiner);
 
         tvAccepted = findViewById(R.id.accepted);
         tvNbcores = findViewById(R.id.nbcores);
@@ -255,12 +244,8 @@ public class MainActivity extends BaseActivity
         tvCPUTemperatureNM = findViewById(R.id.cputempNM);
         tvBatteryTemperature = findViewById(R.id.batterytemp);
         tvBatteryTemperatureNM = findViewById(R.id.batterytempNM);
-        vBatteryImage = findViewById(R.id.battery);
-        vBatteryImageNM = findViewById(R.id.batteryNM);
 
-        btnMinerH = findViewById(R.id.minerBtnH);
-        btnMinerP = findViewById(R.id.minerBtnP);
-        btnMinerR = findViewById(R.id.minerBtnR);
+        btnMinerPR = findViewById(R.id.minerBtnPR);
         btnStart = findViewById(R.id.start);
 
         enableStartBtn(false);
@@ -274,38 +259,16 @@ public class MainActivity extends BaseActivity
             validArchitecture = false;
         }
 
-        btnMinerH.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                sendInput("h");
-            }
-        });
-
-        btnMinerP.setOnClickListener(new View.OnClickListener() {
+        btnMinerPR.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 sendInput("p");
             }
         });
 
-        btnMinerR.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                sendInput("r");
-            }
-        });
-
         LayoutInflater inflater = LayoutInflater.from(this);
 
-        Button btnSharesHelp = findViewById(R.id.btnSharesHelp);
-        btnSharesHelp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // inflate the layout of the popup window
-                View popupView = inflater.inflate(R.layout.helper_shares, null);
-                Utils.showPopup(v, inflater, popupView);
-            }
-        });
-
-        imgNightMode =  findViewById(R.id.imgNightMode);
-        imgNightMode.setOnClickListener(new View.OnClickListener() {
+        btnNightMode =  findViewById(R.id.btnNightMode);
+        btnNightMode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(isDeviceMining())
@@ -325,6 +288,8 @@ public class MainActivity extends BaseActivity
                 toggleDayNightMode();
             }
         });
+
+        ProviderManager.generate();
 
         payoutListener = new IProviderListener() {
             public void onStatsChange(ProviderData d) {
@@ -355,7 +320,20 @@ public class MainActivity extends BaseActivity
 
         createNotificationManager();
 
+        updateStartButton();
         updateUI();
+
+        /*if(Config.read("startmining").equals("1")) {
+            ProviderManager.generate();
+
+            final Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    startMining();
+                }
+            }, 1000);
+        }*/
     }
 
     @Override
@@ -363,16 +341,24 @@ public class MainActivity extends BaseActivity
         super.onDestroy();
     }
 
+    public void onShowCores(View view) {
+        sendInput("h");
+    }
+
     private void toggleDayNightMode() {
         LinearLayout layoutDayMode = findViewById(R.id.layoutDayMode);
         LinearLayout layoutNightMode = findViewById(R.id.layoutNightMode);
 
-        if(isDayMode) {
+        BottomNavigationView navigationView = findViewById(R.id.main_navigation);
+
+        if(isDayMode) { // Toggle to Nightmode
             layoutDayMode.setVisibility(View.GONE);
             layoutNightMode.setVisibility(View.VISIBLE);
-        } else {
+            navigationView.setVisibility(View.GONE);
+        } else { // Toggle to Daymode
             layoutDayMode.setVisibility(View.VISIBLE);
             layoutNightMode.setVisibility(View.GONE);
+            navigationView.setVisibility(View.VISIBLE);
         }
 
         isDayMode = !isDayMode;
@@ -445,10 +431,6 @@ public class MainActivity extends BaseActivity
             enablePayoutWidget(true, "XLA");
 
             // Payout
-            String sHashrate = d.miner.hashrate;
-            sHashrate = sHashrate.replace("H", "");
-            TextView tvTotalHashrate = findViewById(R.id.totalhashrate);
-            tvTotalHashrate.setText(sHashrate.trim());
 
             String sBalance = d.miner.balance;
             sBalance = sBalance.replace("XLA", "").trim();
@@ -477,17 +459,14 @@ public class MainActivity extends BaseActivity
     }
 
     public void enablePayoutWidget(boolean enable, String text) {
-        TextView tvTotalHashrate = findViewById(R.id.totalhashrate);
+        TextView tvPayoutWidgetTitle = findViewById(R.id.payoutgoal);
         TextView tvMessage = findViewById(R.id.payoutmessage);
 
         if (enable) {
-            if(tvTotalHashrate.getVisibility() == View.VISIBLE)
+            if(tvPayoutWidgetTitle.getVisibility() == View.VISIBLE)
                 return;
 
-            tvTotalHashrate.setVisibility(View.VISIBLE);
-
-            TextView tvTotalHashrateUnit = findViewById(R.id.totalhashrateunit);
-            tvTotalHashrateUnit.setVisibility(View.VISIBLE);
+            tvPayoutWidgetTitle.setVisibility(View.VISIBLE);
 
             TextView tvBalance = findViewById(R.id.balance);
             tvBalance.setVisibility(View.VISIBLE);
@@ -504,12 +483,9 @@ public class MainActivity extends BaseActivity
             tvMessage.setVisibility(View.GONE);
         }
         else {
-            if(tvTotalHashrate.getVisibility() != View.INVISIBLE) {
+            if(tvPayoutWidgetTitle.getVisibility() != View.INVISIBLE) {
 
-                tvTotalHashrate.setVisibility(View.INVISIBLE);
-
-                TextView tvTotalHashrateUnit = findViewById(R.id.totalhashrateunit);
-                tvTotalHashrateUnit.setVisibility(View.INVISIBLE);
+                tvPayoutWidgetTitle.setVisibility(View.INVISIBLE);
 
                 TextView tvBalance = findViewById(R.id.balance);
                 tvBalance.setVisibility(View.INVISIBLE);
@@ -547,8 +523,8 @@ public class MainActivity extends BaseActivity
     }
 
     private void updatePayoutWidgetStatus() {
-        // For now, Payout widget only works with Official Pool
         LinearLayout llPayoutWidget = findViewById(R.id.layoutpayout);
+
         if(doesPoolSupportAPI()) {
             if(llPayoutWidget.getVisibility() != View.VISIBLE)
                 llPayoutWidget.setVisibility(View.VISIBLE);
@@ -600,8 +576,6 @@ public class MainActivity extends BaseActivity
     public void updateUI() {
         loadSettings();
 
-        PoolItem pi = ProviderManager.getSelectedPool();
-
         // Worker Name
         TextView tvWorkerName = findViewById(R.id.workername);
         String sWorkerName = Config.read("workername");
@@ -615,8 +589,22 @@ public class MainActivity extends BaseActivity
     }
 
     public void updateNightModeButton() {
-        int visibility = tvTitle.getText().equals(getResources().getString(R.string.miner)) ? View.VISIBLE : View.GONE;
-        imgNightMode.setVisibility(visibility);
+        boolean enabled = isDeviceMining();
+
+        btnNightMode.setEnabled(enabled);
+
+        Drawable buttonDrawable = btnNightMode.getBackground();
+        buttonDrawable = DrawableCompat.wrap(buttonDrawable);
+
+        if(enabled) {
+            DrawableCompat.setTint(buttonDrawable, getResources().getColor(R.color.bg_lighter));
+            btnNightMode.setBackground(buttonDrawable);
+            btnNightMode.setIconTintResource(R.color.c_white);
+        } else {
+            DrawableCompat.setTint(buttonDrawable, getResources().getColor(R.color.bg_black));
+            btnNightMode.setBackground(buttonDrawable);
+            btnNightMode.setIconTintResource(R.color.c_grey);
+        }
     }
 
     public void updateStartButton() {
@@ -635,64 +623,54 @@ public class MainActivity extends BaseActivity
         tvNbcores.setText(sCores);
     }
 
-    public void setTitle(String title) {
-        tvTitle.setText(title);
-    }
-
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.stats:
-                StatsFragment fragment_stats = (StatsFragment) getSupportFragmentManager().findFragmentByTag("fragment_stats");
-                if(fragment_stats == null) {
-                    fragment_stats = new StatsFragment();
-                }
-
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment_stats,"fragment_stats").commit();
-
-                setTitle(getResources().getString(R.string.stats));
-
-                break;
-            case R.id.about:
-                AboutFragment fragment_about = (AboutFragment) getSupportFragmentManager().findFragmentByTag("fragment_about");
-
-                if(fragment_about == null) {
-                    fragment_about = new AboutFragment();
-                }
-
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment_about,"fragment_about").commit();
-
-                setTitle(getResources().getString(R.string.about));
-
-                break;
-            case R.id.miner: //Main view
+            case R.id.menu_home: { //Main view
                 for (Fragment fragment : getSupportFragmentManager().getFragments()) {
                     if (fragment != null) {
                         getSupportFragmentManager().beginTransaction().remove(fragment).commit();
                     }
                 }
 
-                setTitle(getResources().getString(R.string.miner));
                 updateStatsListener();
                 updateUI();
 
                 break;
-            case R.id.settings:
-                SettingsFragment settings_fragment = (SettingsFragment) getSupportFragmentManager().findFragmentByTag("settings_fragment");
-                if(settings_fragment == null) {
-                    settings_fragment = new SettingsFragment();
+            }
+            case R.id.menu_stats: {
+                StatsFragment fragment_stats = (StatsFragment) getSupportFragmentManager().findFragmentByTag("fragment_stats");
+                if (fragment_stats == null) {
+                    fragment_stats = new StatsFragment();
                 }
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, settings_fragment,"settings_fragment").commit();
 
-                setTitle(getResources().getString(R.string.settings));
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment_stats, "fragment_stats").commit();
 
                 break;
+            }
+            case R.id.menu_settings: {
+                SettingsFragment settings_fragment = (SettingsFragment) getSupportFragmentManager().findFragmentByTag("settings_fragment");
+                if (settings_fragment == null) {
+                    settings_fragment = new SettingsFragment();
+                }
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, settings_fragment, "settings_fragment").commit();
 
+                break;
+            }
+            case R.id.menu_about: {
+                AboutFragment fragment_about = (AboutFragment) getSupportFragmentManager().findFragmentByTag("fragment_about");
+
+                if (fragment_about == null) {
+                    fragment_about = new AboutFragment();
+                }
+
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment_about, "fragment_about").commit();
+
+                break;
+            }
         }
 
         updateUI();
-
-        drawer.closeDrawer(GravityCompat.START);
 
         return true;
     }
@@ -709,11 +687,7 @@ public class MainActivity extends BaseActivity
 
     @Override
     public void onBackPressed() {
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
+        super.onBackPressed();
     }
 
     public void loadSettings() {
@@ -738,7 +712,7 @@ public class MainActivity extends BaseActivity
     private void startMining() {
         if (binder == null) return;
 
-        if (!Config.read("init").equals("1") || ProviderManager.getSelectedPool() == null) {
+        if (!Config.read("init").equals("1")) {
             setStatusText("Save settings before mining.");
             return;
         }
@@ -856,18 +830,12 @@ public class MainActivity extends BaseActivity
                 btnStart.setText("Stop");
 
                 // Hashrate button
-                btnMinerH.setEnabled(true);
-                buttonDrawable = btnMinerH.getBackground();
-                buttonDrawable = DrawableCompat.wrap(buttonDrawable);
-                DrawableCompat.setTint(buttonDrawable, getResources().getColor(R.color.bg_lighter));
-                btnMinerH.setBackground(buttonDrawable);
-                btnMinerH.setTextColor(getResources().getColor(R.color.c_white));
+                TextView tvShowCores = findViewById(R.id.showCores);
+                tvShowCores.setVisibility(View.VISIBLE);
+                tvShowCores.setPaintFlags(tvShowCores.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 
                 // Pause button
-                enablePauseBtn(true);
-
-                // Resume button
-                enableResumeBtn(false);
+                activatePauseBtn(true);
             } else {
                 updateHashrate("0");
                 DrawableCompat.setTint(buttonDrawable, getResources().getColor(R.color.bg_green));
@@ -875,18 +843,11 @@ public class MainActivity extends BaseActivity
                 btnStart.setText("Start");
 
                 // Hashrate button
-                btnMinerH.setEnabled(false);
-                buttonDrawable = btnMinerH.getBackground();
-                buttonDrawable = DrawableCompat.wrap(buttonDrawable);
-                DrawableCompat.setTint(buttonDrawable, getResources().getColor(R.color.bg_black));
-                btnMinerH.setBackground(buttonDrawable);
-                btnMinerH.setTextColor(getResources().getColor(R.color.c_black));
+                TextView tvShowCores = findViewById(R.id.showCores);
+                tvShowCores.setVisibility(View.GONE);
 
                 // Pause button
-                enablePauseBtn(false);
-
-                // Resume button
-                enableResumeBtn(false);
+                activatePauseBtn(false);
             }
         }
         else {
@@ -901,10 +862,18 @@ public class MainActivity extends BaseActivity
             tvSpeed.setText("0");
             tvSpeed.setTextColor(getResources().getColor(R.color.c_grey));
 
-            View v = findViewById(R.id.drawer_layout);
+            View v = findViewById(R.id.main_navigation);
             v.setKeepScreenOn(false);
 
-            imgNightMode.setColorFilter(getResources().getColor(R.color.c_grey));
+            btnNightMode.setEnabled(false);
+            enablePauseResumeBtn(false);
+
+            int bottom = lMiner.getPaddingBottom();
+            int top = lMiner.getPaddingTop();
+            int right = lMiner.getPaddingRight();
+            int left = lMiner.getPaddingLeft();
+            lMiner.setBackgroundResource(R.drawable.corner_radius_black);
+            lMiner.setPadding(left, top, right, bottom);
         }
         else if(status == STATE_MINING) {
             if(tvSpeed.getText().equals("0") || tvSpeed.getText().equals("n/a")) {
@@ -912,21 +881,31 @@ public class MainActivity extends BaseActivity
             } else {
                 lStatus.setVisibility(View.GONE);
                 lHashrate.setVisibility(View.VISIBLE);
+                tvSpeedUnitNM.setVisibility(View.VISIBLE);
 
                 tvSpeedNM.setTextSize(68.0f);
                 tvSpeedNM.setTextColor(getResources().getColor(R.color.c_green));
             }
 
             if (Config.read("keepscreenonwhenmining").equals("1")) {
-                View v = findViewById(R.id.drawer_layout);
+                View v = findViewById(R.id.main_navigation);
                 v.setKeepScreenOn(true);
             }
 
-            imgNightMode.setColorFilter(getResources().getColor(R.color.c_lighter));
+            btnNightMode.setEnabled(true);
+            enablePauseResumeBtn(true);
+
+            int bottom = lMiner.getPaddingBottom();
+            int top = lMiner.getPaddingTop();
+            int right = lMiner.getPaddingRight();
+            int left = lMiner.getPaddingLeft();
+            lMiner.setBackgroundResource(R.drawable.corner_radius_lighter);
+            lMiner.setPadding(left, top, right, bottom);
         }
         else {
             lStatus.setVisibility(View.VISIBLE);
             lHashrate.setVisibility(View.GONE);
+            tvSpeedUnitNM.setVisibility(View.GONE);
 
             if (status == STATE_PAUSED && isDeviceMining()) {
                 imgStatus.setImageDrawable(getResources().getDrawable(R.drawable.ic_pause));
@@ -937,7 +916,7 @@ public class MainActivity extends BaseActivity
                 imgStatus.setImageDrawable(getResources().getDrawable(R.drawable.ic_cooling_grey));
                 tvStatus.setText(getResources().getString(R.string.cooling));
 
-                tvSpeedNM.setTextColor(getResources().getColor(R.color.c_blue));
+                tvSpeedNM.setTextColor(getResources().getColor(R.color.c_green));
             } else if (status == STATE_CALCULATING) {
                 imgStatus.setImageDrawable(getResources().getDrawable(R.drawable.ic_hourglass));
                 tvStatus.setText(getResources().getString(R.string.processing));
@@ -1451,7 +1430,6 @@ public class MainActivity extends BaseActivity
 
     private void disableAmaycOnError(String error) {
         bDisableAmayc = true;
-        //appendLogOutputFormattedText(error);
         appendLogOutputFormattedText(getResources().getString(R.string.amaycerror));
         appendLogOutputFormattedText(getResources().getString(R.string.statictempcontrol));
     }
@@ -1471,7 +1449,7 @@ public class MainActivity extends BaseActivity
         else {
             if (Config.read("pauseonbattery").equals("1") && !isCharging) {
                 setStatusText(getResources().getString(R.string.pauseonmining));
-                enableResumeBtn(true);
+                activatePauseBtn(true);
                 return;
             }
 
@@ -1499,46 +1477,37 @@ public class MainActivity extends BaseActivity
         btnStart.setEnabled(enabled);
     }
 
-    private void enablePauseBtn(boolean enabled)
+    private void enablePauseResumeBtn(boolean enabled)
     {
-        Drawable buttonDrawable = btnMinerP.getBackground();
+        Drawable buttonDrawable = btnMinerPR.getBackground();
         buttonDrawable = DrawableCompat.wrap(buttonDrawable);
+
+        btnMinerPR.setIconResource(R.drawable.ic_pause);
 
         if(enabled) {
             DrawableCompat.setTint(buttonDrawable, getResources().getColor(R.color.bg_lighter));
-            btnMinerP.setBackground(buttonDrawable);
-            btnMinerP.setTextColor(getResources().getColor(R.color.c_white));
+            btnMinerPR.setBackground(buttonDrawable);
+            btnMinerPR.setIconTintResource(R.color.c_white);
         } else {
             DrawableCompat.setTint(buttonDrawable, getResources().getColor(R.color.bg_black));
-            btnMinerP.setBackground(buttonDrawable);
-            btnMinerP.setTextColor(getResources().getColor(R.color.c_black));
+            btnMinerPR.setBackground(buttonDrawable);
+            btnMinerPR.setIconTintResource(R.color.c_grey);
         }
 
-        btnMinerP.setEnabled(enabled);
+        btnMinerPR.setEnabled(enabled);
     }
 
-    private void enableResumeBtn(boolean enabled)
-    {
-        Drawable buttonDrawable = btnMinerR.getBackground();
-        buttonDrawable = DrawableCompat.wrap(buttonDrawable);
-
-        if(enabled) {
-            DrawableCompat.setTint(buttonDrawable, getResources().getColor(R.color.bg_lighter));
-            btnMinerR.setBackground(buttonDrawable);
-            btnMinerR.setTextColor(getResources().getColor(R.color.c_white));
+    private void activatePauseBtn(boolean activatePause) {
+        if(activatePause) {
+            btnMinerPR.setIconResource(R.drawable.ic_pause);
         } else {
-            DrawableCompat.setTint(buttonDrawable, getResources().getColor(R.color.bg_black));
-            btnMinerR.setBackground(buttonDrawable);
-            btnMinerR.setTextColor(getResources().getColor(R.color.c_black));
+            btnMinerPR.setIconResource(R.drawable.ic_play);
         }
-
-        btnMinerR.setEnabled(enabled);
     }
 
     private void pauseMiner() {
         if (!isDevicePaused()) {
-            enablePauseBtn(false);
-            enableResumeBtn(true);
+            activatePauseBtn(false);
 
             if(!isDeviceCooling())
                 setMinerStatus(STATE_PAUSED);
@@ -1551,8 +1520,7 @@ public class MainActivity extends BaseActivity
 
     private void resumeMiner() {
         if (isDevicePaused() || isDeviceCooling()) {
-            enablePauseBtn(true);
-            enableResumeBtn(false);
+            activatePauseBtn(true);
 
             setMinerStatus(STATE_MINING);
 
@@ -1662,41 +1630,13 @@ public class MainActivity extends BaseActivity
     private BroadcastReceiver batteryInfoReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent batteryStatusIntent) {
-            if(context == null || batteryStatusIntent == null || vBatteryImage == null)
+            if(context == null || batteryStatusIntent == null)
                 return;
 
             batteryTemp = (float) (batteryStatusIntent.getIntExtra(BatteryManager.EXTRA_TEMPERATURE, 0)) / 10;
-            int batteryLevel = batteryStatusIntent.getIntExtra(BatteryManager.EXTRA_LEVEL, 0);
 
             int status = batteryStatusIntent.getIntExtra(BatteryManager.EXTRA_STATUS, -1);
             isCharging = status == BatteryManager.BATTERY_STATUS_CHARGING || status == BatteryManager.BATTERY_STATUS_FULL;
-
-            if(isCharging) {
-                vBatteryImage.setImageDrawable(getResources().getDrawable(R.drawable.ic_plugged));
-                vBatteryImageNM.setImageDrawable(getResources().getDrawable(R.drawable.ic_plugged));
-            }
-            else {
-                if (batteryLevel <= 10) {
-                    vBatteryImage.setImageDrawable(getResources().getDrawable(R.drawable.ic_battery_0));
-                    vBatteryImageNM.setImageDrawable(getResources().getDrawable(R.drawable.ic_battery_0));
-                }
-                else if (batteryLevel <= 25) {
-                    vBatteryImage.setImageDrawable(getResources().getDrawable(R.drawable.ic_battery_25));
-                    vBatteryImageNM.setImageDrawable(getResources().getDrawable(R.drawable.ic_battery_25));
-                }
-                else if (batteryLevel <= 50) {
-                    vBatteryImage.setImageDrawable(getResources().getDrawable(R.drawable.ic_battery_50));
-                    vBatteryImageNM.setImageDrawable(getResources().getDrawable(R.drawable.ic_battery_50));
-                }
-                else if (batteryLevel <= 75) {
-                    vBatteryImage.setImageDrawable(getResources().getDrawable(R.drawable.ic_battery_75));
-                    vBatteryImageNM.setImageDrawable(getResources().getDrawable(R.drawable.ic_battery_75));
-                }
-                else {
-                    vBatteryImage.setImageDrawable(getResources().getDrawable(R.drawable.ic_battery_100));
-                    vBatteryImageNM.setImageDrawable(getResources().getDrawable(R.drawable.ic_battery_100));
-                }
-            }
 
             if (lastIsCharging == isCharging)
                 return;

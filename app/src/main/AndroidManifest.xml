@@ -49,7 +49,22 @@
         </activity>
 
         <activity
-            android:name="io.scalaproject.androidminer.LandingPageActivity"
+            android:name="io.scalaproject.androidminer.WizardHomeActivity"
+            android:parentActivityName="io.scalaproject.androidminer.MainActivity">
+        </activity>
+
+        <activity
+            android:name="io.scalaproject.androidminer.WizardAddressActivity"
+            android:parentActivityName="io.scalaproject.androidminer.MainActivity">
+        </activity>
+
+        <activity
+            android:name="io.scalaproject.androidminer.WizardPoolActivity"
+            android:parentActivityName="io.scalaproject.androidminer.MainActivity">
+        </activity>
+
+        <activity
+            android:name="io.scalaproject.androidminer.WizardSettingsActivity"
             android:parentActivityName="io.scalaproject.androidminer.MainActivity">
         </activity>
 

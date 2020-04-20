@@ -25,6 +25,10 @@ import java.text.ParseException;
 import static android.content.ClipDescription.MIMETYPE_TEXT_PLAIN;
 
 final class Utils {
+    static public Integer INCREMENT = 5;
+    static public Integer MIN_CPU_TEMP = 55;
+    static public  Integer MIN_BATTERY_TEMP = 30;
+    static public  Integer MIN_COOLDOWN = 10;
 
     static String SCALA_BTC_ADDRESS = "1XTLY5LqdBXRW6hcHtnuMU7c68mAyW6qm";
     static String SCALA_ETH_ADDRESS = "0x133a15dF7177823Dd407ca87A190bbE4585a379e";
@@ -98,8 +102,8 @@ final class Utils {
         clipboard.setPrimaryClip(clip);
     }
 
-    static String pasteFromClipboard() {
-        ClipboardManager clipboard = (ClipboardManager) MainActivity.getContextOfApplication().getSystemService(Context.CLIPBOARD_SERVICE);
+    static String pasteFromClipboard(Context appContext) {
+        ClipboardManager clipboard = (ClipboardManager) appContext.getSystemService(Context.CLIPBOARD_SERVICE);
 
         String pasteData = "";
 

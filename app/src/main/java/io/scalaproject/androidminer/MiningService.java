@@ -178,7 +178,7 @@ public class MiningService extends Service {
                 if (!cpuConfig.equals("")) {
                     cpuConfig += ",";
                 }
-                cpuConfig += "[" + Integer.toString(intensity) + "," + Integer.toString(i) + "]";
+                cpuConfig += "[" + intensity + "," + i + "]";
             }
         }
 

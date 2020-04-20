@@ -35,10 +35,10 @@ public class SplashActivity extends Activity {
         int millisecondsDelay = 2000;
         new Handler().postDelayed(new Runnable() {
             public void run() {
-                String hide_landing_page = Config.read("hide_landing_page");
+                String hide_setup_wizard = Config.read("hide_setup_wizard");
 
-                if (hide_landing_page.equals("")) {
-                    startActivity(new Intent(SplashActivity.this, LandingPageActivity.class));
+                if (hide_setup_wizard.equals("")) {
+                    startActivity(new Intent(SplashActivity.this, WizardHomeActivity.class));
                 } else {
                     startActivity(new Intent(SplashActivity.this, MainActivity.class));
                 }

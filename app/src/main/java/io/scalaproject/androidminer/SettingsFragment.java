@@ -12,30 +12,31 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
-import android.support.annotation.NonNull;
-import android.support.design.widget.NavigationView;
+import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.content.ContextCompat;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.SwitchCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.SeekBar;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.AdapterView;
-import java.util.Arrays;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 
 import io.scalaproject.androidminer.api.PoolItem;
@@ -47,16 +48,9 @@ public class SettingsFragment extends Fragment {
 
     private EditText edAddress, edWorkerName, edUsernameparameters;
 
-    private Integer INCREMENT = 5;
-
-    private Integer MIN_CPU_TEMP = 55;
     private Integer nMaxCPUTemp = 65; // 55,60,65,70,75
-
-    private Integer MIN_BATTERY_TEMP = 30;
     private Integer nMaxBatteryTemp = 40; // 30,35,40,45,50
-
-    private Integer MIN_COOLDOWN = 5;
-    private Integer nCooldownTheshold = 10; // 5,10,15,20,25
+    private Integer nCooldownTheshold = 15; // 10,15,20,25,30
 
     private SeekBar sbCPUTemp, sbBatteryTemp, sbCooldown;
     private TextView tvCPUMaxTemp, tvBatteryMaxTemp, tvCooldown;
@@ -68,15 +62,12 @@ public class SettingsFragment extends Fragment {
 
         Button bSave;
         EditText edPool, edPort, edMiningGoal;
-        //EditText edDevFees;
-        Spinner spPool;
+        AutoCompleteTextView spPool;
 
         SeekBar sbCores;
         TextView tvCoresNb, tvCoresMax;
 
-        PoolSpinAdapter poolAdapter;
-
-        CheckBox chkDisableAmayc, chkPauseOnBattery,chkKeepScreenOnWhenMining;
+        SwitchCompat swDisableAmayc, swPauseOnBattery, swKeepScreenOnWhenMining;
 
         View view = inflater.inflate(R.layout.fragment_settings, container, false);
         Context appContext = MainActivity.getContextOfApplication();
@@ -88,7 +79,6 @@ public class SettingsFragment extends Fragment {
         edUsernameparameters = view.findViewById(R.id.usernameparameters);
         edWorkerName = view.findViewById(R.id.workername);
 
-        //edDevFees = view.findViewById(R.id.devfees);
         edMiningGoal = view.findViewById(R.id.mininggoal);
 
         Button bQrCode = view.findViewById(R.id.btnQrCode);
@@ -108,23 +98,24 @@ public class SettingsFragment extends Fragment {
         sbCooldown = view.findViewById(R.id.seekbarcooldownthreshold);
         tvCooldown = view.findViewById(R.id.cooldownthreshold);
 
-        chkDisableAmayc = view.findViewById(R.id.chkAmaycOff);
+        swPauseOnBattery = view.findViewById(R.id.chkPauseOnBattery);
+        swKeepScreenOnWhenMining = view.findViewById(R.id.chkKeepScreenOnWhenMining);
+        swDisableAmayc = view.findViewById(R.id.chkAmaycOff);
 
-        chkPauseOnBattery = view.findViewById(R.id.chkPauseOnBattery);
-        chkKeepScreenOnWhenMining = view.findViewById(R.id.chkKeepScreenOnWhenMining);
+        // Pool spinner
 
         PoolItem[] pools = ProviderManager.getPools();
         String[] description = new String[pools.length];
-        for(int i =0; i< pools.length;i++) {
+        for(int i = 0; i< pools.length;i++) {
             description[i] = pools[i].getKey();
         }
 
-        poolAdapter = new PoolSpinAdapter(appContext, R.layout.spinner_text_color, description);
-        spPool.setAdapter(poolAdapter);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(appContext, R.layout.dropdown_menu_popup_item, description);
+        spPool.setAdapter(adapter);
 
+        // CPU Cores
         int cores = Runtime.getRuntime().availableProcessors();
 
-        // write suggested cores usage into editText
         int suggested = cores / 2;
         if (suggested == 0) suggested = 1;
 
@@ -143,33 +134,29 @@ public class SettingsFragment extends Fragment {
         if (!Config.read("maxcputemp").equals("")) {
             nMaxCPUTemp = Integer.parseInt(Config.read("maxcputemp"));
         }
-        int nProgress = ((nMaxCPUTemp-MIN_CPU_TEMP)/INCREMENT)+1;
+        int nProgress = ((nMaxCPUTemp-Utils.MIN_CPU_TEMP)/Utils.INCREMENT)+1;
         sbCPUTemp.setProgress(nProgress);
         updateCPUTemp();
 
         if (!Config.read("maxbatterytemp").equals("")) {
             nMaxBatteryTemp = Integer.parseInt(Config.read("maxbatterytemp"));
         }
-        nProgress = ((nMaxBatteryTemp-MIN_BATTERY_TEMP)/INCREMENT)+1;
+        nProgress = ((nMaxBatteryTemp-Utils.MIN_BATTERY_TEMP)/Utils.INCREMENT)+1;
         sbBatteryTemp.setProgress(nProgress);
         updateBatteryTemp();
 
         if (!Config.read("cooldownthreshold").equals("")) {
             nCooldownTheshold = Integer.parseInt(Config.read("cooldownthreshold"));
         }
-        nProgress = ((nCooldownTheshold-MIN_COOLDOWN)/INCREMENT)+1;
+        nProgress = ((nCooldownTheshold-Utils.MIN_COOLDOWN)/Utils.INCREMENT)+1;
         sbCooldown.setProgress(nProgress);
         updateCooldownThreshold();
 
         boolean disableAmayc = (Config.read("disableamayc").equals("1"));
         if(disableAmayc){
-            chkDisableAmayc.setChecked(disableAmayc);
+            swDisableAmayc.setChecked(disableAmayc);
         }
         enableAmaycControl(!disableAmayc);
-
-        /*if (Config.read("devfees").equals("") == false) {
-            edDevFees.setText(Config.read("devfees"));
-        }*/
 
         if (!Config.read("mininggoal").equals("")) {
             edMiningGoal.setText(Config.read("mininggoal"));
@@ -177,12 +164,12 @@ public class SettingsFragment extends Fragment {
 
         boolean checkStatus = (Config.read("pauseonbattery").equals("1"));
         if(checkStatus){
-            chkPauseOnBattery.setChecked(checkStatus);
+            swPauseOnBattery.setChecked(checkStatus);
         }
 
         boolean checkStatusScreenOn = (Config.read("keepscreenonwhenmining").equals("1"));
         if(checkStatusScreenOn){
-            chkKeepScreenOnWhenMining.setChecked(checkStatusScreenOn);
+            swKeepScreenOnWhenMining.setChecked(checkStatusScreenOn);
         }
 
         if (!Config.read("address").equals("")) {
@@ -265,11 +252,11 @@ public class SettingsFragment extends Fragment {
             }
         });
 
-        chkDisableAmayc.setOnClickListener(new View.OnClickListener()
+        swDisableAmayc.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v) {
-                boolean checked = ((CheckBox)v).isChecked();
+                boolean checked = ((SwitchCompat)v).isChecked();
                 if (checked) {
                     // inflate the layout of the popup window
                     View popupView = inflater.inflate(R.layout.warning_amayc, null);
@@ -281,9 +268,8 @@ public class SettingsFragment extends Fragment {
         });
 
         spPool.setOnItemSelectedListener(new OnItemSelectedListener() {
-
             @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
                 if (Config.read("init").equals("1")) {
                     edAddress.setText(Config.read("address"));
                     edUsernameparameters.setText(Config.read("usernameparameters"));
@@ -305,7 +291,8 @@ public class SettingsFragment extends Fragment {
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> adapter) {
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
             }
         });
 
@@ -340,17 +327,33 @@ public class SettingsFragment extends Fragment {
             edPort.setText(poolItem.getPort());
         }
 
-        spPool.setSelection(Integer.valueOf(poolSelected));
+        spPool.setText(spPool.getAdapter().getItem(Integer.valueOf(poolSelected)).toString(), false);
 
         bSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
+                // Validate address
+                TextInputLayout til = view.findViewById(R.id.addressIL);
                 String address = edAddress.getText().toString().trim();
-                if (!Utils.verifyAddress(address)) {
-                    Toast.makeText(appContext, "Invalid wallet address.", Toast.LENGTH_SHORT).show();
+
+                if(address.equals("")) {
+                    til.setErrorEnabled(true);
+                    til.setError(getResources().getString(R.string.emptyaddress));
+                    requestFocus(edAddress);
                     return;
                 }
+
+                if(!Utils.verifyAddress(address)) {
+                    til.setErrorEnabled(true);
+                    til.setError(getResources().getString(R.string.invalidaddress));
+                    requestFocus(edAddress);
+                    return;
+                }
+
+                til.setErrorEnabled(false);
+                til.setError(null);
+
                 Config.write("address", address);
 
                 Config.write("usernameparameters", edUsernameparameters.getText().toString().trim());
@@ -364,7 +367,7 @@ public class SettingsFragment extends Fragment {
                 Config.write("workername", workername);
                 edWorkerName.setText(workername);
 
-                String key = (String)spPool.getSelectedItem();
+                String key = spPool.getText().toString();
                 int selectedPosition = Config.DefaultPoolIndex;
 
                 PoolItem[] pools = ProviderManager.getPools();
@@ -401,19 +404,15 @@ public class SettingsFragment extends Fragment {
                 Config.write("maxcputemp", Integer.toString(getCPUTemp()));
                 Config.write("maxbatterytemp", Integer.toString(getBatteryTemp()));
                 Config.write("cooldownthreshold", Integer.toString(getCooldownTheshold()));
-                Config.write("disableamayc", (chkDisableAmayc.isChecked() ? "1" : "0"));
-
-                /*String devfees = edDevFees.getText().toString().trim();
-                if(devfees.equals("")) devfees = "0";
-                Config.write("devfees", devfees);*/
+                Config.write("disableamayc", (swDisableAmayc.isChecked() ? "1" : "0"));
 
                 String mininggoal = edMiningGoal.getText().toString().trim();
                 if(!mininggoal.equals("")) {
                     Config.write("mininggoal", mininggoal);
                 }
 
-                Config.write("pauseonbattery", (chkPauseOnBattery.isChecked() ? "1" : "0"));
-                Config.write("keepscreenonwhenmining", (chkKeepScreenOnWhenMining.isChecked() ? "1" : "0"));
+                Config.write("pauseonbattery", (swPauseOnBattery.isChecked() ? "1" : "0"));
+                Config.write("keepscreenonwhenmining", (swKeepScreenOnWhenMining.isChecked() ? "1" : "0"));
 
                 Config.write("init", "1");
 
@@ -423,7 +422,7 @@ public class SettingsFragment extends Fragment {
                 assert main != null;
                 main.stopMining();
                 main.loadSettings();
-                main.setTitle(getResources().getString(R.string.miner));
+                main.setTitle(getResources().getString(R.string.home));
 
                 if (getFragmentManager() != null) {
                     for (Fragment fragment : getFragmentManager().getFragments()) {
@@ -434,7 +433,7 @@ public class SettingsFragment extends Fragment {
                     }
                 }
 
-                NavigationView nav = main.findViewById(R.id.nav_view);
+                BottomNavigationView nav = main.findViewById(R.id.main_navigation);
                 nav.getMenu().getItem(0).setChecked(true);
 
                 main.updateStartButton();
@@ -457,7 +456,7 @@ public class SettingsFragment extends Fragment {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 String poolAddress = edPool.getText().toString().trim();
                 PoolItem[] pools = ProviderManager.getPools();
-                int position  = spPool.getSelectedItemPosition();
+                int position  = spPool.getListSelection();
 
                 if (s.length() > 0) {
                     int poolSelected = 0;
@@ -479,7 +478,7 @@ public class SettingsFragment extends Fragment {
         btnPasteAddress.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                edAddress.setText(Utils.pasteFromClipboard());
+                edAddress.setText(Utils.pasteFromClipboard(MainActivity.getContextOfApplication()));
             }
         });
 
@@ -500,26 +499,6 @@ public class SettingsFragment extends Fragment {
                 }
             }
         });
-
-        Button btnPoolOptionsHelp = view.findViewById(R.id.btnPoolOptionsHelp);
-        btnPoolOptionsHelp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // inflate the layout of the popup window
-                View popupView = inflater.inflate(R.layout.helper_pool_options, null);
-                Utils.showPopup(v, inflater, popupView);
-            }
-        });
-
-        /*Button bDonateHelp = view.findViewById(R.id.btnDonateHelp);
-        bDonateHelp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // inflate the layout of the popup window
-                View popupView = inflater.inflate(R.layout.helper_donate, null);
-                Utils.showPopup(v, inflater, popupView);
-            }
-        });*/
 
         Button btnCPUTempHelp = view.findViewById(R.id.btnCPUTempHelp);
         btnCPUTempHelp.setOnClickListener(new View.OnClickListener() {
@@ -561,40 +540,30 @@ public class SettingsFragment extends Fragment {
             }
         });
 
-        Button btnMiningGoalHelp = view.findViewById(R.id.btnMiningGoalHelp);
-        btnMiningGoalHelp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // inflate the layout of the popup window
-                View popupView = inflater.inflate(R.layout.helper_mining_goal, null);
-                Utils.showPopup(v, inflater, popupView);
-            }
-        });
-
         return view;
     }
 
     private Integer getCPUTemp() {
-        return ((sbCPUTemp.getProgress() - 1) * INCREMENT) + MIN_CPU_TEMP;
+        return ((sbCPUTemp.getProgress() - 1) * Utils.INCREMENT) + Utils.MIN_CPU_TEMP;
     }
 
     private Integer getBatteryTemp() {
-        return ((sbBatteryTemp.getProgress() - 1) * INCREMENT) + MIN_BATTERY_TEMP;
+        return ((sbBatteryTemp.getProgress() - 1) * Utils.INCREMENT) + Utils.MIN_BATTERY_TEMP;
     }
 
     private Integer getCooldownTheshold() {
-        return ((sbCooldown.getProgress() - 1) * INCREMENT) + MIN_COOLDOWN;
+        return ((sbCooldown.getProgress() - 1) * Utils.INCREMENT) + Utils.MIN_COOLDOWN;
     }
 
     private void updateCPUTemp(){
         tvCPUMaxTemp.setText(Integer.toString(getCPUTemp()));
     }
 
-    private void updateBatteryTemp(){
+    private void updateBatteryTemp() {
         tvBatteryMaxTemp.setText(Integer.toString(getBatteryTemp()));
     }
 
-    private void updateCooldownThreshold(){
+    private void updateCooldownThreshold() {
         tvCooldown.setText(Integer.toString(getCooldownTheshold()));
     }
 
@@ -636,48 +605,9 @@ public class SettingsFragment extends Fragment {
         edAddress.setText(address);
     }
 
-    public static class PoolSpinAdapter extends ArrayAdapter<String> {
-
-        private String[] values;
-
-        PoolSpinAdapter(Context c, int textViewResourceId, String[] values) {
-            super(c, textViewResourceId, values);
-            this.values = values;
-        }
-
-        @Override
-        public int getCount() {
-            return values.length;
-        }
-
-        @Override
-        public String getItem(int position) {
-            return values[position];
-        }
-
-        public int getPosition(String item){
-            return Arrays.asList(values).indexOf(item);
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return position;
-        }
-
-        @NonNull
-        @Override
-        public View getView(int position, View convertView, @NonNull ViewGroup parent) {
-            TextView label = (TextView) super.getView(position, convertView, parent);
-            label.setText(values[position]);
-            return label;
-        }
-
-        @Override
-        public View getDropDownView(int position, View convertView, @NonNull ViewGroup parent) {
-            TextView label = (TextView) super.getDropDownView(position, convertView, parent);
-            label.setText(values[position]);
-            label.setPadding(5, 10, 5, 10);
-            return label;
+    private void requestFocus(View view) {
+        if (view.requestFocus()) {
+            getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
         }
     }
 }

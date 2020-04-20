@@ -34,13 +34,14 @@ public class AboutFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_about, container, false);
 
-        TextView tvBuild, tvScala, tvMine2gether, tvMonerominer, tvFontAwesome;
+        TextView tvBuild, tvScala, tvMine2gether, tvMonerominer, tvMaterialDesign, tvFontAwesome;
 
         tvBuild = view.findViewById(R.id.build);
 
         tvScala = view.findViewById(R.id.ScalaURL);
         tvMine2gether = view.findViewById(R.id.Mine2getherURL);
         tvMonerominer = view.findViewById(R.id.MoneroMinerURL);
+        tvMaterialDesign = view.findViewById(R.id.MaterialDesignURL);
         tvFontAwesome = view.findViewById(R.id.FontAwesomeURL);
 
         Button btnGitHub = view.findViewById(R.id.btnGitHub);
@@ -161,6 +162,9 @@ public class AboutFragment extends Fragment {
 
         tvMonerominer.setText(Html.fromHtml(getString(R.string.MoneroMinerLink)));
         tvMonerominer.setMovementMethod(LinkMovementMethod.getInstance());
+
+        tvMaterialDesign.setText(Html.fromHtml(getString(R.string.MaterialDesignLink)));
+        tvMaterialDesign.setMovementMethod(LinkMovementMethod.getInstance());
 
         tvFontAwesome.setText(Html.fromHtml(getString(R.string.FontAwesomeLink)));
         tvFontAwesome.setMovementMethod(LinkMovementMethod.getInstance());

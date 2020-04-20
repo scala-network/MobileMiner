@@ -29,37 +29,107 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="5dp"
                     android:gravity="start"
+                    android:text="@string/walletaddress2"
+                    android:textColor="@color/c_white"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/addressIL"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:errorEnabled="false">
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/address"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="14sp" />
+
+                </android.support.design.widget.TextInputLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="5dp"
+                    android:gravity="end"
+                    android:orientation="horizontal">
+
+                    <android.support.design.button.MaterialButton
+                        android:id="@+id/btnPasteAddress"
+                        android:layout_width="28dp"
+                        android:layout_height="26dp"
+                        android:layout_marginEnd="7dp"
+                        android:layout_gravity="center_vertical|center_horizontal"
+                        android:backgroundTint="@color/bg_grey"
+                        app:cornerRadius="10dp"
+                        app:icon="@drawable/ic_paste"
+                        app:iconSize="24dp"
+                        app:iconGravity="textStart"
+                        app:iconPadding="0dp" />
+
+                    <android.support.design.button.MaterialButton
+                        android:id="@+id/btnQrCode"
+                        android:layout_width="26dp"
+                        android:layout_height="26dp"
+                        android:layout_gravity="center_vertical|center_horizontal"
+                        android:backgroundTint="@color/bg_grey"
+                        app:cornerRadius="5dp"
+                        app:icon="@drawable/ic_qrcode"
+                        app:iconSize="24dp"
+                        app:iconGravity="textStart"
+                        app:iconPadding="0dp" />
+
+                </LinearLayout>
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:gravity="start"
                     android:text="@string/pool"
                     android:textColor="@color/c_white"
                     android:textSize="14sp"
                     android:textStyle="bold" />
 
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/poolIL"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:errorEnabled="false">
+
+                    <AutoCompleteTextView
+                        android:id="@+id/poolSpinner"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/c_lighter"
+                        android:textColorHint="@color/c_black"
+                        android:inputType="none"
+                        android:textSize="14sp" />
+
+                </android.support.design.widget.TextInputLayout>
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="vertical">
+                    android:layout_weight="0"
+                    android:orientation="horizontal">
 
-                    <android.support.v7.widget.AppCompatSpinner
-                        android:id="@+id/poolSpinner"
-                        style="@style/Widget.AppCompat.Spinner.Underlined"
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/poolurlIL"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:spinnerMode="dropdown"
-                        android:textColor="@color/c_lighter"
-                        android:visibility="visible"
-                        tools:visibility="visible" />
+                        android:layout_marginEnd="2dp"
+                        android:layout_weight="1"
+                        app:errorEnabled="false">
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="0"
-                        android:orientation="horizontal">
-
-                        <android.support.v7.widget.AppCompatEditText
+                        <android.support.design.widget.TextInputEditText
                             android:id="@+id/pool"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
                             android:hint="@string/mining_pool_address"
                             android:inputType="textUri"
                             android:singleLine="true"
@@ -67,11 +137,20 @@
                             android:textColorHint="@color/c_black"
                             android:textSize="14sp" />
 
-                        <android.support.v7.widget.AppCompatEditText
+                    </android.support.design.widget.TextInputLayout>
+
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/portIL"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="3"
+                        app:errorEnabled="false">
+
+                        <android.support.design.widget.TextInputEditText
                             android:id="@+id/port"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_weight="5"
                             android:ems="10"
                             android:hint="@string/mining_pool_port"
                             android:inputType="number"
@@ -81,99 +160,65 @@
                             android:textColorHint="@color/c_black"
                             android:textSize="14sp" />
 
-                    </LinearLayout>
+                    </android.support.design.widget.TextInputLayout>
 
                 </LinearLayout>
 
-                <LinearLayout
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/usernameparamsIL"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0"
-                    android:orientation="horizontal">
+                    android:layout_height="wrap_content"
+                    app:errorEnabled="false">
 
-                    <android.support.v7.widget.AppCompatEditText
-                        android:id="@+id/address"
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/usernameparameters"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:hint="Wallet address"
+                        android:hint="@string/usernameparametershint"
                         android:textColor="@color/c_lighter"
                         android:textColorHint="@color/c_black"
                         android:textSize="14sp" />
 
-                    <android.support.design.button.MaterialButton
-                        android:id="@+id/btnPasteAddress"
-                        android:layout_width="32dp"
-                        android:layout_height="24dp"
-                        android:layout_gravity="center_vertical|center_horizontal"
-                        android:backgroundTint="@color/bg_grey"
-                        app:cornerRadius="5dp"
-                        app:icon="@drawable/ic_paste"
-                        app:iconGravity="textStart"
-                        app:iconPadding="0dp" />
+                </android.support.design.widget.TextInputLayout>
 
-                    <android.support.design.button.MaterialButton
-                        android:id="@+id/btnQrCode"
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:layout_gravity="center_vertical|center_horizontal"
-                        android:backgroundTint="@color/bg_grey"
-                        app:cornerRadius="5dp"
-                        app:icon="@drawable/ic_qrcode"
-                        app:iconGravity="textStart"
-                        app:iconPadding="0dp" />
-
-                </LinearLayout>
-
-                <LinearLayout
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/workernameIL"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:layout_marginTop="10dp"
-                    android:orientation="horizontal">
+                    android:layout_height="wrap_content"
+                    app:errorEnabled="false">
 
-                    <TextView
-                        android:layout_width="wrap_content"
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/workername"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginEnd="5dp"
-                        android:text="@string/options"
-                        android:textColor="@color/c_grey"
-                        android:textStyle="bold"
+                        android:hint="@string/workernamehint"
+                        android:textColor="@color/c_lighter"
+                        android:textColorHint="@color/c_black"
                         android:textSize="14sp" />
 
-                    <android.support.design.button.MaterialButton
-                        android:id="@+id/btnPoolOptionsHelp"
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:backgroundTint="@color/bg_grey"
-                        app:cornerRadius="5dp"
-                        app:icon="@drawable/ic_help"
-                        app:iconGravity="textStart"
-                        app:iconPadding="0dp"
-                        app:iconTint="@color/c_grey" />
+                </android.support.design.widget.TextInputLayout>
 
-                </LinearLayout>
-
-                <android.support.v7.widget.AppCompatEditText
-                    android:id="@+id/usernameparameters"
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/mininggoalIL"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/usernameparametershint"
-                    android:text=""
-                    android:textColor="@color/c_lighter"
-                    android:textColorHint="@color/c_black"
-                    android:textSize="14sp" />
+                    app:errorEnabled="false">
 
-                <android.support.v7.widget.AppCompatEditText
-                    android:id="@+id/workername"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/workernamehint"
-                    android:text=""
-                    android:textColor="@color/c_lighter"
-                    android:textColorHint="@color/c_black"
-                    android:textSize="14sp" />
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/mininggoal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:hint="@string/mininggoalhint"
+                        android:inputType="number"
+                        android:textColor="@color/c_lighter"
+                        android:textColorHint="@color/c_black"
+                        android:textSize="14sp" />
+
+                </android.support.design.widget.TextInputLayout>
 
                 <android.support.v7.widget.AppCompatTextView
                     android:layout_width="match_parent"
@@ -479,153 +524,116 @@
                     android:thumb="@drawable/seekbar_slider_cooldown"
                     android:thumbOffset="0dp" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:layout_weight="0"
-                android:orientation="horizontal">
-
-                <android.support.v7.widget.AppCompatCheckBox
-                    android:id="@+id/chkAmaycOff"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/turnoffamayccontrol"
-                    android:textColor="@color/c_lighter"
-                    android:textSize="14sp"
-                    android:checked="false"
-                    app:buttonTint="@color/c_lighter" />
-
-                <Space
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1" />
-
-                <android.support.design.button.MaterialButton
-                    android:id="@+id/btnAmaycWarning"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:layout_gravity="center_vertical"
-                    android:backgroundTint="@color/bg_grey"
-                    app:cornerRadius="5dp"
-                    app:icon="@drawable/ic_warning"
-                    app:iconGravity="textStart"
-                    app:iconPadding="0dp"
-                    app:iconTint="@color/c_yellow" />
-
-                </LinearLayout>
-
                 <android.support.v7.widget.AppCompatTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
                     android:layout_marginBottom="5dp"
                     android:gravity="start"
-                    android:text="@string/options"
+                    android:text="@string/advanced"
                     android:textColor="@color/c_white"
                     android:textSize="14sp"
                     android:textStyle="bold" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal"
-                    android:baselineAligned="false">
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_weight="0"
+                    android:orientation="horizontal">
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
+                    <android.support.v7.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/pauseminingonbattery"
+                        android:textColor="@color/c_lighter"
+                        android:textSize="14sp"
+                        android:checked="false"
+                        app:buttonTint="@color/c_lighter" />
+
+                    <Space
+                        android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:orientation="horizontal">
+                        android:layout_weight="1" />
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginEnd="5dp"
-                            android:text="@string/mininggoal"
-                            android:textColor="@color/c_lighter"
-                            android:textSize="14sp" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginEnd="5dp"
-                            android:text="@string/optional"
-                            android:textColor="@color/c_black"
-                            android:textSize="14sp" />
-
-                        <android.support.design.button.MaterialButton
-                            android:id="@+id/btnMiningGoalHelp"
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:backgroundTint="@color/bg_grey"
-                            app:cornerRadius="5dp"
-                            app:icon="@drawable/ic_help"
-                            app:iconGravity="textStart"
-                            app:iconPadding="0dp"
-                            app:iconTint="@color/c_lighter" />
-
-                    </LinearLayout>
+                    <android.support.v7.widget.SwitchCompat
+                        android:id="@+id/chkPauseOnBattery"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:theme="@style/SwitchTheme" />
 
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
                     android:layout_weight="0"
-                    android:orientation="horizontal"
-                    android:baselineAligned="false">
+                    android:orientation="horizontal">
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
+                    <android.support.v7.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/keepscreenonwhenmining"
+                        android:textColor="@color/c_lighter"
+                        android:textSize="14sp"
+                        android:checked="false"
+                        app:buttonTint="@color/c_lighter" />
+
+                    <Space
+                        android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:orientation="horizontal">
+                        android:layout_weight="1" />
 
-                        <android.support.v7.widget.AppCompatEditText
-                            android:id="@+id/mininggoal"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:hint="@string/mininggoalhint"
-                            android:inputType="number"
-                            android:textColor="@color/c_lighter"
-                            android:textColorHint="@color/c_black"
-                            android:textSize="14sp" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="2dp"
-                            android:text="XLA"
-                            android:textColor="@color/c_lighter"
-                            android:textSize="14sp" />
-
-                    </LinearLayout>
+                    <android.support.v7.widget.SwitchCompat
+                        android:id="@+id/chkKeepScreenOnWhenMining"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:theme="@style/SwitchTheme" />
 
                 </LinearLayout>
 
-                <android.support.v7.widget.AppCompatCheckBox
-                    android:id="@+id/chkPauseOnBattery"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
-                    android:text="@string/pauseminingonbattery"
-                    android:textColor="@color/c_lighter"
-                    android:textSize="14sp"
-                    app:buttonTint="@color/c_lighter"/>
+                    android:layout_weight="0"
+                    android:orientation="horizontal">
 
-                <android.support.v7.widget.AppCompatCheckBox
-                    android:id="@+id/chkKeepScreenOnWhenMining"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:text="@string/keepscreenonwhenmining"
-                    android:textColor="@color/c_lighter"
-                    android:textSize="14sp"
-                    app:buttonTint="@color/c_lighter"/>
+                    <android.support.v7.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/turnoffamayccontrol"
+                        android:textColor="@color/c_lighter"
+                        android:textSize="14sp"
+                        android:checked="false"
+                        app:buttonTint="@color/c_lighter" />
+
+                    <android.support.design.button.MaterialButton
+                        android:id="@+id/btnAmaycWarning"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_marginStart="25dp"
+                        android:layout_gravity="center_vertical"
+                        android:backgroundTint="@color/bg_grey"
+                        app:cornerRadius="5dp"
+                        app:icon="@drawable/ic_warning"
+                        app:iconGravity="textStart"
+                        app:iconPadding="0dp"
+                        app:iconTint="@color/c_yellow" />
+
+                    <Space
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1" />
+
+                    <android.support.v7.widget.SwitchCompat
+                        android:id="@+id/chkAmaycOff"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:theme="@style/SwitchTheme" />
+
+                </LinearLayout>
 
             </LinearLayout>
 
@@ -651,7 +659,7 @@
             android:textSize="14sp"
             android:textAllCaps="false"
             android:textColor="@color/c_white"
-            app:cornerRadius="25dp" />
+            app:cornerRadius="5dp" />
 
     </RelativeLayout>
 

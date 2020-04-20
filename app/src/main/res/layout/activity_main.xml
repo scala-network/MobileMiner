@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/drawer_layout"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    tools:context="io.scalaproject.androidminer.MainActivity"> <!--  tools:openDrawer="start" -->
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/bg_grey"
+    android:orientation="vertical" >
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <LinearLayout
         android:id="@+id/layoutNightMode"
         android:orientation="vertical"
         android:layout_width="fill_parent"
@@ -22,7 +21,7 @@
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_marginTop="15dp"
-            android:layout_marginRight="15dp"
+            android:layout_marginEnd="15dp"
             android:layout_gravity="end"
             android:clickable="true"
             android:src="@drawable/ic_daymode" />
@@ -32,15 +31,34 @@
             android:layout_height="match_parent"
             android:layout_weight="0.66"/>
 
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="center">
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/speedNM"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="start"
+                android:text="230"
+                android:textSize="68sp"
+                android:textStyle="bold"
+                android:textColor="@color/c_green" />
+
         <android.support.v7.widget.AppCompatTextView
-            android:id="@+id/speedNM"
+            android:id="@+id/hashrateNM"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="3dp"
             android:gravity="start"
-            android:text="230"
-            android:textSize="68sp"
-            android:textStyle="bold"
-            android:textColor="@color/c_green" />
+            android:text="H/s"
+            android:textSize="24sp"
+            android:textStyle="normal"
+            android:textColor="@color/c_lighter" />
+
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -48,18 +66,22 @@
             android:orientation="horizontal"
             android:layout_gravity="center">
 
-            <ImageView
-                android:layout_width="14dp"
-                android:layout_height="15dp"
+            <android.support.v7.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:src="@drawable/ic_cpu" />
+                android:gravity="end"
+                android:text="CPU:"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:textColor="@color/c_lighter" />
 
             <android.support.v7.widget.AppCompatTextView
                 android:id="@+id/cputempNM"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="7dp"
-                android:layout_marginRight="3dp"
+                android:layout_marginStart="7dp"
+                android:layout_marginEnd="3dp"
                 android:layout_gravity="center"
                 android:gravity="end"
                 android:text="n/a"
@@ -78,19 +100,22 @@
                 android:layout_width="20dp"
                 android:layout_height="match_parent" />
 
-            <ImageView
-                android:id="@+id/batteryNM"
-                android:layout_width="16dp"
-                android:layout_height="15dp"
+            <android.support.v7.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:src="@drawable/ic_battery_100" />
+                android:gravity="end"
+                android:text="Battery:"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:textColor="@color/c_lighter" />
 
             <android.support.v7.widget.AppCompatTextView
                 android:id="@+id/batterytempNM"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="7dp"
-                android:layout_marginRight="3dp"
+                android:layout_marginStart="7dp"
+                android:layout_marginEnd="3dp"
                 android:layout_gravity="center"
                 android:gravity="end"
                 android:text="n/a"
@@ -118,7 +143,7 @@
             android:alpha="0"
             android:textSize="14sp"
             android:textStyle="bold"
-            android:textColor="@color/c_blue" />
+            android:textColor="@color/c_green" />
 
         <Space
             android:layout_width="0dp"
@@ -131,59 +156,12 @@
         android:id="@+id/layoutDayMode"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:paddingTop="10dp"
         android:background="@color/bg_grey"
         android:keepScreenOn="false"
         android:visibility="visible"
-        android:orientation="vertical" >
-
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="@color/bg_lighter"
-            android:elevation="4dp"
-            app:contentInsetStart="0dp"
-            app:contentInsetEnd="0dp"
-            app:contentInsetLeft="0dp"
-            app:contentInsetRight="0dp"
-            app:contentInsetStartWithNavigation="0dp"
-            android:theme="@style/Base.ThemeOverlay.AppCompat.Dark.ActionBar"
-            android:popupTheme="@style/ThemeOverlay.AppCompat.ActionBar">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal"
-                    android:paddingRight="20dp"
-                    android:gravity="center_vertical">
-
-                    <android.support.v7.widget.AppCompatTextView
-                        android:id="@+id/title"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="start"
-                        android:text="@string/miner"
-                        android:textSize="18sp"
-                        android:textColor="@color/c_white"
-                        android:textStyle="bold" />
-
-                    <Space
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"/>
-
-                    <ImageView
-                        android:id="@+id/imgNightMode"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:gravity="end"
-                        android:clickable="true"
-                        android:tint="@color/c_grey"
-                        android:src="@drawable/ic_nightmode" />
-
-                </LinearLayout>
-
-        </android.support.v7.widget.Toolbar>
+        android:orientation="vertical"
+        android:layout_above="@id/main_navigation">
 
         <FrameLayout
             android:id="@+id/fragment_container"
@@ -191,19 +169,10 @@
             android:layout_height="wrap_content" />
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingLeft="15dp"
-            android:paddingRight="15dp"
-            android:layout_marginBottom="10dp"/>
-
-        <LinearLayout
             android:id="@+id/layoutpayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:background="@drawable/corner_radius_black"
             android:layout_marginLeft="15dp"
             android:layout_marginRight="15dp"
             android:layout_marginBottom="10dp"
@@ -219,30 +188,12 @@
                 android:orientation="horizontal">
 
                 <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/payoutgoal"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="5dp"
                     android:gravity="start"
-                    android:text="@string/allworkers"
-                    android:textSize="12sp"
-                    android:textColor="@color/c_grey" />
-
-                <android.support.v7.widget.AppCompatTextView
-                    android:id="@+id/totalhashrate"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="3dp"
-                    android:gravity="start"
-                    android:text="@string/na"
-                    android:textSize="12sp"
-                    android:textColor="@color/c_lighter" />
-
-                <android.support.v7.widget.AppCompatTextView
-                    android:id="@+id/totalhashrateunit"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="start"
-                    android:text="H/s"
+                    android:text="@string/payoutgoal"
                     android:textSize="12sp"
                     android:textColor="@color/c_lighter" />
 
@@ -316,17 +267,18 @@
         </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/layoutMiner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:background="@drawable/corner_radius_lighter"
+        android:background="@drawable/corner_radius_black"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
         android:layout_marginBottom="10dp"
-        android:paddingTop="5dp"
+        android:paddingTop="15dp"
         android:paddingLeft="15dp"
         android:paddingRight="15dp"
-        android:paddingBottom="7dp">
+        android:paddingBottom="15dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -358,19 +310,6 @@
                 android:text="Shares"
                 android:textSize="14sp"
                 android:textColor="@color/c_lighter"  />
-
-            <android.support.design.button.MaterialButton
-                android:id="@+id/btnSharesHelp"
-                android:layout_width="18dp"
-                android:layout_height="24dp"
-                android:layout_gravity="center"
-                android:layout_marginStart="5dp"
-                android:backgroundTint="@color/bg_lighter"
-                app:cornerRadius="5dp"
-                app:icon="@drawable/ic_help"
-                app:iconGravity="textStart"
-                app:iconPadding="0dp"
-                app:iconTint="@color/c_lighter" />
 
         </LinearLayout>
 
@@ -453,212 +392,242 @@
         </LinearLayout>
 
         <View
+            android:layout_marginTop="5dp"
             android:layout_marginBottom="5dp"
             android:id="@+id/view1"
             android:layout_width="fill_parent"
             android:layout_height="0.7dp"
             android:background="@color/c_black"/>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <ImageView
-            android:layout_width="12dp"
-            android:layout_height="15dp"
-            android:layout_marginRight="2dp"
-            android:layout_gravity="center"
-            android:src="@drawable/ic_cores" />
-
-        <android.support.v7.widget.AppCompatTextView
-            android:id="@+id/nbcores"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="7dp"
-            android:layout_marginRight="3dp"
-            android:layout_gravity="center"
-            android:gravity="end"
-            android:text="n/a"
-            android:textSize="14sp"
-            android:textColor="@color/c_lighter" />
-
-        <Space
-            android:layout_width="20dp"
-            android:layout_height="match_parent" />
-
-        <ImageView
-            android:layout_width="14dp"
-            android:layout_height="15dp"
-            android:layout_gravity="center"
-            android:src="@drawable/ic_cpu" />
-
-        <android.support.v7.widget.AppCompatTextView
-            android:id="@+id/cputemp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="7dp"
-            android:layout_marginRight="3dp"
-            android:layout_gravity="center"
-            android:gravity="end"
-            android:text="n/a"
-            android:textSize="14sp"
-            android:textColor="@color/c_lighter" />
-
-        <android.support.v7.widget.AppCompatTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:textColor="@color/c_lighter"
-            android:text="@string/celsius"
-            android:textSize="14sp"/>
-
-        <Space
-            android:layout_width="20dp"
-            android:layout_height="match_parent" />
-
-        <ImageView
-            android:id="@+id/battery"
-            android:layout_width="16dp"
-            android:layout_height="15dp"
-            android:layout_gravity="center"
-            android:src="@drawable/ic_battery_100" />
-
-        <android.support.v7.widget.AppCompatTextView
-            android:id="@+id/batterytemp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="7dp"
-            android:layout_marginRight="3dp"
-            android:layout_gravity="center"
-            android:gravity="end"
-            android:text="n/a"
-            android:textSize="14sp"
-            android:textColor="@color/c_lighter" />
-
-        <android.support.v7.widget.AppCompatTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:textColor="@color/c_lighter"
-            android:text="@string/celsius"
-            android:textSize="14sp"/>
-
-        <Space
-            android:layout_width="22dp"
-            android:layout_height="match_parent" />
-
-    </LinearLayout>
-
-    </LinearLayout>
+            android:layout_marginTop="5dp"
+            android:orientation="horizontal">
 
             <android.support.v7.widget.AppCompatTextView
-                android:id="@+id/output"
-                android:layout_width="match_parent"
-                android:layout_height="158dp"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
-                android:layout_marginBottom="5dp"
-                android:layout_weight="1"
-                android:paddingTop="5pt"
-                android:paddingBottom="5pt"
-                android:paddingLeft="15dp"
-                android:paddingRight="15dp"
-                android:scrollbars = "vertical"
-                android:textSize="12dp"
-                android:textColor="@color/c_grey"
-                android:background="@drawable/corner_radius_black" />
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="end"
+                android:text="CPU:"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:textColor="@color/c_lighter" />
 
-        <android.support.constraint.ConstraintLayout
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/cputemp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="3dp"
+                android:layout_gravity="center"
+                android:gravity="end"
+                android:text="n/a"
+                android:textSize="14sp"
+                android:textColor="@color/c_lighter" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textColor="@color/c_lighter"
+                android:text="@string/celsius"
+                android:textSize="14sp"/>
+
+            <Space
+                android:layout_width="20dp"
+                android:layout_height="match_parent" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="end"
+                android:text="Battery:"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:textColor="@color/c_lighter" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/batterytemp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="7dp"
+                android:layout_marginRight="3dp"
+                android:layout_gravity="center"
+                android:gravity="end"
+                android:text="n/a"
+                android:textSize="14sp"
+                android:textColor="@color/c_lighter" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textColor="@color/c_lighter"
+                android:text="@string/celsius"
+                android:textSize="14sp"/>
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"/>
+
+            <android.support.v7.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="end"
+                android:text="Cores:"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:textColor="@color/c_lighter" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/nbcores"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="7dp"
+                android:layout_marginRight="3dp"
+                android:layout_gravity="center"
+                android:gravity="end"
+                android:text="n/a"
+                android:textSize="14sp"
+                android:textColor="@color/c_lighter" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginBottom="5dp"
+        android:layout_weight="1"
+        android:background="@drawable/corner_radius_black">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <android.support.v7.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="5pt"
+                android:paddingStart="15dp"
+                android:text="@string/mininglog"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                android:textColor="@color/c_grey" />
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/showCores"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="5pt"
+                android:paddingEnd="15dp"
+                android:text="@string/forcehashrate"
+                android:textSize="12sp"
+                android:selectAllOnFocus="false"
+                android:linksClickable="true"
+                android:autoLink="all"
+                android:onClick="onShowCores"
+                android:textColor="@color/c_blue" />
+
+        </LinearLayout>
+
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/output"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:paddingTop="5pt"
+            android:paddingBottom="5pt"
+            android:paddingStart="15dp"
+            android:paddingEnd="15dp"
+            android:scrollbars = "vertical"
+            android:textSize="12sp"
+            android:textColor="@color/c_grey" />
+
+    </LinearLayout>
+
+        <LinearLayout
             android:id="@+id/linearLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingLeft="15dp"
             android:paddingRight="15dp"
-            android:paddingBottom="15dp">
+            android:paddingBottom="10dp">
+
+            <android.support.design.button.MaterialButton
+                android:id="@+id/btnNightMode"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:backgroundTint="@color/bg_black"
+                android:enabled="false"
+                android:gravity="bottom"
+                app:iconGravity="textStart"
+                app:cornerRadius="5dp"
+                app:iconPadding="0dp"
+                app:iconSize="20dp"
+                app:iconTint="@color/c_grey"
+                app:icon="@drawable/ic_nightmode" />
+
+            <android.support.design.button.MaterialButton
+                android:id="@+id/minerBtnPR"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginStart="5dp"
+                android:backgroundTint="@color/bg_black"
+                android:enabled="false"
+                android:gravity="bottom"
+                app:iconGravity="textStart"
+                app:cornerRadius="5dp"
+                app:iconPadding="0dp"
+                app:iconTint="@color/c_grey"
+                app:icon="@drawable/ic_pause" />
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1" />
 
             <android.support.design.button.MaterialButton
                 android:id="@+id/start"
                 android:layout_width="125dp"
                 android:layout_height="55dp"
                 android:backgroundTint="@color/bg_green"
-                android:backgroundTintMode="src_over"
-                android:paddingLeft="15dp"
-                android:paddingRight="15dp"
+                android:layout_gravity="bottom"
                 android:text="@string/start"
-                android:textSize="14dp"
+                android:textSize="14sp"
                 android:textAllCaps="false"
                 android:textColor="@color/c_white"
-                app:cornerRadius="25dp"
-                app:layout_constraintBaseline_toBaselineOf="parent"
-                app:layout_constraintRight_toRightOf="parent" />
+                app:cornerRadius="5dp" />
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintBaseline_toBaselineOf="parent">
-
-                <android.support.design.button.MaterialButton
-                    android:id="@+id/minerBtnH"
-                    android:layout_width="45dp"
-                    android:layout_height="45dp"
-                    android:insetLeft="2dp"
-                    android:insetRight="2dp"
-                    android:backgroundTint="@color/bg_black"
-                    android:backgroundTintMode="src_over"
-                    android:textSize="14dp"
-                    android:text="H"
-                    android:textColor="@color/c_black"
-                    android:enabled="false"
-                    app:cornerRadius="5dp" />
-
-                <android.support.design.button.MaterialButton
-                    android:id="@+id/minerBtnP"
-                    android:layout_width="45dp"
-                    android:layout_height="45dp"
-                    android:insetLeft="2dp"
-                    android:insetRight="2dp"
-                    android:backgroundTint="@color/bg_black"
-                    android:backgroundTintMode="src_over"
-                    android:textSize="14dp"
-                    android:text="P"
-                    android:textColor="@color/c_black"
-                    android:enabled="false"
-                    app:cornerRadius="5dp" />
-
-                <android.support.design.button.MaterialButton
-                    android:id="@+id/minerBtnR"
-                    android:layout_width="45dp"
-                    android:layout_height="45dp"
-                    android:insetLeft="2dp"
-                    android:insetRight="2dp"
-                    android:backgroundTint="@color/bg_black"
-                    android:backgroundTintMode="src_over"
-                    android:textSize="14dp"
-                    android:text="R"
-                    android:enabled="false"
-                    android:textColor="@color/c_black"
-                    app:cornerRadius="5dp" />
-
-            </LinearLayout>
-
-        </android.support.constraint.ConstraintLayout>
+        </LinearLayout>
 
     </LinearLayout>
 
-    <android.support.design.widget.NavigationView
-        android:id="@+id/nav_view"
-        android:layout_width="70dp"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
-        android:background="@color/bg_grey"
-        android:textColor="@color/c_white"
-        app:headerLayout="@layout/nav_header"
-        app:itemIconTint="@color/c_white"
-        app:itemTextColor="@color/c_lighter"
-        app:itemBackground="@drawable/drawer_selected_item"
-        app:menu="@menu/drawermenu" />
+    <android.support.design.widget.BottomNavigationView
+        android:id="@+id/main_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/bg_lighter"
+        app:labelVisibilityMode="unlabeled"
+        app:itemIconTint="@drawable/menu_selected_item"
+        app:itemTextColor="@drawable/menu_selected_item"
+        app:itemIconSize="28dp"
+        app:menu="@menu/bottom_navigation_menu" />
 
-</android.support.v4.widget.DrawerLayout>
+</RelativeLayout>

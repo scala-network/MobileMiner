@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content"
+	android:background="@color/bg_grey">
+
+	<LinearLayout
+		android:orientation="vertical"
+		android:layout_width="fill_parent"
+		android:layout_height="fill_parent"
+		android:layout_marginStart="35dp"
+		android:layout_marginEnd="35dp"
+		android:weightSum="80">
+
+		<Space
+			android:layout_width="0dp"
+			android:layout_height="0dp"
+			android:layout_weight="20"/>
+
+		<ImageView
+			android:id="@+id/splashscreen"
+			android:layout_width="wrap_content"
+			android:layout_height="100dp"
+			android:layout_gravity="center"
+			android:src="@mipmap/ic_logo_colors"/>
+
+		<Space
+			android:layout_width="0dp"
+			android:layout_height="0dp"
+			android:layout_weight="10" />
+
+		<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_gravity="center"
+			android:text="@string/landingpage_headline"
+			android:textColor="@color/c_white"
+			android:textStyle="bold"
+			android:textAlignment="center"
+			android:textSize="22sp" />
+
+		<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_gravity="center"
+			android:layout_marginTop="20dp"
+			android:text="@string/landingpage_introduction"
+			android:textColor="@color/c_white"
+			android:textAlignment="center"
+			android:textSize="14sp" />
+
+		<Space
+			android:layout_width="0dp"
+			android:layout_height="0dp"
+			android:layout_weight="10" />
+
+		<android.support.design.button.MaterialButton
+			android:id="@+id/enterWalletAddress"
+			android:layout_width="match_parent"
+			android:layout_height="55dp"
+			android:layout_gravity="center"
+			android:backgroundTint="@color/bg_blue"
+			android:onClick="onEnterAddress"
+			android:text="@string/enteraddress"
+			android:textSize="14sp"
+			android:textAllCaps="false"
+			android:textColor="@color/c_white"
+			app:cornerRadius="5dp" />
+
+		<android.support.design.button.MaterialButton
+			android:id="@+id/createWalletAddress"
+			android:layout_width="match_parent"
+			android:layout_height="55dp"
+			android:layout_gravity="center"
+			android:onClick="onCreateWallet"
+			android:text="@string/createaddress"
+			android:textSize="14sp"
+			android:textAllCaps="false"
+			android:textColor="@color/c_white"
+			app:backgroundTint="@android:color/transparent"
+			app:strokeColor="@color/c_grey"
+			app:strokeWidth="1dp"
+			app:cornerRadius="5dp" />
+
+	</LinearLayout>
+
+	<RelativeLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_alignParentBottom="true">
+
+		<TextView
+			android:id="@+id/disclaimer"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_gravity="center"
+			android:layout_marginBottom="35dp"
+			android:layout_marginStart="35dp"
+			android:layout_marginEnd="35dp"
+			android:text="@string/disclaimer_agreement"
+			android:textColor="@color/c_lighter"
+			android:textAlignment="center"
+			android:textSize="14sp" />
+
+	</RelativeLayout>
+
+</RelativeLayout>

@@ -1,0 +1,346 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content"
+	android:background="@color/bg_grey">
+
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="fill_parent"
+		android:layout_marginTop="15dp"
+		android:layout_marginStart="15dp"
+		android:layout_marginEnd="15dp"
+		android:layout_marginBottom="15dp"
+		android:orientation="vertical">
+
+		<android.support.v7.widget.AppCompatTextView
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_marginBottom="5dp"
+			android:gravity="start"
+			android:text="@string/hardwaresettings"
+			android:textColor="@color/c_white"
+			android:textSize="14sp"
+			android:textStyle="bold" />
+
+		<LinearLayout
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:layout_marginTop="5dp"
+			android:layout_marginBottom="5dp"
+			android:layout_weight="0"
+			android:orientation="horizontal">
+
+			<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="CPU Cores"
+				android:textColor="@color/c_lighter"
+				android:textSize="14sp" />
+
+			<Space
+				android:layout_width="0dp"
+				android:layout_height="match_parent"
+				android:layout_weight="1" />
+
+			<TextView
+				android:id="@+id/coresnb"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginEnd="1dp"
+				android:text="1"
+				android:textColor="@color/c_lighter"
+				android:textSize="14sp" />
+
+			<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginEnd="1dp"
+				android:text="/"
+				android:textColor="@color/c_lighter"
+				android:textSize="14sp" />
+
+			<TextView
+				android:id="@+id/coresmax"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="#"
+				android:textColor="@color/c_lighter"
+				android:textSize="14sp" />
+
+		</LinearLayout>
+
+		<SeekBar
+			android:id="@+id/seekbarcores"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:max="8"
+			android:maxHeight="35dp"
+			android:min="1"
+			android:minHeight="35dp"
+			android:paddingStart="0dp"
+			android:paddingEnd="0dp"
+			android:progress="1"
+			android:progressDrawable="@drawable/seekbar_ruler"
+			android:thumb="@drawable/seekbar_slider_cores"
+			android:thumbOffset="0dp" />
+
+		<LinearLayout
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:layout_marginTop="10dp"
+			android:layout_marginBottom="5dp"
+			android:layout_weight="0"
+			android:orientation="horizontal">
+
+			<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_gravity="center"
+				android:layout_marginEnd="5dp"
+				android:text="@string/cputemperature"
+				android:textColor="@color/c_lighter"
+				android:textSize="14sp" />
+
+			<android.support.design.button.MaterialButton
+				android:id="@+id/btnCPUTempHelp"
+				android:layout_width="24dp"
+				android:layout_height="24dp"
+				android:backgroundTint="@color/bg_grey"
+				app:cornerRadius="5dp"
+				app:icon="@drawable/ic_help"
+				app:iconGravity="textStart"
+				app:iconPadding="0dp"
+				app:iconTint="@color/c_lighter" />
+
+			<Space
+				android:layout_width="0dp"
+				android:layout_height="match_parent"
+				android:layout_weight="1" />
+
+			<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_gravity="center"
+				android:layout_marginEnd="3dp"
+				android:text="@string/max"
+				android:textColor="@color/c_lighter"
+				android:textSize="14sp" />
+
+			<TextView
+				android:id="@+id/cpumaxtemp"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_gravity="center"
+				android:layout_marginEnd="2dp"
+				android:text="#"
+				android:textColor="@color/c_lighter"
+				android:textSize="14sp" />
+
+			<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_gravity="center"
+				android:text="@string/degreecelsius"
+				android:textColor="@color/c_lighter"
+				android:textSize="14sp" />
+
+		</LinearLayout>
+
+		<SeekBar
+			android:id="@+id/seekbarcputemperature"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:max="5"
+			android:maxHeight="35dp"
+			android:min="1"
+			android:minHeight="35dp"
+			android:paddingStart="0dp"
+			android:paddingEnd="0dp"
+			android:progress="3"
+			android:progressDrawable="@drawable/seekbar_ruler"
+			android:thumb="@drawable/seekbar_slider_cpu"
+			android:thumbOffset="0dp" />
+
+		<LinearLayout
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:layout_marginTop="10dp"
+			android:layout_marginBottom="5dp"
+			android:layout_weight="0"
+			android:orientation="horizontal">
+
+			<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_gravity="center"
+				android:layout_marginEnd="5dp"
+				android:text="@string/batterytemperature"
+				android:textColor="@color/c_lighter"
+				android:textSize="14sp" />
+
+			<android.support.design.button.MaterialButton
+				android:id="@+id/btnBatteryTempHelp"
+				android:layout_width="24dp"
+				android:layout_height="24dp"
+				android:backgroundTint="@color/bg_grey"
+				app:cornerRadius="5dp"
+				app:icon="@drawable/ic_help"
+				app:iconGravity="textStart"
+				app:iconPadding="0dp"
+				app:iconTint="@color/c_lighter" />
+
+			<Space
+				android:layout_width="0dp"
+				android:layout_height="match_parent"
+				android:layout_weight="1" />
+
+			<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_gravity="center"
+				android:layout_marginEnd="3dp"
+				android:text="@string/max"
+				android:textColor="@color/c_lighter"
+				android:textSize="14sp" />
+
+			<TextView
+				android:id="@+id/batterymaxtemp"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_gravity="center"
+				android:layout_marginEnd="2dp"
+				android:text="#"
+				android:textColor="@color/c_lighter"
+				android:textSize="14sp" />
+
+			<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_gravity="center"
+				android:text="@string/degreecelsius"
+				android:textColor="@color/c_lighter"
+				android:textSize="14sp" />
+
+		</LinearLayout>
+
+		<SeekBar
+			android:id="@+id/seekbarbatterytemperature"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:max="5"
+			android:maxHeight="35dp"
+			android:min="1"
+			android:minHeight="35dp"
+			android:paddingStart="0dp"
+			android:paddingEnd="0dp"
+			android:progress="3"
+			android:progressDrawable="@drawable/seekbar_ruler"
+			android:thumb="@drawable/seekbar_slider_battery"
+			android:thumbOffset="0dp" />
+
+		<LinearLayout
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:layout_marginTop="10dp"
+			android:layout_marginBottom="5dp"
+			android:layout_weight="0"
+			android:orientation="horizontal">
+
+			<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_gravity="center"
+				android:layout_marginEnd="5dp"
+				android:text="@string/cooldownthreshold"
+				android:textColor="@color/c_lighter"
+				android:textSize="14sp" />
+
+			<android.support.design.button.MaterialButton
+				android:id="@+id/btnCooldownHelp"
+				android:layout_width="24dp"
+				android:layout_height="24dp"
+				android:backgroundTint="@color/bg_grey"
+				app:cornerRadius="5dp"
+				app:icon="@drawable/ic_help"
+				app:iconGravity="textStart"
+				app:iconPadding="0dp"
+				app:iconTint="@color/c_lighter" />
+
+			<Space
+				android:layout_width="0dp"
+				android:layout_height="match_parent"
+				android:layout_weight="1" />
+
+			<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_gravity="center"
+				android:layout_marginEnd="3dp"
+				android:text="-"
+				android:textColor="@color/c_lighter"
+				android:textSize="14sp" />
+
+			<TextView
+				android:id="@+id/cooldownthreshold"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_gravity="center"
+				android:layout_marginEnd="2dp"
+				android:text="#"
+				android:textColor="@color/c_lighter"
+				android:textSize="14sp" />
+
+			<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_gravity="center"
+				android:text="%"
+				android:textColor="@color/c_lighter"
+				android:textSize="14sp" />
+
+		</LinearLayout>
+
+		<SeekBar
+			android:id="@+id/seekbarcooldownthreshold"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:max="5"
+			android:maxHeight="35dp"
+			android:min="1"
+			android:minHeight="35dp"
+			android:paddingStart="0dp"
+			android:paddingEnd="0dp"
+			android:progress="3"
+			android:progressDrawable="@drawable/seekbar_ruler"
+			android:thumb="@drawable/seekbar_slider_cooldown"
+			android:thumbOffset="0dp" />
+
+	</LinearLayout>
+
+	<RelativeLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_alignParentBottom="true">
+
+		<android.support.design.button.MaterialButton
+			android:id="@+id/saveSettings"
+			android:layout_width="match_parent"
+			android:layout_height="55dp"
+			android:layout_marginTop="15dp"
+			android:layout_marginStart="15dp"
+			android:layout_marginEnd="15dp"
+			android:layout_marginBottom="15dp"
+			android:backgroundTint="@color/bg_green"
+			android:onClick="onStart"
+			android:text="@string/startmining"
+			android:textSize="14sp"
+			android:textAllCaps="false"
+			android:textColor="@color/c_white"
+			app:cornerRadius="7.5dp" />
+
+	</RelativeLayout>
+
+</RelativeLayout>

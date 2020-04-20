@@ -51,7 +51,6 @@ public class QrCodeScannerActivity extends AppCompatActivity  implements Barcode
                 .setCameraFacing(CameraSource.CAMERA_FACING_BACK)
                 .setShouldShowText(false);
         barcodeCapture.refresh();
-
     }
 
     @Override
@@ -60,14 +59,16 @@ public class QrCodeScannerActivity extends AppCompatActivity  implements Barcode
         scanResult.setText("Scala Address : " + miner);
         if(Utils.verifyAddress(miner)) {
             Log.d("CONSOLE:QRCODE", "Barcode read: " + barcode.displayValue);
-            Config.write("address",miner);
+
+            Config.write("address", miner);
             barcodeCapture.stopScanning();
+
             finish();
+
             return;
         }
+
         Toast.makeText(MainActivity.contextOfApplication, "Invalid scala address", Toast.LENGTH_SHORT).show();
-
-
     }
 
     @Override
@@ -78,14 +79,11 @@ public class QrCodeScannerActivity extends AppCompatActivity  implements Barcode
         message.append("\n\nother ");
         message.append("codes in frame include : \n");
 
-
         for (int index = 0; index < barcodeGraphics.size(); index++) {
             Barcode barcode = barcodeGraphics.get(index).getBarcode();
             message.append(index + 1).append(". ").append(barcode.displayValue).append("\n");
         }
         Log.d("CONSOLE:QRCODE:MULTIPLE", message.toString());
-
-
     }
     @Override
     public void onBitmapScanned(SparseArray<Barcode> sparseArray) {

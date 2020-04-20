@@ -19,4 +19,6 @@
     <color name='bg_lighter'>#2d3746</color>
     <color name="bg_black">#191e26</color>
     <color name="bg_white">#fbfaff</color>
+
+    <color name="mtrl_textinput_default_box_stroke_color">@color/c_grey</color>
 </resources>

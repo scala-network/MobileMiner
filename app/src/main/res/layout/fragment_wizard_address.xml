@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content"
+	android:background="@color/bg_grey">
+
+	<LinearLayout
+		android:orientation="vertical"
+		android:layout_width="fill_parent"
+		android:layout_height="fill_parent"
+		android:layout_marginTop="15dp"
+		android:layout_marginStart="15dp"
+		android:layout_marginEnd="15dp"
+		android:layout_marginBottom="15dp">
+
+		<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_gravity="start"
+			android:text="@string/specifywalletaddress"
+			android:textColor="@color/c_white"
+            android:textStyle="bold"
+			android:textSize="14sp" />
+
+        <android.support.design.widget.TextInputLayout
+			android:id="@+id/addressIL"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+			app:errorEnabled="false">
+
+            <android.support.design.widget.TextInputEditText
+				android:id="@+id/addressWizard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+				android:textSize="14sp" />
+
+        </android.support.design.widget.TextInputLayout>
+
+		<LinearLayout
+			android:orientation="horizontal"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:gravity="end">
+
+			<android.support.design.button.MaterialButton
+				android:layout_width="fill_parent"
+				android:layout_height="50dp"
+				android:layout_marginEnd="5dp"
+                android:layout_weight="1"
+				android:backgroundTint="@color/bg_lighter"
+				android:text="@string/paste"
+				android:textSize="14sp"
+				android:textAllCaps="false"
+				android:textColor="@color/c_white"
+				android:onClick="onPaste"
+				app:icon="@drawable/ic_paste"
+				app:iconGravity="textStart"
+                app:iconSize="18dp"
+				app:cornerRadius="5dp" />
+
+			<android.support.design.button.MaterialButton
+				android:layout_width="fill_parent"
+				android:layout_height="50dp"
+                android:layout_marginEnd="5dp"
+                android:layout_weight="1"
+				android:backgroundTint="@color/bg_lighter"
+				android:text="@string/scanqrcode"
+				android:textSize="14sp"
+				android:textAllCaps="false"
+				android:textColor="@color/c_white"
+				android:onClick="onScanQrCode"
+				app:icon="@drawable/ic_qrcode"
+				app:iconGravity="textStart"
+                app:iconSize="18dp"
+				app:cornerRadius="5dp" />
+
+		</LinearLayout>
+
+	</LinearLayout>
+
+	<RelativeLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_alignParentBottom="true">
+
+		<android.support.design.button.MaterialButton
+			android:id="@+id/saveSettings"
+			android:layout_width="match_parent"
+			android:layout_height="55dp"
+			android:layout_marginTop="15dp"
+			android:layout_marginStart="15dp"
+			android:layout_marginEnd="15dp"
+			android:layout_marginBottom="15dp"
+			android:backgroundTint="@color/bg_blue"
+			android:onClick="onNext"
+			android:text="@string/next"
+			android:textSize="14sp"
+			android:textAllCaps="false"
+			android:textColor="@color/c_white"
+			app:cornerRadius="7.5dp" />
+
+	</RelativeLayout>
+
+</RelativeLayout>

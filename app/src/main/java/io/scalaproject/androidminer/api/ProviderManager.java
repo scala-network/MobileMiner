@@ -44,9 +44,9 @@ public final class ProviderManager {
     static final public ProviderData data = new ProviderData();
 
     static public PoolItem getSelectedPool() {
-        if(request.mPoolItem != null) {
+        /*if(request.mPoolItem != null) {
             return  request.mPoolItem;
-        }
+        }*/
 
         String sp = Config.read("selected_pool");
         if (sp.equals("")) {
@@ -67,7 +67,7 @@ public final class ProviderManager {
             return;
         }
 
-        mPools.clear();
+        //mPools.clear();
         request.mPoolItem = pi;
         data.isNew = true;
         request.start();
@@ -78,12 +78,15 @@ public final class ProviderManager {
     static public void generate() {
         request.stop();
         request.mPoolItem = null;
-        mPools.clear();
+        //mPools.clear();
+
+        if(!mPools.isEmpty())
+            return;
 
         // User Defined
         add("custom", "custom", "3333", 0, "", "");
 
-        // Scala Official pool
+        // 0: Scala Official pool
         add(
                 "Scala Project (Official Pool)",
                 "mine.scalaproject.io",
@@ -93,7 +96,7 @@ public final class ProviderManager {
                 "198.204.241.13"
         );
 
-        // Another Scala pool : Miner.Rocks
+        // 1: Another Scala pool : Miner.Rocks
         add(
                 "Miner.Rocks",
                 "stellite.miner.rocks",
@@ -103,7 +106,7 @@ public final class ProviderManager {
                 "54.38.232.67"
         );
 
-        // Another Scala pool : HeroMiners
+        // 2: Another Scala pool : HeroMiners
         add(
                 "HeroMiners",
                 "scala.herominers.com",
@@ -113,7 +116,7 @@ public final class ProviderManager {
                 "138.201.217.40"
         );
 
-        // Another Scala pool : GNTL
+        // 3: Another Scala pool : GNTL
         add(
                 "GNTL",
                 "xla.pool.gntl.co.uk",

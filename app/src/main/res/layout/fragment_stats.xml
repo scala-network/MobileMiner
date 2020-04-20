@@ -584,7 +584,7 @@
             android:textColor="@color/c_black"
             android:textAllCaps="false"
             android:enabled="false"
-            app:cornerRadius="25dp" />
+            app:cornerRadius="5dp" />
 
     </RelativeLayout>
 

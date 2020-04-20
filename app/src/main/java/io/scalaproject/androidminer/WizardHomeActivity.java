@@ -4,15 +4,11 @@
 
 package io.scalaproject.androidminer;
 
-import android.app.Activity;
 import android.app.Dialog;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextPaint;
@@ -22,7 +18,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-public class LandingPageActivity extends BaseActivity {
+public class WizardHomeActivity extends BaseActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,39 +29,9 @@ public class LandingPageActivity extends BaseActivity {
             return;
         }
 
-        setContentView(R.layout.fragment_landing_page);
+        setContentView(R.layout.fragment_wizard_home);
 
         View view = findViewById(android.R.id.content).getRootView();
-
-        Button btnPaperWallet = view.findViewById(R.id.btnPaperWallet);
-        btnPaperWallet.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Uri uri = Uri.parse(getResources().getString(R.string.paper_wallet_url));
-                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                startActivity(intent);
-            }
-        });
-
-        Button btnCLIWallet = view.findViewById(R.id.btnCLIwallet);
-        btnCLIWallet.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Uri uri = Uri.parse(getResources().getString(R.string.cli_wallet_url));
-                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                startActivity(intent);
-            }
-        });
-
-        Button btnGUIWallet = view.findViewById(R.id.btnGUIwallet);
-        btnGUIWallet.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Uri uri = Uri.parse(getResources().getString(R.string.gui_wallet_url));
-                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                startActivity(intent);
-            }
-        });
 
         String sDisclaimerText = getResources().getString(R.string.disclaimer_agreement);
         String sDiclaimer = getResources().getString(R.string.disclaimer);
@@ -95,11 +61,24 @@ public class LandingPageActivity extends BaseActivity {
         tvDisclaimer.setHighlightColor(Color.TRANSPARENT);
     }
 
-    public void onSkip(View view) {
-        startActivity(new Intent(LandingPageActivity.this, MainActivity.class));
+    public void onEnterAddress(View view) {
+        startActivity(new Intent(WizardHomeActivity.this, WizardAddressActivity.class));
         finish();
 
-        Config.write("hide_landing_page", "1");
+        Config.write("hide_setup_wizard", "1");
+    }
+
+    public void onCreateWallet(View view) {
+        Uri uri = Uri.parse(getResources().getString(R.string.paper_wallet_url));
+        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+        startActivity(intent);
+    }
+
+    public void onSkip(View view) {
+        startActivity(new Intent(WizardHomeActivity.this, MainActivity.class));
+        finish();
+
+        Config.write("hide_setup_wizard", "1");
     }
 
     private void showDisclaimer() {

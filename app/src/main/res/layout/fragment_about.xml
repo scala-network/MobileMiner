@@ -208,6 +208,24 @@
                         android:textSize="14sp"/>
 
                     <android.support.v7.widget.AppCompatTextView
+                        android:id="@+id/MaterialDesignURL"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="start"
+                        android:text=""
+                        android:textColor="@color/c_blue"
+                        android:textColorLink="@color/c_blue"
+                        android:textSize="14sp" />
+
+                    <android.support.v7.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="start"
+                        android:text=" and "
+                        android:textColor="@color/c_lighter"
+                        android:textSize="14sp"/>
+
+                    <android.support.v7.widget.AppCompatTextView
                         android:id="@+id/FontAwesomeURL"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

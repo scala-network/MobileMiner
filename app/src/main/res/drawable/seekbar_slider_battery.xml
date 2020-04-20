@@ -17,7 +17,7 @@
         </shape>
     </item>
     <item
-        android:drawable="@drawable/ic_battery_75"
+        android:drawable="@drawable/ic_battery"
         android:gravity="center"
         android:width="22dp"
         android:height="20dp" />

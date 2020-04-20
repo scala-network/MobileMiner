@@ -2,9 +2,9 @@
     <string name="app_name">Scala Miner</string>
     <string name="navigation_drawer_open">Open Navigation Drawer</string>
     <string name="navigation_drawer_close">Close Navigation Drawer</string>
-    <string name="mining_pool_address">Mining Pool URL</string>
+    <string name="mining_pool_address">Mining pool URL</string>
     <string name="mining_pool_port">Port</string>
-    <string name="username">Wallet Address:</string>
+    <string name="walletaddress">Wallet Address:</string>
     <string name="cmdline">Cmdline</string>
     <string name="start">Start</string>
     <string name="help">Help</string>
@@ -23,14 +23,12 @@
     <string name="paused">Paused</string>
     <string name="cancel">Cancel</string>
     <string name="hashrate">Hashrate</string>
-    <string name="miner">Miner</string>
     <string name="stats">Statistics</string>
     <string name="settings">Settings</string>
     <string name="about">About</string>
     <string name="pool">Pool</string>
     <string name="cpu">CPU</string>
-    <string name="wallet">Wallet Address</string>
-    <string name="scancode">Scan Code</string>
+    <string name="scanqrcode">QR Code</string>
     <string name="processing">Calculating Hashrate...</string>
     <string name="disclaimer">Disclaimer</string>
     <string name="shares">Shares</string>
@@ -51,8 +49,8 @@
     <string name="blockheight">Block Height</string>
     <string name="blockreward">Block Reward</string>
     <string name="totalhashrate">Total Hashrate</string>
-    <string name="emptyaddress">Wallet address is empty</string>
-    <string name="startmining">Start mining to view statisticss</string>
+    <string name="emptyaddress">Wallet address is empty.</string>
+    <string name="startminingstats">Start mining to view statisticss</string>
     <string name="notavailablecustompool">Statistics are not available for custom pools</string>
     <string name="address">Address</string>
     <string name="balance">Balance</string>
@@ -64,6 +62,8 @@
     <string name="mininggoal">Mining Goal</string>
     <string name="followus">Follow Us</string>
     <string name="miningstatus">Mining Status</string>
+    <string name="startmining">I am ready!</string>
+    <string name="mininglog">Mining Log</string>
 
     <string name="githubLink">https://github.com/scala-network/MobileMiner/releases</string>
     <string name="discordLink">https://discord.gg/djAFVvy</string>
@@ -73,14 +73,15 @@
     <string name="ScalaLink">&lt;a href=&quot;https://scalaproject.io&quot;&gt;Scala&lt;/a&gt;</string>
     <string name="Mine2getherLink">&lt;a href=&quot;https://github.com/Mine2Gether/m2g_android_miner&quot;&gt;Mine2gether&lt;/a&gt;</string>
     <string name="MoneroMinerLink">&lt;a href=&quot;https://github.com/upost/MoneroMiner&quot;&gt;MoneroMiner&lt;/a&gt;</string>
+    <string name="MaterialDesignLink">&lt;a href=&quot;https://material.io/resources/&quot;&gt;Material Design&lt;/a&gt;</string>
     <string name="FontAwesomeLink">&lt;a href=&quot;https://fontawesome.com/license&quot;&gt;Font Awesome&lt;/a&gt;</string>
     <string name="amaycPostLink">https://amaycapi.hayzam.in/</string>
     <string name="maxtemperaturereached">Temperature threshold reached!</string>
     <string name="resumedmining">Temperatures have reached safe levels. Resumed mining.</string>
     <string name="pauseonmining">Put device on charge to enable mining</string>
-    <string name="mininggoalhint">Your mining goal or pool payout</string>
+    <string name="mininggoalhint">Mining goal or pool payout</string>
     <string name="optional">(optional)</string>
-    <string name="hardwaresettings">Hardware Settings</string>
+    <string name="hardwaresettings">Hardware</string>
     <string name="max">Max</string>
     <string name="cputemperature">CPU Temperature</string>
     <string name="batterytemperature">Battery Temperature</string>
@@ -88,7 +89,7 @@
     <string name="degreecelsius">°C</string>
     <string name="pauseminingonbattery">Pause mining on battery power</string>
     <string name="keepscreenonwhenmining">Keep screen ON when mining</string>
-    <string name="turnoffamayccontrol">Disable Temperature Control</string>
+    <string name="turnoffamayccontrol">Disable temperature control</string>
     <string name="warning">Warning!</string>
     <string name="allworkers">All workers:</string>
     <string name="amaycpaused">Cannot resume mining when device is cooling</string>
@@ -107,8 +108,8 @@
     <string name="usernameparametershint">Username parameters</string>
     <string name="workernamehint">Worker name or password</string>
     <string name="landingpage_headline">Start mining on your mobile device safely and efficiently</string>
-    <string name="landingpage_introduction">Scala Mobile Miner provides useful information about your mining activities and prevents your device from overheating.</string>
-    <string name="createaddress">Create your Scala wallet address</string>
+    <string name="landingpage_introduction">Scala Miner provides useful information about your mining activities and prevents your device from overheating.</string>
+    <string name="createaddress">Create your wallet</string>
     <string name="disclaimer_agreement">By using this application, you confirm your knowledge and acceptance of the Disclaimer</string>
     <string name="paper">Paper</string>
     <string name="or">or</string>
@@ -121,6 +122,19 @@
     <string name="devicemining">Device Mining</string>
     <string name="nightmode">Night Mode</string>
     <string name="newacceptedshare">New Accepted Share!</string>
+    <string name="next">Next</string>
+    <string name="walletaddress2">Wallet Address</string>
+    <string name="paste">Paste</string>
+    <string name="selectminingpool">Select Mining Pool</string>
+    <string name="specifywalletaddress">Your Wallet Address</string>
+    <string name="supportproject">Support us</string>
+    <string name="enteraddress">Enter your wallet address</string>
+    <string name="home">Home</string>
+    <string name="payoutgoal">Payout Goal</string>
+    <string name="forcehashrate"><u>Show Cores</u></string>
+    <string name="invalidaddress">Address is invalid.</string>
+    <string name="miners">Miners</string>
+    <string name="advanced">Advanced</string>
 
     <string name="donate_help">If you would like to help build this project, feel free to specify a donation level here.\n\nFor example, a value of 5 will make your device mine 5 minutes out of 100 to fund Scala project.\n\nThe default value is 0.</string>
     <string name="mininggoal_help">The mining goal should reflect the pool payout setting, but you can also specify a custom value for your device.\n\nThe default value is the minimum payout value of the specified mining pool.</string>

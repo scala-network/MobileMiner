@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+        <item android:id="@+id/menu_home"
+            android:enabled="true"
+            android:title="Miner"
+            android:icon="@drawable/ic_miner"
+            app:showAsAction="ifRoom" />
+
+        <item android:id="@+id/menu_stats"
+            android:enabled="true"
+            android:title="Stats"
+            android:icon="@drawable/ic_stats"
+            app:showAsAction="ifRoom" />
+
+        <item android:id="@+id/menu_settings"
+            android:enabled="true"
+            android:title="Settings"
+            android:icon="@drawable/ic_settings"
+            app:showAsAction="ifRoom" />
+
+        <item android:id="@+id/menu_about"
+            android:enabled="true"
+            android:title="Settings"
+            android:icon="@drawable/ic_about"
+            app:showAsAction="ifRoom" />
+</menu>
