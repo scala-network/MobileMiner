@@ -28,11 +28,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.SeekBar;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemSelectedListener;
@@ -62,7 +62,7 @@ public class SettingsFragment extends Fragment {
 
         Button bSave;
         EditText edPool, edPort, edMiningGoal;
-        AutoCompleteTextView spPool;
+        Spinner spPool;
 
         SeekBar sbCores;
         TextView tvCoresNb, tvCoresMax;
@@ -83,7 +83,7 @@ public class SettingsFragment extends Fragment {
 
         Button bQrCode = view.findViewById(R.id.btnQrCode);
 
-        spPool = view.findViewById(R.id.poolSpinner);
+        spPool = view.findViewById(R.id.spinnerPool);
 
         sbCores = view.findViewById(R.id.seekbarcores);
         tvCoresNb = view.findViewById(R.id.coresnb);
@@ -103,15 +103,22 @@ public class SettingsFragment extends Fragment {
         swDisableAmayc = view.findViewById(R.id.chkAmaycOff);
 
         // Pool spinner
-
         PoolItem[] pools = ProviderManager.getPools();
         String[] description = new String[pools.length];
         for(int i = 0; i< pools.length;i++) {
             description[i] = pools[i].getKey();
         }
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(appContext, R.layout.dropdown_menu_popup_item, description);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(appContext, R.layout.spinner_text_color, description);
         spPool.setAdapter(adapter);
+
+        ImageView imgSpinnerDown = view.findViewById(R.id.imgSpinnerDown);
+        imgSpinnerDown.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                spPool.performClick();
+            }
+        });
 
         // CPU Cores
         int cores = Runtime.getRuntime().availableProcessors();
@@ -327,7 +334,7 @@ public class SettingsFragment extends Fragment {
             edPort.setText(poolItem.getPort());
         }
 
-        spPool.setText(spPool.getAdapter().getItem(Integer.valueOf(poolSelected)).toString(), false);
+        spPool.setSelection(Integer.parseInt(poolSelected));
 
         bSave.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -367,11 +374,11 @@ public class SettingsFragment extends Fragment {
                 Config.write("workername", workername);
                 edWorkerName.setText(workername);
 
-                String key = spPool.getText().toString();
+                String key = spPool.getSelectedItem().toString();
                 int selectedPosition = Config.DefaultPoolIndex;
 
                 PoolItem[] pools = ProviderManager.getPools();
-                for(int i = 0;i< pools.length;i++){
+                for(int i = 0; i < pools.length; i++) {
                     PoolItem pi = pools[i];
                     if(pi.getKey().equals(key)) {
                         selectedPosition = i;
@@ -456,7 +463,7 @@ public class SettingsFragment extends Fragment {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 String poolAddress = edPool.getText().toString().trim();
                 PoolItem[] pools = ProviderManager.getPools();
-                int position  = spPool.getListSelection();
+                int position  = spPool.getSelectedItemPosition();
 
                 if (s.length() > 0) {
                     int poolSelected = 0;

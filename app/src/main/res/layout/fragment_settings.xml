@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/bg_grey">
@@ -66,7 +65,6 @@
                         android:textSize="14sp"
                         android:textAllCaps="false"
                         android:textColor="@color/c_white"
-                        android:onClick="onScanQrCode"
                         app:icon="@drawable/ic_qrcode"
                         app:iconGravity="textStart"
                         app:iconSize="18dp"
@@ -83,7 +81,6 @@
                         android:textSize="14sp"
                         android:textAllCaps="false"
                         android:textColor="@color/c_white"
-                        android:onClick="onPaste"
                         app:icon="@drawable/ic_paste"
                         app:iconGravity="textStart"
                         app:iconSize="18dp"
@@ -110,24 +107,25 @@
                 android:orientation="horizontal">
 
                     <Spinner
-                        android:id="@+id/poolSpinner"
-                        android:layout_width="match_parent"
+                        android:id="@+id/spinnerPool"
+                        android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:textColor="@color/c_lighter"
-                        android:textColorHint="@color/c_black"
                         android:layout_weight="4"
                         android:spinnerMode="dropdown"
+                        android:popupBackground="@color/bg_black"
                         android:background="@android:color/transparent"
                         android:textSize="14sp" />
 
                 <ImageView
-                    android:layout_width="34dp"
-                    android:layout_height="34dp"
+                    android:id="@+id/imgSpinnerDown"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
                     android:layout_marginEnd="10dp"
                     android:layout_gravity="center"
-                    android:layout_weight="1"
-                    android:onClick="showDropDown"
-                    android:src="@drawable/ic_down" />
+                    android:clickable="true"
+                    android:src="@drawable/ic_down"
+                    android:focusable="true" />
 
             </LinearLayout>
 
