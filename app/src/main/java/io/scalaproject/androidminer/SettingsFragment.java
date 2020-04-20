@@ -122,7 +122,7 @@ public class SettingsFragment extends Fragment {
         sbCores.setMax(cores);
         tvCoresMax.setText(Integer.toString(cores));
 
-        if (Config.read("cores").equals("")) {
+        if (Config.read("cores").isEmpty()) {
             sbCores.setProgress(suggested);
             tvCoresNb.setText(Integer.toString(suggested));
         } else {
@@ -131,21 +131,21 @@ public class SettingsFragment extends Fragment {
             tvCoresNb.setText(Integer.toString(corenb));
         }
 
-        if (!Config.read("maxcputemp").equals("")) {
+        if (!Config.read("maxcputemp").isEmpty()) {
             nMaxCPUTemp = Integer.parseInt(Config.read("maxcputemp"));
         }
         int nProgress = ((nMaxCPUTemp-Utils.MIN_CPU_TEMP)/Utils.INCREMENT)+1;
         sbCPUTemp.setProgress(nProgress);
         updateCPUTemp();
 
-        if (!Config.read("maxbatterytemp").equals("")) {
+        if (!Config.read("maxbatterytemp").isEmpty()) {
             nMaxBatteryTemp = Integer.parseInt(Config.read("maxbatterytemp"));
         }
         nProgress = ((nMaxBatteryTemp-Utils.MIN_BATTERY_TEMP)/Utils.INCREMENT)+1;
         sbBatteryTemp.setProgress(nProgress);
         updateBatteryTemp();
 
-        if (!Config.read("cooldownthreshold").equals("")) {
+        if (!Config.read("cooldownthreshold").isEmpty()) {
             nCooldownTheshold = Integer.parseInt(Config.read("cooldownthreshold"));
         }
         nProgress = ((nCooldownTheshold-Utils.MIN_COOLDOWN)/Utils.INCREMENT)+1;
@@ -158,7 +158,7 @@ public class SettingsFragment extends Fragment {
         }
         enableAmaycControl(!disableAmayc);
 
-        if (!Config.read("mininggoal").equals("")) {
+        if (!Config.read("mininggoal").isEmpty()) {
             edMiningGoal.setText(Config.read("mininggoal"));
         }
 
@@ -172,15 +172,15 @@ public class SettingsFragment extends Fragment {
             swKeepScreenOnWhenMining.setChecked(checkStatusScreenOn);
         }
 
-        if (!Config.read("address").equals("")) {
+        if (!Config.read("address").isEmpty()) {
             edAddress.setText(Config.read("address"));
         }
 
-        if (!Config.read("usernameparameters").equals("")) {
+        if (!Config.read("usernameparameters").isEmpty()) {
             edUsernameparameters.setText(Config.read("usernameparameters"));
         }
 
-        if (!Config.read("workername").equals("")) {
+        if (!Config.read("workername").isEmpty()) {
             edWorkerName.setText(Config.read("workername"));
         }
 
@@ -299,7 +299,7 @@ public class SettingsFragment extends Fragment {
         PoolItem poolItem = null;
         String poolSelected = Config.read("selected_pool");
         int sp = Config.DefaultPoolIndex;
-        if (poolSelected.equals("")) {
+        if (poolSelected.isEmpty()) {
             poolSelected = Integer.toString(sp);
         }
         poolItem = ProviderManager.getPoolById(poolSelected);
@@ -316,7 +316,7 @@ public class SettingsFragment extends Fragment {
         if(poolSelected.equals("0")) {
             edPool.setText(Config.read("custom_pool"));
             edPort.setText(Config.read("custom_port"));
-        } else if(!Config.read("custom_port").equals("")) {
+        } else if(!Config.read("custom_port").isEmpty()) {
             assert poolItem != null;
             edPool.setText(poolItem.getKey());
             edPort.setText(Config.read("custom_port"));
@@ -337,7 +337,7 @@ public class SettingsFragment extends Fragment {
                 TextInputLayout til = view.findViewById(R.id.addressIL);
                 String address = edAddress.getText().toString().trim();
 
-                if(address.equals("")) {
+                if(address.isEmpty()) {
                     til.setErrorEnabled(true);
                     til.setError(getResources().getString(R.string.emptyaddress));
                     requestFocus(edAddress);
@@ -359,7 +359,7 @@ public class SettingsFragment extends Fragment {
                 Config.write("usernameparameters", edUsernameparameters.getText().toString().trim());
 
                 String workername = edWorkerName.getText().toString().trim();
-                if(workername.equals("")) {
+                if(workername.isEmpty()) {
                     workername = Tools.getDeviceName();
                 }
 
@@ -387,7 +387,7 @@ public class SettingsFragment extends Fragment {
                 if(pi.getPoolType() == 0) {
                     Config.write("custom_pool", pool);
                     Config.write("custom_port", port);
-                } else if(!port.equals("") && !pi.getPort().equals(port)) {
+                } else if(!port.isEmpty() && !pi.getPort().equals(port)) {
                     Config.write("custom_pool", "");
                     Config.write("custom_port", port);
                 } else {
@@ -407,7 +407,7 @@ public class SettingsFragment extends Fragment {
                 Config.write("disableamayc", (swDisableAmayc.isChecked() ? "1" : "0"));
 
                 String mininggoal = edMiningGoal.getText().toString().trim();
-                if(!mininggoal.equals("")) {
+                if(!mininggoal.isEmpty()) {
                     Config.write("mininggoal", mininggoal);
                 }
 
@@ -598,7 +598,7 @@ public class SettingsFragment extends Fragment {
 
     public void updateAddress() {
         String address =  Config.read("address");
-        if (edAddress == null || address.equals("")) {
+        if (edAddress == null || address.isEmpty()) {
             return;
         }
 

@@ -24,9 +24,9 @@
         <item name="colorControlActivated">@color/c_blue</item>
 
         <!-- inactive thumb color -->
-        <item name="colorSwitchThumbNormal">#f1f1f1</item>
+        <item name="colorSwitchThumbNormal">@color/c_lighter</item>
 
         <!-- inactive track color (30% transparency) -->
-        <item name="android:colorForeground">#42221f1f</item>
+        <item name="android:colorForeground">@color/c_lighter</item>
     </style>
 </resources>
