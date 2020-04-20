@@ -164,7 +164,7 @@ public class SettingsFragment extends Fragment {
 
         boolean disableAmayc = (Config.read("disableamayc").equals("1"));
         if(disableAmayc){
-            swDisableAmayc.setChecked(disableAmayc);
+            swDisableAmayc.setChecked(true);
         }
         enableAmaycControl(!disableAmayc);
 
@@ -172,14 +172,14 @@ public class SettingsFragment extends Fragment {
             edMiningGoal.setText(Config.read("mininggoal"));
         }
 
-        boolean checkStatus = (Config.read("pauseonbattery").equals("1"));
-        if(checkStatus){
-            swPauseOnBattery.setChecked(checkStatus);
+        boolean checkStatus = Config.read("pauseonbattery").equals("1");
+        if(checkStatus) {
+            swPauseOnBattery.setChecked(true);
         }
 
-        boolean checkStatusScreenOn = (Config.read("keepscreenonwhenmining").equals("1"));
-        if(checkStatusScreenOn){
-            swKeepScreenOnWhenMining.setChecked(checkStatusScreenOn);
+        boolean checkStatusScreenOn = Config.read("keepscreenonwhenmining").equals("1");
+        if(checkStatusScreenOn) {
+            swKeepScreenOnWhenMining.setChecked(true);
         }
 
         if (!Config.read("address").isEmpty()) {
@@ -412,8 +412,8 @@ public class SettingsFragment extends Fragment {
                     Config.write("mininggoal", mininggoal);
                 }
 
-                Config.write("pauseonbattery", (swPauseOnBattery.isChecked() ? "1" : "0"));
-                Config.write("keepscreenonwhenmining", (swKeepScreenOnWhenMining.isChecked() ? "1" : "0"));
+                Config.write("pauseonbattery", swPauseOnBattery.isChecked() ? "1" : "0");
+                Config.write("keepscreenonwhenmining", swKeepScreenOnWhenMining.isChecked() ? "1" : "0");
 
                 Config.write("init", "1");
 
