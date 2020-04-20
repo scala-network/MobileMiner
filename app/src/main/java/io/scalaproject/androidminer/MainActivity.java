@@ -315,6 +315,7 @@ public class MainActivity extends BaseActivity
         };
 
         ProviderManager.request.setListener(payoutListener).start();
+        ProviderManager.afterSave();
 
         startTimerTemperatures();
 
@@ -778,6 +779,8 @@ public class MainActivity extends BaseActivity
     protected void onResume() {
         super.onResume();
         updateUI();
+
+        ProviderManager.request.setListener(payoutListener).start();
 
         if(!isBatteryReceiverRegistered) {
             registerReceiver(batteryInfoReceiver, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));

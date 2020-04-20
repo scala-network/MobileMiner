@@ -44,9 +44,9 @@ public final class ProviderManager {
     static final public ProviderData data = new ProviderData();
 
     static public PoolItem getSelectedPool() {
-        /*if(request.mPoolItem != null) {
-            return  request.mPoolItem;
-        }*/
+        if(request.mPoolItem != null) {
+            return request.mPoolItem;
+        }
 
         String sp = Config.read("selected_pool");
         if (sp.equals("")) {
