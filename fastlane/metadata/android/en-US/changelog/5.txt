@@ -1,3 +1,6 @@
-- Added option to keep screen on when mining
+- Added a setup wizard
 - Fixed some pool connection issues
+- Redesigned the layout
+- Added a bottom navigation
+- Added option to keep screen on when mining
 - Added a Night mode to save the battery life 
