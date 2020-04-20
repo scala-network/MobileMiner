@@ -95,14 +95,7 @@ public class WizardAddressActivity extends BaseActivity {
 
         TextInputLayout til = view2.findViewById(R.id.addressIL);
 
-        if(strAddress.equals("")) {
-            til.setErrorEnabled(true);
-            til.setError(getResources().getString(R.string.emptyaddress));
-            requestFocus(tvAddress);
-            return;
-        }
-
-        if(!Utils.verifyAddress(strAddress)) {
+        if(strAddress.isEmpty() || !Utils.verifyAddress(strAddress)) {
             til.setErrorEnabled(true);
             til.setError(getResources().getString(R.string.invalidaddress));
             requestFocus(tvAddress);

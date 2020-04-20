@@ -131,7 +131,7 @@
     <string name="home">Home</string>
     <string name="payoutgoal">Payout Goal</string>
     <string name="forcehashrate"><u>Show Cores</u></string>
-    <string name="invalidaddress">Address is invalid.</string>
+    <string name="invalidaddress">Invalid Wallet Address</string>
     <string name="miners">Miners</string>
     <string name="advanced">Advanced</string>
 

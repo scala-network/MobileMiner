@@ -261,7 +261,11 @@ public class MainActivity extends BaseActivity
 
         btnMinerPR.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                sendInput("p");
+
+                if(isDeviceMining())
+                    sendInput("p");
+                else if (isDevicePaused())
+                    sendInput("r");
             }
         });
 

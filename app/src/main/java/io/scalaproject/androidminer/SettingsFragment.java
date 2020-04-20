@@ -46,6 +46,7 @@ public class SettingsFragment extends Fragment {
 
     private static final String LOG_TAG = "MiningSvc";
 
+    TextInputLayout tilAddress;
     private EditText edAddress, edWorkerName, edUsernameparameters;
 
     private Integer nMaxCPUTemp = 65; // 55,60,65,70,75
@@ -73,6 +74,7 @@ public class SettingsFragment extends Fragment {
         Context appContext = MainActivity.getContextOfApplication();
         bSave = view.findViewById(R.id.saveSettings);
 
+        tilAddress = view.findViewById(R.id.addressIL);
         edAddress = view.findViewById(R.id.address);
         edPool = view.findViewById(R.id.pool);
         edPort = view.findViewById(R.id.port);
@@ -339,27 +341,18 @@ public class SettingsFragment extends Fragment {
         bSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 // Validate address
-                TextInputLayout til = view.findViewById(R.id.addressIL);
                 String address = edAddress.getText().toString().trim();
 
-                if(address.isEmpty()) {
-                    til.setErrorEnabled(true);
-                    til.setError(getResources().getString(R.string.emptyaddress));
+                if(address.isEmpty() || !Utils.verifyAddress(address)) {
+                    tilAddress.setErrorEnabled(true);
+                    tilAddress.setError(getResources().getString(R.string.invalidaddress));
                     requestFocus(edAddress);
                     return;
                 }
 
-                if(!Utils.verifyAddress(address)) {
-                    til.setErrorEnabled(true);
-                    til.setError(getResources().getString(R.string.invalidaddress));
-                    requestFocus(edAddress);
-                    return;
-                }
-
-                til.setErrorEnabled(false);
-                til.setError(null);
+                tilAddress.setErrorEnabled(false);
+                tilAddress.setError(null);
 
                 Config.write("address", address);
 
