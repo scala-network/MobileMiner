@@ -79,8 +79,7 @@
     <string name="maxtemperaturereached">Temperature threshold reached!</string>
     <string name="resumedmining">Temperatures have reached safe levels. Resumed mining.</string>
     <string name="pauseonmining">Put device on charge to enable mining</string>
-    <string name="mininggoalhint">Mining goal or pool payout</string>
-    <string name="optional">(optional)</string>
+    <string name="mininggoalhint">Mining goal or pool payout (optional)</string>
     <string name="hardwaresettings">Hardware</string>
     <string name="max">Max</string>
     <string name="cputemperature">CPU Temperature</string>
@@ -105,8 +104,8 @@
     <string name="debuginfo">Debug Info</string>
     <string name="debuginfo_copied">Debug Information copied.</string>
     <string name="pooloptions">Pool Options</string>
-    <string name="usernameparametershint">Username parameters</string>
-    <string name="workernamehint">Worker name or password</string>
+    <string name="usernameparametershint">Username parameters (optional)</string>
+    <string name="workernamehint">Worker name or password (optional)</string>
     <string name="landingpage_headline">Start mining on your mobile device safely and efficiently</string>
     <string name="landingpage_introduction">Scala Miner provides useful information about your mining activities and prevents your device from overheating.</string>
     <string name="createaddress">Create your wallet</string>
