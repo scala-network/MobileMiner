@@ -135,7 +135,7 @@
     <string name="miners">Miners</string>
     <string name="advanced">Advanced</string>
     <string name="supporttheproject">Do you want to support the project?</string>
-    <string name="minetoscala">The project donation address will be used for mining.</string>
+    <string name="minetoscala">The Scala donation address will then be used for mining.</string>
     <string name="sure">Sure!</string>
     <string name="nothanks">Nope.</string>
 
