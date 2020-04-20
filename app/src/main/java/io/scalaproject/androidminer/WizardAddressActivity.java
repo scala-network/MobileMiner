@@ -5,6 +5,7 @@
 package io.scalaproject.androidminer;
 
 import android.Manifest;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -13,8 +14,10 @@ import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.content.ContextCompat;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -115,5 +118,33 @@ public class WizardAddressActivity extends BaseActivity {
         if (view.requestFocus()) {
             getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
         }
+    }
+
+    public void onMineScala(View view) {
+        final Dialog dialog = new Dialog(this);
+        dialog.setContentView(R.layout.mine_scala);
+        dialog.setCancelable(false);
+
+        Button btnYes = dialog.findViewById(R.id.btnYes);
+        btnYes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                View view2 = findViewById(android.R.id.content).getRootView();
+                TextView tvAddress = view2.findViewById(R.id.addressWizard);
+                tvAddress.setText(Utils.SCALA_XLA_ADDRESS);
+
+                dialog.dismiss();
+            }
+        });
+
+        Button btnNo = dialog.findViewById(R.id.btnNo);
+        btnNo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
     }
 }

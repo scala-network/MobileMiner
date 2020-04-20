@@ -20,15 +20,15 @@
             android:id="@+id/imgDayMode"
             android:layout_width="54dp"
             android:layout_height="54dp"
-            android:layout_marginTop="15dp"
-            android:layout_marginEnd="15dp"
-            android:layout_gravity="end"
+            android:layout_marginTop="75dp"
+            android:layout_gravity="center"
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
             android:paddingStart="10dp"
             android:paddingEnd="10dp"
             android:clickable="true"
-            android:src="@drawable/ic_daymode" />
+            android:src="@drawable/ic_daymode"
+            android:focusable="true" />
 
         <Space
             android:layout_width="0dp"
@@ -147,7 +147,7 @@
             android:alpha="0"
             android:textSize="14sp"
             android:textStyle="bold"
-            android:textColor="@color/c_blue" />
+            android:textColor="@color/c_green" />
 
         <Space
             android:layout_width="0dp"
@@ -181,8 +181,8 @@
             android:layout_marginRight="15dp"
             android:layout_marginBottom="10dp"
             android:paddingTop="5dp"
-            android:paddingLeft="15dp"
-            android:paddingRight="15dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
             android:visibility="visible"
             android:paddingBottom="5dp">
 
@@ -279,10 +279,10 @@
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
         android:layout_marginBottom="10dp"
-        android:paddingTop="15dp"
+        android:paddingTop="12dp"
         android:paddingLeft="15dp"
         android:paddingRight="15dp"
-        android:paddingBottom="15dp">
+        android:paddingBottom="12dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -296,7 +296,7 @@
                 android:layout_gravity="center"
                 android:gravity="start"
                 android:text="Worker Name"
-                android:textSize="14sp"
+                android:textSize="16sp"
                 android:textStyle="bold"
                 android:textColor="@color/c_white"  />
 
@@ -312,7 +312,7 @@
                 android:layout_gravity="center"
                 android:gravity="end"
                 android:text="Shares"
-                android:textSize="14sp"
+                android:textSize="16sp"
                 android:textColor="@color/c_lighter"  />
 
         </LinearLayout>
@@ -525,7 +525,7 @@
                 android:paddingTop="5pt"
                 android:paddingStart="15dp"
                 android:text="@string/mininglog"
-                android:textSize="12sp"
+                android:textSize="14sp"
                 android:textStyle="bold"
                 android:textColor="@color/c_grey" />
 
@@ -534,19 +534,16 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1" />
 
-            <android.support.v7.widget.AppCompatTextView
+            <ImageView
                 android:id="@+id/showCores"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingTop="5pt"
-                android:paddingEnd="15dp"
-                android:text="@string/forcehashrate"
-                android:textSize="12sp"
-                android:selectAllOnFocus="false"
-                android:linksClickable="true"
-                android:autoLink="all"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginEnd="15dp"
+                android:layout_gravity="bottom"
+                android:clickable="true"
                 android:onClick="onShowCores"
-                android:textColor="@color/c_blue" />
+                android:src="@drawable/ic_hrcores"
+                android:focusable="true" />
 
         </LinearLayout>
 

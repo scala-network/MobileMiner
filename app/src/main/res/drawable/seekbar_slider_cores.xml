@@ -19,6 +19,6 @@
     <item
         android:drawable="@drawable/ic_cores"
         android:gravity="center"
-        android:width="22dp"
-        android:height="22dp" />
+        android:width="20dp"
+        android:height="20dp" />
 </layer-list>

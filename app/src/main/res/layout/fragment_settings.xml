@@ -14,6 +14,16 @@
         android:layout_marginBottom="90dp"
         android:orientation="vertical">
 
+        <android.support.v7.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="15dp"
+            android:gravity="start"
+            android:text="@string/settings"
+            android:textColor="@color/c_white"
+            android:textStyle="bold"
+            android:textSize="20sp" />
+
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -23,15 +33,39 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <android.support.v7.widget.AppCompatTextView
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="15dp"
-                    android:gravity="start"
-                    android:text="@string/walletaddress2"
-                    android:textColor="@color/c_white"
-                    android:textSize="14sp"
-                    android:textStyle="bold" />
+                    android:orientation="horizontal">
+
+                    <android.support.v7.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="start"
+                        android:text="@string/walletaddress2"
+                        android:textColor="@color/c_white"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <Space
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1" />
+
+                    <android.support.design.button.MaterialButton
+                        android:id="@+id/btnMineScala"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:backgroundTint="@color/bg_grey"
+                        android:layout_gravity="center_vertical"
+                        app:cornerRadius="5dp"
+                        app:icon="@drawable/ic_star"
+                        app:iconGravity="textStart"
+                        app:iconPadding="0dp"
+                        app:iconTint="@color/c_lighter"/>
+
+                </LinearLayout>
 
                 <android.support.design.widget.TextInputLayout
                     android:id="@+id/addressIL"
@@ -97,7 +131,7 @@
                     android:gravity="start"
                     android:text="@string/pool"
                     android:textColor="@color/c_white"
-                    android:textSize="14sp"
+                    android:textSize="16sp"
                     android:textStyle="bold" />
 
             <LinearLayout
@@ -184,6 +218,17 @@
 
                 </LinearLayout>
 
+                <android.support.v7.widget.AppCompatTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginBottom="5dp"
+                    android:gravity="start"
+                    android:text="@string/pooloptions"
+                    android:textColor="@color/c_grey"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
                 <android.support.design.widget.TextInputLayout
                     android:id="@+id/usernameparamsIL"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
@@ -251,7 +296,7 @@
                     android:gravity="start"
                     android:text="@string/hardwaresettings"
                     android:textColor="@color/c_white"
-                    android:textSize="14sp"
+                    android:textSize="16sp"
                     android:textStyle="bold" />
 
                 <LinearLayout
@@ -555,7 +600,7 @@
                     android:gravity="start"
                     android:text="@string/advanced"
                     android:textColor="@color/c_white"
-                    android:textSize="14sp"
+                    android:textSize="16sp"
                     android:textStyle="bold" />
 
                 <LinearLayout
@@ -588,6 +633,13 @@
 
                 </LinearLayout>
 
+                <View
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_width="fill_parent"
+                    android:layout_height="0.7dp"
+                    android:background="@color/c_black"/>
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -616,6 +668,13 @@
                         android:theme="@style/SwitchTheme" />
 
                 </LinearLayout>
+
+                <View
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_width="fill_parent"
+                    android:layout_height="0.7dp"
+                    android:background="@color/c_black"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -658,6 +717,14 @@
                         android:theme="@style/SwitchTheme" />
 
                 </LinearLayout>
+
+                <View
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_width="fill_parent"
+                    android:layout_height="0.7dp"
+                    android:background="@color/c_black"/>
+
 
             </LinearLayout>
 

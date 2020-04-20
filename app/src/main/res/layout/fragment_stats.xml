@@ -14,6 +14,16 @@
         android:layout_marginBottom="90dp"
         android:orientation="vertical">
 
+        <android.support.v7.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="15dp"
+            android:gravity="start"
+            android:text="@string/stats"
+            android:textColor="@color/c_white"
+            android:textStyle="bold"
+            android:textSize="20sp" />
+
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -30,7 +40,7 @@
                     android:gravity="start"
                     android:textColor="@color/c_white"
                     android:layout_marginBottom="5dp"
-                    android:textSize="14sp"
+                    android:textSize="16sp"
                     android:textStyle="bold" />
 
                 <LinearLayout
@@ -199,7 +209,7 @@
                     android:gravity="start"
                     android:textColor="@color/c_white"
                     android:textStyle="bold"
-                    android:textSize="14sp" />
+                    android:textSize="16sp" />
 
                 <Space
                     android:layout_width="0dp"
@@ -359,7 +369,7 @@
                         android:gravity="start"
                         android:textColor="@color/c_white"
                         android:textStyle="bold"
-                        android:textSize="14sp" />
+                        android:textSize="16sp" />
 
                     <Space
                         android:layout_width="0dp"
@@ -492,7 +502,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/balance"
                         android:textColor="@color/c_lighter"
-                        android:textSize="14sp"
+                        android:textSize="16sp"
                         android:textStyle="bold" />
 
                     <Space
@@ -507,7 +517,7 @@
                         android:layout_marginRight="5dp"
                         android:gravity="end"
                         android:text="n/a"
-                        android:textSize="14sp"
+                        android:textSize="16sp"
                         android:textColor="@color/c_lighter" />
 
                     <android.support.v7.widget.AppCompatTextView
@@ -515,7 +525,7 @@
                         android:layout_height="wrap_content"
                         android:text="XLA"
                         android:textColor="@color/c_lighter"
-                        android:textSize="14sp"
+                        android:textSize="16sp"
                         android:textStyle="bold"/>
 
                 </LinearLayout>
@@ -531,7 +541,7 @@
                         android:text="@string/paid"
                         android:textColor="@color/c_lighter"
                         android:textStyle="bold"
-                        android:textSize="14sp" />
+                        android:textSize="16sp" />
 
                     <Space
                         android:layout_width="0dp"
@@ -545,7 +555,7 @@
                         android:layout_marginRight="5dp"
                         android:gravity="end"
                         android:text="n/a"
-                        android:textSize="14sp"
+                        android:textSize="16sp"
                         android:textColor="@color/c_green"
                         android:textStyle="bold" />
 
@@ -554,7 +564,7 @@
                         android:layout_height="wrap_content"
                         android:text="XLA"
                         android:textColor="@color/c_green"
-                        android:textSize="14sp"
+                        android:textSize="16sp"
                         android:textStyle="bold"/>
 
                 </LinearLayout>

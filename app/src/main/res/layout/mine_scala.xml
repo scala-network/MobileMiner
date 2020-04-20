@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/bg_grey"
+    android:orientation="vertical" >
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <android.support.v7.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dip"
+                android:layout_marginLeft="15dip"
+                android:gravity="start"
+                android:text="@string/supporttheproject"
+                android:textColor="@color/c_white"
+                android:textStyle="bold"
+                android:textSize="16sp" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/textView1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dip"
+                android:layout_marginLeft="15dip"
+                android:layout_marginRight="15dip"
+                android:layout_marginTop="10dip"
+                android:textColor="@color/c_lighter"
+                android:textSize="14sp"
+                android:text="@string/minetoscala" />
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:gravity="end">
+
+                <android.support.design.button.MaterialButton
+                    android:id="@+id/btnNo"
+                    android:layout_width="match_parent"
+                    android:layout_height="55dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginBottom="15dp"
+                    android:layout_weight="1"
+                    android:backgroundTint="@color/bg_lighter"
+                    android:text="@string/nothanks"
+                    android:textSize="14sp"
+                    android:textAllCaps="false"
+                    android:textColor="@color/c_white"
+                    app:icon="@drawable/ic_no"
+                    app:iconTint="@color/c_purple"
+                    app:cornerRadius="5dp" />
+
+                <android.support.design.button.MaterialButton
+                    android:id="@+id/btnYes"
+                    android:layout_width="match_parent"
+                    android:layout_height="55dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="15dp"
+                    android:layout_marginBottom="15dp"
+                    android:layout_weight="1"
+                    android:backgroundTint="@color/bg_green"
+                    android:text="@string/sure"
+                    android:textSize="14sp"
+                    android:textAllCaps="false"
+                    android:textColor="@color/c_white"
+                    app:icon="@drawable/ic_peace"
+                    app:iconSize="18dp"
+                    app:cornerRadius="5dp" />
+
+            </LinearLayout>
+
+
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>

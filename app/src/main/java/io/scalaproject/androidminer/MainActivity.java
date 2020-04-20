@@ -594,7 +594,7 @@ public class MainActivity extends BaseActivity
     }
 
     public void updateNightModeButton() {
-        boolean enabled = isDeviceMining();
+        boolean enabled = m_nCurrentState != STATE_STOPPED;
 
         btnNightMode.setEnabled(enabled);
 
@@ -837,9 +837,8 @@ public class MainActivity extends BaseActivity
                 btnStart.setText("Stop");
 
                 // Hashrate button
-                TextView tvShowCores = findViewById(R.id.showCores);
-                tvShowCores.setVisibility(View.VISIBLE);
-                tvShowCores.setPaintFlags(tvShowCores.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+                ImageView imgShowCores = findViewById(R.id.showCores);
+                imgShowCores.setEnabled(true);
 
                 // Pause button
                 activatePauseBtn(true);
@@ -850,8 +849,8 @@ public class MainActivity extends BaseActivity
                 btnStart.setText("Start");
 
                 // Hashrate button
-                TextView tvShowCores = findViewById(R.id.showCores);
-                tvShowCores.setVisibility(View.GONE);
+                ImageView imgShowCores = findViewById(R.id.showCores);
+                imgShowCores.setEnabled(false);
 
                 // Pause button
                 activatePauseBtn(false);
@@ -891,7 +890,7 @@ public class MainActivity extends BaseActivity
                 tvSpeedUnitNM.setVisibility(View.VISIBLE);
 
                 tvSpeedNM.setTextSize(68.0f);
-                tvSpeedNM.setTextColor(getResources().getColor(R.color.c_green));
+                tvSpeedNM.setTextColor(getResources().getColor(R.color.c_blue));
             }
 
             if (Config.read("keepscreenonwhenmining").equals("1")) {
@@ -923,7 +922,7 @@ public class MainActivity extends BaseActivity
                 imgStatus.setImageDrawable(getResources().getDrawable(R.drawable.ic_cooling_grey));
                 tvStatus.setText(getResources().getString(R.string.cooling));
 
-                tvSpeedNM.setTextColor(getResources().getColor(R.color.c_green));
+                tvSpeedNM.setTextColor(getResources().getColor(R.color.c_blue));
             } else if (status == STATE_CALCULATING) {
                 imgStatus.setImageDrawable(getResources().getDrawable(R.drawable.ic_hourglass));
                 tvStatus.setText(getResources().getString(R.string.processing));
@@ -966,7 +965,7 @@ public class MainActivity extends BaseActivity
             tvSpeedNM.setTextColor(getResources().getColor(R.color.c_grey));
         }
         else {
-            tvSpeed.setTextColor(getResources().getColor(R.color.c_green));
+            tvSpeed.setTextColor(getResources().getColor(R.color.c_blue));
         }
     }
 
@@ -1038,7 +1037,7 @@ public class MainActivity extends BaseActivity
         if (speed) {
             int i = text.indexOf("]");
             int max = text.lastIndexOf("s");
-            textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_green)), i+1, max+1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_blue)), i+1, max+1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             textSpan.setSpan(new StyleSpan(android.graphics.Typeface.NORMAL), i, max+1, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
             return textSpan;
         }
@@ -1047,7 +1046,7 @@ public class MainActivity extends BaseActivity
         if(text.contains(formatText)) {
             int i = text.indexOf(formatText);
             int imax = i + formatText.length();
-            textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_blue)), i, imax, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_green)), i, imax, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             textSpan.setSpan(new StyleSpan(android.graphics.Typeface.NORMAL), i, imax, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
             return textSpan;
         }
@@ -1197,7 +1196,7 @@ public class MainActivity extends BaseActivity
     private void appendLogOutputText(String line) {
         boolean refresh = false;
         if(binder != null){
-            if (/*(tvLog.getText().equals("") && !binder.getService().getOutput().equals("")) || */tvLog.getText().length() > Config.logMaxLength ){
+            if (tvLog.getText().length() > Config.logMaxLength ){
                 String outputLog = binder.getService().getOutput();
                 tvLog.setText(formatLogOutputText(outputLog));
                 refresh = true;
@@ -1268,7 +1267,7 @@ public class MainActivity extends BaseActivity
                             }
 
                             if(accepted == 1)
-                                tvAccepted.setTextColor(getResources().getColor(R.color.c_blue));
+                                tvAccepted.setTextColor(getResources().getColor(R.color.c_green));
 
                             updateHashrate(speed);
                         });

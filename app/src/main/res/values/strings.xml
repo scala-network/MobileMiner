@@ -79,7 +79,7 @@
     <string name="maxtemperaturereached">Temperature threshold reached!</string>
     <string name="resumedmining">Temperatures have reached safe levels. Resumed mining.</string>
     <string name="pauseonmining">Put device on charge to enable mining</string>
-    <string name="mininggoalhint">Mining goal or pool payout (optional)</string>
+    <string name="mininggoalhint">Mining goal or pool payout</string>
     <string name="hardwaresettings">Hardware</string>
     <string name="max">Max</string>
     <string name="cputemperature">CPU Temperature</string>
@@ -103,9 +103,9 @@
     <string name="statictempcontrol">Switched to static temperature control.</string>
     <string name="debuginfo">Debug Info</string>
     <string name="debuginfo_copied">Debug Information copied.</string>
-    <string name="pooloptions">Pool Options</string>
-    <string name="usernameparametershint">Username parameters (optional)</string>
-    <string name="workernamehint">Worker name or password (optional)</string>
+    <string name="pooloptions">Optional</string>
+    <string name="usernameparametershint">Username parameters</string>
+    <string name="workernamehint">Worker name or password</string>
     <string name="landingpage_headline">Start mining on your mobile device safely and efficiently</string>
     <string name="landingpage_introduction">Scala Miner provides useful information about your mining activities and prevents your device from overheating.</string>
     <string name="createaddress">Create your wallet</string>
@@ -134,6 +134,10 @@
     <string name="invalidaddress">Invalid Wallet Address</string>
     <string name="miners">Miners</string>
     <string name="advanced">Advanced</string>
+    <string name="supporttheproject">Do you want to support the project?</string>
+    <string name="minetoscala">The project donation address will be used for mining.</string>
+    <string name="sure">Sure!</string>
+    <string name="nothanks">Nope.</string>
 
     <string name="donate_help">If you would like to help build this project, feel free to specify a donation level here.\n\nFor example, a value of 5 will make your device mine 5 minutes out of 100 to fund Scala project.\n\nThe default value is 0.</string>
     <string name="mininggoal_help">The mining goal should reflect the pool payout setting, but you can also specify a custom value for your device.\n\nThe default value is the minimum payout value of the specified mining pool.</string>

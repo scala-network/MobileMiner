@@ -14,21 +14,46 @@
 		android:layout_marginEnd="15dp"
 		android:layout_marginBottom="15dp">
 
-		<TextView
-			android:layout_width="wrap_content"
+		<LinearLayout
+			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:layout_gravity="start"
-			android:text="@string/specifywalletaddress"
-			android:textColor="@color/c_white"
-            android:textStyle="bold"
-			android:textSize="14sp" />
+			android:orientation="horizontal">
+
+			<android.support.v7.widget.AppCompatTextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:gravity="start"
+				android:text="@string/walletaddress2"
+				android:textColor="@color/c_white"
+				android:textSize="16sp"
+				android:textStyle="bold" />
+
+			<Space
+				android:layout_width="0dp"
+				android:layout_height="match_parent"
+				android:layout_weight="1" />
+
+			<android.support.design.button.MaterialButton
+				android:id="@+id/btnMineScala"
+				android:layout_width="24dp"
+				android:layout_height="24dp"
+				android:backgroundTint="@color/bg_grey"
+				android:layout_gravity="center_vertical"
+				app:cornerRadius="5dp"
+				app:icon="@drawable/ic_star"
+				app:iconGravity="textStart"
+				app:iconPadding="0dp"
+				app:iconTint="@color/c_lighter"
+				android:onClick="onMineScala"/>
+
+		</LinearLayout>
 
         <android.support.design.widget.TextInputLayout
 			android:id="@+id/addressIL"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="5dp"
 			app:errorTextAppearance="@style/TextErrorStyle"
 			app:errorEnabled="false">
 

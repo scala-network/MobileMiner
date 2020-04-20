@@ -22,7 +22,7 @@
 			android:text="@string/selectminingpool"
 			android:textStyle="bold"
 			android:textColor="@color/c_white"
-			android:textSize="14sp" />
+			android:textSize="16sp" />
 
 		<LinearLayout
 			android:id="@+id/llScala"

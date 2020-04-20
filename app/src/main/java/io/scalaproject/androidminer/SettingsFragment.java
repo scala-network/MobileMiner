@@ -9,6 +9,7 @@
 package io.scalaproject.androidminer;
 
 import android.Manifest;
+import android.app.Dialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
@@ -497,6 +498,36 @@ public class SettingsFragment extends Fragment {
                 else {
                     Toast.makeText(appContext, "This version of Android does not support Qr Code.", Toast.LENGTH_LONG).show();
                 }
+            }
+        });
+
+        Button btnMineScala = view.findViewById(R.id.btnMineScala);
+        btnMineScala.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Dialog dialog = new Dialog(getContext());
+                dialog.setContentView(R.layout.mine_scala);
+                dialog.setCancelable(false);
+
+                Button btnYes = dialog.findViewById(R.id.btnYes);
+                btnYes.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        edAddress.setText(Utils.SCALA_XLA_ADDRESS);
+
+                        dialog.dismiss();
+                    }
+                });
+
+                Button btnNo = dialog.findViewById(R.id.btnNo);
+                btnNo.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                    }
+                });
+
+                dialog.show();
             }
         });
 
