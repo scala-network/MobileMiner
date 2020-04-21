@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:app="http://schemas.android.com/apk/res-auto"
-	xmlns:tools="http://schemas.android.com/tools"
 	android:layout_width="match_parent"
 	android:layout_height="wrap_content"
-	android:background="@color/bg_grey">
+	android:background="@color/bg_body">
 
 	<LinearLayout
 		android:layout_width="match_parent"
@@ -21,7 +20,7 @@
 			android:layout_marginBottom="5dp"
 			android:gravity="start"
 			android:text="@string/hardwaresettings"
-			android:textColor="@color/c_white"
+			android:textColor="@color/txt_headline"
 			android:textSize="16sp"
 			android:textStyle="bold" />
 
@@ -37,7 +36,7 @@
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:text="CPU Cores"
-				android:textColor="@color/c_lighter"
+				android:textColor="@color/txt_main"
 				android:textSize="14sp" />
 
 			<Space
@@ -51,7 +50,7 @@
 				android:layout_height="wrap_content"
 				android:layout_marginEnd="1dp"
 				android:text="1"
-				android:textColor="@color/c_lighter"
+				android:textColor="@color/txt_main"
 				android:textSize="14sp" />
 
 			<TextView
@@ -59,7 +58,7 @@
 				android:layout_height="wrap_content"
 				android:layout_marginEnd="1dp"
 				android:text="/"
-				android:textColor="@color/c_lighter"
+				android:textColor="@color/txt_main"
 				android:textSize="14sp" />
 
 			<TextView
@@ -67,7 +66,7 @@
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:text="#"
-				android:textColor="@color/c_lighter"
+				android:textColor="@color/txt_main"
 				android:textSize="14sp" />
 
 		</LinearLayout>
@@ -101,19 +100,19 @@
 				android:layout_gravity="center"
 				android:layout_marginEnd="5dp"
 				android:text="@string/cputemperature"
-				android:textColor="@color/c_lighter"
+				android:textColor="@color/txt_main"
 				android:textSize="14sp" />
 
 			<android.support.design.button.MaterialButton
 				android:id="@+id/btnCPUTempHelp"
 				android:layout_width="24dp"
 				android:layout_height="24dp"
-				android:backgroundTint="@color/bg_grey"
+				android:backgroundTint="@android:color/transparent"
 				app:cornerRadius="5dp"
 				app:icon="@drawable/ic_help"
 				app:iconGravity="textStart"
 				app:iconPadding="0dp"
-				app:iconTint="@color/c_lighter" />
+				app:iconTint="@color/txt_main" />
 
 			<Space
 				android:layout_width="0dp"
@@ -126,7 +125,7 @@
 				android:layout_gravity="center"
 				android:layout_marginEnd="3dp"
 				android:text="@string/max"
-				android:textColor="@color/c_lighter"
+				android:textColor="@color/txt_main"
 				android:textSize="14sp" />
 
 			<TextView
@@ -136,7 +135,7 @@
 				android:layout_gravity="center"
 				android:layout_marginEnd="2dp"
 				android:text="#"
-				android:textColor="@color/c_lighter"
+				android:textColor="@color/txt_main"
 				android:textSize="14sp" />
 
 			<TextView
@@ -144,7 +143,7 @@
 				android:layout_height="wrap_content"
 				android:layout_gravity="center"
 				android:text="@string/degreecelsius"
-				android:textColor="@color/c_lighter"
+				android:textColor="@color/txt_main"
 				android:textSize="14sp" />
 
 		</LinearLayout>
@@ -178,19 +177,19 @@
 				android:layout_gravity="center"
 				android:layout_marginEnd="5dp"
 				android:text="@string/batterytemperature"
-				android:textColor="@color/c_lighter"
+				android:textColor="@color/txt_main"
 				android:textSize="14sp" />
 
 			<android.support.design.button.MaterialButton
 				android:id="@+id/btnBatteryTempHelp"
 				android:layout_width="24dp"
 				android:layout_height="24dp"
-				android:backgroundTint="@color/bg_grey"
+				android:backgroundTint="@android:color/transparent"
 				app:cornerRadius="5dp"
 				app:icon="@drawable/ic_help"
 				app:iconGravity="textStart"
 				app:iconPadding="0dp"
-				app:iconTint="@color/c_lighter" />
+				app:iconTint="@color/txt_main" />
 
 			<Space
 				android:layout_width="0dp"
@@ -203,7 +202,7 @@
 				android:layout_gravity="center"
 				android:layout_marginEnd="3dp"
 				android:text="@string/max"
-				android:textColor="@color/c_lighter"
+				android:textColor="@color/txt_main"
 				android:textSize="14sp" />
 
 			<TextView
@@ -213,7 +212,7 @@
 				android:layout_gravity="center"
 				android:layout_marginEnd="2dp"
 				android:text="#"
-				android:textColor="@color/c_lighter"
+				android:textColor="@color/txt_main"
 				android:textSize="14sp" />
 
 			<TextView
@@ -221,7 +220,7 @@
 				android:layout_height="wrap_content"
 				android:layout_gravity="center"
 				android:text="@string/degreecelsius"
-				android:textColor="@color/c_lighter"
+				android:textColor="@color/txt_main"
 				android:textSize="14sp" />
 
 		</LinearLayout>
@@ -255,19 +254,19 @@
 				android:layout_gravity="center"
 				android:layout_marginEnd="5dp"
 				android:text="@string/cooldownthreshold"
-				android:textColor="@color/c_lighter"
+				android:textColor="@color/txt_main"
 				android:textSize="14sp" />
 
 			<android.support.design.button.MaterialButton
 				android:id="@+id/btnCooldownHelp"
 				android:layout_width="24dp"
 				android:layout_height="24dp"
-				android:backgroundTint="@color/bg_grey"
+				android:backgroundTint="@android:color/transparent"
 				app:cornerRadius="5dp"
 				app:icon="@drawable/ic_help"
 				app:iconGravity="textStart"
 				app:iconPadding="0dp"
-				app:iconTint="@color/c_lighter" />
+				app:iconTint="@color/c_grey" />
 
 			<Space
 				android:layout_width="0dp"
@@ -280,7 +279,7 @@
 				android:layout_gravity="center"
 				android:layout_marginEnd="3dp"
 				android:text="-"
-				android:textColor="@color/c_lighter"
+				android:textColor="@color/txt_main"
 				android:textSize="14sp" />
 
 			<TextView
@@ -290,7 +289,7 @@
 				android:layout_gravity="center"
 				android:layout_marginEnd="2dp"
 				android:text="#"
-				android:textColor="@color/c_lighter"
+				android:textColor="@color/txt_main"
 				android:textSize="14sp" />
 
 			<TextView
@@ -298,7 +297,7 @@
 				android:layout_height="wrap_content"
 				android:layout_gravity="center"
 				android:text="%"
-				android:textColor="@color/c_lighter"
+				android:textColor="@color/txt_main"
 				android:textSize="14sp" />
 
 		</LinearLayout>
@@ -333,12 +332,12 @@
 			android:layout_marginStart="15dp"
 			android:layout_marginEnd="15dp"
 			android:layout_marginBottom="15dp"
-			android:backgroundTint="@color/bg_green"
+			android:backgroundTint="@color/c_green"
 			android:onClick="onStart"
 			android:text="@string/startmining"
 			android:textSize="14sp"
 			android:textAllCaps="false"
-			android:textColor="@color/c_white"
+			android:textColor="@color/txt_button_filled"
 			app:cornerRadius="7.5dp" />
 
 	</RelativeLayout>

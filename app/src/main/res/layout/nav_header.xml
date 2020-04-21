@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:alpha="1"
-    android:background="@color/bg_grey"
+    android:background="@color/bg_lighter"
     android:gravity="bottom"
     android:orientation="vertical"
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
@@ -15,11 +16,11 @@
         android:layout_marginTop="30dp"
         android:layout_marginBottom="20dp"
         android:layout_marginLeft="18dp"
-        android:src="@mipmap/ic_logo_colors" />
+        app:srcCompat="@mipmap/ic_logo_colors" />
 
     <View
         android:layout_width="match_parent"
         android:layout_height="0.75dp"
-        android:background="@color/c_black"/>
+        android:background="@color/c_grey"/>
 
 </LinearLayout>

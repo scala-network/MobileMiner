@@ -11,7 +11,7 @@
         android:layout_height="match_parent"
         android:layout_above="@+id/actions"
         android:layout_weight="1"
-        android:background="@color/bg_grey"
+        android:background="@color/bg_body"
         android:clickable="false"
         android:gravity="center">
 
@@ -41,7 +41,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:background="@color/bg_grey"
+        android:background="@color/bg_body"
         android:orientation="vertical"
         android:paddingLeft="16dp"
         android:paddingRight="16dp">
@@ -62,7 +62,7 @@
                     android:layout_height="match_parent"
                     android:gravity="center"
                     android:text="Touch screen to capture"
-                    android:textColor="@color/c_lighter"
+                    android:textColor="@color/c_grey"
                     android:textSize="10sp" />
 
             </LinearLayout>
@@ -88,7 +88,7 @@
                     android:layout_weight="2"
                     android:maxLines="1"
                     android:text="Wallet Address"
-                    android:textColor="@color/c_lighter" />
+                    android:textColor="@color/txt_main" />
 
             </LinearLayout>
 
@@ -106,8 +106,9 @@
                     android:layout_marginTop="5dip"
                     android:backgroundTint="@color/bg_lighter"
                     android:text="@string/cancel"
+                    android:textColor="@color/txt_button_filled"
                     android:textAllCaps="false"
-                    app:cornerRadius="25dp" />
+                    app:cornerRadius="7.5dp" />
 
             </LinearLayout>
 

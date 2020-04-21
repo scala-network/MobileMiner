@@ -2,8 +2,8 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.MaterialComponents">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/bg_grey</item>
-        <item name="colorPrimaryDark">@color/bg_black</item>
+        <item name="colorPrimary">@color/bg_lighter</item>
+        <item name="colorPrimaryDark">@color/c_black</item>
         <item name="colorAccent">@color/bg_lighter</item>
         <item name="colorControlNormal">@color/c_grey</item>
         <item name="colorControlActivated">@color/c_blue</item>
@@ -19,7 +19,7 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light">
         <item name="android:colorBackground">@color/bg_lighter</item>
-        <item name="android:textColor">@color/c_lighter</item>
+        <item name="android:textColor">@color/c_grey</item>
     </style>
 
     <style name="TextErrorStyle" parent="@android:style/TextAppearance">
@@ -32,9 +32,9 @@
         <item name="colorControlActivated">@color/c_blue</item>
 
         <!-- inactive thumb color -->
-        <item name="colorSwitchThumbNormal">@color/c_lighter</item>
+        <item name="colorSwitchThumbNormal">@color/c_grey</item>
 
         <!-- inactive track color (30% transparency) -->
-        <item name="android:colorForeground">@color/c_lighter</item>
+        <item name="android:colorForeground">@color/c_grey</item>
     </style>
 </resources>

@@ -3,7 +3,7 @@
 	xmlns:app="http://schemas.android.com/apk/res-auto"
 	android:layout_width="match_parent"
 	android:layout_height="wrap_content"
-	android:background="@color/bg_grey">
+	android:background="@color/bg_body">
 
 	<LinearLayout
 		android:orientation="vertical"
@@ -24,7 +24,7 @@
 				android:layout_height="wrap_content"
 				android:gravity="start"
 				android:text="@string/walletaddress2"
-				android:textColor="@color/c_white"
+				android:textColor="@color/txt_headline"
 				android:textSize="16sp"
 				android:textStyle="bold" />
 
@@ -37,13 +37,13 @@
 				android:id="@+id/btnMineScala"
 				android:layout_width="24dp"
 				android:layout_height="24dp"
-				android:backgroundTint="@color/bg_grey"
+				android:backgroundTint="@android:color/transparent"
 				android:layout_gravity="center_vertical"
 				app:cornerRadius="5dp"
 				app:icon="@drawable/ic_star"
 				app:iconGravity="textStart"
 				app:iconPadding="0dp"
-				app:iconTint="@color/c_lighter"
+				app:iconTint="@color/btn_icon_default"
 				android:onClick="onMineScala"/>
 
 		</LinearLayout>
@@ -80,7 +80,7 @@
 				android:text="@string/scanqrcode"
 				android:textSize="14sp"
 				android:textAllCaps="false"
-				android:textColor="@color/c_white"
+				android:textColor="@color/txt_button_filled"
 				android:onClick="onScanQrCode"
 				app:icon="@drawable/ic_qrcode"
 				app:iconGravity="textStart"
@@ -96,7 +96,7 @@
                 android:text="@string/paste"
                 android:textSize="14sp"
                 android:textAllCaps="false"
-                android:textColor="@color/c_white"
+                android:textColor="@color/txt_button_filled"
                 android:onClick="onPaste"
                 app:icon="@drawable/ic_paste"
                 app:iconGravity="textStart"
@@ -120,12 +120,12 @@
 			android:layout_marginStart="15dp"
 			android:layout_marginEnd="15dp"
 			android:layout_marginBottom="15dp"
-			android:backgroundTint="@color/bg_blue"
+			android:backgroundTint="@color/c_blue"
 			android:onClick="onNext"
 			android:text="@string/next"
 			android:textSize="14sp"
 			android:textAllCaps="false"
-			android:textColor="@color/c_white"
+			android:textColor="@color/txt_button_filled"
 			app:cornerRadius="7.5dp" />
 
 	</RelativeLayout>

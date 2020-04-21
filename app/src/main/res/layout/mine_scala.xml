@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@color/bg_grey"
+    android:background="@color/bg_lighter"
     android:orientation="vertical" >
 
     <ScrollView
@@ -22,7 +22,7 @@
                 android:layout_marginLeft="15dip"
                 android:gravity="start"
                 android:text="@string/supporttheproject"
-                android:textColor="@color/c_white"
+                android:textColor="@color/txt_headline"
                 android:textStyle="bold"
                 android:textSize="16sp" />
 
@@ -34,7 +34,7 @@
                 android:layout_marginLeft="15dip"
                 android:layout_marginRight="15dip"
                 android:layout_marginTop="10dip"
-                android:textColor="@color/c_lighter"
+                android:textColor="@color/txt_main"
                 android:textSize="14sp"
                 android:text="@string/minetoscala" />
 
@@ -53,11 +53,13 @@
                     android:layout_marginEnd="5dp"
                     android:layout_marginBottom="15dp"
                     android:layout_weight="1"
-                    android:backgroundTint="@color/bg_lighter"
+                    app:backgroundTint="@android:color/transparent"
+                    app:strokeColor="@color/c_grey"
+                    app:strokeWidth="1dp"
                     android:text="@string/nothanks"
                     android:textSize="14sp"
                     android:textAllCaps="false"
-                    android:textColor="@color/c_white"
+                    android:textColor="@color/txt_button_filled"
                     app:icon="@drawable/ic_no"
                     app:iconTint="@color/c_purple"
                     app:cornerRadius="5dp" />
@@ -70,7 +72,9 @@
                     android:layout_marginEnd="15dp"
                     android:layout_marginBottom="15dp"
                     android:layout_weight="1"
-                    android:backgroundTint="@color/bg_green"
+                    app:backgroundTint="@android:color/transparent"
+                    app:strokeColor="@color/c_green"
+                    app:strokeWidth="1dp"
                     android:text="@string/sure"
                     android:textSize="14sp"
                     android:textAllCaps="false"

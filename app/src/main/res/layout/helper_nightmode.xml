@@ -28,7 +28,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:textSize="12sp"
-            android:textColor="@color/c_lighter"
+            android:textColor="@color/c_grey"
             android:text="@string/nightmode_help"/>
 
     </LinearLayout>

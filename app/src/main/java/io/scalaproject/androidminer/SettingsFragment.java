@@ -531,32 +531,12 @@ public class SettingsFragment extends Fragment {
             }
         });
 
-        Button btnCPUTempHelp = view.findViewById(R.id.btnCPUTempHelp);
-        btnCPUTempHelp.setOnClickListener(new View.OnClickListener() {
+        Button btnHardwareHelp = view.findViewById(R.id.btnHardwareHelp);
+        btnHardwareHelp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // inflate the layout of the popup window
-                View popupView = inflater.inflate(R.layout.helper_cpu_temperature, null);
-                Utils.showPopup(v, inflater, popupView);
-            }
-        });
-
-        Button btnBatteryTempHelp = view.findViewById(R.id.btnBatteryTempHelp);
-        btnBatteryTempHelp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // inflate the layout of the popup window
-                View popupView = inflater.inflate(R.layout.helper_battery_temperature, null);
-                Utils.showPopup(v, inflater, popupView);
-            }
-        });
-
-        Button btnCooldownHelp = view.findViewById(R.id.btnCooldownHelp);
-        btnCooldownHelp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // inflate the layout of the popup window
-                View popupView = inflater.inflate(R.layout.helper_cooldown_threshold, null);
+                View popupView = inflater.inflate(R.layout.helper_hardware_settings, null);
                 Utils.showPopup(v, inflater, popupView);
             }
         });

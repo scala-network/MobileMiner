@@ -2,24 +2,29 @@
 <resources>
     <color name="c_white">#fbfaff</color>
     <color name="c_grey">#8fa2b6</color>
-    <color name="c_lighter">#cfd3e3</color>
-    <color name="c_black">#697185</color>
-    <color name="c_blue">#238bff</color>
-    <color name="c_green">#2caf6e</color>
-    <color name="c_red">#da2a2a</color>
-    <color name="c_yellow">#d4c627</color>
+    <color name="c_dark_grey">#525a61</color>
+    <color name="c_black">#000000</color>
+    <color name="c_blue">#219bd9</color>
+    <color name="c_green">#3c9e59</color>
+    <color name="c_red">#e83515</color>
+    <color name="c_yellow">#d3d921</color>
     <color name="c_purple">#ca2c92</color>
+    <color name="c_orange">#e86915</color>
 
-    <color name="colorSpinnerBackground">#961e1e1e</color>
-    <color name="colorSpinner">#547458</color>
+    <color name="txt_headline">#ebf8ff</color>
+    <color name="txt_secondary">#c5d0d9</color>
+    <color name="txt_main">#86939e</color>
+    <color name="txt_inactive">#525a61</color>
+    <color name="txt_button_outlined">#c5d0d9</color>
+    <color name="txt_button_filled">@color/c_white</color>
 
-    <color name="bg_blue">#238bff</color>
-    <color name='bg_green'>#2a9f56</color>
-    <color name="bg_red">#da2a2a</color>
-    <color name="bg_grey">#1e2832</color>
-    <color name='bg_lighter'>#2d3746</color>
-    <color name="bg_black">#191e26</color>
-    <color name="bg_white">#fbfaff</color>
+    <color name="btn_icon_default">#c5d0d9</color>
+    <color name="btn_icon_dark">#86939e</color>
+    <color name="btn_border_default">#c5d0d9</color>
+    <color name="btn_border_dark">#86939e</color>
+
+    <color name="bg_body">#0e1317</color>
+    <color name="bg_lighter">#181f26</color>
 
     <color name="mtrl_textinput_default_box_stroke_color">@color/c_grey</color>
 </resources>

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/bg_grey">
+    android:background="@color/bg_body">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -21,7 +21,7 @@
             android:layout_marginBottom="15dp"
             android:gravity="start"
             android:text="@string/settings"
-            android:textColor="@color/c_white"
+            android:textColor="@color/txt_headline"
             android:textStyle="bold"
             android:textSize="20sp" />
 
@@ -45,7 +45,7 @@
                         android:layout_height="wrap_content"
                         android:gravity="start"
                         android:text="@string/walletaddress2"
-                        android:textColor="@color/c_white"
+                        android:textColor="@color/txt_secondary"
                         android:textSize="16sp"
                         android:textStyle="bold" />
 
@@ -58,13 +58,13 @@
                         android:id="@+id/btnMineScala"
                         android:layout_width="24dp"
                         android:layout_height="24dp"
-                        android:backgroundTint="@color/bg_grey"
+                        android:backgroundTint="@android:color/transparent"
                         android:layout_gravity="center_vertical"
                         app:cornerRadius="5dp"
                         app:icon="@drawable/ic_star"
                         app:iconGravity="textStart"
                         app:iconPadding="0dp"
-                        app:iconTint="@color/c_lighter"
+                        app:iconTint="@color/c_grey"
                         tools:ignore="UnusedAttribute" />
 
                 </LinearLayout>
@@ -101,7 +101,7 @@
                         android:text="@string/scanqrcode"
                         android:textSize="14sp"
                         android:textAllCaps="false"
-                        android:textColor="@color/c_white"
+                        android:textColor="@color/txt_button_filled"
                         app:icon="@drawable/ic_qrcode"
                         app:iconGravity="textStart"
                         app:iconSize="18dp"
@@ -118,7 +118,7 @@
                         android:text="@string/paste"
                         android:textSize="14sp"
                         android:textAllCaps="false"
-                        android:textColor="@color/c_white"
+                        android:textColor="@color/txt_button_filled"
                         app:icon="@drawable/ic_paste"
                         app:iconGravity="textStart"
                         app:iconSize="18dp"
@@ -131,10 +131,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="30dp"
-                    android:layout_marginBottom="15dp"
+                    android:layout_marginBottom="20dp"
                     android:gravity="start"
                     android:text="@string/pool"
-                    android:textColor="@color/c_white"
+                    android:textColor="@color/txt_secondary"
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
@@ -149,10 +149,10 @@
                         android:id="@+id/spinnerPool"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:textColor="@color/c_lighter"
+                        android:textColor="@color/c_grey"
                         android:layout_weight="4"
                         android:spinnerMode="dropdown"
-                        android:popupBackground="@color/bg_black"
+                        android:popupBackground="@color/bg_lighter"
                         android:background="@android:color/transparent"
                         android:textSize="14sp" />
 
@@ -163,7 +163,7 @@
                     android:layout_marginEnd="10dp"
                     android:layout_gravity="center"
                     android:clickable="true"
-                    android:src="@drawable/ic_down"
+                    app:srcCompat="@drawable/ic_down"
                     android:focusable="true" />
 
             </LinearLayout>
@@ -192,8 +192,8 @@
                             android:hint="@string/mining_pool_address"
                             android:inputType="textUri"
                             android:singleLine="true"
-                            android:textColor="@color/c_lighter"
-                            android:textColorHint="@color/c_black"
+                            android:textColor="@color/txt_main"
+                            android:textColorHint="@color/txt_inactive"
                             android:textSize="14sp" />
 
                     </android.support.design.widget.TextInputLayout>
@@ -215,8 +215,8 @@
                             android:inputType="number"
                             android:maxLength="6"
                             android:singleLine="true"
-                            android:textColor="@color/c_lighter"
-                            android:textColorHint="@color/c_black"
+                            android:textColor="@color/txt_main"
+                            android:textColorHint="@color/txt_inactive"
                             android:textSize="14sp" />
 
                     </android.support.design.widget.TextInputLayout>
@@ -230,7 +230,7 @@
                     android:layout_marginBottom="5dp"
                     android:gravity="start"
                     android:text="@string/pooloptions"
-                    android:textColor="@color/c_grey"
+                    android:textColor="@color/txt_main"
                     android:textSize="14sp"
                     android:textStyle="bold" />
 
@@ -247,8 +247,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/usernameparametershint"
-                        android:textColor="@color/c_lighter"
-                        android:textColorHint="@color/c_black"
+                        android:textColor="@color/txt_main"
+                        android:textColorHint="@color/txt_inactive"
                         android:textSize="14sp" />
 
                 </android.support.design.widget.TextInputLayout>
@@ -266,8 +266,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/workernamehint"
-                        android:textColor="@color/c_lighter"
-                        android:textColorHint="@color/c_black"
+                        android:textColor="@color/txt_main"
+                        android:textColorHint="@color/txt_inactive"
                         android:textSize="14sp" />
 
                 </android.support.design.widget.TextInputLayout>
@@ -287,22 +287,43 @@
                         android:layout_weight="1"
                         android:hint="@string/mininggoalhint"
                         android:inputType="number"
-                        android:textColor="@color/c_lighter"
-                        android:textColorHint="@color/c_black"
+                        android:textColor="@color/txt_main"
+                        android:textColorHint="@color/txt_inactive"
                         android:textSize="14sp" />
 
                 </android.support.design.widget.TextInputLayout>
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="30dp"
+                android:layout_marginBottom="15dp"
+                android:layout_weight="0"
+                android:orientation="horizontal">
+
                 <android.support.v7.widget.AppCompatTextView
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="30dp"
-                    android:layout_marginBottom="15dp"
                     android:gravity="start"
                     android:text="@string/hardwaresettings"
-                    android:textColor="@color/c_white"
+                    android:textColor="@color/txt_secondary"
                     android:textSize="16sp"
                     android:textStyle="bold" />
+
+                <android.support.design.button.MaterialButton
+                    android:id="@+id/btnHardwareHelp"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_gravity="center_vertical"
+                    android:backgroundTint="@android:color/transparent"
+                    app:cornerRadius="5dp"
+                    app:icon="@drawable/ic_help"
+                    app:iconGravity="textStart"
+                    app:iconPadding="0dp"
+                    app:iconTint="@color/txt_secondary"
+                    tools:ignore="UnusedAttribute" />
+
+            </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -316,7 +337,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/cpu_cores"
-                        android:textColor="@color/c_lighter"
+                        android:textColor="@color/txt_main"
                         android:textSize="14sp" />
 
                     <Space
@@ -331,7 +352,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="1dp"
                         android:text="1"
-                        android:textColor="@color/c_lighter"
+                        android:textColor="@color/txt_main"
                         android:textSize="14sp"
                         tools:ignore="HardcodedText" />
 
@@ -340,7 +361,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="1dp"
                         android:text="/"
-                        android:textColor="@color/c_lighter"
+                        android:textColor="@color/txt_main"
                         android:textSize="14sp"
                         tools:ignore="HardcodedText" />
 
@@ -349,7 +370,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="#"
-                        android:textColor="@color/c_lighter"
+                        android:textColor="@color/txt_main"
                         android:textSize="14sp"
                         tools:ignore="HardcodedText" />
 
@@ -385,20 +406,8 @@
                         android:layout_gravity="center"
                         android:layout_marginEnd="5dp"
                         android:text="@string/cputemperature"
-                        android:textColor="@color/c_lighter"
+                        android:textColor="@color/txt_main"
                         android:textSize="14sp" />
-
-                    <android.support.design.button.MaterialButton
-                        android:id="@+id/btnCPUTempHelp"
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:backgroundTint="@color/bg_grey"
-                        app:cornerRadius="5dp"
-                        app:icon="@drawable/ic_help"
-                        app:iconGravity="textStart"
-                        app:iconPadding="0dp"
-                        app:iconTint="@color/c_lighter"
-                        tools:ignore="UnusedAttribute" />
 
                     <Space
                         android:layout_width="0dp"
@@ -412,7 +421,7 @@
                         android:layout_gravity="center"
                         android:layout_marginEnd="3dp"
                         android:text="@string/max"
-                        android:textColor="@color/c_lighter"
+                        android:textColor="@color/txt_main"
                         android:textSize="14sp" />
 
                     <TextView
@@ -422,7 +431,7 @@
                         android:layout_gravity="center"
                         android:layout_marginEnd="2dp"
                         android:text="#"
-                        android:textColor="@color/c_lighter"
+                        android:textColor="@color/txt_main"
                         android:textSize="14sp"
                         tools:ignore="HardcodedText" />
 
@@ -431,7 +440,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:text="@string/degreecelsius"
-                        android:textColor="@color/c_lighter"
+                        android:textColor="@color/txt_main"
                         android:textSize="14sp" />
 
                 </LinearLayout>
@@ -466,20 +475,8 @@
                         android:layout_gravity="center"
                         android:layout_marginEnd="5dp"
                         android:text="@string/batterytemperature"
-                        android:textColor="@color/c_lighter"
+                        android:textColor="@color/txt_main"
                         android:textSize="14sp" />
-
-                    <android.support.design.button.MaterialButton
-                        android:id="@+id/btnBatteryTempHelp"
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:backgroundTint="@color/bg_grey"
-                        app:cornerRadius="5dp"
-                        app:icon="@drawable/ic_help"
-                        app:iconGravity="textStart"
-                        app:iconPadding="0dp"
-                        app:iconTint="@color/c_lighter"
-                        tools:ignore="UnusedAttribute" />
 
                     <Space
                         android:layout_width="0dp"
@@ -493,7 +490,7 @@
                         android:layout_gravity="center"
                         android:layout_marginEnd="3dp"
                         android:text="@string/max"
-                        android:textColor="@color/c_lighter"
+                        android:textColor="@color/txt_main"
                         android:textSize="14sp" />
 
                     <TextView
@@ -503,7 +500,7 @@
                         android:layout_gravity="center"
                         android:layout_marginEnd="2dp"
                         android:text="#"
-                        android:textColor="@color/c_lighter"
+                        android:textColor="@color/txt_main"
                         android:textSize="14sp"
                         tools:ignore="HardcodedText" />
 
@@ -512,7 +509,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:text="@string/degreecelsius"
-                        android:textColor="@color/c_lighter"
+                        android:textColor="@color/txt_main"
                         android:textSize="14sp" />
 
                 </LinearLayout>
@@ -547,20 +544,8 @@
                         android:layout_gravity="center"
                         android:layout_marginEnd="5dp"
                         android:text="@string/cooldownthreshold"
-                        android:textColor="@color/c_lighter"
+                        android:textColor="@color/txt_main"
                         android:textSize="14sp" />
-
-                    <android.support.design.button.MaterialButton
-                        android:id="@+id/btnCooldownHelp"
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:backgroundTint="@color/bg_grey"
-                        app:cornerRadius="5dp"
-                        app:icon="@drawable/ic_help"
-                        app:iconGravity="textStart"
-                        app:iconPadding="0dp"
-                        app:iconTint="@color/c_lighter"
-                        tools:ignore="UnusedAttribute" />
 
                     <Space
                         android:layout_width="0dp"
@@ -574,7 +559,7 @@
                         android:layout_gravity="center"
                         android:layout_marginEnd="3dp"
                         android:text="-"
-                        android:textColor="@color/c_lighter"
+                        android:textColor="@color/txt_main"
                         android:textSize="14sp"
                         tools:ignore="HardcodedText" />
 
@@ -585,7 +570,7 @@
                         android:layout_gravity="center"
                         android:layout_marginEnd="2dp"
                         android:text="#"
-                        android:textColor="@color/c_lighter"
+                        android:textColor="@color/txt_main"
                         android:textSize="14sp"
                         tools:ignore="HardcodedText" />
 
@@ -594,7 +579,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:text="%"
-                        android:textColor="@color/c_lighter"
+                        android:textColor="@color/txt_main"
                         android:textSize="14sp"
                         tools:ignore="HardcodedText" />
 
@@ -623,7 +608,7 @@
                     android:layout_marginBottom="15dp"
                     android:gravity="start"
                     android:text="@string/advanced"
-                    android:textColor="@color/c_white"
+                    android:textColor="@color/txt_secondary"
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
@@ -638,10 +623,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/pauseminingonbattery"
-                        android:textColor="@color/c_lighter"
+                        android:textColor="@color/c_grey"
                         android:textSize="14sp"
                         android:checked="false"
-                        app:buttonTint="@color/c_lighter" />
+                        app:buttonTint="@color/txt_main" />
 
                     <Space
                         android:layout_width="0dp"
@@ -662,7 +647,7 @@
                     android:layout_marginBottom="5dp"
                     android:layout_width="fill_parent"
                     android:layout_height="0.7dp"
-                    android:background="@color/c_black"/>
+                    android:background="@color/txt_main"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -675,10 +660,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/keepscreenonwhenmining"
-                        android:textColor="@color/c_lighter"
+                        android:textColor="@color/txt_main"
                         android:textSize="14sp"
-                        android:checked="false"
-                        app:buttonTint="@color/c_lighter" />
+                        android:checked="false" />
 
                     <Space
                         android:layout_width="0dp"
@@ -699,7 +683,7 @@
                     android:layout_marginBottom="5dp"
                     android:layout_width="fill_parent"
                     android:layout_height="0.7dp"
-                    android:background="@color/c_black"/>
+                    android:background="@color/txt_main"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -712,10 +696,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/turnoffamayccontrol"
-                        android:textColor="@color/c_lighter"
+                        android:textColor="@color/txt_main"
                         android:textSize="14sp"
-                        android:checked="false"
-                        app:buttonTint="@color/c_lighter" />
+                        android:checked="false" />
 
                     <android.support.design.button.MaterialButton
                         android:id="@+id/btnAmaycWarning"
@@ -723,7 +706,7 @@
                         android:layout_height="24dp"
                         android:layout_marginStart="25dp"
                         android:layout_gravity="center_vertical"
-                        android:backgroundTint="@color/bg_grey"
+                        android:backgroundTint="@android:color/transparent"
                         app:cornerRadius="5dp"
                         app:icon="@drawable/ic_warning"
                         app:iconGravity="textStart"
@@ -750,7 +733,7 @@
                     android:layout_marginBottom="5dp"
                     android:layout_width="fill_parent"
                     android:layout_height="0.7dp"
-                    android:background="@color/c_black"/>
+                    android:background="@color/txt_main"/>
 
 
             </LinearLayout>
@@ -772,11 +755,11 @@
             android:layout_marginLeft="15dp"
             android:layout_marginRight="15dp"
             android:layout_marginBottom="15dp"
-            android:backgroundTint="@color/bg_blue"
+            app:backgroundTint="@color/c_blue"
             android:text="@string/save"
             android:textSize="14sp"
             android:textAllCaps="false"
-            android:textColor="@color/c_white"
+            android:textColor="@color/txt_button_filled"
             app:cornerRadius="5dp"
             tools:ignore="UnusedAttribute" />
 

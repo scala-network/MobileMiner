@@ -606,7 +606,7 @@ public class MainActivity extends BaseActivity
             btnNightMode.setBackground(buttonDrawable);
             btnNightMode.setIconTintResource(R.color.c_white);
         } else {
-            DrawableCompat.setTint(buttonDrawable, getResources().getColor(R.color.bg_black));
+            DrawableCompat.setTint(buttonDrawable, getResources().getColor(R.color.c_black));
             btnNightMode.setBackground(buttonDrawable);
             btnNightMode.setIconTintResource(R.color.c_grey);
         }
@@ -844,7 +844,7 @@ public class MainActivity extends BaseActivity
                 activatePauseBtn(true);
             } else {
                 updateHashrate("0");
-                DrawableCompat.setTint(buttonDrawable, getResources().getColor(R.color.bg_green));
+                DrawableCompat.setTint(buttonDrawable, getResources().getColor(R.color.c_green));
                 btnStart.setBackground(buttonDrawable);
                 btnStart.setText("Start");
 
@@ -917,7 +917,7 @@ public class MainActivity extends BaseActivity
                 imgStatus.setImageDrawable(getResources().getDrawable(R.drawable.ic_pause));
                 tvStatus.setText(getResources().getString(R.string.paused));
 
-                tvSpeedNM.setTextColor(getResources().getColor(R.color.c_lighter));
+                tvSpeedNM.setTextColor(getResources().getColor(R.color.c_grey));
             } else if (status == STATE_COOLING && isDeviceMining()) {
                 imgStatus.setImageDrawable(getResources().getDrawable(R.drawable.ic_cooling_grey));
                 tvStatus.setText(getResources().getString(R.string.cooling));
@@ -927,7 +927,7 @@ public class MainActivity extends BaseActivity
                 imgStatus.setImageDrawable(getResources().getDrawable(R.drawable.ic_hourglass));
                 tvStatus.setText(getResources().getString(R.string.processing));
 
-                tvSpeedNM.setTextColor(getResources().getColor(R.color.c_lighter));
+                tvSpeedNM.setTextColor(getResources().getColor(R.color.c_grey));
             }
 
             tvSpeedNM.setTextSize(24.0f);
@@ -1018,7 +1018,7 @@ public class MainActivity extends BaseActivity
                     int i = text.indexOf(tmpFormat);
                     int imax = i + tmpFormat.length();
                     textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_white)), i, imax, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-                    textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_lighter)), imax, text.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_grey)), imax, text.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
                     return textSpan;
                 }
@@ -1030,7 +1030,7 @@ public class MainActivity extends BaseActivity
         // Format time
         formatText = "]";
         if(text.contains(formatText)) {
-            textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_black)), 0, 10, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_dark_grey)), 0, 10, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             textSpan.setSpan(new StyleSpan(android.graphics.Typeface.NORMAL), 0, 10, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
         }
 
@@ -1064,7 +1064,7 @@ public class MainActivity extends BaseActivity
         if(text.contains(formatText)) {
             int i = text.indexOf(formatText);
             int imax = i + formatText.length();
-            textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_lighter)), i, imax, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_grey)), i, imax, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             textSpan.setSpan(new StyleSpan(android.graphics.Typeface.NORMAL), i, imax, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
             return textSpan;
         }
@@ -1073,7 +1073,7 @@ public class MainActivity extends BaseActivity
         if(text.contains(formatText)) {
             int i = text.indexOf(formatText);
             int imax = i + formatText.length();
-            textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_lighter)), i, imax, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_grey)), i, imax, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             textSpan.setSpan(new StyleSpan(android.graphics.Typeface.NORMAL), i, imax, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
             return textSpan;
         }
@@ -1082,7 +1082,7 @@ public class MainActivity extends BaseActivity
         if(text.contains(formatText)) {
             int i = text.indexOf(formatText);
             int imax = i + formatText.length();
-            textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_lighter)), i, imax, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_grey)), i, imax, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             textSpan.setSpan(new StyleSpan(android.graphics.Typeface.NORMAL), i, imax, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
             return textSpan;
         }
@@ -1091,7 +1091,7 @@ public class MainActivity extends BaseActivity
         if(text.contains(formatText)) {
             int i = text.indexOf(formatText);
             int imax = i + formatText.length();
-            textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_lighter)), i, imax, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_grey)), i, imax, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             textSpan.setSpan(new StyleSpan(android.graphics.Typeface.NORMAL), i, imax, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
             return textSpan;
         }
@@ -1100,7 +1100,7 @@ public class MainActivity extends BaseActivity
         if(text.contains(formatText)) {
             int i = text.indexOf(formatText);
             int imax = i + formatText.length();
-            textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_lighter)), i, imax, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_grey)), i, imax, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             textSpan.setSpan(new StyleSpan(android.graphics.Typeface.NORMAL), i, imax, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
             return textSpan;
         }
@@ -1109,7 +1109,7 @@ public class MainActivity extends BaseActivity
         if(text.contains(formatText)) {
             int i = text.indexOf(formatText);
             int imax = i + formatText.length();
-            textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_lighter)), i, imax, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_grey)), i, imax, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             textSpan.setSpan(new StyleSpan(android.graphics.Typeface.NORMAL), i, imax, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
             return textSpan;
         }
@@ -1127,7 +1127,7 @@ public class MainActivity extends BaseActivity
         if(text.contains(formatText)) {
             int i = text.indexOf(formatText);
             int imax = i + formatText.length();
-            textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_lighter)), i, imax, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_grey)), i, imax, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             textSpan.setSpan(new StyleSpan(android.graphics.Typeface.NORMAL), i, imax, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
             return textSpan;
         }
@@ -1471,11 +1471,11 @@ public class MainActivity extends BaseActivity
         buttonDrawable = DrawableCompat.wrap(buttonDrawable);
 
         if(enabled) {
-            DrawableCompat.setTint(buttonDrawable, getResources().getColor(R.color.bg_green));
+            DrawableCompat.setTint(buttonDrawable, getResources().getColor(R.color.c_green));
             btnStart.setBackground(buttonDrawable);
             btnStart.setTextColor(getResources().getColor(R.color.c_white));
         } else {
-            DrawableCompat.setTint(buttonDrawable, getResources().getColor(R.color.bg_black));
+            DrawableCompat.setTint(buttonDrawable, getResources().getColor(R.color.c_black));
             btnStart.setBackground(buttonDrawable);
             btnStart.setTextColor(getResources().getColor(R.color.c_black));
         }
@@ -1495,7 +1495,7 @@ public class MainActivity extends BaseActivity
             btnMinerPR.setBackground(buttonDrawable);
             btnMinerPR.setIconTintResource(R.color.c_white);
         } else {
-            DrawableCompat.setTint(buttonDrawable, getResources().getColor(R.color.bg_black));
+            DrawableCompat.setTint(buttonDrawable, getResources().getColor(R.color.c_black));
             btnMinerPR.setBackground(buttonDrawable);
             btnMinerPR.setIconTintResource(R.color.c_grey);
         }

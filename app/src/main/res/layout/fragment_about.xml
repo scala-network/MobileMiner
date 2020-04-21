@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/bg_grey">
+    android:background="@color/bg_body">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -20,7 +20,7 @@
             android:layout_marginBottom="15dp"
             android:gravity="start"
             android:text="@string/about"
-            android:textColor="@color/c_white"
+            android:textColor="@color/txt_headline"
             android:textStyle="bold"
             android:textSize="20sp" />
 
@@ -40,7 +40,7 @@
                     android:layout_marginBottom="5dp"
                     android:gravity="start"
                     android:text="@string/app_name"
-                    android:textColor="@color/c_white"
+                    android:textColor="@color/txt_secondary"
                     android:textStyle="bold"
                     android:textSize="16sp" />
 
@@ -50,7 +50,7 @@
                     android:layout_marginBottom="5dp"
                     android:gravity="start"
                     android:text="@string/aboutapplication"
-                    android:textColor="@color/c_white"
+                    android:textColor="@color/txt_main"
                     android:textSize="14sp"/>
 
             <LinearLayout
@@ -64,7 +64,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Build: "
-                    android:textColor="@color/c_lighter"
+                    android:textColor="@color/c_grey"
                     android:textSize="14sp"/>
 
                 <android.support.v7.widget.AppCompatTextView
@@ -73,7 +73,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="start"
                     android:text=""
-                    android:textColor="@color/c_lighter"
+                    android:textColor="@color/c_grey"
                     android:textSize="14sp"/>
 
             </LinearLayout>
@@ -87,11 +87,12 @@
                     android:insetRight="2dp"
                     android:text="@string/debuginfo"
                     android:textSize="14sp"
-                    android:textColor="@color/c_white"
+                    android:textColor="@color/txt_button_filled"
                     android:textAllCaps="false"
                     app:cornerRadius="5dp"
                     app:iconPadding="0dp"
-                    app:icon="@drawable/ic_copy"/>
+                    app:icon="@drawable/ic_copy"
+                    app:iconTint="@color/btn_icon_default"/>
 
                 <android.support.v7.widget.AppCompatTextView
                     android:layout_width="wrap_content"
@@ -100,7 +101,7 @@
                     android:text="Credits"
                     android:layout_gravity="start"
                     android:textSize="16sp"
-                    android:textColor="@color/c_white"
+                    android:textColor="@color/txt_secondary"
                     android:textStyle="bold"
                     android:layout_marginTop="20sp"/>
 
@@ -115,20 +116,20 @@
                         android:layout_height="wrap_content"
                         android:gravity="start"
                         android:text="Made with "
-                        android:textColor="@color/c_lighter"
+                        android:textColor="@color/txt_main"
                         android:textSize="14sp"/>
 
                     <ImageView
                         android:layout_width="16dp"
                         android:layout_height="16dp"
-                        android:src="@drawable/ic_heart" />
+                        app:srcCompat="@drawable/ic_heart" />
 
                     <android.support.v7.widget.AppCompatTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="start"
                         android:text=" by "
-                        android:textColor="@color/c_lighter"
+                        android:textColor="@color/txt_main"
                         android:textSize="14sp"/>
 
                     <android.support.v7.widget.AppCompatTextView
@@ -146,7 +147,7 @@
                         android:layout_height="wrap_content"
                         android:gravity="start"
                         android:text="."
-                        android:textColor="@color/c_lighter"
+                        android:textColor="@color/txt_main"
                         android:textSize="14sp"/>
 
                 </LinearLayout>
@@ -162,7 +163,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="start"
                     android:text="Forked from "
-                    android:textColor="@color/c_lighter"
+                    android:textColor="@color/txt_main"
                     android:textSize="14sp"/>
 
                 <android.support.v7.widget.AppCompatTextView
@@ -182,7 +183,7 @@
                     android:layout_marginEnd="3dp"
                     android:gravity="start"
                     android:text="@string/and"
-                    android:textColor="@color/c_lighter"
+                    android:textColor="@color/txt_main"
                     android:textSize="14sp"/>
 
                 <android.support.v7.widget.AppCompatTextView
@@ -200,7 +201,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="start"
                     android:text="."
-                    android:textColor="@color/c_lighter"
+                    android:textColor="@color/txt_main"
                     android:textSize="14sp"/>
 
             </LinearLayout>
@@ -217,7 +218,7 @@
                         android:layout_marginEnd="3dp"
                         android:gravity="start"
                         android:text="@string/icons_by"
-                        android:textColor="@color/c_lighter"
+                        android:textColor="@color/txt_main"
                         android:textSize="14sp"/>
 
                     <android.support.v7.widget.AppCompatTextView
@@ -237,7 +238,7 @@
                         android:layout_marginEnd="3dp"
                         android:gravity="start"
                         android:text="@string/and"
-                        android:textColor="@color/c_lighter"
+                        android:textColor="@color/txt_main"
                         android:textSize="14sp"/>
 
                     <android.support.v7.widget.AppCompatTextView
@@ -255,7 +256,7 @@
                         android:layout_height="wrap_content"
                         android:gravity="start"
                         android:text="."
-                        android:textColor="@color/c_lighter"
+                        android:textColor="@color/txt_main"
                         android:textSize="14sp"/>
 
                 </LinearLayout>
@@ -273,19 +274,19 @@
                         android:layout_gravity="center"
                         android:text="@string/donationadresses"
                         android:textSize="16sp"
-                        android:textColor="@color/c_white"
+                        android:textColor="@color/txt_secondary"
                         android:textStyle="bold"/>
 
                     <android.support.design.button.MaterialButton
                         android:id="@+id/btnDonationsHelp"
                         android:layout_width="24dp"
                         android:layout_height="24dp"
-                        android:backgroundTint="@color/bg_grey"
+                        android:backgroundTint="@android:color/transparent"
                         app:cornerRadius="5dp"
                         app:icon="@drawable/ic_help"
                         app:iconGravity="textStart"
                         app:iconPadding="0dp"
-                        app:iconTint="@color/c_lighter" />
+                        app:iconTint="@color/c_grey" />
 
                 </LinearLayout>
 
@@ -303,10 +304,11 @@
                         android:insetRight="2dp"
                         android:text="@string/btc"
                         android:textSize="14sp"
-                        android:textColor="@color/c_white"
+                        android:textColor="@color/txt_button_filled"
                         app:cornerRadius="5dp"
                         app:iconPadding="0dp"
-                        app:icon="@drawable/ic_copy"/>
+                        app:icon="@drawable/ic_copy"
+                        app:iconTint="@color/btn_icon_default"/>
 
                     <android.support.design.button.MaterialButton
                         android:id="@+id/btnDonateETH"
@@ -317,10 +319,11 @@
                         android:insetRight="2dp"
                         android:text="@string/eth"
                         android:textSize="14sp"
-                        android:textColor="@color/c_white"
+                        android:textColor="@color/txt_button_filled"
                         app:cornerRadius="5dp"
                         app:iconPadding="0dp"
-                        app:icon="@drawable/ic_copy"/>
+                        app:icon="@drawable/ic_copy"
+                        app:iconTint="@color/btn_icon_default"/>
 
                     <android.support.design.button.MaterialButton
                         android:id="@+id/btnDonateXLA"
@@ -331,10 +334,11 @@
                         android:insetRight="2dp"
                         android:text="@string/xla"
                         android:textSize="14sp"
-                        android:textColor="@color/c_white"
+                        android:textColor="@color/txt_button_filled"
                         app:cornerRadius="5dp"
                         app:iconPadding="0dp"
-                        app:icon="@drawable/ic_copy"/>
+                        app:icon="@drawable/ic_copy"
+                        app:iconTint="@color/btn_icon_default"/>
 
                 </LinearLayout>
 
@@ -345,7 +349,7 @@
                     android:text="@string/followus"
                     android:layout_gravity="start"
                     android:textSize="16sp"
-                    android:textColor="@color/c_white"
+                    android:textColor="@color/txt_secondary"
                     android:textStyle="bold"
                     android:layout_marginTop="20sp"/>
 
@@ -364,7 +368,8 @@
                         app:iconGravity="textStart"
                         app:cornerRadius="5dp"
                         app:iconPadding="0dp"
-                        app:icon="@drawable/ic_github"/>
+                        app:icon="@drawable/ic_github"
+                        app:iconTint="@color/btn_icon_default"/>
 
                     <android.support.design.button.MaterialButton
                         android:id="@+id/btnDiscord"
@@ -373,10 +378,11 @@
                         android:backgroundTint="@color/bg_lighter"
                         android:insetLeft="2dp"
                         android:insetRight="2dp"
-                        app:iconGravity="textStart"
                         app:cornerRadius="5dp"
+                        app:icon="@drawable/ic_discord"
+                        app:iconGravity="textStart"
                         app:iconPadding="0dp"
-                        app:icon="@drawable/ic_discord"/>
+                        app:iconTint="@color/btn_icon_default"/>
 
                     <android.support.design.button.MaterialButton
                         android:id="@+id/btnMedium"
@@ -388,7 +394,8 @@
                         app:iconGravity="textStart"
                         app:cornerRadius="5dp"
                         app:iconPadding="0dp"
-                        app:icon="@drawable/ic_medium"/>
+                        app:icon="@drawable/ic_medium"
+                        app:iconTint="@color/btn_icon_default"/>
 
                     <android.support.design.button.MaterialButton
                         android:id="@+id/btnTwitter"
@@ -400,7 +407,8 @@
                         app:iconGravity="textStart"
                         app:cornerRadius="5dp"
                         app:iconPadding="0dp"
-                        app:icon="@drawable/ic_twitter"/>
+                        app:icon="@drawable/ic_twitter"
+                        app:iconTint="@color/btn_icon_default"/>
 
                     <android.support.design.button.MaterialButton
                         android:id="@+id/btnTelegram"
@@ -412,7 +420,8 @@
                         app:iconGravity="textStart"
                         app:cornerRadius="5dp"
                         app:iconPadding="0dp"
-                        app:icon="@drawable/ic_telegram"/>
+                        app:icon="@drawable/ic_telegram"
+                        app:iconTint="@color/btn_icon_default"/>
 
                 </LinearLayout>
 

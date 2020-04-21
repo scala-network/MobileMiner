@@ -4,7 +4,7 @@
 	xmlns:tools="http://schemas.android.com/tools"
 	android:layout_width="match_parent"
 	android:layout_height="wrap_content"
-	android:background="@color/bg_grey">
+	android:background="@color/bg_body">
 
 	<LinearLayout
 		android:orientation="vertical"
@@ -21,7 +21,7 @@
 			android:layout_gravity="start"
 			android:text="@string/selectminingpool"
 			android:textStyle="bold"
-			android:textColor="@color/c_white"
+			android:textColor="@color/txt_headline"
 			android:textSize="16sp" />
 
 		<LinearLayout
@@ -41,7 +41,7 @@
 				android:layout_width="40dp"
 				android:layout_height="40dp"
 				android:layout_gravity="start|center_vertical"
-				android:src="@drawable/ic_launcher_round" />
+				app:srcCompat="@drawable/ic_launcher_round" />
 
 			<LinearLayout
 				android:layout_width="wrap_content"
@@ -56,7 +56,7 @@
 					android:layout_height="wrap_content"
 					android:layout_gravity="center_vertical"
 					android:text="Scala Project"
-					android:textColor="@color/c_white"
+					android:textColor="@color/txt_secondary"
 					android:textStyle="bold"
 					android:textSize="14sp" />
 
@@ -66,7 +66,7 @@
 					android:layout_height="wrap_content"
 					android:layout_gravity="center_vertical"
 					android:text=""
-					android:textColor="@color/c_lighter"
+					android:textColor="@color/txt_main"
 					android:textSize="14sp" />
 
 			</LinearLayout>
@@ -87,7 +87,7 @@
 					android:layout_height="wrap_content"
 					android:layout_gravity="center_vertical"
 					android:text="(Recommended)"
-					android:textColor="@color/c_grey"
+					android:textColor="@color/txt_inactive"
 					android:textSize="12sp" />
 
 				<TextView
@@ -96,7 +96,7 @@
 					android:layout_height="wrap_content"
 					android:layout_gravity="end|center_vertical"
 					android:text=""
-					android:textColor="@color/c_lighter"
+					android:textColor="@color/txt_main"
 					android:textSize="14sp" />
 
 			</LinearLayout>
@@ -123,7 +123,7 @@
 				android:background="@drawable/circle_grey"
 				android:gravity="center"
 				android:text="MR"
-				android:textColor="@color/c_white"
+				android:textColor="@color/txt_secondary"
 				android:textStyle="bold"
 				android:textSize="18sp" />
 
@@ -140,7 +140,7 @@
 					android:layout_height="wrap_content"
 					android:layout_gravity="center_vertical"
 					android:text="Miner.Rocks"
-					android:textColor="@color/c_white"
+					android:textColor="@color/txt_secondary"
 					android:textStyle="bold"
 					android:textSize="14sp" />
 
@@ -150,7 +150,7 @@
 					android:layout_height="wrap_content"
 					android:layout_gravity="center_vertical"
 					android:text=""
-					android:textColor="@color/c_lighter"
+					android:textColor="@color/txt_main"
 					android:textSize="14sp" />
 
 			</LinearLayout>
@@ -171,7 +171,7 @@
 					android:layout_height="wrap_content"
 					android:layout_gravity="center_vertical"
 					android:text=""
-					android:textColor="@color/c_grey"
+					android:textColor="@color/txt_main"
 					android:textSize="12sp" />
 
 				<TextView
@@ -180,7 +180,7 @@
 					android:layout_height="wrap_content"
 					android:layout_gravity="center_vertical"
 					android:text=""
-					android:textColor="@color/c_lighter"
+					android:textColor="@color/txt_main"
 					android:textSize="14sp" />
 
 			</LinearLayout>
@@ -207,7 +207,7 @@
 				android:background="@drawable/circle_grey"
 				android:gravity="center"
 				android:text="HM"
-				android:textColor="@color/c_white"
+				android:textColor="@color/txt_secondary"
 				android:textStyle="bold"
 				android:textSize="18sp" />
 
@@ -224,7 +224,7 @@
 					android:layout_height="wrap_content"
 					android:layout_gravity="center_vertical"
 					android:text="HeroMiners"
-					android:textColor="@color/c_white"
+					android:textColor="@color/txt_secondary"
 					android:textStyle="bold"
 					android:textSize="14sp" />
 
@@ -234,7 +234,7 @@
 					android:layout_height="wrap_content"
 					android:layout_gravity="center_vertical"
 					android:text=""
-					android:textColor="@color/c_lighter"
+					android:textColor="@color/txt_main"
 					android:textSize="14sp" />
 
 			</LinearLayout>
@@ -255,7 +255,7 @@
 					android:layout_height="wrap_content"
 					android:layout_gravity="center_vertical"
 					android:text=""
-					android:textColor="@color/c_grey"
+					android:textColor="@color/txt_main"
 					android:textSize="12sp" />
 
 				<TextView
@@ -264,7 +264,7 @@
 					android:layout_height="wrap_content"
 					android:layout_gravity="center_vertical"
 					android:text=""
-					android:textColor="@color/c_lighter"
+					android:textColor="@color/txt_main"
 					android:textSize="14sp" />
 
 			</LinearLayout>
@@ -291,7 +291,7 @@
 				android:background="@drawable/circle_grey"
 				android:gravity="center"
 				android:text="G"
-				android:textColor="@color/c_white"
+				android:textColor="@color/txt_secondary"
 				android:textStyle="bold"
 				android:textSize="18sp" />
 
@@ -308,7 +308,7 @@
 					android:layout_height="wrap_content"
 					android:layout_gravity="center_vertical"
 					android:text="GNTL"
-					android:textColor="@color/c_white"
+					android:textColor="@color/txt_secondary"
 					android:textStyle="bold"
 					android:textSize="14sp" />
 
@@ -318,7 +318,7 @@
 					android:layout_height="wrap_content"
 					android:layout_gravity="center_vertical"
 					android:text=""
-					android:textColor="@color/c_lighter"
+					android:textColor="@color/txt_main"
 					android:textSize="14sp" />
 
 			</LinearLayout>
@@ -339,7 +339,7 @@
 					android:layout_height="wrap_content"
 					android:layout_gravity="center_vertical"
 					android:text=""
-					android:textColor="@color/c_grey"
+					android:textColor="@color/txt_main"
 					android:textSize="12sp" />
 
 				<TextView
@@ -348,7 +348,7 @@
 					android:layout_height="wrap_content"
 					android:layout_gravity="center_vertical"
 					android:text=""
-					android:textColor="@color/c_lighter"
+					android:textColor="@color/txt_main"
 					android:textSize="14sp" />
 
 			</LinearLayout>
@@ -369,12 +369,12 @@
 			android:layout_marginStart="15dp"
 			android:layout_marginEnd="15dp"
 			android:layout_marginBottom="15dp"
-			android:backgroundTint="@color/bg_blue"
+			android:backgroundTint="@color/c_blue"
 			android:onClick="onNext"
 			android:text="@string/next"
 			android:textSize="14sp"
 			android:textAllCaps="false"
-			android:textColor="@color/c_white"
+			android:textColor="@color/txt_button_filled"
 			app:cornerRadius="5dp" />
 
 	</RelativeLayout>
