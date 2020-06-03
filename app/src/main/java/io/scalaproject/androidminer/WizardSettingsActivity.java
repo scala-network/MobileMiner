@@ -4,17 +4,9 @@
 
 package io.scalaproject.androidminer;
 
-import android.app.Dialog;
 import android.content.Intent;
-import android.graphics.Color;
-import android.net.Uri;
 import android.os.Bundle;
-import android.text.SpannableString;
-import android.text.Spanned;
-import android.text.TextPaint;
-import android.text.method.LinkMovementMethod;
-import android.text.style.ClickableSpan;
-import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.SeekBar;
@@ -56,6 +48,18 @@ public class WizardSettingsActivity extends BaseActivity {
 
         sbCooldown = view.findViewById(R.id.seekbarcooldownthreshold);
         tvCooldown = view.findViewById(R.id.cooldownthreshold);
+
+        Button btnHardwareHelp = view.findViewById(R.id.btnHardwareHelp);
+        btnHardwareHelp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // inflate the layout of the popup window
+                LayoutInflater inflater = LayoutInflater.from(getApplicationContext());
+
+                View popupView = inflater.inflate(R.layout.helper_hardware_settings, null);
+                Utils.showPopup(v, inflater, popupView);
+            }
+        });
 
         // Cores
         int cores = Runtime.getRuntime().availableProcessors();

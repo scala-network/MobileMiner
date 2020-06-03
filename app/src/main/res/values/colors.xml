@@ -1,30 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <color name="c_white">#fbfaff</color>
-    <color name="c_grey">#8fa2b6</color>
-    <color name="c_dark_grey">#525a61</color>
-    <color name="c_black">#000000</color>
-    <color name="c_blue">#219bd9</color>
-    <color name="c_green">#3c9e59</color>
-    <color name="c_red">#e83515</color>
-    <color name="c_yellow">#d3d921</color>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <color name="c_white">#e8efff</color>
+    <color name="c_grey">#a5adc2</color>
+    <color name="c_light_grey">#c5d0d9</color>
+    <color name="c_dark_grey">#86939e</color>
+    <color name="c_black">#888f9e</color>
+    <color name="c_blue">#6190ff</color>
+    <color name="c_green">#78c2a4</color>
+    <color name="c_red">#e85238</color>
+    <color name="c_yellow">#d1e838</color>
     <color name="c_purple">#ca2c92</color>
-    <color name="c_orange">#e86915</color>
+    <color name="c_orange">#f29333</color>
 
-    <color name="txt_headline">#ebf8ff</color>
-    <color name="txt_secondary">#c5d0d9</color>
-    <color name="txt_main">#86939e</color>
-    <color name="txt_inactive">#525a61</color>
+    <color name="bg_black">#16171a</color>
+    <color name="bg_blue">#2465ff</color>
+    <color name="bg_green">#408066</color>
+    <color name="bg_yellow">#eddd2c</color>
+    <color name="bg_orange">#c97a2a</color>
+    <color name="bg_red">#ff470e</color>
+    <color name="bg_grey">#1b1e24</color>
+
+    <color name="txt_headline">#e8efff</color>
+    <color name="txt_secondary">#929aa8</color>
+    <color name="txt_main">#afb8c9</color>
+    <color name="txt_inactive">#5b6373</color>
     <color name="txt_button_outlined">#c5d0d9</color>
-    <color name="txt_button_filled">@color/c_white</color>
+    <color name="txt_button_filled">#e6eaf2</color>
 
     <color name="btn_icon_default">#c5d0d9</color>
     <color name="btn_icon_dark">#86939e</color>
-    <color name="btn_border_default">#c5d0d9</color>
-    <color name="btn_border_dark">#86939e</color>
+    <color name="btn_bg_default">#444b57</color>
 
-    <color name="bg_body">#0e1317</color>
-    <color name="bg_lighter">#181f26</color>
+    <color name="input_bg_default">#2a2e36</color>
+    <color name="input_outline">#929ca8</color>
 
-    <color name="mtrl_textinput_default_box_stroke_color">@color/c_grey</color>
+    <color name="bg_body">#1b1e24</color>
+    <color name="bg_lighter">#2f333d</color>
+    <color name="bg_darker">#202329</color>
+
+    <color name="mtrl_textinput_default_box_stroke_color" tools:ignore="PrivateResource">@color/c_grey</color>
 </resources>

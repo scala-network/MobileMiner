@@ -55,12 +55,12 @@
 			android:layout_height="0dp"
 			android:layout_weight="10" />
 
-		<android.support.design.button.MaterialButton
+		<Button
 			android:id="@+id/enterWalletAddress"
 			android:layout_width="match_parent"
 			android:layout_height="55dp"
 			android:layout_gravity="center"
-			android:backgroundTint="@color/c_blue"
+			android:backgroundTint="@color/bg_blue"
 			android:onClick="onEnterAddress"
 			android:text="@string/enteraddress"
 			android:textSize="14sp"
@@ -68,7 +68,7 @@
 			android:textColor="@color/txt_button_filled"
 			app:cornerRadius="5dp" />
 
-		<android.support.design.button.MaterialButton
+		<Button
 			android:id="@+id/createWalletAddress"
 			android:layout_width="match_parent"
 			android:layout_height="55dp"

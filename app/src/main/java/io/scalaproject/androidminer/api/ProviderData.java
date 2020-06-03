@@ -4,6 +4,10 @@
 
 package io.scalaproject.androidminer.api;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
 public final class ProviderData {
     public static class Network {
         public String lastBlockHeight = "";
@@ -30,6 +34,7 @@ public final class ProviderData {
         public String paid = "";
         public String lastShare = "";
         public String blocks = "";
+        public List<Payment> payments = new ArrayList<>();
     }
 
     public static class Coin {
@@ -37,6 +42,11 @@ public final class ProviderData {
         public String symbol = "XLA";
         public long units;
         public long denominationUnit = 100L;
+    }
+
+    public static class Payment {
+        public float amount;
+        public Date timestamp;
     }
 
     final public Network network = new Network();

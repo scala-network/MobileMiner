@@ -12,7 +12,6 @@ import io.scalaproject.androidminer.Config;
 public abstract class ProviderAbstract extends AsyncTask<Void, Void, Void> {
 
     protected String LOG_TAG = "MiningSvc";
-    protected Timer timer;
 
     final public ProviderData getBlockData() {
         return ProviderManager.data;

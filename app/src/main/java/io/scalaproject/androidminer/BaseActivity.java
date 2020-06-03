@@ -4,7 +4,7 @@
 
 package io.scalaproject.androidminer;
 
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.widget.Toast;
 
 import static io.scalaproject.androidminer.MainActivity.contextOfApplication;

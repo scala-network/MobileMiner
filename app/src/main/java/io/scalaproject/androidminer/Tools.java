@@ -41,6 +41,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.io.RandomAccessFile;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -291,6 +292,40 @@ public class Tools {
         return output;
     }
 
+    static float getCPUUsage() {
+        try {
+            RandomAccessFile reader = new RandomAccessFile("/proc/stat", "r");
+            String load = reader.readLine();
+
+            String[] toks = load.split(" +");  // Split on one or more spaces
+
+            long idle1 = Long.parseLong(toks[4]);
+            long cpu1 = Long.parseLong(toks[2]) + Long.parseLong(toks[3]) + Long.parseLong(toks[5])
+                    + Long.parseLong(toks[6]) + Long.parseLong(toks[7]) + Long.parseLong(toks[8]);
+
+            try {
+                Thread.sleep(360);
+            } catch (Exception e) {}
+
+            reader.seek(0);
+            load = reader.readLine();
+            reader.close();
+
+            toks = load.split(" +");
+
+            long idle2 = Long.parseLong(toks[4]);
+            long cpu2 = Long.parseLong(toks[2]) + Long.parseLong(toks[3]) + Long.parseLong(toks[5])
+                    + Long.parseLong(toks[6]) + Long.parseLong(toks[7]) + Long.parseLong(toks[8]);
+
+            return (float)(cpu2 - cpu1) / ((cpu2 + idle2) - (cpu1 + idle1));
+
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+
+        return 0;
+    }
+
     private static String readFile(String file, char endChar, byte[] mBuffer) {
         StrictMode.ThreadPolicy savedPolicy = StrictMode.allowThreadDiskReads();
 
@@ -317,16 +352,22 @@ public class Tools {
     }
 
     static public String parseCurrency(String value, long coinUnits, long denominationUnits, String symbol) {
-        double base = tryParseDouble(value);
-        double d = base / (double) coinUnits;
-        double d2 = Math.round(d * (double) denominationUnits) / (double) denominationUnits;
+        double d2 = parseCurrencyFloat(value, coinUnits, denominationUnits);
 
-        Log.i(LOG_TAG, "parseCurrency: d: " + d + " d2: " + d2);
+        Log.i(LOG_TAG, "parseCurrency: d2: " + d2);
 
         NumberFormat nf = NumberFormat.getInstance();
         nf.setMinimumFractionDigits(2);
 
         return nf.format(d2) + " " + symbol.toUpperCase();
+    }
+
+    static public float parseCurrencyFloat(String value, long coinUnits, long denominationUnits) {
+        double base = tryParseDouble(value);
+        double d = base / (float) coinUnits;
+        float d2 = Math.round(d * (float) denominationUnits) / (float) denominationUnits;
+
+        return d2;
     }
 
     static public Long tryParseLong(String s, Long fallback) {

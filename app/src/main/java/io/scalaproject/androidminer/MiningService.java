@@ -79,6 +79,8 @@ public class MiningService extends Service {
     private ProcessMonitor procMon;
     private PowerManager.WakeLock wl;
     private int accepted = 0;
+    private int difficulty = 0;
+    private int connection = 0;
     private String speed = "0";
     private String lastAssetPath;
     private String lastOutput = "";
@@ -108,7 +110,7 @@ public class MiningService extends Service {
 
     public interface MiningServiceStateListener {
         void onStateChange(Boolean state);
-        void onStatusChange(String status, String speed, Integer accepted);
+        void onStatusChange(String status, String speed, Integer accepted, Integer difficulty, Integer connection);
     }
 
     public void setMiningServiceStateListener(MiningServiceStateListener listener) {
@@ -123,8 +125,8 @@ public class MiningService extends Service {
         if (listener != null) listener.onStateChange(state);
     }
 
-    private void raiseMiningServiceStatusChange(String status, String speed, Integer accepted) {
-        if (listener != null) listener.onStatusChange(status, speed, accepted);
+    private void raiseMiningServiceStatusChange(String status, String speed, Integer accepted, Integer difficulty, Integer connection) {
+        if (listener != null) listener.onStatusChange(status, speed, accepted, difficulty, connection);
     }
 
     public Boolean getMiningServiceState() {
@@ -332,6 +334,8 @@ public class MiningService extends Service {
             pb.redirectErrorStream();
 
             accepted = 0;
+            difficulty = 0;
+            connection = 0;
             speed = "n/a";
             lastOutput = "";
 
@@ -407,7 +411,6 @@ public class MiningService extends Service {
     }
 
     private class OutputReaderThread extends Thread {
-
         private InputStream inputStream;
         private BufferedReader reader;
         private StringBuilder output = new StringBuilder();
@@ -423,6 +426,21 @@ public class MiningService extends Service {
             String lineCompare = line.toLowerCase();
             if (lineCompare.contains("accepted")) {
                 accepted++;
+
+                if(lineCompare.contains("diff")) {
+                    int i = lineCompare.indexOf("diff ") + "diff ".length();
+                    int imax = lineCompare.indexOf(" ", i);
+                    String diff = lineCompare.substring(i, imax).trim();
+                    difficulty = Integer.parseInt(lineCompare.substring(i, imax).trim());;
+                }
+
+                if(lineCompare.contains("ms)")) {
+                    int i = lineCompare.indexOf("(", lineCompare.length() - 10) + 1;
+                    int imax = lineCompare.indexOf("ms)");
+                    String conn = lineCompare.substring(i, imax).trim();
+                    connection = Integer.parseInt(lineCompare.substring(i, imax).trim());;
+                }
+
             } else if (lineCompare.contains("speed")) {
                 String[] split = TextUtils.split(line, " ");
                 speed = split[4];
@@ -438,7 +456,7 @@ public class MiningService extends Service {
                 output.delete(0, output.indexOf(System.getProperty("line.separator"), Config.logPruneLength) + 1);
             }
 
-            raiseMiningServiceStatusChange(line, speed, accepted);
+            raiseMiningServiceStatusChange(line, speed, accepted, difficulty, connection);
         }
 
         public void run() {

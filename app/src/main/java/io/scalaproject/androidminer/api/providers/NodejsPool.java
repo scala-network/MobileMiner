@@ -10,6 +10,7 @@ package io.scalaproject.androidminer.api.providers;
 
 import android.util.Log;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.ocpsoft.prettytime.PrettyTime;
@@ -23,6 +24,7 @@ import io.scalaproject.androidminer.network.Json;
 
 import static io.scalaproject.androidminer.Tools.getReadableHashRateString;
 import static io.scalaproject.androidminer.Tools.parseCurrency;
+import static io.scalaproject.androidminer.Tools.parseCurrencyFloat;
 import static io.scalaproject.androidminer.Tools.tryParseLong;
 
 public final class NodejsPool extends ProviderAbstract {
@@ -116,6 +118,20 @@ public final class NodejsPool extends ProviderAbstract {
             mBlockData.miner.paid = paid;
             mBlockData.miner.lastShare = lastShare;
             mBlockData.miner.blocks = blocks;
+
+            // Payments
+            url = mPoolItem.getApiUrl() + "/miner/" + getWalletAddress() +"/payments?page=0&limit=100";
+            String dataMinerPayments  = Json.fetch(url);
+            JSONArray  joMinerPayments = new JSONArray(dataMinerPayments);
+
+            final int n = joMinerPayments.length();
+            for (int i = 0; i < n; ++i) {
+                ProviderData.Payment payment = new ProviderData.Payment();
+                payment.amount = parseCurrencyFloat(joMinerPayments.getJSONObject(i).optString("amount", "0"), denominationUnit, denominationUnit);
+                payment.timestamp = new Date(joMinerPayments.getJSONObject(i).optLong("ts") * 1000);
+                mBlockData.miner.payments.add(payment);
+            }
+
         } catch (JSONException e) {
             Log.i(LOG_TAG, "ADDRESS :" + url + "\n"+e.toString());
             e.printStackTrace();

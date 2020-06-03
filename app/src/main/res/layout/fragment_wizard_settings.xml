@@ -3,6 +3,7 @@
 	xmlns:app="http://schemas.android.com/apk/res-auto"
 	android:layout_width="match_parent"
 	android:layout_height="wrap_content"
+	xmlns:tools="http://schemas.android.com/tools"
 	android:background="@color/bg_body">
 
 	<LinearLayout
@@ -14,15 +15,37 @@
 		android:layout_marginBottom="15dp"
 		android:orientation="vertical">
 
-		<android.support.v7.widget.AppCompatTextView
+		<LinearLayout
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:layout_marginBottom="5dp"
-			android:gravity="start"
-			android:text="@string/hardwaresettings"
-			android:textColor="@color/txt_headline"
-			android:textSize="16sp"
-			android:textStyle="bold" />
+			android:layout_weight="0"
+			android:orientation="horizontal">
+
+			<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_gravity="center_vertical"
+				android:gravity="start"
+				android:text="@string/hardwaresettings"
+				android:textColor="@color/txt_headline"
+				android:textSize="16sp"
+				android:textStyle="bold" />
+
+			<Button
+				android:id="@+id/btnHardwareHelp"
+				android:layout_width="24dp"
+				android:layout_height="24dp"
+				android:layout_gravity="center_vertical"
+				android:backgroundTint="@android:color/transparent"
+				app:cornerRadius="5dp"
+				app:icon="@drawable/ic_help"
+				app:iconGravity="textStart"
+				app:iconPadding="0dp"
+				app:iconTint="@color/txt_headline"
+				tools:ignore="UnusedAttribute" />
+
+		</LinearLayout>
 
 		<LinearLayout
 			android:layout_width="fill_parent"
@@ -76,15 +99,16 @@
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:max="8"
-			android:maxHeight="35dp"
+			android:maxHeight="5dp"
 			android:min="1"
-			android:minHeight="35dp"
+			android:minHeight="5dp"
 			android:paddingStart="0dp"
 			android:paddingEnd="0dp"
-			android:progress="1"
-			android:progressDrawable="@drawable/seekbar_ruler"
-			android:thumb="@drawable/seekbar_slider_cores"
-			android:thumbOffset="0dp" />
+			android:progress="4"
+			android:progressDrawable="@drawable/seekbar_ruler_yellow"
+			android:thumbTint="@color/c_light_grey"
+			android:thumbOffset="0dp"
+			tools:ignore="UnusedAttribute" />
 
 		<LinearLayout
 			android:layout_width="fill_parent"
@@ -98,21 +122,9 @@
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:layout_gravity="center"
-				android:layout_marginEnd="5dp"
 				android:text="@string/cputemperature"
 				android:textColor="@color/txt_main"
 				android:textSize="14sp" />
-
-			<android.support.design.button.MaterialButton
-				android:id="@+id/btnCPUTempHelp"
-				android:layout_width="24dp"
-				android:layout_height="24dp"
-				android:backgroundTint="@android:color/transparent"
-				app:cornerRadius="5dp"
-				app:icon="@drawable/ic_help"
-				app:iconGravity="textStart"
-				app:iconPadding="0dp"
-				app:iconTint="@color/txt_main" />
 
 			<Space
 				android:layout_width="0dp"
@@ -153,15 +165,16 @@
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:max="5"
-			android:maxHeight="35dp"
+			android:maxHeight="5dp"
 			android:min="1"
-			android:minHeight="35dp"
+			android:minHeight="5dp"
 			android:paddingStart="0dp"
 			android:paddingEnd="0dp"
 			android:progress="3"
-			android:progressDrawable="@drawable/seekbar_ruler"
-			android:thumb="@drawable/seekbar_slider_cpu"
-			android:thumbOffset="0dp" />
+			android:progressDrawable="@drawable/seekbar_ruler_default"
+			android:thumbTint="@color/c_light_grey"
+			android:thumbOffset="0dp"
+			tools:ignore="UnusedAttribute" />
 
 		<LinearLayout
 			android:layout_width="fill_parent"
@@ -175,21 +188,9 @@
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:layout_gravity="center"
-				android:layout_marginEnd="5dp"
 				android:text="@string/batterytemperature"
 				android:textColor="@color/txt_main"
 				android:textSize="14sp" />
-
-			<android.support.design.button.MaterialButton
-				android:id="@+id/btnBatteryTempHelp"
-				android:layout_width="24dp"
-				android:layout_height="24dp"
-				android:backgroundTint="@android:color/transparent"
-				app:cornerRadius="5dp"
-				app:icon="@drawable/ic_help"
-				app:iconGravity="textStart"
-				app:iconPadding="0dp"
-				app:iconTint="@color/txt_main" />
 
 			<Space
 				android:layout_width="0dp"
@@ -230,15 +231,16 @@
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:max="5"
-			android:maxHeight="35dp"
+			android:maxHeight="5dp"
 			android:min="1"
-			android:minHeight="35dp"
+			android:minHeight="5dp"
 			android:paddingStart="0dp"
 			android:paddingEnd="0dp"
 			android:progress="3"
-			android:progressDrawable="@drawable/seekbar_ruler"
-			android:thumb="@drawable/seekbar_slider_battery"
-			android:thumbOffset="0dp" />
+			android:progressDrawable="@drawable/seekbar_ruler_default"
+			android:thumbTint="@color/c_light_grey"
+			android:thumbOffset="0dp"
+			tools:ignore="UnusedAttribute" />
 
 		<LinearLayout
 			android:layout_width="fill_parent"
@@ -252,21 +254,9 @@
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:layout_gravity="center"
-				android:layout_marginEnd="5dp"
 				android:text="@string/cooldownthreshold"
 				android:textColor="@color/txt_main"
 				android:textSize="14sp" />
-
-			<android.support.design.button.MaterialButton
-				android:id="@+id/btnCooldownHelp"
-				android:layout_width="24dp"
-				android:layout_height="24dp"
-				android:backgroundTint="@android:color/transparent"
-				app:cornerRadius="5dp"
-				app:icon="@drawable/ic_help"
-				app:iconGravity="textStart"
-				app:iconPadding="0dp"
-				app:iconTint="@color/c_grey" />
 
 			<Space
 				android:layout_width="0dp"
@@ -307,15 +297,16 @@
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:max="5"
-			android:maxHeight="35dp"
+			android:maxHeight="5dp"
 			android:min="1"
-			android:minHeight="35dp"
+			android:minHeight="5dp"
 			android:paddingStart="0dp"
 			android:paddingEnd="0dp"
 			android:progress="3"
-			android:progressDrawable="@drawable/seekbar_ruler"
-			android:thumb="@drawable/seekbar_slider_cooldown"
-			android:thumbOffset="0dp" />
+			android:progressDrawable="@drawable/seekbar_ruler_default"
+			android:thumbTint="@color/c_light_grey"
+			android:thumbOffset="0dp"
+			tools:ignore="UnusedAttribute" />
 
 	</LinearLayout>
 
@@ -324,7 +315,7 @@
 		android:layout_height="wrap_content"
 		android:layout_alignParentBottom="true">
 
-		<android.support.design.button.MaterialButton
+		<Button
 			android:id="@+id/saveSettings"
 			android:layout_width="match_parent"
 			android:layout_height="55dp"
@@ -332,7 +323,7 @@
 			android:layout_marginStart="15dp"
 			android:layout_marginEnd="15dp"
 			android:layout_marginBottom="15dp"
-			android:backgroundTint="@color/c_green"
+			android:backgroundTint="@color/bg_green"
 			android:onClick="onStart"
 			android:text="@string/startmining"
 			android:textSize="14sp"

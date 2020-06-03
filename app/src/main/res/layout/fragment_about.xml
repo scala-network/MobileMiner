@@ -8,13 +8,13 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="15dp"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
         android:layout_marginBottom="5dp"
         android:orientation="vertical">
 
-        <android.support.v7.widget.AppCompatTextView
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="15dp"
@@ -33,7 +33,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <android.support.v7.widget.AppCompatTextView
+                <TextView
                     android:id="@+id/aboutTitle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -44,7 +44,7 @@
                     android:textStyle="bold"
                     android:textSize="16sp" />
 
-                <android.support.v7.widget.AppCompatTextView
+                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="5dp"
@@ -60,14 +60,14 @@
                 android:gravity="start"
                 android:orientation="horizontal">
 
-                <android.support.v7.widget.AppCompatTextView
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Build: "
                     android:textColor="@color/c_grey"
                     android:textSize="14sp"/>
 
-                <android.support.v7.widget.AppCompatTextView
+                <TextView
                     android:id="@+id/build"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -78,7 +78,7 @@
 
             </LinearLayout>
 
-                <android.support.design.button.MaterialButton
+                <Button
                     android:id="@+id/btnDebugInfo"
                     android:layout_width="140dp"
                     android:layout_height="45dp"
@@ -94,7 +94,7 @@
                     app:icon="@drawable/ic_copy"
                     app:iconTint="@color/btn_icon_default"/>
 
-                <android.support.v7.widget.AppCompatTextView
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="5dp"
@@ -111,7 +111,7 @@
                     android:gravity="start|center"
                     android:orientation="horizontal">
 
-                    <android.support.v7.widget.AppCompatTextView
+                    <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="start"
@@ -124,7 +124,7 @@
                         android:layout_height="16dp"
                         app:srcCompat="@drawable/ic_heart" />
 
-                    <android.support.v7.widget.AppCompatTextView
+                    <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="start"
@@ -132,7 +132,7 @@
                         android:textColor="@color/txt_main"
                         android:textSize="14sp"/>
 
-                    <android.support.v7.widget.AppCompatTextView
+                    <TextView
                         android:id="@+id/ScalaURL"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -142,7 +142,7 @@
                         android:textColorLink="@color/c_blue"
                         android:textSize="14sp" />
 
-                    <android.support.v7.widget.AppCompatTextView
+                    <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="start"
@@ -158,7 +158,7 @@
                 android:gravity="start|center"
                 android:orientation="horizontal">
 
-                <android.support.v7.widget.AppCompatTextView
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="start"
@@ -166,7 +166,7 @@
                     android:textColor="@color/txt_main"
                     android:textSize="14sp"/>
 
-                <android.support.v7.widget.AppCompatTextView
+                <TextView
                     android:id="@+id/Mine2getherURL"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -176,7 +176,7 @@
                     android:textColorLink="@color/c_blue"
                     android:textSize="14sp" />
 
-                <android.support.v7.widget.AppCompatTextView
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="3dp"
@@ -186,7 +186,7 @@
                     android:textColor="@color/txt_main"
                     android:textSize="14sp"/>
 
-                <android.support.v7.widget.AppCompatTextView
+                <TextView
                     android:id="@+id/MoneroMinerURL"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -196,7 +196,7 @@
                     android:textColorLink="@color/c_blue"
                     android:textSize="14sp" />
 
-                <android.support.v7.widget.AppCompatTextView
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="start"
@@ -212,7 +212,7 @@
                     android:gravity="start|center"
                     android:orientation="horizontal">
 
-                    <android.support.v7.widget.AppCompatTextView
+                    <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="3dp"
@@ -221,7 +221,7 @@
                         android:textColor="@color/txt_main"
                         android:textSize="14sp"/>
 
-                    <android.support.v7.widget.AppCompatTextView
+                    <TextView
                         android:id="@+id/MaterialDesignURL"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -231,7 +231,7 @@
                         android:textColorLink="@color/c_blue"
                         android:textSize="14sp" />
 
-                    <android.support.v7.widget.AppCompatTextView
+                    <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="3dp"
@@ -241,7 +241,7 @@
                         android:textColor="@color/txt_main"
                         android:textSize="14sp"/>
 
-                    <android.support.v7.widget.AppCompatTextView
+                    <TextView
                         android:id="@+id/FontAwesomeURL"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -251,7 +251,7 @@
                         android:textColorLink="@color/c_blue"
                         android:textSize="14sp" />
 
-                    <android.support.v7.widget.AppCompatTextView
+                    <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="start"
@@ -268,7 +268,7 @@
                     android:layout_marginBottom="5dp"
                     android:orientation="horizontal">
 
-                    <android.support.v7.widget.AppCompatTextView
+                    <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
@@ -277,7 +277,7 @@
                         android:textColor="@color/txt_secondary"
                         android:textStyle="bold"/>
 
-                    <android.support.design.button.MaterialButton
+                    <Button
                         android:id="@+id/btnDonationsHelp"
                         android:layout_width="24dp"
                         android:layout_height="24dp"
@@ -295,7 +295,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
-                    <android.support.design.button.MaterialButton
+                    <Button
                         android:id="@+id/btnDonateBTC"
                         android:layout_width="100dp"
                         android:layout_height="45dp"
@@ -310,7 +310,7 @@
                         app:icon="@drawable/ic_copy"
                         app:iconTint="@color/btn_icon_default"/>
 
-                    <android.support.design.button.MaterialButton
+                    <Button
                         android:id="@+id/btnDonateETH"
                         android:layout_width="100dp"
                         android:layout_height="45dp"
@@ -325,7 +325,7 @@
                         app:icon="@drawable/ic_copy"
                         app:iconTint="@color/btn_icon_default"/>
 
-                    <android.support.design.button.MaterialButton
+                    <Button
                         android:id="@+id/btnDonateXLA"
                         android:layout_width="100dp"
                         android:layout_height="45dp"
@@ -342,7 +342,7 @@
 
                 </LinearLayout>
 
-                <android.support.v7.widget.AppCompatTextView
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="5dp"
@@ -358,7 +358,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
-                    <android.support.design.button.MaterialButton
+                    <Button
                         android:id="@+id/btnGitHub"
                         android:layout_width="45dp"
                         android:layout_height="45dp"
@@ -371,7 +371,7 @@
                         app:icon="@drawable/ic_github"
                         app:iconTint="@color/btn_icon_default"/>
 
-                    <android.support.design.button.MaterialButton
+                    <Button
                         android:id="@+id/btnDiscord"
                         android:layout_width="45dp"
                         android:layout_height="45dp"
@@ -384,7 +384,7 @@
                         app:iconPadding="0dp"
                         app:iconTint="@color/btn_icon_default"/>
 
-                    <android.support.design.button.MaterialButton
+                    <Button
                         android:id="@+id/btnMedium"
                         android:layout_width="45dp"
                         android:layout_height="45dp"
@@ -397,7 +397,7 @@
                         app:icon="@drawable/ic_medium"
                         app:iconTint="@color/btn_icon_default"/>
 
-                    <android.support.design.button.MaterialButton
+                    <Button
                         android:id="@+id/btnTwitter"
                         android:layout_width="45dp"
                         android:layout_height="45dp"
@@ -410,7 +410,7 @@
                         app:icon="@drawable/ic_twitter"
                         app:iconTint="@color/btn_icon_default"/>
 
-                    <android.support.design.button.MaterialButton
+                    <Button
                         android:id="@+id/btnTelegram"
                         android:layout_width="45dp"
                         android:layout_height="45dp"

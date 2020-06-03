@@ -7,7 +7,6 @@
 // Please see the included LICENSE file for more information.
 
 package io.scalaproject.androidminer.api;
-import android.util.Log;
 
 import io.scalaproject.androidminer.Config;
 import io.scalaproject.androidminer.api.providers.*;

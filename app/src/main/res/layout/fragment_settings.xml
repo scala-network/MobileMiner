@@ -9,13 +9,13 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="15dp"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
         android:layout_marginBottom="90dp"
         android:orientation="vertical">
 
-        <android.support.v7.widget.AppCompatTextView
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="15dp"
@@ -40,7 +40,7 @@
                     android:layout_marginBottom="15dp"
                     android:orientation="horizontal">
 
-                    <android.support.v7.widget.AppCompatTextView
+                    <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="start"
@@ -54,7 +54,7 @@
                         android:layout_height="match_parent"
                         android:layout_weight="1" />
 
-                    <android.support.design.button.MaterialButton
+                    <Button
                         android:id="@+id/btnMineScala"
                         android:layout_width="24dp"
                         android:layout_height="24dp"
@@ -69,7 +69,7 @@
 
                 </LinearLayout>
 
-                <android.support.design.widget.TextInputLayout
+                <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/addressIL"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                     android:layout_width="match_parent"
@@ -77,13 +77,13 @@
                     app:errorTextAppearance="@style/TextErrorStyle"
                     app:errorEnabled="false">
 
-                    <android.support.design.widget.TextInputEditText
+                    <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/address"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textSize="14sp" />
 
-                </android.support.design.widget.TextInputLayout>
+                </com.google.android.material.textfield.TextInputLayout>
 
                 <LinearLayout
                     android:orientation="horizontal"
@@ -91,7 +91,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="end">
 
-                    <android.support.design.button.MaterialButton
+                    <Button
                         android:id="@+id/btnQrCode"
                         android:layout_width="fill_parent"
                         android:layout_height="50dp"
@@ -108,7 +108,7 @@
                         app:cornerRadius="5dp"
                         tools:ignore="UnusedAttribute" />
 
-                    <android.support.design.button.MaterialButton
+                    <Button
                         android:id="@+id/btnPasteAddress"
                         android:layout_width="fill_parent"
                         android:layout_height="50dp"
@@ -127,7 +127,7 @@
 
                 </LinearLayout>
 
-                <android.support.v7.widget.AppCompatTextView
+                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="30dp"
@@ -149,10 +149,10 @@
                         android:id="@+id/spinnerPool"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:textColor="@color/c_grey"
+                        android:textColor="@color/txt_main"
                         android:layout_weight="4"
                         android:spinnerMode="dropdown"
-                        android:popupBackground="@color/bg_lighter"
+                        android:popupBackground="@color/input_bg_default"
                         android:background="@android:color/transparent"
                         android:textSize="14sp" />
 
@@ -171,11 +171,11 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginTop="3dp"
+                    android:layout_marginTop="5dp"
                     android:layout_weight="0"
                     android:orientation="horizontal">
 
-                    <android.support.design.widget.TextInputLayout
+                    <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/poolurlIL"
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                         android:layout_width="match_parent"
@@ -185,7 +185,7 @@
                         app:errorEnabled="false"
                         tools:ignore="NestedWeights">
 
-                        <android.support.design.widget.TextInputEditText
+                        <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/pool"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -196,9 +196,9 @@
                             android:textColorHint="@color/txt_inactive"
                             android:textSize="14sp" />
 
-                    </android.support.design.widget.TextInputLayout>
+                    </com.google.android.material.textfield.TextInputLayout>
 
-                    <android.support.design.widget.TextInputLayout
+                    <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/portIL"
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                         android:layout_width="match_parent"
@@ -206,7 +206,7 @@
                         android:layout_weight="3"
                         app:errorEnabled="false">
 
-                        <android.support.design.widget.TextInputEditText
+                        <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/port"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -219,11 +219,11 @@
                             android:textColorHint="@color/txt_inactive"
                             android:textSize="14sp" />
 
-                    </android.support.design.widget.TextInputLayout>
+                    </com.google.android.material.textfield.TextInputLayout>
 
                 </LinearLayout>
 
-                <android.support.v7.widget.AppCompatTextView
+                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
@@ -234,7 +234,7 @@
                     android:textSize="14sp"
                     android:textStyle="bold" />
 
-                <android.support.design.widget.TextInputLayout
+                <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/usernameparamsIL"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                     android:layout_width="match_parent"
@@ -242,7 +242,7 @@
                     android:layout_marginTop="3dp"
                     app:errorEnabled="false">
 
-                    <android.support.design.widget.TextInputEditText
+                    <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/usernameparameters"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -251,17 +251,17 @@
                         android:textColorHint="@color/txt_inactive"
                         android:textSize="14sp" />
 
-                </android.support.design.widget.TextInputLayout>
+                </com.google.android.material.textfield.TextInputLayout>
 
-                <android.support.design.widget.TextInputLayout
+                <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/workernameIL"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="3dp"
+                    android:layout_marginTop="5dp"
                     app:errorEnabled="false">
 
-                    <android.support.design.widget.TextInputEditText
+                    <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/workername"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -270,17 +270,17 @@
                         android:textColorHint="@color/txt_inactive"
                         android:textSize="14sp" />
 
-                </android.support.design.widget.TextInputLayout>
+                </com.google.android.material.textfield.TextInputLayout>
 
-                <android.support.design.widget.TextInputLayout
+                <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/mininggoalIL"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="3dp"
+                    android:layout_marginTop="5dp"
                     app:errorEnabled="false">
 
-                    <android.support.design.widget.TextInputEditText
+                    <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/mininggoal"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -291,17 +291,17 @@
                         android:textColorHint="@color/txt_inactive"
                         android:textSize="14sp" />
 
-                </android.support.design.widget.TextInputLayout>
+                </com.google.android.material.textfield.TextInputLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
                 android:layout_marginBottom="15dp"
                 android:layout_weight="0"
                 android:orientation="horizontal">
 
-                <android.support.v7.widget.AppCompatTextView
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="start"
@@ -310,7 +310,7 @@
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
-                <android.support.design.button.MaterialButton
+                <Button
                     android:id="@+id/btnHardwareHelp"
                     android:layout_width="24dp"
                     android:layout_height="24dp"
@@ -381,14 +381,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:max="8"
-                    android:maxHeight="35dp"
+                    android:maxHeight="5dp"
                     android:min="1"
-                    android:minHeight="35dp"
+                    android:minHeight="5dp"
                     android:paddingStart="0dp"
                     android:paddingEnd="0dp"
-                    android:progress="1"
-                    android:progressDrawable="@drawable/seekbar_ruler"
-                    android:thumb="@drawable/seekbar_slider_cores"
+                    android:progress="4"
+                    android:progressDrawable="@drawable/seekbar_ruler_yellow"
+                    android:thumbTint="@color/c_light_grey"
                     android:thumbOffset="0dp"
                     tools:ignore="UnusedAttribute" />
 
@@ -450,14 +450,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:max="5"
-                    android:maxHeight="35dp"
+                    android:maxHeight="5dp"
                     android:min="1"
-                    android:minHeight="35dp"
+                    android:minHeight="5dp"
                     android:paddingStart="0dp"
                     android:paddingEnd="0dp"
                     android:progress="3"
-                    android:progressDrawable="@drawable/seekbar_ruler"
-                    android:thumb="@drawable/seekbar_slider_cpu"
+                    android:progressDrawable="@drawable/seekbar_ruler_default"
+                    android:thumbTint="@color/c_light_grey"
                     android:thumbOffset="0dp"
                     tools:ignore="UnusedAttribute" />
 
@@ -519,14 +519,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:max="5"
-                    android:maxHeight="35dp"
+                    android:maxHeight="5dp"
                     android:min="1"
-                    android:minHeight="35dp"
+                    android:minHeight="5dp"
                     android:paddingStart="0dp"
                     android:paddingEnd="0dp"
                     android:progress="3"
-                    android:progressDrawable="@drawable/seekbar_ruler"
-                    android:thumb="@drawable/seekbar_slider_battery"
+                    android:progressDrawable="@drawable/seekbar_ruler_default"
+                    android:thumbTint="@color/c_light_grey"
                     android:thumbOffset="0dp"
                     tools:ignore="UnusedAttribute" />
 
@@ -590,18 +590,18 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:max="5"
-                    android:maxHeight="35dp"
+                    android:maxHeight="5dp"
                     android:min="1"
-                    android:minHeight="35dp"
+                    android:minHeight="5dp"
                     android:paddingStart="0dp"
                     android:paddingEnd="0dp"
                     android:progress="3"
-                    android:progressDrawable="@drawable/seekbar_ruler"
-                    android:thumb="@drawable/seekbar_slider_cooldown"
+                    android:progressDrawable="@drawable/seekbar_ruler_default"
+                    android:thumbTint="@color/c_light_grey"
                     android:thumbOffset="0dp"
                     tools:ignore="UnusedAttribute" />
 
-                <android.support.v7.widget.AppCompatTextView
+                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="30dp"
@@ -619,7 +619,7 @@
                     android:layout_weight="0"
                     android:orientation="horizontal">
 
-                    <android.support.v7.widget.AppCompatTextView
+                    <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/pauseminingonbattery"
@@ -634,7 +634,7 @@
                         android:layout_weight="1"
                         tools:ignore="NestedWeights" />
 
-                    <android.support.v7.widget.SwitchCompat
+                    <Switch
                         android:id="@+id/chkPauseOnBattery"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -656,7 +656,7 @@
                     android:layout_weight="0"
                     android:orientation="horizontal">
 
-                    <android.support.v7.widget.AppCompatTextView
+                    <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/keepscreenonwhenmining"
@@ -670,7 +670,7 @@
                         android:layout_weight="1"
                         tools:ignore="NestedWeights" />
 
-                    <android.support.v7.widget.SwitchCompat
+                    <Switch
                         android:id="@+id/chkKeepScreenOnWhenMining"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -692,7 +692,7 @@
                     android:layout_weight="0"
                     android:orientation="horizontal">
 
-                    <android.support.v7.widget.AppCompatTextView
+                    <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/turnoffamayccontrol"
@@ -700,7 +700,7 @@
                         android:textSize="14sp"
                         android:checked="false" />
 
-                    <android.support.design.button.MaterialButton
+                    <Button
                         android:id="@+id/btnAmaycWarning"
                         android:layout_width="24dp"
                         android:layout_height="24dp"
@@ -720,7 +720,7 @@
                         android:layout_weight="1"
                         tools:ignore="NestedWeights" />
 
-                    <android.support.v7.widget.SwitchCompat
+                    <Switch
                         android:id="@+id/chkAmaycOff"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -747,15 +747,15 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true">
 
-        <android.support.design.button.MaterialButton
+        <Button
             android:id="@+id/saveSettings"
             android:layout_width="match_parent"
             android:layout_height="55dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="15dp"
             android:layout_marginLeft="15dp"
             android:layout_marginRight="15dp"
             android:layout_marginBottom="15dp"
-            app:backgroundTint="@color/c_blue"
+            app:backgroundTint="@color/bg_blue"
             android:text="@string/save"
             android:textSize="14sp"
             android:textAllCaps="false"

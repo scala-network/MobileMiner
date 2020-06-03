@@ -19,7 +19,7 @@
 			android:layout_height="wrap_content"
 			android:orientation="horizontal">
 
-			<android.support.v7.widget.AppCompatTextView
+			<TextView
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:gravity="start"
@@ -33,7 +33,7 @@
 				android:layout_height="match_parent"
 				android:layout_weight="1" />
 
-			<android.support.design.button.MaterialButton
+			<Button
 				android:id="@+id/btnMineScala"
 				android:layout_width="24dp"
 				android:layout_height="24dp"
@@ -48,7 +48,7 @@
 
 		</LinearLayout>
 
-        <android.support.design.widget.TextInputLayout
+        <com.google.android.material.textfield.TextInputLayout
 			android:id="@+id/addressIL"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
             android:layout_width="match_parent"
@@ -57,13 +57,13 @@
 			app:errorTextAppearance="@style/TextErrorStyle"
 			app:errorEnabled="false">
 
-            <android.support.design.widget.TextInputEditText
+            <com.google.android.material.textfield.TextInputEditText
 				android:id="@+id/addressWizard"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
 				android:textSize="14sp" />
 
-        </android.support.design.widget.TextInputLayout>
+        </com.google.android.material.textfield.TextInputLayout>
 
 		<LinearLayout
 			android:orientation="horizontal"
@@ -71,7 +71,7 @@
 			android:layout_height="wrap_content"
 			android:gravity="end">
 
-			<android.support.design.button.MaterialButton
+			<Button
 				android:layout_width="fill_parent"
 				android:layout_height="50dp"
                 android:layout_marginEnd="5dp"
@@ -87,7 +87,7 @@
                 app:iconSize="18dp"
 				app:cornerRadius="5dp" />
 
-            <android.support.design.button.MaterialButton
+            <Button
                 android:layout_width="fill_parent"
                 android:layout_height="50dp"
                 android:layout_marginEnd="5dp"
@@ -112,7 +112,7 @@
 		android:layout_height="wrap_content"
 		android:layout_alignParentBottom="true">
 
-		<android.support.design.button.MaterialButton
+		<Button
 			android:id="@+id/saveSettings"
 			android:layout_width="match_parent"
 			android:layout_height="55dp"

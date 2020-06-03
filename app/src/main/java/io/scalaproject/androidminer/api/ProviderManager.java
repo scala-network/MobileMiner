@@ -120,7 +120,7 @@ public final class ProviderManager {
         add(
                 "GNTL",
                 "xla.pool.gntl.co.uk",
-                "8080",
+                "40002",
                 1,
                 "https://xla.pool.gntl.co.uk",
                 "83.151.238.38"

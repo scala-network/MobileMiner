@@ -15,7 +15,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <android.support.v7.widget.AppCompatTextView
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dip"
@@ -26,7 +26,7 @@
                 android:textStyle="bold"
                 android:textSize="16sp" />
 
-            <android.support.v7.widget.AppCompatTextView
+            <TextView
                 android:id="@+id/textView1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -38,7 +38,7 @@
                 android:textSize="14sp"
                 android:text="@string/disclaimerText" />
 
-            <android.support.design.button.MaterialButton
+            <Button
                 android:id="@+id/btnAgree"
                 android:layout_width="match_parent"
                 android:layout_height="55dp"
@@ -46,7 +46,7 @@
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
                 android:layout_marginBottom="15dp"
-                app:backgroundTint="@color/c_blue"
+                app:backgroundTint="@color/bg_blue"
                 android:text="@string/ok"
                 android:textSize="14sp"
                 android:textAllCaps="false"

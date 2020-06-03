@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:app="http://schemas.android.com/apk/res-auto"
-	xmlns:tools="http://schemas.android.com/tools"
 	android:layout_width="match_parent"
 	android:layout_height="wrap_content"
 	android:background="@color/bg_body">
@@ -362,14 +361,14 @@
 		android:layout_height="wrap_content"
 		android:layout_alignParentBottom="true">
 
-		<android.support.design.button.MaterialButton
+		<Button
 			android:layout_width="match_parent"
 			android:layout_height="55dp"
 			android:layout_marginTop="15dp"
 			android:layout_marginStart="15dp"
 			android:layout_marginEnd="15dp"
 			android:layout_marginBottom="15dp"
-			android:backgroundTint="@color/c_blue"
+			android:backgroundTint="@color/bg_blue"
 			android:onClick="onNext"
 			android:text="@string/next"
 			android:textSize="14sp"

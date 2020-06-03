@@ -4,13 +4,14 @@
 
 package io.scalaproject.androidminer;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.SparseArray;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.samples.vision.barcodereader.BarcodeCapture;
 import com.google.android.gms.samples.vision.barcodereader.BarcodeGraphic;
@@ -21,7 +22,7 @@ import java.util.List;
 
 import xyz.belvi.mobilevisionbarcodescanner.BarcodeRetriever;
 
-public class QrCodeScannerActivity extends AppCompatActivity  implements BarcodeRetriever {
+public class QrCodeScannerActivity extends AppCompatActivity implements BarcodeRetriever {
 
     public TextView scanResult;
     BarcodeCapture barcodeCapture;

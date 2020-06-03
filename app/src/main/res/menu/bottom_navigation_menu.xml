@@ -3,25 +3,25 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
         <item android:id="@+id/menu_home"
             android:enabled="true"
-            android:title="Miner"
+            android:title="@string/home"
             android:icon="@drawable/ic_miner"
+            app:showAsAction="ifRoom" />
+
+        <item android:id="@+id/menu_log"
+            android:enabled="true"
+            android:title="@string/log"
+            android:icon="@drawable/ic_log"
             app:showAsAction="ifRoom" />
 
         <item android:id="@+id/menu_stats"
             android:enabled="true"
-            android:title="Stats"
+            android:title="@string/stats"
             android:icon="@drawable/ic_stats"
             app:showAsAction="ifRoom" />
 
         <item android:id="@+id/menu_settings"
             android:enabled="true"
-            android:title="Settings"
+            android:title="@string/settings"
             android:icon="@drawable/ic_settings"
-            app:showAsAction="ifRoom" />
-
-        <item android:id="@+id/menu_about"
-            android:enabled="true"
-            android:title="Settings"
-            android:icon="@drawable/ic_about"
             app:showAsAction="ifRoom" />
 </menu>

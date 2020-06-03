@@ -12,7 +12,6 @@
     <string name="stop">Stop</string>
     <string name="threads">Threads</string>
     <string name="max_cpu_usage">Max CPU</string>
-    <string name="percent">%</string>
     <string name="hpers">H/s</string>
     <string name="accepted">accepted</string>
     <string name="cpus">Cores</string>
@@ -96,7 +95,7 @@
     <string name="miningpaused">Mining paused until temperatures return to safe levels.</string>
     <string name="miningbackground">Scala Miner is still mining in the background.</string>
     <string name="donationsinfo">Donations support the contributors and help pay for the project infrastructure.</string>
-    <string name="donationadresses">Donation Addresses</string>
+    <string name="donationadresses">Donations</string>
     <string name="donationadressbtc_copied">BTC Donation Address copied.</string>
     <string name="donationadresseth_copied">ETH Donation Address copied.</string>
     <string name="donationadressxla_copied">XLA Donation Address copied.</string>
@@ -141,16 +140,13 @@
 
     <string name="donate_help">If you would like to help build this project, feel free to specify a donation level here.\n\nFor example, a value of 5 will make your device mine 5 minutes out of 100 to fund Scala project.\n\nThe default value is 0.</string>
     <string name="mininggoal_help">The mining goal should reflect the pool payout setting, but you can also specify a custom value for your device.\n\nThe default value is the minimum payout value of the specified mining pool.</string>
-    <string name="cpu_temp_help">Your device will start cooling when the CPU reaches the specified temperature.\n\nIf your device does not have a CPU temperature sensor, this option will be ignored.</string>
-    <string name="battery_temp_help">Your device will start cooling when the battery reaches the specified temperature.\n\nIf your device does not have a battery temperature sensor, this option will be ignored.</string>
-    <string name="cooldown_threshold_help">Defines the temperature at which the application will resume the mining process.</string>
     <string name="temp_control_warning">This application implements two layers of protection for your device.\n\nThe first one is the As-Much-As-You-Can (AMAYC) machine learning algorithm that can predict when your device will overheat and pause the miner until the device\'s temperature has normalized.\n\nThe second one is a static temperature monitoring that will automatically pause the miner if your device reaches one of the maximum temperatures defined in the settings.</string>
     <string name="temp_control_ownrisks">Turning this feature off might cause damage to your device. Do it at your own risk!</string>
     <string name="shares_help">Your mining reward is based on the amount of shares that contributed to the resolution of a block.</string>
     <string name="donation_addresses_help">If you would like to help build this project, you can send BTC, ETH or XLA to the project\'s wallet.\n\nDonations support the contributors and help the team pay for the project expenses. Thanks for your support!</string>
     <string name="pool_options_help">These parameters are optional, you can leave them blank if you don\'t know what they represent.\n\nTo add a static difficulty or a paymentID, specify it in the \'Username parameters\' field. For example, enter \'+500\' to configure a static difficulty of 500.\n\nMake sure you respect the selected pool configuration. The value of this field will be appended as is to the wallet address.</string>
     <string name="nightmode_help">This feature helps save your device\'s battery life by disabling most of the colors display. Start mining to enable it.</string>
-    <string name="hardware_settings_help">Your device will start cooling when the CPU or battery reach the specified temperatures.\n\n>The cooldown threshold defines the temperature at which the application will resume the mining process.</string>
+    <string name="hardware_settings_help">Your device will start cooling when the CPU or battery reach the specified temperatures.\n\nThe cooldown threshold defines the temperature at which the application will resume the mining process.</string>
 
     <string name="aboutapplication">An open-source cryptocurrency miner for Android devices</string>
     <string name="disclaimerText">Running your CPU at a high intensity for a prolonged duration may result in negative effects such as: battery drainage, slow response time, overheating, and may cause permanent damage to your device.\n\nWe recommend using the Temperature Settings and a low amount of CPU Cores to prevent your device from being damaged.\n\nBy using this application, you assume full responsibility for any damage that may be caused to your device, property or self.</string>
@@ -160,4 +156,15 @@
     <string name="eth">ETH</string>
     <string name="xla">XLA</string>
     <string name="cpu_cores">CPU Cores</string>
+    <string name="hashes_second">Hashes/second</string>
+    <string name="log">Mining Log</string>
+    <string name="percent">%</string>
+    <string name="message">Message</string>
+    <string name="worker_name">Worker Name</string>
+    <string name="cpu2">CPU:</string>
+    <string name="battery2">Battery:</string>
+    <string name="connection">Connection</string>
+    <string name="mining_time">Mining Time</string>
+    <string name="kh_s">kH/s</string>
+    <string name="h_s">H/s</string>
 </resources>
