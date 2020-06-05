@@ -36,7 +36,7 @@
 
     <color name="bg_body">#1b1e24</color>
     <color name="bg_lighter">#2f333d</color>
-    <color name="bg_darker">#202329</color>
+    <color name="bg_darker">#272a33</color>
 
     <color name="mtrl_textinput_default_box_stroke_color" tools:ignore="PrivateResource">@color/c_grey</color>
 </resources>

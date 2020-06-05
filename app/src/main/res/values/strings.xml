@@ -167,4 +167,13 @@
     <string name="mining_time">Mining Time</string>
     <string name="kh_s">kH/s</string>
     <string name="h_s">H/s</string>
+    <string name="touch_screen_to_capture">Touch screen to capture</string>
+    <string name="wallet_address">Wallet Address</string>
+    <string name="build">Build:</string>
+    <string name="credits">Credits</string>
+    <string name="made_with">Made with</string>
+    <string name="by">by</string>
+    <string name="forked_from">Forked from</string>
+    <string name="scala_project">Scala Project</string>
+    <string name="recommended">(Recommended)</string>
 </resources>

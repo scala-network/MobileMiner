@@ -106,7 +106,7 @@
                         app:iconGravity="textStart"
                         app:iconSize="18dp"
                         app:cornerRadius="5dp"
-                        tools:ignore="UnusedAttribute" />
+                        tools:ignore="ButtonStyle,UnusedAttribute" />
 
                     <Button
                         android:id="@+id/btnPasteAddress"
@@ -173,7 +173,8 @@
                     android:layout_height="match_parent"
                     android:layout_marginTop="5dp"
                     android:layout_weight="0"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:baselineAligned="false">
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/poolurlIL"
@@ -735,7 +736,6 @@
                     android:layout_height="0.7dp"
                     android:background="@color/txt_main"/>
 
-
             </LinearLayout>
 
         </ScrollView>
@@ -761,7 +761,7 @@
             android:textAllCaps="false"
             android:textColor="@color/txt_button_filled"
             app:cornerRadius="5dp"
-            tools:ignore="UnusedAttribute" />
+            tools:ignore="TooManyViews,UnusedAttribute" />
 
     </RelativeLayout>
 

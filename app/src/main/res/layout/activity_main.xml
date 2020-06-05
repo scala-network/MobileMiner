@@ -363,25 +363,37 @@
 
                     </LinearLayout>
 
-                    <LinearLayout
-                        android:id="@+id/layout_status"
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/layout_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="75dp"
+                    android:layout_gravity="center"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:id="@+id/miner_status"
                         android:layout_width="wrap_content"
-                        android:layout_height="75dp"
-                        android:layout_gravity="center"
-                        android:orientation="vertical"
-                        android:gravity="center"
-                        android:visibility="gone">
+                        android:layout_height="wrap_content"
+                        android:text="@string/processing"
+                        android:textSize="16sp"
+                        android:textStyle="normal"
+                        android:textColor="@color/c_white" />
 
-                        <TextView
-                            android:id="@+id/miner_status"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/processing"
-                            android:textSize="16sp"
-                            android:textStyle="normal"
-                            android:textColor="@color/c_white" />
-
-                    </LinearLayout>
+                    <ProgressBar
+                        android:id="@+id/progress_status"
+                        style="?android:attr/progressBarStyleHorizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="5dp"
+                        android:layout_marginTop="7dp"
+                        android:layout_marginBottom="3dp"
+                        android:max="60"
+                        android:progress="0"
+                        android:progressDrawable="@drawable/progressbar_rounded">
+                    </ProgressBar>
 
                 </LinearLayout>
 
@@ -718,7 +730,7 @@
             android:layout_height="0dp"
             android:layout_weight="1"
             android:orientation="vertical"
-            android:background="@drawable/corner_radius_darker">
+            android:background="@drawable/corner_radius_black">
 
             <TextView
                 android:id="@+id/output"
@@ -741,7 +753,7 @@
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_alignParentBottom="true"
-        android:background="@color/bg_lighter"
+        android:background="@color/bg_darker"
         app:labelVisibilityMode="unlabeled"
         app:itemIconTint="@drawable/menu_selected_item"
         app:itemTextColor="@drawable/menu_selected_item"

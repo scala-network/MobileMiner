@@ -10,7 +10,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/actions"
-        android:layout_weight="1"
         android:background="@color/bg_body"
         android:clickable="false"
         android:gravity="center">
@@ -46,11 +45,6 @@
         android:paddingLeft="16dp"
         android:paddingRight="16dp">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -61,9 +55,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="center"
-                    android:text="Touch screen to capture"
+                    android:text="@string/touch_screen_to_capture"
                     android:textColor="@color/c_grey"
-                    android:textSize="10sp" />
+                    android:textSize="12sp" />
 
             </LinearLayout>
 
@@ -83,11 +77,11 @@
 
                 <TextView
                     android:id="@+id/scanResult"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
                     android:maxLines="1"
-                    android:text="Wallet Address"
+                    android:text="@string/wallet_address"
                     android:textColor="@color/txt_main" />
 
             </LinearLayout>
@@ -111,8 +105,6 @@
                     app:cornerRadius="7.5dp" />
 
             </LinearLayout>
-
-        </LinearLayout>
 
     </LinearLayout>
 

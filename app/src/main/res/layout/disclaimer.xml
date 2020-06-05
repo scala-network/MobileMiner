@@ -19,7 +19,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dip"
-                android:layout_marginLeft="15dip"
+                android:layout_marginStart="15dip"
                 android:gravity="start"
                 android:text="@string/disclaimer"
                 android:textColor="@color/txt_headline"

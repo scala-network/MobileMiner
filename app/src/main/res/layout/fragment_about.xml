@@ -63,7 +63,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Build: "
+                    android:text="@string/build"
                     android:textColor="@color/c_grey"
                     android:textSize="14sp"/>
 
@@ -98,7 +98,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="5dp"
-                    android:text="Credits"
+                    android:text="@string/credits"
                     android:layout_gravity="start"
                     android:textSize="16sp"
                     android:textColor="@color/txt_secondary"
@@ -115,7 +115,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="start"
-                        android:text="Made with "
+                        android:text="@string/made_with"
                         android:textColor="@color/txt_main"
                         android:textSize="14sp"/>
 
@@ -128,7 +128,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="start"
-                        android:text=" by "
+                        android:text="@string/by"
                         android:textColor="@color/txt_main"
                         android:textSize="14sp"/>
 
@@ -162,7 +162,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="start"
-                    android:text="Forked from "
+                    android:text="@string/forked_from"
                     android:textColor="@color/txt_main"
                     android:textSize="14sp"/>
 

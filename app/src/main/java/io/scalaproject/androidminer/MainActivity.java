@@ -120,11 +120,15 @@ public class MainActivity extends BaseActivity
     private SeekBar sbCores = null;
     private TimerTask timerTaskCPUUsage = null;
 
-    private LinearLayout llMain, llLog, llStatus;
+    private LinearLayout llMain, llLog, llHashrate, llStatus;
 
     private ProgressBar pbPayout;
     private boolean payoutEnabled;
     protected IProviderListener payoutListener;
+
+    private Timer timerHashrate = null;
+    private TimerTask timerTaskHashrate = null;
+    private ProgressBar pbHashrate;
 
     private boolean validArchitecture = true;
 
@@ -187,6 +191,8 @@ public class MainActivity extends BaseActivity
         return (m_nCurrentState == STATE_CALCULATING || m_nCurrentState == STATE_MINING || m_nCurrentState == STATE_COOLING);
     }
 
+    private final static int MAX_HASHRATE_TIMER = 30;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         contextOfApplication = getApplicationContext();
@@ -244,11 +250,16 @@ public class MainActivity extends BaseActivity
         // Layouts
         llMain = findViewById(R.id.layout_main);
         llLog = findViewById(R.id.layout_mining_log);
+        llHashrate = findViewById(R.id.layout_hashrate);
         llStatus = findViewById(R.id.layout_status);
 
         // Controls
         payoutEnabled = true;
         pbPayout = findViewById(R.id.progresspayout);
+        pbHashrate = findViewById(R.id.progress_status);
+
+        pbHashrate.setMax(MAX_HASHRATE_TIMER * 2);
+        pbHashrate.setProgress(0);
 
         // Log
         tvLog = findViewById(R.id.output);
@@ -913,16 +924,20 @@ public class MainActivity extends BaseActivity
 
             View v = findViewById(R.id.main_navigation);
             v.setKeepScreenOn(false);
+
+            stopTimerHashrate();
         }
         else if(status == STATE_MINING) {
             if(tvHashrate.getText().equals("0") || tvHashrate.getText().equals("n/a")) {
                 setMinerStatus(STATE_CALCULATING);
             } else {
                 llStatus.setVisibility(View.GONE);
-                tvHashrate.setVisibility(View.VISIBLE);
+                llHashrate.setVisibility(View.VISIBLE);
 
                 //tvHashrate.setTextSize(55.0f);
                 tvHashrate.setTextColor(getResources().getColor(R.color.c_white));
+
+                stopTimerHashrate();
             }
 
             if (Config.read("keepscreenonwhenmining").equals("1")) {
@@ -932,14 +947,17 @@ public class MainActivity extends BaseActivity
         }
         else {
             llStatus.setVisibility(View.VISIBLE);
-            tvHashrate.setVisibility(View.GONE);
+            llHashrate.setVisibility(View.GONE);
 
             if (status == STATE_PAUSED && isDeviceMining()) {
                 tvStatus.setText(getResources().getString(R.string.paused));
+                stopTimerHashrate();
             } else if (status == STATE_COOLING && isDeviceMining()) {
                 tvStatus.setText(getResources().getString(R.string.cooling));
+                stopTimerHashrate();
             } else if (status == STATE_CALCULATING) {
                 tvStatus.setText(getResources().getString(R.string.processing));
+                startTimerHashrate();
             }
         }
 
@@ -947,6 +965,40 @@ public class MainActivity extends BaseActivity
         m_nCurrentState = status;
 
         updateNotification();
+    }
+
+    public void startTimerHashrate() {
+        if(timerHashrate != null) {
+            return;
+        }
+
+        timerTaskHashrate = new TimerTask() {
+            @Override
+            public void run() {
+                runOnUiThread(new Runnable() {
+                    public void run() {
+                        updateProgressHashrate();
+                    }
+                });
+            }
+        };
+
+        timerHashrate = new Timer();
+        timerHashrate.scheduleAtFixedRate(timerTaskHashrate, 0, 500);
+    }
+
+    public void stopTimerHashrate() {
+        if(timerHashrate != null) {
+            timerHashrate.cancel();
+            timerHashrate = null;
+            timerTaskHashrate = null;
+
+            pbHashrate.setProgress(0);
+        }
+    }
+
+    private void updateProgressHashrate() {
+        pbHashrate.setProgress(pbHashrate.getProgress() + 1);
     }
 
     private boolean isDeviceMining() {

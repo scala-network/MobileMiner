@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
 	android:layout_width="match_parent"
 	android:layout_height="wrap_content"
 	android:background="@color/bg_body">
@@ -54,7 +55,7 @@
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
 					android:layout_gravity="center_vertical"
-					android:text="Scala Project"
+					android:text="@string/scala_project"
 					android:textColor="@color/txt_secondary"
 					android:textStyle="bold"
 					android:textSize="14sp" />
@@ -85,7 +86,7 @@
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
 					android:layout_gravity="center_vertical"
-					android:text="(Recommended)"
+					android:text="@string/recommended"
 					android:textColor="@color/txt_inactive"
 					android:textSize="12sp" />
 
@@ -124,7 +125,8 @@
 				android:text="MR"
 				android:textColor="@color/txt_secondary"
 				android:textStyle="bold"
-				android:textSize="18sp" />
+				android:textSize="18sp"
+				tools:ignore="HardcodedText" />
 
 			<LinearLayout
 				android:layout_width="wrap_content"
@@ -141,7 +143,8 @@
 					android:text="Miner.Rocks"
 					android:textColor="@color/txt_secondary"
 					android:textStyle="bold"
-					android:textSize="14sp" />
+					android:textSize="14sp"
+					tools:ignore="HardcodedText" />
 
 				<TextView
 					android:id="@+id/minersMR"
@@ -208,7 +211,8 @@
 				android:text="HM"
 				android:textColor="@color/txt_secondary"
 				android:textStyle="bold"
-				android:textSize="18sp" />
+				android:textSize="18sp"
+				tools:ignore="HardcodedText" />
 
 			<LinearLayout
 				android:layout_width="wrap_content"
@@ -225,7 +229,8 @@
 					android:text="HeroMiners"
 					android:textColor="@color/txt_secondary"
 					android:textStyle="bold"
-					android:textSize="14sp" />
+					android:textSize="14sp"
+					tools:ignore="HardcodedText" />
 
 				<TextView
 					android:id="@+id/minersHM"
@@ -292,7 +297,8 @@
 				android:text="G"
 				android:textColor="@color/txt_secondary"
 				android:textStyle="bold"
-				android:textSize="18sp" />
+				android:textSize="18sp"
+				tools:ignore="HardcodedText" />
 
 			<LinearLayout
 				android:layout_width="wrap_content"
@@ -309,7 +315,8 @@
 					android:text="GNTL"
 					android:textColor="@color/txt_secondary"
 					android:textStyle="bold"
-					android:textSize="14sp" />
+					android:textSize="14sp"
+					tools:ignore="HardcodedText" />
 
 				<TextView
 					android:id="@+id/minersGNTL"
