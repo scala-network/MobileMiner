@@ -43,10 +43,12 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.RandomAccessFile;
 import java.math.BigDecimal;
+import java.nio.charset.StandardCharsets;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class Tools {
 
@@ -56,7 +58,7 @@ public class Tools {
         try {
             StringBuilder buf = new StringBuilder();
             InputStream json = context.getAssets().open(path);
-            BufferedReader in = new BufferedReader(new InputStreamReader(json, "UTF-8"));
+            BufferedReader in = new BufferedReader(new InputStreamReader(json, StandardCharsets.UTF_8));
             String str;
 
             while ((str = in.readLine()) != null) {
@@ -113,7 +115,7 @@ public class Tools {
                     file.delete();
                 }
                 copyFile(context, assetFilePath + "/" + f, localFilePath + "/" + f);
-            } else if (isDirectory) {
+            } else {
                 Log.i(LOG_TAG, "make directory: source:" + assetFilePath + "/" + f + " dest:" + localFilePath + "/" + f);
                 File dir = new File(localFilePath + "/" + f);
                 dir.mkdir();
@@ -175,7 +177,7 @@ public class Tools {
     }
 
     static void logDirectoryFiles(final File folder) {
-        for (final File f : folder.listFiles()) {
+        for (final File f : Objects.requireNonNull(folder.listFiles())) {
 
             if (f.isDirectory()) {
                 logDirectoryFiles(f);
@@ -188,7 +190,7 @@ public class Tools {
     }
 
     static void deleteDirectoryContents(final File folder) {
-        for (final File f : folder.listFiles()) {
+        for (final File f : Objects.requireNonNull(folder.listFiles())) {
 
             if (f.isDirectory()) {
                 Log.i(LOG_TAG, "Delete Directory: " + f.getName());
@@ -203,7 +205,6 @@ public class Tools {
     }
 
     static void writeConfig(String configTemplate, MiningService.MiningConfig miningConfig, String privatePath) {
-
         String config = configTemplate
                 .replace("$algo$", miningConfig.algo)
                 .replace("$url$", miningConfig.pool)

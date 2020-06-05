@@ -655,16 +655,15 @@
 
                 <Button
                     android:id="@+id/start"
-                    android:layout_width="175dp"
+                    android:layout_width="0dp"
                     android:layout_height="55dp"
                     android:layout_weight="1"
                     android:backgroundTint="@color/bg_green"
-                    android:backgroundTintMode="src_over"
                     android:text="@string/start"
                     android:textSize="14sp"
                     android:textAllCaps="false"
                     android:textColor="@color/txt_button_filled"
-                    app:cornerRadius="5dp" />
+                    app:cornerRadius="7.5dp" />
 
             </LinearLayout>
 

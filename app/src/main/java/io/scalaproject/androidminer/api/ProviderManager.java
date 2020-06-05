@@ -53,9 +53,7 @@ public final class ProviderManager {
             return null;
         }
 
-        PoolItem pi = getPoolById(sp);
-
-        return pi;
+        return getPoolById(sp);
     }
     static public void afterSave() {
         if(request.mPoolItem != null)  {
@@ -93,7 +91,7 @@ public final class ProviderManager {
                 "3333",
                 1,
                 "https://pool.scalaproject.io",
-                "198.204.241.13"
+                "95.111.237.231"
         );
 
         // 1: Another Scala pool : Miner.Rocks

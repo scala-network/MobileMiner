@@ -134,7 +134,6 @@ public class MiningService extends Service {
     }
 
     private void copyMinerFiles() {
-
         String abi = Tools.getABI();
         String assetPath = "";
         String libraryPath = "";
@@ -261,7 +260,7 @@ public class MiningService extends Service {
             e.printStackTrace();
         }
 
-        if(hostIP.equals(""))
+        if(hostIP.isEmpty())
             hostIP = pi.getPoolIP();
 
         return hostIP + ":" + pi.getPort();

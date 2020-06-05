@@ -108,6 +108,7 @@ final class Utils {
         String pasteData = "";
 
         // If it does contain data
+        assert clipboard != null;
         if (!(clipboard.hasPrimaryClip())) {
             // Ignore
         } else if (!(Objects.requireNonNull(clipboard.getPrimaryClipDescription()).hasMimeType(MIMETYPE_TEXT_PLAIN))) {

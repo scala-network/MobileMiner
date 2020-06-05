@@ -26,6 +26,7 @@
 
 package io.scalaproject.androidminer;
 
+import android.Manifest;
 import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.app.NotificationChannel;
@@ -37,15 +38,20 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.BatteryManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.IBinder;
 import android.os.PowerManager;
+import android.os.StrictMode;
 import android.text.Layout;
 import android.text.SpannableString;
 import android.text.method.ScrollingMovementMethod;
@@ -64,10 +70,16 @@ import android.widget.Toast;
 import android.text.Spannable;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.fragment.app.Fragment;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -167,6 +179,9 @@ public class MainActivity extends BaseActivity
 
     private NotificationManager notificationManager = null;
     private NotificationCompat.Builder notificationBuilder = null;
+
+    private File imagePath = null;
+    private final int REQUEST_PERMISSION_EXTERNAL_STORAGE = 1;
 
     public static boolean isDeviceMiningBackground() {
         return (m_nCurrentState == STATE_CALCULATING || m_nCurrentState == STATE_MINING || m_nCurrentState == STATE_COOLING);
@@ -321,6 +336,16 @@ public class MainActivity extends BaseActivity
         imgShowCores.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 sendInput("h");
+            }
+        });
+
+        Button btnShare = findViewById(R.id.btnShare);
+        btnShare.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bitmap bitmap = takeScreenshot();
+                saveBitmap(bitmap);
+                shareIt();
             }
         });
 
@@ -863,7 +888,7 @@ public class MainActivity extends BaseActivity
                 //activatePauseBtn(true);
             } else {
                 updateHashrate("0");
-                DrawableCompat.setTint(buttonDrawableStart, getResources().getColor(R.color.c_green));
+                DrawableCompat.setTint(buttonDrawableStart, getResources().getColor(R.color.bg_green));
                 btnStart.setBackground(buttonDrawableStart);
                 btnStart.setText("Start");
 
@@ -1603,6 +1628,46 @@ public class MainActivity extends BaseActivity
 
         notificationBuilder.setContentText(status);
         notificationManager.notify(1, notificationBuilder.build());
+    }
+
+    public Bitmap takeScreenshot() {
+        View rootView = findViewById(android.R.id.content).getRootView();
+        rootView.setDrawingCacheEnabled(true);
+        return rootView.getDrawingCache();
+    }
+
+    private void saveBitmap(Bitmap bitmap) {
+        StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+        StrictMode.setVmPolicy(builder.build());
+
+        imagePath = new File(Environment.getExternalStorageDirectory() + "/scala_scrnshot.png"); ////File imagePath
+        FileOutputStream fos;
+        try {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+            }
+
+            fos = new FileOutputStream(imagePath);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+            fos.flush();
+            fos.close();
+        } catch (FileNotFoundException e) {
+            Log.e(LOG_TAG, e.getMessage(), e);
+        } catch (IOException e) {
+            Log.e(LOG_TAG, e.getMessage(), e);
+        }
+    }
+
+    private void shareIt() {
+        Uri uri = Uri.fromFile(imagePath);
+        Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+        sharingIntent.setType("image/*");
+        String shareBody = "Take a look at my Scala Mobile Miner stats!";
+        sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "My Scala Mobile Miner Stats");
+        sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
+        sharingIntent.putExtra(Intent.EXTRA_STREAM, uri);
+
+        startActivity(Intent.createChooser(sharingIntent, "Share via"));
     }
 
     private boolean clearMinerLog = true;

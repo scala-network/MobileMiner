@@ -31,7 +31,7 @@
     <color name="btn_icon_dark">#86939e</color>
     <color name="btn_bg_default">#444b57</color>
 
-    <color name="input_bg_default">#2a2e36</color>
+    <color name="input_bg_default">@color/bg_body</color>
     <color name="input_outline">#929ca8</color>
 
     <color name="bg_body">#1b1e24</color>
