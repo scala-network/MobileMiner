@@ -123,7 +123,7 @@
                     android:layout_marginBottom="3dp"
                     android:max="100"
                     android:progress="0"
-                    android:progressDrawable="@drawable/progressbar_rounded">
+                    android:progressDrawable="@drawable/progressbar_rounded_green">
                 </ProgressBar>
 
             </LinearLayout>
@@ -131,7 +131,6 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="45dp"
                 android:orientation="horizontal">
 
                 <Space
@@ -169,6 +168,11 @@
 
             </LinearLayout>
 
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1" />
+
             <FrameLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -176,12 +180,12 @@
 
                 <com.github.anastr.speedviewlib.DeluxeSpeedView
                     android:id="@+id/meter_hashrate_ticks"
-                    android:layout_width="313dp"
+                    android:layout_width="300dp"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
                     app:sv_minSpeed="0"
                     app:sv_maxSpeed="500"
-                    app:sv_tickNumber="10"
+                    app:sv_tickNumber="0"
                     app:sv_tickPadding="20dp"
                     app:sv_markColor="@color/txt_main"
                     app:sv_centerCircleColor="@color/bg_body"
@@ -201,7 +205,7 @@
 
                 <com.github.anastr.speedviewlib.TubeSpeedometer
                     android:id="@+id/meter_cores"
-                    android:layout_width="200dp"
+                    android:layout_width="185dp"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
                     app:sv_markColor="@android:color/transparent"
@@ -213,14 +217,14 @@
                     app:sv_indicatorWidth="0dp"
                     app:sv_speedTextSize="0dp"
                     app:sv_speedometerBackColor="@color/bg_lighter"
-                    app:sv_speedometerWidth="3dp"
+                    app:sv_speedometerWidth="2dp"
                     app:sv_textSize="0dp"
                     app:sv_unitTextSize="0dp"
                     app:sv_withTremble="false" />
 
                 <com.github.anastr.speedviewlib.TubeSpeedometer
                     android:id="@+id/meter_dummy"
-                    android:layout_width="215dp"
+                    android:layout_width="200dp"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
                     app:sv_markColor="@android:color/transparent"
@@ -241,17 +245,17 @@
 
                 <com.github.anastr.speedviewlib.TubeSpeedometer
                     android:id="@+id/meter_hashrate"
-                    android:layout_width="315dp"
+                    android:layout_width="300dp"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
                     app:sv_minSpeed="0"
                     app:sv_maxSpeed="500"
                     app:sv_indicator="QuarterLineIndicator"
                     app:sv_indicatorColor="@color/c_white"
-                    app:sv_indicatorWidth="8dp"
+                    app:sv_indicatorWidth="4dp"
                     app:sv_speedTextSize="0dp"
                     app:sv_speedometerBackColor="@color/bg_lighter"
-                    app:sv_speedometerWidth="12dp"
+                    app:sv_speedometerWidth="8dp"
                     app:sv_textSize="0dp"
                     app:sv_unitTextSize="0dp"
                     app:sv_withTremble="false" />
@@ -260,6 +264,7 @@
                     android:id="@+id/layout_hashrate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="-10dp"
                     android:layout_gravity="center"
                     android:orientation="vertical"
                     android:visibility="visible">
@@ -369,30 +374,56 @@
                     android:id="@+id/layout_status"
                     android:layout_width="wrap_content"
                     android:layout_height="75dp"
+                    android:layout_marginTop="13dp"
                     android:layout_gravity="center"
                     android:orientation="vertical"
                     android:gravity="center"
                     android:visibility="gone">
 
-                    <TextView
-                        android:id="@+id/miner_status"
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/processing"
-                        android:textSize="16sp"
-                        android:textStyle="normal"
-                        android:textColor="@color/c_white" />
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/miner_status"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="start"
+                            android:text="@string/processing"
+                            android:textSize="12sp"
+                            android:textStyle="normal"
+                            android:textColor="@color/c_white" />
+
+                        <Space
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"/>
+
+                        <TextView
+                            android:id="@+id/hr_progress"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="end"
+                            android:text="-%"
+                            android:textSize="12sp"
+                            android:textStyle="normal"
+                            android:textColor="@color/c_blue" />
+
+
+                    </LinearLayout>
 
                     <ProgressBar
                         android:id="@+id/progress_status"
                         style="?android:attr/progressBarStyleHorizontal"
-                        android:layout_width="match_parent"
-                        android:layout_height="5dp"
-                        android:layout_marginTop="7dp"
+                        android:layout_width="150dp"
+                        android:layout_height="3dp"
+                        android:layout_marginTop="5dp"
                         android:layout_marginBottom="3dp"
                         android:max="60"
                         android:progress="0"
-                        android:progressDrawable="@drawable/progressbar_rounded">
+                        android:indeterminate="false"
+                        android:progressDrawable="@drawable/progressbar_rounded_blue">
                     </ProgressBar>
 
                 </LinearLayout>
@@ -400,7 +431,7 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="135dp"
+                    android:layout_marginTop="120dp"
                     android:orientation="horizontal"
                     android:layout_gravity="center">
 
@@ -412,8 +443,8 @@
                         android:layout_gravity="center">
 
                         <ImageView
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
                             android:layout_gravity="center"
                             app:srcCompat="@drawable/ic_cores" />
 
@@ -424,7 +455,7 @@
                             android:layout_gravity="center"
                             android:gravity="end"
                             android:text="-"
-                            android:textSize="14sp"
+                            android:textSize="12sp"
                             android:textColor="@color/c_yellow" />
 
                     </LinearLayout>
@@ -437,8 +468,8 @@
                         android:layout_gravity="center">
 
                         <ImageView
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
                             android:layout_gravity="center"
                             app:srcCompat="@drawable/ic_miner" />
 
@@ -456,7 +487,7 @@
                                 android:layout_gravity="center"
                                 android:gravity="end"
                                 android:text="-"
-                                android:textSize="14sp"
+                                android:textSize="12sp"
                                 android:textColor="@color/txt_secondary" />
 
                             <TextView
@@ -465,7 +496,7 @@
                                 android:layout_gravity="center"
                                 android:textColor="@color/txt_secondary"
                                 android:text="@string/celsius"
-                                android:textSize="14sp"/>
+                                android:textSize="12sp"/>
 
                         </LinearLayout>
 
@@ -478,8 +509,8 @@
                         android:layout_gravity="center">
 
                         <ImageView
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
                             android:layout_gravity="center"
                             app:srcCompat="@drawable/ic_battery" />
 
@@ -497,7 +528,7 @@
                                 android:layout_gravity="center"
                                 android:gravity="end"
                                 android:text="-"
-                                android:textSize="14sp"
+                                android:textSize="12sp"
                                 android:textColor="@color/txt_secondary" />
 
                             <TextView
@@ -506,7 +537,7 @@
                                 android:layout_gravity="center"
                                 android:textColor="@color/txt_secondary"
                                 android:text="@string/celsius"
-                                android:textSize="14sp"/>
+                                android:textSize="12sp"/>
 
                         </LinearLayout>
 
@@ -535,13 +566,6 @@
                     android:layout_marginEnd="25dp"
                     android:orientation="vertical"
                     android:padding="5dp">
-
-                    <ImageView
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:layout_marginBottom="5dp"
-                        android:layout_gravity="center"
-                        app:srcCompat="@drawable/ic_shares" />
 
                     <TextView
                         android:id="@+id/acceptedshare"
@@ -573,13 +597,6 @@
                     android:orientation="vertical"
                     android:padding="5dp">
 
-                    <ImageView
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:layout_marginBottom="5dp"
-                        android:layout_gravity="center"
-                        app:srcCompat="@drawable/ic_difficulty" />
-
                     <TextView
                         android:id="@+id/difficulty"
                         android:layout_width="wrap_content"
@@ -608,13 +625,6 @@
                     android:layout_weight="1"
                     android:orientation="vertical"
                     android:padding="5dp">
-
-                    <ImageView
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:layout_marginBottom="5dp"
-                        android:layout_gravity="center"
-                        app:srcCompat="@drawable/ic_connection" />
 
                     <LinearLayout
                         android:layout_width="wrap_content"
@@ -665,11 +675,30 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
+                <SeekBar
+                    android:id="@+id/seekbarcores"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.75"
+                    android:layout_marginEnd="10dp"
+                    android:layout_gravity="center"
+                    android:max="8"
+                    android:maxHeight="5dp"
+                    android:min="1"
+                    android:minHeight="5dp"
+                    android:paddingStart="0dp"
+                    android:paddingEnd="0dp"
+                    android:progress="4"
+                    android:progressDrawable="@drawable/seekbar_ruler_yellow"
+                    android:thumbTint="@color/c_light_grey"
+                    android:thumbOffset="0dp"
+                    tools:ignore="UnusedAttribute" />
+
                 <Button
                     android:id="@+id/start"
-                    android:layout_width="0dp"
+                    android:layout_width="50dp"
                     android:layout_height="55dp"
-                    android:layout_weight="1"
+                    android:layout_weight="0.25"
                     android:backgroundTint="@color/bg_green"
                     android:text="@string/start"
                     android:textSize="14sp"

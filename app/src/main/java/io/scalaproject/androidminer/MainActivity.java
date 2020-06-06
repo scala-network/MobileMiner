@@ -27,7 +27,6 @@
 package io.scalaproject.androidminer;
 
 import android.Manifest;
-import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -41,8 +40,6 @@ import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Paint;
-import android.graphics.Path;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.BatteryManager;
@@ -61,7 +58,6 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.SeekBar;
@@ -81,6 +77,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -92,10 +89,10 @@ import com.android.volley.RequestQueue;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.github.anastr.speedviewlib.DeluxeSpeedView;
 import com.github.anastr.speedviewlib.TubeSpeedometer;
 import com.github.anastr.speedviewlib.components.Section;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.button.MaterialButton;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -128,7 +125,7 @@ public class MainActivity extends BaseActivity
 
     private Timer timerHashrate = null;
     private TimerTask timerTaskHashrate = null;
-    private ProgressBar pbHashrate;
+    private ProgressBar pbStatus;
 
     private boolean validArchitecture = true;
 
@@ -153,8 +150,8 @@ public class MainActivity extends BaseActivity
     // Temperature Control
     private Timer timerTemperatures = null;
     private TimerTask timerTaskTemperatures = null;
-    private List<String> listCPUTemp = new ArrayList<String>();
-    private List<String> listBatteryTemp = new ArrayList<String>();
+    private List<String> listCPUTemp = new ArrayList<>();
+    private List<String> listBatteryTemp = new ArrayList<>();
     private boolean isCharging = false;
 
     public static Context contextOfApplication;
@@ -169,7 +166,6 @@ public class MainActivity extends BaseActivity
     }
 
     private Button btnStart;
-    private ImageView imgShowCores;
 
     private final static int STATE_STOPPED = 0;
     private final static int STATE_MINING = 1;
@@ -185,13 +181,12 @@ public class MainActivity extends BaseActivity
     private NotificationCompat.Builder notificationBuilder = null;
 
     private File imagePath = null;
-    private final int REQUEST_PERMISSION_EXTERNAL_STORAGE = 1;
 
     public static boolean isDeviceMiningBackground() {
         return (m_nCurrentState == STATE_CALCULATING || m_nCurrentState == STATE_MINING || m_nCurrentState == STATE_COOLING);
     }
 
-    private final static int MAX_HASHRATE_TIMER = 30;
+    private final static int MAX_HASHRATE_TIMER = 34;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -212,6 +207,7 @@ public class MainActivity extends BaseActivity
         }
 
         PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
+        assert pm != null;
         wl = pm.newWakeLock(PARTIAL_WAKE_LOCK, "app:sleeplock");
         wl.acquire(10*60*1000L /*10 minutes*/);
 
@@ -229,7 +225,6 @@ public class MainActivity extends BaseActivity
 
         setContentView(R.layout.activity_main);
 
-        //tvTitle = findViewById(R.id.title);
         BottomNavigationView navigationView = findViewById(R.id.main_navigation);
         navigationView.getMenu().getItem(0).setChecked(true);
         navigationView.setOnNavigationItemSelectedListener(this);
@@ -254,22 +249,22 @@ public class MainActivity extends BaseActivity
         llStatus = findViewById(R.id.layout_status);
 
         // Controls
+
         payoutEnabled = true;
         pbPayout = findViewById(R.id.progresspayout);
-        pbHashrate = findViewById(R.id.progress_status);
+        pbStatus = findViewById(R.id.progress_status);
 
-        pbHashrate.setMax(MAX_HASHRATE_TIMER * 2);
-        pbHashrate.setProgress(0);
+        pbStatus.setMax(MAX_HASHRATE_TIMER * 2);
+        pbStatus.setProgress(0);
 
         // Log
         tvLog = findViewById(R.id.output);
         tvLog.setMovementMethod(new ScrollingMovementMethod());
-        imgShowCores = findViewById(R.id.showCores);
 
         // CPU Cores
 
         nNbMaxCores = Runtime.getRuntime().availableProcessors();
-        int nSettingsCores = Integer.parseInt(Config.read("cores"));
+        nCores = Integer.parseInt(Config.read("cores"));
 
         TubeSpeedometer meterDummy = findViewById(R.id.meter_dummy);
         meterDummy.setMaxSpeed(nNbMaxCores);
@@ -285,12 +280,11 @@ public class MainActivity extends BaseActivity
 
         meterCores = findViewById(R.id.meter_cores);
         meterCores.makeSections(1, getResources().getColor(R.color.c_yellow), Section.Style.SQUARE);
-        meterCores.speedTo(nSettingsCores);
+        meterCores.speedTo(nCores);
 
         tvNbCores = findViewById(R.id.nbcores);
 
         // Hashrate
-
         meterHashrate = findViewById(R.id.meter_hashrate);
         meterHashrate.makeSections(1, getResources().getColor(R.color.c_blue), Section.Style.SQUARE);
 
@@ -308,9 +302,9 @@ public class MainActivity extends BaseActivity
         enableStartBtn(false);
 
         // Cores seekbar
-        /*sbCores = findViewById(R.id.seekbar_cores);
-        sbCores.setMax(nb_max_cores);
-        sbCores.setProgress(settings_cores);
+        sbCores = findViewById(R.id.seekbarcores);
+        sbCores.setMax(nNbMaxCores);
+        sbCores.setProgress(nCores);
 
         sbCores.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -333,7 +327,7 @@ public class MainActivity extends BaseActivity
                 Config.write("cores", Integer.toString(coresnb));
                 meterCores.speedTo(coresnb);
             }
-        });*/
+        });
 
         if (!Arrays.asList(Config.SUPPORTED_ARCHITECTURES).contains(Tools.getABI())) {
             String sArchError = "Your architecture is not supported: " + Tools.getABI();
@@ -343,12 +337,6 @@ public class MainActivity extends BaseActivity
 
             validArchitecture = false;
         }
-
-        imgShowCores.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                sendInput("h");
-            }
-        });
 
         Button btnShare = findViewById(R.id.btnShare);
         btnShare.setOnClickListener(new View.OnClickListener() {
@@ -409,42 +397,6 @@ public class MainActivity extends BaseActivity
         meterCores.speedTo(Math.round(Tools.getCPUUsage()));
     }
 
-    private void showAcceptedShareNM() {
-        tvAcceptedShares.setAlpha(1.0f);
-
-        ValueAnimator valueAnimator = ValueAnimator.ofFloat(1f, 0f);
-        valueAnimator.setDuration(5000);
-        valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                float alpha = (float) animation.getAnimatedValue();
-                tvAcceptedShares.setAlpha(alpha);
-            }
-        });
-
-        valueAnimator.start();
-    }
-
-    public void startTimerCPUUsage() {
-        if(timerCPUUsage != null) {
-            return;
-        }
-
-        timerTaskCPUUsage = new TimerTask() {
-            @Override
-            public void run() {
-                runOnUiThread(new Runnable() {
-                    public void run() {
-                        updateCPUUsage();
-                    }
-                });
-            }
-        };
-
-        timerCPUUsage = new Timer();
-        timerCPUUsage.scheduleAtFixedRate(timerTaskCPUUsage, 0, 10000);
-    }
-
     public void startTimerTemperatures() {
         if(timerTemperatures != null) {
             return;
@@ -493,13 +445,12 @@ public class MainActivity extends BaseActivity
             enablePayoutWidget(true, "XLA");
 
             // Payout
-
             String sBalance = d.miner.balance;
             sBalance = sBalance.replace("XLA", "").trim();
             TextView tvBalance = findViewById(R.id.balance);
             tvBalance.setText(sBalance);
 
-            float fMinPayout = 100;
+            float fMinPayout;
             if(Config.read("mininggoal").equals(""))
                 fMinPayout = Utils.convertStringToFloat(d.pool.minPayout);
             else
@@ -756,10 +707,10 @@ public class MainActivity extends BaseActivity
         bDisableTemperatureControl = Config.read("disableamayc").equals("1");
         nMaxCPUTemp = Integer.parseInt(Config.read("maxcputemp").trim());
         nMaxBatteryTemp = Integer.parseInt(Config.read("maxbatterytemp").trim());
-        Integer nCooldownThreshold = Integer.parseInt(Config.read("cooldownthreshold").trim());
+        int nCooldownThreshold = Integer.parseInt(Config.read("cooldownthreshold").trim());
 
-        nSafeCPUTemp = nMaxCPUTemp - Math.round(nMaxCPUTemp * nCooldownThreshold / 100);
-        nSafeBatteryTemp = nMaxBatteryTemp - Math.round(nMaxBatteryTemp * nCooldownThreshold / 100);
+        nSafeCPUTemp = nMaxCPUTemp - Math.round((float)nMaxCPUTemp * (float)nCooldownThreshold / 100.0f);
+        nSafeBatteryTemp = nMaxBatteryTemp - Math.round((float)nMaxBatteryTemp * (float)nCooldownThreshold / 100.0f);
 
         nCores = Integer.parseInt(Config.read("cores"));
         nIntensity = Integer.parseInt(Config.read("intensity"));
@@ -880,9 +831,6 @@ public class MainActivity extends BaseActivity
         Drawable buttonDrawableStart = btnStart.getBackground();
         buttonDrawableStart = DrawableCompat.wrap(buttonDrawableStart);
 
-        Drawable buttonDrawableShowCores = btnStart.getBackground();
-        buttonDrawableShowCores = DrawableCompat.wrap(buttonDrawableShowCores);
-
         if(isValidConfig()) {
             enableStartBtn(true);
 
@@ -890,24 +838,12 @@ public class MainActivity extends BaseActivity
                 updateHashrate("n/a");
                 DrawableCompat.setTint(buttonDrawableStart, getResources().getColor(R.color.bg_lighter));
                 btnStart.setBackground(buttonDrawableStart);
-                btnStart.setText("Stop");
-
-                // Hashrate button
-                imgShowCores.setEnabled(true);
-
-                // Pause button
-                //activatePauseBtn(true);
+                btnStart.setText(R.string.stop);
             } else {
                 updateHashrate("0");
                 DrawableCompat.setTint(buttonDrawableStart, getResources().getColor(R.color.bg_green));
                 btnStart.setBackground(buttonDrawableStart);
-                btnStart.setText("Start");
-
-                // Hashrate button
-                imgShowCores.setEnabled(false);
-
-                // Pause button
-                //activatePauseBtn(false);
+                btnStart.setText(R.string.start);
             }
         }
         else {
@@ -917,15 +853,18 @@ public class MainActivity extends BaseActivity
 
     private void setMinerStatus(Integer status) {
         if(status == STATE_STOPPED) {
+            llStatus.setVisibility(View.GONE);
+            llHashrate.setVisibility(View.VISIBLE);
+
             tvHashrate.setText("0");
             tvHashrate.setTextColor(getResources().getColor(R.color.txt_inactive));
-
-            meterHashrate.speedTo(0);
 
             View v = findViewById(R.id.main_navigation);
             v.setKeepScreenOn(false);
 
-            stopTimerHashrate();
+            meterHashrate.speedTo(0);
+            stopTimerStatusHashrate();
+            resetHashrateTicks();
         }
         else if(status == STATE_MINING) {
             if(tvHashrate.getText().equals("0") || tvHashrate.getText().equals("n/a")) {
@@ -934,10 +873,9 @@ public class MainActivity extends BaseActivity
                 llStatus.setVisibility(View.GONE);
                 llHashrate.setVisibility(View.VISIBLE);
 
-                //tvHashrate.setTextSize(55.0f);
                 tvHashrate.setTextColor(getResources().getColor(R.color.c_white));
 
-                stopTimerHashrate();
+                stopTimerStatusHashrate();
             }
 
             if (Config.read("keepscreenonwhenmining").equals("1")) {
@@ -951,13 +889,20 @@ public class MainActivity extends BaseActivity
 
             if (status == STATE_PAUSED && isDeviceMining()) {
                 tvStatus.setText(getResources().getString(R.string.paused));
-                stopTimerHashrate();
+                stopTimerStatusHashrate();
+
+                pbStatus.setIndeterminate(false);
+                pbStatus.setProgress(0);
             } else if (status == STATE_COOLING && isDeviceMining()) {
                 tvStatus.setText(getResources().getString(R.string.cooling));
-                stopTimerHashrate();
+                stopTimerStatusHashrate();
+
+                pbStatus.setIndeterminate(true);
             } else if (status == STATE_CALCULATING) {
                 tvStatus.setText(getResources().getString(R.string.processing));
-                startTimerHashrate();
+
+                pbStatus.setIndeterminate(false);
+                startTimerStatusHashrate();
             }
         }
 
@@ -967,7 +912,7 @@ public class MainActivity extends BaseActivity
         updateNotification();
     }
 
-    public void startTimerHashrate() {
+    public void startTimerStatusHashrate() {
         if(timerHashrate != null) {
             return;
         }
@@ -977,7 +922,7 @@ public class MainActivity extends BaseActivity
             public void run() {
                 runOnUiThread(new Runnable() {
                     public void run() {
-                        updateProgressHashrate();
+                        incrementProgressHashrate();
                     }
                 });
             }
@@ -987,18 +932,44 @@ public class MainActivity extends BaseActivity
         timerHashrate.scheduleAtFixedRate(timerTaskHashrate, 0, 500);
     }
 
-    public void stopTimerHashrate() {
+    public void stopTimerStatusHashrate() {
         if(timerHashrate != null) {
             timerHashrate.cancel();
             timerHashrate = null;
             timerTaskHashrate = null;
 
-            pbHashrate.setProgress(0);
+            pbStatus.setProgress(0);
+            TextView tvHrProgess = findViewById(R.id.hr_progress);
+            tvHrProgess.setText("0%");
         }
     }
 
-    private void updateProgressHashrate() {
-        pbHashrate.setProgress(pbHashrate.getProgress() + 1);
+    private void resetHashrateTicks() {
+        DeluxeSpeedView meterTicks = findViewById(R.id.meter_hashrate_ticks);
+        meterTicks.setMaxSpeed(500);
+        meterTicks.setTickNumber(0);
+
+        meterHashrate.setMaxSpeed(500);
+    }
+
+    private void updateHashrateTicks(float hashrate) {
+        DeluxeSpeedView meterTicks = findViewById(R.id.meter_hashrate_ticks);
+        if(meterTicks.getTickNumber() == 0 && hashrate > 0) {
+            float hrMax = nNbMaxCores * hashrate / nCores * 1.25f;
+            meterTicks.setMaxSpeed(hrMax);
+            meterTicks.setTickNumber(10);
+
+            meterHashrate.setMaxSpeed(hrMax);
+        }
+    }
+
+    private void incrementProgressHashrate() {
+        pbStatus.setProgress(pbStatus.getProgress() + 1);
+
+        TextView tvHrProgess = findViewById(R.id.hr_progress);
+
+        String sProgessPercent = String.valueOf(Math.round((float)pbStatus.getProgress() / (float)pbStatus.getMax() *100.0f));
+        tvHrProgess.setText(String.format("%s%%", sProgessPercent));
     }
 
     private boolean isDeviceMining() {
@@ -1017,7 +988,8 @@ public class MainActivity extends BaseActivity
         if(!isDeviceMining())
             return;
 
-        Integer nspeed = Math.round(Utils.convertStringToFloat(speed));
+        float fSpeed = Utils.convertStringToFloat(speed);
+        int nspeed = Math.round(fSpeed);
         meterHashrate.speedTo(nspeed);
 
         tvHashrate.setText(speed);
@@ -1029,6 +1001,8 @@ public class MainActivity extends BaseActivity
         else {
             tvHashrate.setTextColor(getResources().getColor(R.color.c_white));
         }
+
+        updateHashrateTicks(fSpeed);
     }
 
     private Spannable formatLogOutputText(String text) {
@@ -1331,17 +1305,15 @@ public class MainActivity extends BaseActivity
                             tvDifficulty.setText(Integer.toString(difficuly));
                             tvConnection.setText(Integer.toString(connection));
 
-                            if(nLastShareCount != accepted) {
-                                //showAcceptedShareNM();
+                            if(!nLastShareCount.equals(accepted)) {
                                 nLastShareCount = accepted;
                             }
 
                             if(accepted == 1) {
-                                tvAcceptedShares.setTextColor(getResources().getColor(R.color.txt_secondary));
-                                tvDifficulty.setTextColor(getResources().getColor(R.color.txt_secondary));
-                                tvConnection.setTextColor(getResources().getColor(R.color.txt_secondary));
+                                tvAcceptedShares.setTextColor(getResources().getColor(R.color.txt_main));
+                                tvDifficulty.setTextColor(getResources().getColor(R.color.txt_main));
+                                tvConnection.setTextColor(getResources().getColor(R.color.txt_main));
                             }
-
 
                             updateHashrate(speed);
                         });
@@ -1452,14 +1424,12 @@ public class MainActivity extends BaseActivity
                             if(obj.has("predicted_next")) {
                                 JSONArray predictedNext = obj.getJSONArray("predicted_next");
 
-                                if (predictedNext != null) {
-                                    if (predictedNext.length() == 2) {
-                                        Integer cpupred = (int)Math.round(predictedNext.getDouble(0));
-                                        Integer batterypred = (int)Math.round(predictedNext.getDouble(1));
+                                if (predictedNext.length() == 2) {
+                                    Integer cpupred = (int)Math.round(predictedNext.getDouble(0));
+                                    Integer batterypred = (int)Math.round(predictedNext.getDouble(1));
 
-                                        if (cpupred >= nMaxCPUTemp || batterypred >= nMaxBatteryTemp) {
-                                            enableCooling(true);
-                                        }
+                                    if (cpupred >= nMaxCPUTemp || batterypred >= nMaxBatteryTemp) {
+                                        enableCooling(true);
                                     }
                                 }
                             }
@@ -1468,12 +1438,12 @@ public class MainActivity extends BaseActivity
                                 double predictedNext = obj.getDouble("predicted_next");
 
                                 if (!listCPUTemp.isEmpty()) {
-                                    Integer cpupred = (int)Math.round(predictedNext);
+                                    int cpupred = (int)Math.round(predictedNext);
                                     if (cpupred >= nMaxCPUTemp) {
                                         enableCooling(true);
                                     }
                                 } else if (!listBatteryTemp.isEmpty()) {
-                                    Integer batterypred = (int)Math.round(predictedNext);
+                                    int batterypred = (int)Math.round(predictedNext);
                                     if (batterypred >= nMaxBatteryTemp) {
                                         enableCooling(true);
                                     }
@@ -1491,13 +1461,13 @@ public class MainActivity extends BaseActivity
     private void parseVolleyError(VolleyError error) {
         String message = "";
         try {
-            String responseBody = new String(error.networkResponse.data, "UTF-8");
+            String responseBody = new String(error.networkResponse.data, StandardCharsets.UTF_8);
             JSONObject data = new JSONObject(responseBody);
             JSONArray errors = data.getJSONArray("errors");
             JSONObject jsonMessage = errors.getJSONObject(0);
 
             message = "AMYAC error: " + jsonMessage.getString("message");
-        } catch (JSONException | UnsupportedEncodingException e) {
+        } catch (JSONException e) {
             message = "AMYAC error JSONException: " + e.getMessage();
         } finally {
             disableAmaycOnError(message);
@@ -1525,7 +1495,6 @@ public class MainActivity extends BaseActivity
         else {
             if (Config.read("pauseonbattery").equals("1") && !isCharging) {
                 setStatusText(getResources().getString(R.string.pauseonmining));
-                //activatePauseBtn(true);
                 return;
             }
 
@@ -1553,24 +1522,8 @@ public class MainActivity extends BaseActivity
         btnStart.setEnabled(enabled);
     }
 
-    /*private void enablePauseResumeBtn(boolean enabled)
-    {
-        btnMinerPR.setImageResource(R.drawable.ic_pause);
-        btnMinerPR.setEnabled(enabled);
-    }
-
-    private void activatePauseBtn(boolean activatePause) {
-        if(activatePause) {
-            btnMinerPR.setImageResource(R.drawable.ic_pause);
-        } else {
-            btnMinerPR.setImageResource(R.drawable.ic_play);
-        }
-    }*/
-
     private void pauseMiner() {
         if (!isDevicePaused()) {
-            //activatePauseBtn(false);
-
             if(!isDeviceCooling())
                 setMinerStatus(STATE_PAUSED);
 
@@ -1582,8 +1535,6 @@ public class MainActivity extends BaseActivity
 
     private void resumeMiner() {
         if (isDevicePaused() || isDeviceCooling()) {
-            //activatePauseBtn(true);
-
             setMinerStatus(STATE_MINING);
 
             if (binder != null) {
@@ -1613,13 +1564,14 @@ public class MainActivity extends BaseActivity
 
     public static final String OPEN_ACTION = "OPEN_ACTION";
     public static final String STOP_ACTION = "STOP_ACTION";
-    private final String CHANNEL_ID = "MINING_STATUS";
 
     private void createNotificationManager() {
+        String CHANNEL_ID = "MINING_STATUS";
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
         {
             NotificationChannel notificationChannel = new NotificationChannel(CHANNEL_ID, getResources().getString(R.string.miningstatus), NotificationManager.IMPORTANCE_LOW);
             notificationManager = getSystemService(NotificationManager.class);
+            assert notificationManager != null;
             notificationManager.createNotificationChannel(notificationChannel);
         }
         else
@@ -1645,8 +1597,7 @@ public class MainActivity extends BaseActivity
         PendingIntent pendingIntentStop = PendingIntent.getBroadcast(contextOfApplication, 1, stopIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         notificationBuilder.setContentTitle(getResources().getString(R.string.devicemining));
-        //notificationBuilder.setContentText(getResources().getString(R.string.hashrate) + ": " + tvSpeed.getText().toString() + " H/s");
-        notificationBuilder.setContentIntent(pendingIntentOpen);
+         notificationBuilder.setContentIntent(pendingIntentOpen);
         notificationBuilder.addAction(android.R.drawable.ic_menu_view,"Open", pendingIntentOpen);
         notificationBuilder.addAction(android.R.drawable.ic_lock_power_off,"Stop", pendingIntentStop);
         notificationBuilder.setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher_round));
@@ -1655,10 +1606,6 @@ public class MainActivity extends BaseActivity
         notificationBuilder.setOnlyAlertOnce(true);
         notificationBuilder.build();
 
-        /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
-            notificationBuilder.setChannelId(CHANNEL_ID);*/
-
-        //NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.notify(1, notificationBuilder.build());
     }
 

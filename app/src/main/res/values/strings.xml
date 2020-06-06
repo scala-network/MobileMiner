@@ -6,10 +6,8 @@
     <string name="mining_pool_port">Port</string>
     <string name="walletaddress">Wallet Address:</string>
     <string name="cmdline">Cmdline</string>
-    <string name="start">Start</string>
     <string name="help">Help</string>
     <string name="cmd">Cmd</string>
-    <string name="stop">Stop</string>
     <string name="threads">Threads</string>
     <string name="max_cpu_usage">Max CPU</string>
     <string name="hpers">H/s</string>
@@ -176,4 +174,6 @@
     <string name="forked_from">Forked from</string>
     <string name="scala_project">Scala Project</string>
     <string name="recommended">(Recommended)</string>
+    <string name="stop">Stop</string>
+    <string name="start">Start</string>
 </resources>
