@@ -28,6 +28,7 @@ package io.scalaproject.androidminer;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -113,9 +114,7 @@ public class MainActivity extends BaseActivity
     private TextView tvHashrate, tvStatus, tvNbCores, tvCPUTemperature, tvBatteryTemperature, tvAcceptedShares, tvDifficulty, tvConnection, tvLog;
     private TubeSpeedometer meterCores;
     private TubeSpeedometer meterHashrate;
-    private Timer timerCPUUsage = null;
     private SeekBar sbCores = null;
-    private TimerTask timerTaskCPUUsage = null;
 
     private LinearLayout llMain, llLog, llHashrate, llStatus;
 
@@ -131,6 +130,8 @@ public class MainActivity extends BaseActivity
 
     private MiningService.MiningServiceBinder binder;
     private boolean bPayoutDataReceived = false;
+
+    private boolean bIgnoreCPUCoresEvent = false;
 
     // Settings
     private boolean bDisableTemperatureControl = false;
@@ -319,13 +320,53 @@ public class MainActivity extends BaseActivity
 
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                if(isDeviceMining()) {
-                    stopMining();
-                }
+                if (bIgnoreCPUCoresEvent)
+                    return;
 
-                int coresnb = sbCores.getProgress();
-                Config.write("cores", Integer.toString(coresnb));
-                meterCores.speedTo(coresnb);
+                if(isDeviceMining()) {
+                    final Dialog dialog = new Dialog(MainActivity.this);
+                    dialog.setContentView(R.layout.stop_mining);
+                    dialog.setCancelable(false);
+
+                    Button btnYes = dialog.findViewById(R.id.btnStopMiningYes);
+                    btnYes.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            stopMining();
+                            startMining();
+
+                            nCores = sbCores.getProgress();
+                            Config.write("cores", Integer.toString(nCores));
+
+                            updateCores();
+
+                            dialog.dismiss();
+                        }
+                    });
+
+                    Button btnNo = dialog.findViewById(R.id.btnStopMiningNo);
+                    btnNo.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            runOnUiThread(new Runnable() {
+                                public void run() {
+                                    bIgnoreCPUCoresEvent = true;
+                                    sbCores.setProgress(nCores);
+                                    bIgnoreCPUCoresEvent = false;
+                                }
+                            });
+
+                            dialog.dismiss();
+                        }
+                    });
+
+                    dialog.show();
+                }
+                else {
+                    nCores = sbCores.getProgress();
+                    Config.write("cores", Integer.toString(nCores));
+                    updateCores();
+                }
             }
         });
 
@@ -382,6 +423,8 @@ public class MainActivity extends BaseActivity
 
         updateStartButton();
         updateUI();
+
+        loadAvgMaxHashrate();
     }
 
     @Override
@@ -615,6 +658,8 @@ public class MainActivity extends BaseActivity
     private void updateCores() {
         String sCores = nCores + "/" + nNbMaxCores;
         tvNbCores.setText(sCores);
+
+        meterCores.speedTo(nCores);
     }
 
     @Override
@@ -1003,6 +1048,54 @@ public class MainActivity extends BaseActivity
         }
 
         updateHashrateTicks(fSpeed);
+
+        updateSumMaxHashrate(fSpeed);
+    }
+
+    private void loadAvgMaxHashrate() {
+        // Average Hashrate
+        if(!Config.read("hashrate_sum").isEmpty()) {
+            float fSumHr = Float.parseFloat(Config.read("hashrate_sum"));
+            int nHrCount = Integer.parseInt(Config.read("hashrate_sum_count"));
+
+            TextView tvAvgHr = findViewById(R.id.avghr);
+            tvAvgHr.setText(String.format("%.1f", fSumHr / (float)nHrCount));
+        }
+
+        // Max Hashrate
+        if(!Config.read("hashrate_max").isEmpty()) {
+            float fMaxHr = Float.parseFloat(Config.read("hashrate_max"));
+            TextView tvMaxHr = findViewById(R.id.maxhr);
+            tvMaxHr.setText(String.format("%.1f", fMaxHr));
+        }
+    }
+
+    private void updateSumMaxHashrate(float fSpeed) {
+        if(fSpeed > 0) {
+            // Average Hashrate
+            float fSumHr = 0.0f;
+            int nHrCount = 0;
+            if(!Config.read("hashrate_sum").isEmpty()) {
+                fSumHr = Float.parseFloat(Config.read("hashrate_sum"));
+                nHrCount = Integer.parseInt(Config.read("hashrate_sum_count"));
+            }
+
+            int nNewAverageHrCount = nHrCount + 1;
+            float fNewSumHg = fSumHr + fSpeed;
+            Config.write("hashrate_sum", Float.toString(fNewSumHg));
+            Config.write("hashrate_sum_count", Integer.toString(nNewAverageHrCount));
+
+            // Max Hashrate
+            float fMaxHr = 0.0f;
+            if(!Config.read("hashrate_max").isEmpty()) {
+                fMaxHr = Float.parseFloat(Config.read("hashrate_max"));
+            }
+
+            if(fSpeed > fMaxHr)
+                Config.write("hashrate_max", Float.toString(fSpeed));
+
+            loadAvgMaxHashrate();
+        }
     }
 
     private Spannable formatLogOutputText(String text) {

@@ -133,10 +133,15 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    app:srcCompat="@mipmap/ic_logo_colors" />
+
                 <Space
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="1.2"/>
+                    android:layout_weight="1"/>
 
                 <TextView
                     android:id="@+id/workername"
@@ -308,13 +313,6 @@
                         android:orientation="horizontal"
                         android:layout_gravity="center">
 
-                        <ImageView
-                            android:layout_width="12dp"
-                            android:layout_height="12dp"
-                            android:layout_marginEnd="5dp"
-                            android:layout_gravity="center"
-                            app:srcCompat="@drawable/ic_circle_grey" />
-
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -338,13 +336,6 @@
                         <Space
                             android:layout_width="15dp"
                             android:layout_height="match_parent" />
-
-                        <ImageView
-                            android:layout_width="12dp"
-                            android:layout_height="12dp"
-                            android:layout_marginEnd="5dp"
-                            android:layout_gravity="center"
-                            app:srcCompat="@drawable/ic_circle_orange" />
 
                         <TextView
                             android:layout_width="wrap_content"
