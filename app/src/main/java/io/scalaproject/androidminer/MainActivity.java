@@ -267,20 +267,22 @@ public class MainActivity extends BaseActivity
         nNbMaxCores = Runtime.getRuntime().availableProcessors();
         nCores = Integer.parseInt(Config.read("cores"));
 
-        TubeSpeedometer meterDummy = findViewById(R.id.meter_dummy);
-        meterDummy.setMaxSpeed(nNbMaxCores);
-        meterDummy.setTickNumber(nNbMaxCores + 1); // Keep this line to patch a bug in the meter implementation
-        meterDummy.setOnPrintTickLabel((integer, aFloat) -> {
+        // Create a dummy meter to add "gaps" to the Cores meter, to separate every core value
+        TubeSpeedometer meterCoresGap = findViewById(R.id.meter_cores_gap);
+        meterCoresGap.setMaxSpeed(nNbMaxCores);
+        meterCoresGap.setTickNumber(nNbMaxCores + 1); // Keep this line to patch a bug in the meter implementation
+        meterCoresGap.setOnPrintTickLabel((integer, aFloat) -> {
             String tick = "▮";
             Spannable textSpan = new SpannableString(tick);
             textSpan.setSpan(new StyleSpan(android.graphics.Typeface.BOLD), 0, 1, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
 
             return textSpan;
         });
-        meterDummy.invalidate();
+        meterCoresGap.invalidate();
 
         meterCores = findViewById(R.id.meter_cores);
         meterCores.makeSections(1, getResources().getColor(R.color.c_yellow), Section.Style.SQUARE);
+        meterCores.setMaxSpeed(nNbMaxCores);
         meterCores.speedTo(nCores);
 
         tvNbCores = findViewById(R.id.nbcores);
@@ -434,10 +436,6 @@ public class MainActivity extends BaseActivity
 
     public void onShowCores(View view) {
         sendInput("h");
-    }
-
-    private void updateCPUUsage() {
-        meterCores.speedTo(Math.round(Tools.getCPUUsage()));
     }
 
     public void startTimerTemperatures() {

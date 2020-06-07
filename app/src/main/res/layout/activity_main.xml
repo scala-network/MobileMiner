@@ -210,7 +210,7 @@
 
                 <com.github.anastr.speedviewlib.TubeSpeedometer
                     android:id="@+id/meter_cores"
-                    android:layout_width="185dp"
+                    android:layout_width="200dp"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
                     app:sv_markColor="@android:color/transparent"
@@ -228,8 +228,8 @@
                     app:sv_withTremble="false" />
 
                 <com.github.anastr.speedviewlib.TubeSpeedometer
-                    android:id="@+id/meter_dummy"
-                    android:layout_width="200dp"
+                    android:id="@+id/meter_cores_gap"
+                    android:layout_width="215dp"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
                     app:sv_markColor="@android:color/transparent"
