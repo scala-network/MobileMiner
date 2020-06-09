@@ -185,7 +185,7 @@
 
                 <com.github.anastr.speedviewlib.DeluxeSpeedView
                     android:id="@+id/meter_hashrate_ticks"
-                    android:layout_width="300dp"
+                    android:layout_width="298dp"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
                     app:sv_minSpeed="0"
@@ -200,9 +200,9 @@
                     app:sv_speedTextSize="0dp"
                     app:sv_backgroundCircleColor="@color/bg_body"
                     app:sv_speedBackgroundColor="@color/bg_body"
-                    app:sv_speedometerWidth="0dp"
+                    app:sv_speedometerWidth="1dp"
                     app:sv_textSize="10dp"
-                    app:sv_textColor="@color/txt_main"
+                    app:sv_textColor="@android:color/transparent"
                     app:sv_tickRotation="false"
                     app:sv_unitTextSize="0dp"
                     app:sv_withEffects="false"
@@ -249,6 +249,40 @@
                     app:sv_withTremble="false" />
 
                 <com.github.anastr.speedviewlib.TubeSpeedometer
+                    android:id="@+id/meter_hashrate_avg"
+                    android:layout_width="300dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    app:sv_minSpeed="0"
+                    app:sv_maxSpeed="500"
+                    app:sv_indicator="TriangleIndicator"
+                    app:sv_indicatorColor="@color/c_white"
+                    app:sv_indicatorWidth="14dp"
+                    app:sv_speedTextSize="0dp"
+                    app:sv_speedometerBackColor="@color/bg_lighter"
+                    app:sv_speedometerWidth="8dp"
+                    app:sv_textSize="0dp"
+                    app:sv_unitTextSize="0dp"
+                    app:sv_withTremble="false" />
+
+                <com.github.anastr.speedviewlib.TubeSpeedometer
+                    android:id="@+id/meter_hashrate_max"
+                    android:layout_width="300dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    app:sv_minSpeed="0"
+                    app:sv_maxSpeed="500"
+                    app:sv_indicator="TriangleIndicator"
+                    app:sv_indicatorColor="@color/c_orange"
+                    app:sv_indicatorWidth="14dp"
+                    app:sv_speedTextSize="0dp"
+                    app:sv_speedometerBackColor="@color/bg_lighter"
+                    app:sv_speedometerWidth="8dp"
+                    app:sv_textSize="0dp"
+                    app:sv_unitTextSize="0dp"
+                    app:sv_withTremble="false" />
+
+                <com.github.anastr.speedviewlib.TubeSpeedometer
                     android:id="@+id/meter_hashrate"
                     android:layout_width="300dp"
                     android:layout_height="match_parent"
@@ -263,7 +297,7 @@
                     app:sv_speedometerWidth="8dp"
                     app:sv_textSize="0dp"
                     app:sv_unitTextSize="0dp"
-                    app:sv_withTremble="false" />
+                    app:sv_withTremble="true" />
 
                 <LinearLayout
                     android:id="@+id/layout_hashrate"
@@ -318,8 +352,10 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:gravity="end"
-                            android:text="AVG"
+                            android:text="@string/avg"
                             android:textSize="12sp"
+                            android:textStyle="bold"
+                            android:textAllCaps="true"
                             android:textColor="@color/txt_secondary" />
 
                         <TextView
@@ -342,9 +378,11 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:gravity="end"
-                            android:text="MAX"
+                            android:text="@string/max"
                             android:textSize="12sp"
-                            android:textColor="@color/txt_secondary" />
+                            android:textStyle="bold"
+                            android:textAllCaps="true"
+                            android:textColor="@color/c_orange" />
 
                         <TextView
                             android:id="@+id/maxhr"
@@ -539,6 +577,7 @@
             </FrameLayout>
 
             <Space
+                android:id="@+id/space_metrics_above"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1" />
@@ -557,6 +596,14 @@
                     android:layout_marginEnd="25dp"
                     android:orientation="vertical"
                     android:padding="5dp">
+
+                    <ImageView
+                        android:id="@+id/imgacceptedshare"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_gravity="center"
+                        android:layout_marginBottom="10dp"
+                        app:srcCompat="@drawable/ic_shares" />
 
                     <TextView
                         android:id="@+id/acceptedshare"
@@ -588,6 +635,14 @@
                     android:orientation="vertical"
                     android:padding="5dp">
 
+                    <ImageView
+                        android:id="@+id/imgdifficulty"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_gravity="center"
+                        android:layout_marginBottom="10dp"
+                        app:srcCompat="@drawable/ic_difficulty" />
+
                     <TextView
                         android:id="@+id/difficulty"
                         android:layout_width="wrap_content"
@@ -616,6 +671,14 @@
                     android:layout_weight="1"
                     android:orientation="vertical"
                     android:padding="5dp">
+
+                    <ImageView
+                        android:id="@+id/imgconnection"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_gravity="center"
+                        android:layout_marginBottom="10dp"
+                        app:srcCompat="@drawable/ic_connection" />
 
                     <LinearLayout
                         android:layout_width="wrap_content"
@@ -657,6 +720,7 @@
 
 
             <Space
+                android:id="@+id/space_metrics_below"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1" />

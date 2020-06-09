@@ -59,6 +59,7 @@ import java.net.Inet6Address;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Arrays;
+import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
@@ -81,7 +82,8 @@ public class MiningService extends Service {
     private int accepted = 0;
     private int difficulty = 0;
     private int connection = 0;
-    private String speed = "0";
+    private float speed = 0.0f;
+    private float max = 0.0f;
     private String lastAssetPath;
     private String lastOutput = "";
     private static RequestQueue reqQueue;
@@ -110,7 +112,7 @@ public class MiningService extends Service {
 
     public interface MiningServiceStateListener {
         void onStateChange(Boolean state);
-        void onStatusChange(String status, String speed, Integer accepted, Integer difficulty, Integer connection);
+        void onStatusChange(String status, float speed, float max, Integer accepted, Integer difficulty, Integer connection);
     }
 
     public void setMiningServiceStateListener(MiningServiceStateListener listener) {
@@ -125,8 +127,8 @@ public class MiningService extends Service {
         if (listener != null) listener.onStateChange(state);
     }
 
-    private void raiseMiningServiceStatusChange(String status, String speed, Integer accepted, Integer difficulty, Integer connection) {
-        if (listener != null) listener.onStatusChange(status, speed, accepted, difficulty, connection);
+    private void raiseMiningServiceStatusChange(String status, float speed, float max, Integer accepted, Integer difficulty, Integer connection) {
+        if (listener != null) listener.onStatusChange(status, speed, max, accepted, difficulty, connection);
     }
 
     public Boolean getMiningServiceState() {
@@ -252,11 +254,7 @@ public class MiningService extends Service {
         try {
             JSONObject response = future.get(5, TimeUnit.SECONDS); // Sync call
             hostIP = response.optString("ip");
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (TimeoutException e) {
+        } catch (InterruptedException | ExecutionException | TimeoutException e) {
             e.printStackTrace();
         }
 
@@ -289,6 +287,7 @@ public class MiningService extends Service {
                 this.config.pool = getPoolHost();
                 return "success";
             } catch (Exception e) {
+                e.printStackTrace();
             }
             return null;
         }
@@ -300,7 +299,6 @@ public class MiningService extends Service {
     }
 
     public void startMiningProcess(MiningConfig config) {
-
         Log.i(LOG_TAG, "starting...");
 
         if (process != null) {
@@ -335,7 +333,8 @@ public class MiningService extends Service {
             accepted = 0;
             difficulty = 0;
             connection = 0;
-            speed = "n/a";
+            speed = -1.0f;
+            max = -1.0f;
             lastOutput = "";
 
             process = pb.start();
@@ -360,7 +359,7 @@ public class MiningService extends Service {
         }
     }
 
-    public String getSpeed() {
+    public float getSpeed() {
         return speed;
     }
 
@@ -411,16 +410,14 @@ public class MiningService extends Service {
 
     private class OutputReaderThread extends Thread {
         private InputStream inputStream;
-        private BufferedReader reader;
         private StringBuilder output = new StringBuilder();
 
         OutputReaderThread(InputStream inputStream, String miner) {
-
             this.inputStream = inputStream;
         }
 
         private void processLogLine(String line) {
-            output.append(line + System.getProperty("line.separator"));
+            output.append(line).append(System.getProperty("line.separator"));
 
             String lineCompare = line.toLowerCase();
             if (lineCompare.contains("accepted")) {
@@ -442,25 +439,34 @@ public class MiningService extends Service {
 
             } else if (lineCompare.contains("speed")) {
                 String[] split = TextUtils.split(line, " ");
-                speed = split[4];
-                if (speed.equals("n/a")) {
-                    speed = split[5];
-                    if (speed.equals("n/a")) {
-                        speed = split[6];
+                String tmpSpeed = split[4];
+                if (tmpSpeed.equals("n/a")) {
+                    tmpSpeed = split[5];
+                    if (tmpSpeed.equals("n/a")) {
+                        tmpSpeed = split[6];
                     }
+                }
+
+                speed = Float.parseFloat(tmpSpeed.trim());
+
+                if (lineCompare.contains("max")) {
+                    int i = lineCompare.indexOf("max ") + "max ".length();
+                    int imax = lineCompare.indexOf(" ", i);
+                    String tmpMax = lineCompare.substring(i, imax).trim();
+                    max = Float.parseFloat(tmpMax);
                 }
             }
 
             if (output.length() > Config.logMaxLength) {
-                output.delete(0, output.indexOf(System.getProperty("line.separator"), Config.logPruneLength) + 1);
+                output.delete(0, output.indexOf(Objects.requireNonNull(System.getProperty("line.separator")), Config.logPruneLength) + 1);
             }
 
-            raiseMiningServiceStatusChange(line, speed, accepted, difficulty, connection);
+            raiseMiningServiceStatusChange(line, speed, max, accepted, difficulty, connection);
         }
 
         public void run() {
             try {
-                reader = new BufferedReader(new InputStreamReader(inputStream));
+                BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
                 String line;
                 while ((line = reader.readLine()) != null) {
 

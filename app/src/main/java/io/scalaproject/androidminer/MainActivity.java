@@ -41,12 +41,14 @@ import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Point;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.BatteryManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.os.IBinder;
 import android.os.PowerManager;
 import android.os.StrictMode;
@@ -56,12 +58,15 @@ import android.text.method.ScrollingMovementMethod;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.StyleSpan;
 import android.util.Log;
+import android.view.Display;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.SeekBar;
+import android.widget.Space;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.text.Spannable;
@@ -77,7 +82,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -112,8 +116,7 @@ public class MainActivity extends BaseActivity
     private static final String LOG_TAG = "MainActivity";
 
     private TextView tvHashrate, tvStatus, tvNbCores, tvCPUTemperature, tvBatteryTemperature, tvAcceptedShares, tvDifficulty, tvConnection, tvLog;
-    private TubeSpeedometer meterCores;
-    private TubeSpeedometer meterHashrate;
+    private TubeSpeedometer meterCores, meterHashrate, meterHashrate_avg, meterHashrate_max;
     private SeekBar sbCores = null;
 
     private LinearLayout llMain, llLog, llHashrate, llStatus;
@@ -147,6 +150,10 @@ public class MainActivity extends BaseActivity
     private Integer nLastShareCount = 0;
 
     private Integer nNbMaxCores = 0;
+
+    private float fSumHr = 0.0f;
+    private Integer nHrCount = 0;
+    private float fMaxHr = 0.0f;
 
     // Temperature Control
     private Timer timerTemperatures = null;
@@ -291,6 +298,12 @@ public class MainActivity extends BaseActivity
         meterHashrate = findViewById(R.id.meter_hashrate);
         meterHashrate.makeSections(1, getResources().getColor(R.color.c_blue), Section.Style.SQUARE);
 
+        meterHashrate_avg = findViewById(R.id.meter_hashrate_avg);
+        meterHashrate_avg.makeSections(1, getResources().getColor(android.R.color.transparent), Section.Style.SQUARE);
+
+        meterHashrate_max = findViewById(R.id.meter_hashrate_max);
+        meterHashrate_max.makeSections(1, getResources().getColor(android.R.color.transparent), Section.Style.SQUARE);
+
         tvHashrate = findViewById(R.id.hashrate);
         tvStatus = findViewById(R.id.miner_status);
 
@@ -334,11 +347,18 @@ public class MainActivity extends BaseActivity
                     btnYes.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            stopMining();
-                            startMining();
-
                             nCores = sbCores.getProgress();
                             Config.write("cores", Integer.toString(nCores));
+
+                            MainActivity.this.stopMining(); // Stop mining
+
+                            // Start miner with small delay
+                            new Handler().postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    MainActivity.this.startMining(); // Start mining
+                                }
+                            }, 1000);
 
                             updateCores();
 
@@ -424,9 +444,9 @@ public class MainActivity extends BaseActivity
         createNotificationManager();
 
         updateStartButton();
-        updateUI();
+        resetAvgMaxHashrate();
 
-        loadAvgMaxHashrate();
+        updateUI();
     }
 
     @Override
@@ -642,6 +662,31 @@ public class MainActivity extends BaseActivity
         updatePayoutWidgetStatus();
         refreshLogOutputView();
         updateCores();
+        adjustMetricsLayout();
+    }
+
+    private void adjustMetricsLayout() {
+        /*Space spaceMetricsAbove = findViewById(R.id.space_metrics_above);
+        Space spaceMetricsBelow = findViewById(R.id.space_metrics_below);*/
+
+        Display display = getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        int height = size.y;
+
+        ImageView imgAcceptedShare = findViewById(R.id.imgacceptedshare);
+        ImageView imgDifficulty = findViewById(R.id.imgdifficulty);
+        ImageView imgConnection = findViewById(R.id.imgconnection);
+
+        if(height < 2000) {
+            imgAcceptedShare.setVisibility(View.GONE);
+            imgDifficulty.setVisibility(View.GONE);
+            imgConnection.setVisibility(View.GONE);
+        } else {
+            imgAcceptedShare.setVisibility(View.VISIBLE);
+            imgDifficulty.setVisibility(View.VISIBLE);
+            imgConnection.setVisibility(View.VISIBLE);
+        }
     }
 
     public void updateStartButton() {
@@ -810,6 +855,10 @@ public class MainActivity extends BaseActivity
         listBatteryTemp.clear();
 
         nLastShareCount = 0;
+
+        fSumHr = 0.0f;
+        nHrCount = 0;
+        fMaxHr = 0.0f;
     }
 
     public void stopMining() {
@@ -822,6 +871,8 @@ public class MainActivity extends BaseActivity
         binder.getService().stopMining();
 
         resetOptions();
+
+        resetAvgMaxHashrate();
 
         updateUI();
     }
@@ -858,7 +909,7 @@ public class MainActivity extends BaseActivity
         super.onPause();
     }
 
-    private void setMiningState() {
+    private void toggleMiningState() {
         if (binder == null)
             return;
 
@@ -878,12 +929,12 @@ public class MainActivity extends BaseActivity
             enableStartBtn(true);
 
             if (state) {
-                updateHashrate("n/a");
+                updateHashrate(-1.0f, -1.0f);
                 DrawableCompat.setTint(buttonDrawableStart, getResources().getColor(R.color.bg_lighter));
                 btnStart.setBackground(buttonDrawableStart);
                 btnStart.setText(R.string.stop);
             } else {
-                updateHashrate("0");
+                updateHashrate(0.0f, 0.0f);
                 DrawableCompat.setTint(buttonDrawableStart, getResources().getColor(R.color.bg_green));
                 btnStart.setBackground(buttonDrawableStart);
                 btnStart.setText(R.string.start);
@@ -906,11 +957,14 @@ public class MainActivity extends BaseActivity
             v.setKeepScreenOn(false);
 
             meterHashrate.speedTo(0);
+            meterHashrate_avg.setVisibility(View.GONE);
+            meterHashrate_max.setVisibility(View.GONE);
+
             stopTimerStatusHashrate();
             resetHashrateTicks();
         }
         else if(status == STATE_MINING) {
-            if(tvHashrate.getText().equals("0") || tvHashrate.getText().equals("n/a")) {
+            if(tvHashrate.getText().equals("0")) {
                 setMinerStatus(STATE_CALCULATING);
             } else {
                 llStatus.setVisibility(View.GONE);
@@ -991,18 +1045,24 @@ public class MainActivity extends BaseActivity
         DeluxeSpeedView meterTicks = findViewById(R.id.meter_hashrate_ticks);
         meterTicks.setMaxSpeed(500);
         meterTicks.setTickNumber(0);
+        meterTicks.setTextColor(getResources().getColor(android.R.color.transparent));
 
         meterHashrate.setMaxSpeed(500);
+        meterHashrate_avg.setMaxSpeed(500);
+        meterHashrate_max.setMaxSpeed(500);
     }
 
-    private void updateHashrateTicks(float hashrate) {
+    private void updateHashrateTicks(float fMax) {
         DeluxeSpeedView meterTicks = findViewById(R.id.meter_hashrate_ticks);
-        if(meterTicks.getTickNumber() == 0 && hashrate > 0) {
-            float hrMax = nNbMaxCores * hashrate / nCores * 1.25f;
+        if(meterTicks.getTickNumber() == 0 && fMax > 0) {
+            float hrMax = nNbMaxCores * fMax / nCores * 1.05f;
             meterTicks.setMaxSpeed(hrMax);
             meterTicks.setTickNumber(10);
+            meterTicks.setTextColor(getResources().getColor(R.color.txt_main));
 
             meterHashrate.setMaxSpeed(hrMax);
+            meterHashrate_avg.setMaxSpeed(hrMax);
+            meterHashrate_max.setMaxSpeed(hrMax);
         }
     }
 
@@ -1027,72 +1087,81 @@ public class MainActivity extends BaseActivity
         return m_nCurrentState == STATE_COOLING;
     }
 
-    private void updateHashrate(String speed) {
-        if(!isDeviceMining())
+    private void updateHashrate(float fSpeed, float fMax) {
+        if(!isDeviceMining() || fSpeed < 0.0f)
             return;
 
-        float fSpeed = Utils.convertStringToFloat(speed);
-        int nspeed = Math.round(fSpeed);
-        meterHashrate.speedTo(nspeed);
+        DeluxeSpeedView meterTicks = findViewById(R.id.meter_hashrate_ticks);
+        if(meterTicks.getTickNumber() == 0) {
+            updateHashrateTicks(fMax);
 
-        tvHashrate.setText(speed);
+            // Start timer
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    updateHashrateMeter(fSpeed, fMax);
+                }
+            }, 2000);
+        }
+        else {
+            updateHashrateTicks(fMax);
+            updateHashrateMeter(fSpeed, fMax);
+        }
+    }
+
+    private void updateHashrateMeter(float fSpeed, float fMax) {
+        meterHashrate.speedTo(Math.round(fSpeed));
+
+        tvHashrate.setText(String.format("%.1f", fSpeed));
         setMinerStatus(STATE_MINING);
 
-        if(speed.equals("0")) {
+        if(fSpeed <= 0.0f) {
             tvHashrate.setTextColor(getResources().getColor(R.color.txt_inactive));
         }
         else {
             tvHashrate.setTextColor(getResources().getColor(R.color.c_white));
         }
 
-        updateHashrateTicks(fSpeed);
-
-        updateSumMaxHashrate(fSpeed);
+        updateAvgMaxHashrate(fSpeed, fMax);
     }
 
-    private void loadAvgMaxHashrate() {
-        // Average Hashrate
-        if(!Config.read("hashrate_sum").isEmpty()) {
-            float fSumHr = Float.parseFloat(Config.read("hashrate_sum"));
-            int nHrCount = Integer.parseInt(Config.read("hashrate_sum_count"));
+    private void resetAvgMaxHashrate() { updateAvgMaxHashrate(0.0f, 0.0f); }
 
-            TextView tvAvgHr = findViewById(R.id.avghr);
-            tvAvgHr.setText(String.format("%.1f", fSumHr / (float)nHrCount));
+    private void updateAvgMaxHashrate(float fSpeed, float fMax) {
+        TextView tvAvgHr = findViewById(R.id.avghr);
+        TextView tvMaxHr = findViewById(R.id.maxhr);
+
+        // Average Hashrate
+        if(fSpeed > 0.0f) {
+            nHrCount++;
+            fSumHr += fSpeed;
+
+            float fAvgHr = fSumHr / (float) nHrCount;
+            tvAvgHr.setText(String.format("%.1f", fAvgHr));
+
+            if (meterHashrate_avg.getVisibility() == View.GONE)
+                meterHashrate_avg.setVisibility(View.VISIBLE);
+            meterHashrate_avg.setSpeedAt(fAvgHr);
+        }
+        else {
+            tvAvgHr.setText(String.format("%.1f", 0.0f));
+            meterHashrate_avg.setVisibility(View.GONE);
         }
 
         // Max Hashrate
-        if(!Config.read("hashrate_max").isEmpty()) {
-            float fMaxHr = Float.parseFloat(Config.read("hashrate_max"));
-            TextView tvMaxHr = findViewById(R.id.maxhr);
+        if(fMax > 0.0f) {
+            if(fMax > fMaxHr)
+                fMaxHr = fMax;
+
             tvMaxHr.setText(String.format("%.1f", fMaxHr));
+
+            if(meterHashrate_max.getVisibility() == View.GONE)
+                meterHashrate_max.setVisibility(View.VISIBLE);
+            meterHashrate_max.setSpeedAt(fMaxHr);
         }
-    }
-
-    private void updateSumMaxHashrate(float fSpeed) {
-        if(fSpeed > 0) {
-            // Average Hashrate
-            float fSumHr = 0.0f;
-            int nHrCount = 0;
-            if(!Config.read("hashrate_sum").isEmpty()) {
-                fSumHr = Float.parseFloat(Config.read("hashrate_sum"));
-                nHrCount = Integer.parseInt(Config.read("hashrate_sum_count"));
-            }
-
-            int nNewAverageHrCount = nHrCount + 1;
-            float fNewSumHg = fSumHr + fSpeed;
-            Config.write("hashrate_sum", Float.toString(fNewSumHg));
-            Config.write("hashrate_sum_count", Integer.toString(nNewAverageHrCount));
-
-            // Max Hashrate
-            float fMaxHr = 0.0f;
-            if(!Config.read("hashrate_max").isEmpty()) {
-                fMaxHr = Float.parseFloat(Config.read("hashrate_max"));
-            }
-
-            if(fSpeed > fMaxHr)
-                Config.write("hashrate_max", Float.toString(fSpeed));
-
-            loadAvgMaxHashrate();
+        else {
+            tvMaxHr.setText(String.format("%.1f", 0.0f));
+            meterHashrate_max.setVisibility(View.GONE);
         }
     }
 
@@ -1352,7 +1421,7 @@ public class MainActivity extends BaseActivity
                             clearMinerLog = false;
                         }
 
-                        setMiningState();
+                        toggleMiningState();
                     }
                 });
 
@@ -1376,7 +1445,7 @@ public class MainActivity extends BaseActivity
                                     tvConnection.setText("0");
                                     tvConnection.setTextColor(getResources().getColor(R.color.txt_inactive));
 
-                                    updateHashrate("n/a");
+                                    updateHashrate(-1.0f, -1.0f);
                                 }
                                 clearMinerLog = true;
                                 setStatusText("Miner Started");
@@ -1389,7 +1458,7 @@ public class MainActivity extends BaseActivity
 
                     @SuppressLint("SetTextI18n")
                     @Override
-                    public void onStatusChange(String status, String speed, Integer accepted, Integer difficuly, Integer connection) {
+                    public void onStatusChange(String status, float speed, float max, Integer accepted, Integer difficuly, Integer connection) {
                         runOnUiThread(() -> {
                             appendLogOutputText(status);
                             tvAcceptedShares.setText(Integer.toString(accepted));
@@ -1406,7 +1475,7 @@ public class MainActivity extends BaseActivity
                                 tvConnection.setTextColor(getResources().getColor(R.color.txt_main));
                             }
 
-                            updateHashrate(speed);
+                            updateHashrate(speed, max);
                         });
                     }
                 });
@@ -1688,7 +1757,7 @@ public class MainActivity extends BaseActivity
         PendingIntent pendingIntentStop = PendingIntent.getBroadcast(contextOfApplication, 1, stopIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         notificationBuilder.setContentTitle(getResources().getString(R.string.devicemining));
-         notificationBuilder.setContentIntent(pendingIntentOpen);
+        notificationBuilder.setContentIntent(pendingIntentOpen);
         notificationBuilder.addAction(android.R.drawable.ic_menu_view,"Open", pendingIntentOpen);
         notificationBuilder.addAction(android.R.drawable.ic_lock_power_off,"Stop", pendingIntentStop);
         notificationBuilder.setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher_round));

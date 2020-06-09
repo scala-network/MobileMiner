@@ -179,4 +179,5 @@
     <string name="start">Start</string>
     <string name="no">No</string>
     <string name="yes">Yes</string>
+    <string name="avg">AVG</string>
 </resources>
