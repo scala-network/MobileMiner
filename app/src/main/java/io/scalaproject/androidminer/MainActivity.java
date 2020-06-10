@@ -42,6 +42,8 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Point;
+import android.graphics.PorterDuff;
+import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.BatteryManager;
@@ -66,7 +68,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.SeekBar;
-import android.widget.Space;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.text.Spannable;
@@ -94,7 +95,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.github.anastr.speedviewlib.DeluxeSpeedView;
+import com.github.anastr.speedviewlib.SpeedView;
 import com.github.anastr.speedviewlib.TubeSpeedometer;
 import com.github.anastr.speedviewlib.components.Section;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -135,6 +136,8 @@ public class MainActivity extends BaseActivity
     private boolean bPayoutDataReceived = false;
 
     private boolean bIgnoreCPUCoresEvent = false;
+    private boolean bIsRestartEvent = false;
+    private boolean bIsRestartDialogShown = false;
 
     // Settings
     private boolean bDisableTemperatureControl = false;
@@ -290,19 +293,33 @@ public class MainActivity extends BaseActivity
         meterCores = findViewById(R.id.meter_cores);
         meterCores.makeSections(1, getResources().getColor(R.color.c_yellow), Section.Style.SQUARE);
         meterCores.setMaxSpeed(nNbMaxCores);
-        meterCores.speedTo(nCores);
+        meterCores.speedTo(nCores, 0);
 
         tvNbCores = findViewById(R.id.nbcores);
 
         // Hashrate
         meterHashrate = findViewById(R.id.meter_hashrate);
         meterHashrate.makeSections(1, getResources().getColor(R.color.c_blue), Section.Style.SQUARE);
+        /*ImageIndicator imageIndicatorHs = new ImageIndicator(getApplicationContext(), getResources().getDrawable(R.drawable.indicator_speed));
+        meterHashrate.setIndicator(imageIndicatorHs);*/
 
         meterHashrate_avg = findViewById(R.id.meter_hashrate_avg);
         meterHashrate_avg.makeSections(1, getResources().getColor(android.R.color.transparent), Section.Style.SQUARE);
 
+        // Scale drawable
+        /*Bitmap bitmapAvg = Utils.getBitmapFromVectorDrawable(contextOfApplication, R.drawable.indicator_avg);
+        Drawable dAvg = new BitmapDrawable(getResources(), Bitmap.createScaledBitmap(bitmapAvg, 12, 6, true));
+        ImageIndicator imageIndicatorAvg = new ImageIndicator(getApplicationContext(), dAvg);
+        meterHashrate_avg.setIndicator(imageIndicatorAvg);*/
+
         meterHashrate_max = findViewById(R.id.meter_hashrate_max);
         meterHashrate_max.makeSections(1, getResources().getColor(android.R.color.transparent), Section.Style.SQUARE);
+
+        // Scale drawable
+        /*Bitmap bitmapMax = Utils.getBitmapFromVectorDrawable(contextOfApplication, R.drawable.indicator_max);
+        Drawable dMax = new BitmapDrawable(getResources(), Bitmap.createScaledBitmap(bitmapMax, 12, 6, true));
+        ImageIndicator imageIndicatorMax = new ImageIndicator(getApplicationContext(), dMax);
+        meterHashrate_max.setIndicator(imageIndicatorMax);*/
 
         tvHashrate = findViewById(R.id.hashrate);
         tvStatus = findViewById(R.id.miner_status);
@@ -339,6 +356,9 @@ public class MainActivity extends BaseActivity
                     return;
 
                 if(isDeviceMining()) {
+                    if(bIsRestartDialogShown)
+                        return;
+
                     final Dialog dialog = new Dialog(MainActivity.this);
                     dialog.setContentView(R.layout.stop_mining);
                     dialog.setCancelable(false);
@@ -349,6 +369,8 @@ public class MainActivity extends BaseActivity
                         public void onClick(View v) {
                             nCores = sbCores.getProgress();
                             Config.write("cores", Integer.toString(nCores));
+
+                            bIsRestartEvent = true;
 
                             MainActivity.this.stopMining(); // Stop mining
 
@@ -363,6 +385,7 @@ public class MainActivity extends BaseActivity
                             updateCores();
 
                             dialog.dismiss();
+                            bIsRestartDialogShown = false;
                         }
                     });
 
@@ -379,10 +402,12 @@ public class MainActivity extends BaseActivity
                             });
 
                             dialog.dismiss();
+                            bIsRestartDialogShown = false;
                         }
                     });
 
                     dialog.show();
+                    bIsRestartDialogShown = true;
                 }
                 else {
                     nCores = sbCores.getProgress();
@@ -702,7 +727,7 @@ public class MainActivity extends BaseActivity
         String sCores = nCores + "/" + nNbMaxCores;
         tvNbCores.setText(sCores);
 
-        meterCores.speedTo(nCores);
+        meterCores.speedTo(nCores, 0);
     }
 
     @Override
@@ -922,6 +947,9 @@ public class MainActivity extends BaseActivity
     }
 
     private void setMiningButtonState(Boolean state) {
+        if(bIsRestartEvent)
+            return;
+
         Drawable buttonDrawableStart = btnStart.getBackground();
         buttonDrawableStart = DrawableCompat.wrap(buttonDrawableStart);
 
@@ -945,6 +973,24 @@ public class MainActivity extends BaseActivity
         }
     }
 
+    private void enableSliderCores(boolean enable) {
+        if(bIsRestartEvent)
+            return;
+
+        Rect bounds = sbCores.getProgressDrawable().getBounds();
+
+        if(enable) {
+            sbCores.setProgressDrawable(getResources().getDrawable(R.drawable.seekbar_ruler_yellow));
+            sbCores.getThumb().setColorFilter(getResources().getColor(R.color.c_white), PorterDuff.Mode.SRC_IN);
+        }
+        else {
+            sbCores.setProgressDrawable(getResources().getDrawable(R.drawable.seekbar_ruler_inactive));
+            sbCores.getThumb().setColorFilter(getResources().getColor(R.color.c_light_grey), PorterDuff.Mode.SRC_IN);
+        }
+
+        sbCores.getProgressDrawable().setBounds(bounds);
+    }
+
     private void setMinerStatus(Integer status) {
         if(status == STATE_STOPPED) {
             llStatus.setVisibility(View.GONE);
@@ -962,6 +1008,7 @@ public class MainActivity extends BaseActivity
 
             stopTimerStatusHashrate();
             resetHashrateTicks();
+            enableSliderCores(true);
         }
         else if(status == STATE_MINING) {
             if(tvHashrate.getText().equals("0")) {
@@ -979,6 +1026,8 @@ public class MainActivity extends BaseActivity
                 View v = findViewById(R.id.main_navigation);
                 v.setKeepScreenOn(true);
             }
+
+            enableSliderCores(false);
         }
         else {
             llStatus.setVisibility(View.VISIBLE);
@@ -1042,7 +1091,7 @@ public class MainActivity extends BaseActivity
     }
 
     private void resetHashrateTicks() {
-        DeluxeSpeedView meterTicks = findViewById(R.id.meter_hashrate_ticks);
+        SpeedView meterTicks = findViewById(R.id.meter_hashrate_ticks);
         meterTicks.setMaxSpeed(500);
         meterTicks.setTickNumber(0);
         meterTicks.setTextColor(getResources().getColor(android.R.color.transparent));
@@ -1053,9 +1102,13 @@ public class MainActivity extends BaseActivity
     }
 
     private void updateHashrateTicks(float fMax) {
-        DeluxeSpeedView meterTicks = findViewById(R.id.meter_hashrate_ticks);
+        SpeedView meterTicks = findViewById(R.id.meter_hashrate_ticks);
         if(meterTicks.getTickNumber() == 0 && fMax > 0) {
-            float hrMax = nNbMaxCores * fMax / nCores * 1.05f;
+            float hrMax = nNbMaxCores * fMax / nCores;
+            if(!nCores.equals(nNbMaxCores)) {
+                hrMax = hrMax * 1.05f;
+            }
+
             meterTicks.setMaxSpeed(hrMax);
             meterTicks.setTickNumber(10);
             meterTicks.setTextColor(getResources().getColor(R.color.txt_main));
@@ -1091,7 +1144,7 @@ public class MainActivity extends BaseActivity
         if(!isDeviceMining() || fSpeed < 0.0f)
             return;
 
-        DeluxeSpeedView meterTicks = findViewById(R.id.meter_hashrate_ticks);
+        SpeedView meterTicks = findViewById(R.id.meter_hashrate_ticks);
         if(meterTicks.getTickNumber() == 0) {
             updateHashrateTicks(fMax);
 
@@ -1453,6 +1506,8 @@ public class MainActivity extends BaseActivity
 
                                 setStatusText("Miner Stopped");
                             }
+
+                            bIsRestartEvent = false;
                         });
                     }
 
@@ -1470,9 +1525,9 @@ public class MainActivity extends BaseActivity
                             }
 
                             if(accepted == 1) {
-                                tvAcceptedShares.setTextColor(getResources().getColor(R.color.txt_main));
-                                tvDifficulty.setTextColor(getResources().getColor(R.color.txt_main));
-                                tvConnection.setTextColor(getResources().getColor(R.color.txt_main));
+                                tvAcceptedShares.setTextColor(getResources().getColor(R.color.c_white));
+                                tvDifficulty.setTextColor(getResources().getColor(R.color.c_white));
+                                tvConnection.setTextColor(getResources().getColor(R.color.c_white));
                             }
 
                             updateHashrate(speed, max);
@@ -1674,9 +1729,9 @@ public class MainActivity extends BaseActivity
             btnStart.setBackground(buttonDrawable);
             btnStart.setTextColor(getResources().getColor(R.color.c_white));
         } else {
-            DrawableCompat.setTint(buttonDrawable, getResources().getColor(R.color.c_black));
+            DrawableCompat.setTint(buttonDrawable, getResources().getColor(R.color.c_inactive));
             btnStart.setBackground(buttonDrawable);
-            btnStart.setTextColor(getResources().getColor(R.color.c_black));
+            btnStart.setTextColor(getResources().getColor(R.color.c_inactive));
         }
 
         btnStart.setEnabled(enabled);

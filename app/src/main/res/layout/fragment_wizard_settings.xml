@@ -171,7 +171,7 @@
 			android:paddingStart="0dp"
 			android:paddingEnd="0dp"
 			android:progress="3"
-			android:progressDrawable="@drawable/seekbar_ruler_default"
+			android:progressDrawable="@drawable/seekbar_ruler_blue"
 			android:thumbTint="@color/c_light_grey"
 			android:thumbOffset="0dp"
 			tools:ignore="UnusedAttribute" />
@@ -237,7 +237,7 @@
 			android:paddingStart="0dp"
 			android:paddingEnd="0dp"
 			android:progress="3"
-			android:progressDrawable="@drawable/seekbar_ruler_default"
+			android:progressDrawable="@drawable/seekbar_ruler_blue"
 			android:thumbTint="@color/c_light_grey"
 			android:thumbOffset="0dp"
 			tools:ignore="UnusedAttribute" />
@@ -303,7 +303,7 @@
 			android:paddingStart="0dp"
 			android:paddingEnd="0dp"
 			android:progress="3"
-			android:progressDrawable="@drawable/seekbar_ruler_default"
+			android:progressDrawable="@drawable/seekbar_ruler_blue"
 			android:thumbTint="@color/c_light_grey"
 			android:thumbOffset="0dp"
 			tools:ignore="UnusedAttribute" />

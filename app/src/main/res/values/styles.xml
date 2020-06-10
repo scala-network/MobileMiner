@@ -3,7 +3,7 @@
     <style name="AppTheme" parent="Theme.MaterialComponents">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/bg_lighter</item>
-        <item name="colorPrimaryDark">@color/c_black</item>
+        <item name="colorPrimaryDark">@color/c_inactive</item>
         <item name="colorAccent">@color/bg_lighter</item>
         <item name="colorControlNormal">@color/c_grey</item>
         <item name="colorControlActivated">@color/c_blue</item>

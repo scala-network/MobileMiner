@@ -26,7 +26,7 @@
     <string name="pool">Pool</string>
     <string name="cpu">CPU</string>
     <string name="scanqrcode">QR Code</string>
-    <string name="processing">Calculating Hashrate...</string>
+    <string name="processing">Retrieving Hashrate...</string>
     <string name="disclaimer">Disclaimer</string>
     <string name="shares">Shares</string>
     <string name="invalid">Invalid</string>
