@@ -36,7 +36,6 @@ import android.widget.AdapterView;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.widget.SwitchCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
@@ -72,7 +71,7 @@ public class SettingsFragment extends Fragment {
         SeekBar sbCores;
         TextView tvCoresNb, tvCoresMax;
 
-        Switch swDisableAmayc, swPauseOnBattery, swKeepScreenOnWhenMining;
+        Switch swDisableTempControl, swPauseOnBattery, swKeepScreenOnWhenMining;
 
         View view = inflater.inflate(R.layout.fragment_settings, container, false);
         Context appContext = MainActivity.getContextOfApplication();
@@ -106,7 +105,7 @@ public class SettingsFragment extends Fragment {
 
         swPauseOnBattery = view.findViewById(R.id.chkPauseOnBattery);
         swKeepScreenOnWhenMining = view.findViewById(R.id.chkKeepScreenOnWhenMining);
-        swDisableAmayc = view.findViewById(R.id.chkAmaycOff);
+        swDisableTempControl = view.findViewById(R.id.chkAmaycOff);
 
         // Pool spinner
         PoolItem[] pools = ProviderManager.getPools();
@@ -167,7 +166,7 @@ public class SettingsFragment extends Fragment {
 
         boolean disableAmayc = (Config.read("disableamayc").equals("1"));
         if(disableAmayc){
-            swDisableAmayc.setChecked(true);
+            swDisableTempControl.setChecked(true);
         }
         enableAmaycControl(!disableAmayc);
 
@@ -265,11 +264,11 @@ public class SettingsFragment extends Fragment {
             }
         });
 
-        swDisableAmayc.setOnClickListener(new View.OnClickListener()
+        swDisableTempControl.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v) {
-                boolean checked = ((SwitchCompat)v).isChecked();
+                boolean checked = ((Switch)v).isChecked();
                 if (checked) {
                     // inflate the layout of the popup window
                     View popupView = inflater.inflate(R.layout.warning_amayc, null);
@@ -408,7 +407,7 @@ public class SettingsFragment extends Fragment {
                 Config.write("maxcputemp", Integer.toString(getCPUTemp()));
                 Config.write("maxbatterytemp", Integer.toString(getBatteryTemp()));
                 Config.write("cooldownthreshold", Integer.toString(getCooldownTheshold()));
-                Config.write("disableamayc", (swDisableAmayc.isChecked() ? "1" : "0"));
+                Config.write("disableamayc", (swDisableTempControl.isChecked() ? "1" : "0"));
 
                 String mininggoal = edMiningGoal.getText().toString().trim();
                 if(!mininggoal.isEmpty()) {

@@ -84,9 +84,11 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -98,6 +100,7 @@ import com.android.volley.toolbox.Volley;
 import com.github.anastr.speedviewlib.SpeedView;
 import com.github.anastr.speedviewlib.TubeSpeedometer;
 import com.github.anastr.speedviewlib.components.Section;
+import com.github.anastr.speedviewlib.components.indicators.LineIndicator;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import org.json.JSONArray;
@@ -108,6 +111,7 @@ import io.scalaproject.androidminer.api.IProviderListener;
 import io.scalaproject.androidminer.api.PoolItem;
 import io.scalaproject.androidminer.api.ProviderData;
 import io.scalaproject.androidminer.api.ProviderManager;
+import io.scalaproject.androidminer.controls.SimpleTriangleIndicator;
 
 import static android.os.PowerManager.PARTIAL_WAKE_LOCK;
 
@@ -300,26 +304,29 @@ public class MainActivity extends BaseActivity
         // Hashrate
         meterHashrate = findViewById(R.id.meter_hashrate);
         meterHashrate.makeSections(1, getResources().getColor(R.color.c_blue), Section.Style.SQUARE);
-        /*ImageIndicator imageIndicatorHs = new ImageIndicator(getApplicationContext(), getResources().getDrawable(R.drawable.indicator_speed));
-        meterHashrate.setIndicator(imageIndicatorHs);*/
 
+        LineIndicator indicator_speed = new LineIndicator(contextOfApplication, 0.15f);
+        indicator_speed.setColor(getResources().getColor(R.color.c_white));
+        indicator_speed.setWidth(14.0f);
+        meterHashrate.setIndicator(indicator_speed);
+
+        // Average Meter
         meterHashrate_avg = findViewById(R.id.meter_hashrate_avg);
         meterHashrate_avg.makeSections(1, getResources().getColor(android.R.color.transparent), Section.Style.SQUARE);
 
-        // Scale drawable
-        /*Bitmap bitmapAvg = Utils.getBitmapFromVectorDrawable(contextOfApplication, R.drawable.indicator_avg);
-        Drawable dAvg = new BitmapDrawable(getResources(), Bitmap.createScaledBitmap(bitmapAvg, 12, 6, true));
-        ImageIndicator imageIndicatorAvg = new ImageIndicator(getApplicationContext(), dAvg);
-        meterHashrate_avg.setIndicator(imageIndicatorAvg);*/
+        SimpleTriangleIndicator indicator_avg = new SimpleTriangleIndicator(contextOfApplication);
+        indicator_avg.setWidth(40.0f);
+        indicator_avg.setColor(getResources().getColor(R.color.txt_main));
+        meterHashrate_avg.setIndicator(indicator_avg);
 
+        // Max Meter
         meterHashrate_max = findViewById(R.id.meter_hashrate_max);
         meterHashrate_max.makeSections(1, getResources().getColor(android.R.color.transparent), Section.Style.SQUARE);
 
-        // Scale drawable
-        /*Bitmap bitmapMax = Utils.getBitmapFromVectorDrawable(contextOfApplication, R.drawable.indicator_max);
-        Drawable dMax = new BitmapDrawable(getResources(), Bitmap.createScaledBitmap(bitmapMax, 12, 6, true));
-        ImageIndicator imageIndicatorMax = new ImageIndicator(getApplicationContext(), dMax);
-        meterHashrate_max.setIndicator(imageIndicatorMax);*/
+        SimpleTriangleIndicator indicator_max = new SimpleTriangleIndicator(contextOfApplication);
+        indicator_max.setWidth(40.0f);
+        indicator_max.setColor(getResources().getColor(R.color.c_orange));
+        meterHashrate_max.setIndicator(indicator_max);
 
         tvHashrate = findViewById(R.id.hashrate);
         tvStatus = findViewById(R.id.miner_status);
@@ -691,9 +698,6 @@ public class MainActivity extends BaseActivity
     }
 
     private void adjustMetricsLayout() {
-        /*Space spaceMetricsAbove = findViewById(R.id.space_metrics_above);
-        Space spaceMetricsBelow = findViewById(R.id.space_metrics_below);*/
-
         Display display = getWindowManager().getDefaultDisplay();
         Point size = new Point();
         display.getSize(size);
@@ -1165,7 +1169,7 @@ public class MainActivity extends BaseActivity
     private void updateHashrateMeter(float fSpeed, float fMax) {
         meterHashrate.speedTo(Math.round(fSpeed));
 
-        tvHashrate.setText(String.format("%.1f", fSpeed));
+        tvHashrate.setText(String.format(Locale.getDefault(), "%.1f", fSpeed));
         setMinerStatus(STATE_MINING);
 
         if(fSpeed <= 0.0f) {
@@ -1190,14 +1194,14 @@ public class MainActivity extends BaseActivity
             fSumHr += fSpeed;
 
             float fAvgHr = fSumHr / (float) nHrCount;
-            tvAvgHr.setText(String.format("%.1f", fAvgHr));
+            tvAvgHr.setText(String.format(Locale.getDefault(), "%.1f", fAvgHr));
 
             if (meterHashrate_avg.getVisibility() == View.GONE)
                 meterHashrate_avg.setVisibility(View.VISIBLE);
             meterHashrate_avg.setSpeedAt(fAvgHr);
         }
         else {
-            tvAvgHr.setText(String.format("%.1f", 0.0f));
+            tvAvgHr.setText(String.format(Locale.getDefault(), "%.1f", 0.0f));
             meterHashrate_avg.setVisibility(View.GONE);
         }
 
@@ -1206,14 +1210,14 @@ public class MainActivity extends BaseActivity
             if(fMax > fMaxHr)
                 fMaxHr = fMax;
 
-            tvMaxHr.setText(String.format("%.1f", fMaxHr));
+            tvMaxHr.setText(String.format(Locale.getDefault(), "%.1f", fMaxHr));
 
             if(meterHashrate_max.getVisibility() == View.GONE)
                 meterHashrate_max.setVisibility(View.VISIBLE);
             meterHashrate_max.setSpeedAt(fMaxHr);
         }
         else {
-            tvMaxHr.setText(String.format("%.1f", 0.0f));
+            tvMaxHr.setText(String.format(Locale.getDefault(), "%.1f", 0.0f));
             meterHashrate_max.setVisibility(View.GONE);
         }
     }
@@ -1434,10 +1438,7 @@ public class MainActivity extends BaseActivity
             final Layout layout = tvLog.getLayout();
             if(layout != null) {
                 final int scrollAmount = layout.getHeight() - tvLog.getHeight() + tvLog.getPaddingBottom();
-                if (scrollAmount > 0)
-                    tvLog.scrollTo(0, scrollAmount);
-                else
-                    tvLog.scrollTo(0, 0);
+                tvLog.scrollTo(0, Math.max(scrollAmount, 0));
             }
         }
     }
@@ -1517,7 +1518,7 @@ public class MainActivity extends BaseActivity
                         runOnUiThread(() -> {
                             appendLogOutputText(status);
                             tvAcceptedShares.setText(Integer.toString(accepted));
-                            tvDifficulty.setText(Integer.toString(difficuly));
+                            tvDifficulty.setText(NumberFormat.getNumberInstance(Locale.getDefault()).format(difficuly));
                             tvConnection.setText(Integer.toString(connection));
 
                             if(!nLastShareCount.equals(accepted)) {
@@ -1546,14 +1547,14 @@ public class MainActivity extends BaseActivity
 
     private void updateTemperaturesText(float cpuTemp) {
         if (cpuTemp > 0.0) {
-            tvCPUTemperature.setText(String.format("%.1f", cpuTemp));
+            tvCPUTemperature.setText(String.format(Locale.getDefault(), "%.0f", cpuTemp));
         }
         else {
             tvCPUTemperature.setText("n/a");
         }
 
         if (batteryTemp > 0.0) {
-            tvBatteryTemperature.setText(String.format("%.1f", batteryTemp));
+            tvBatteryTemperature.setText(String.format(Locale.getDefault(), "%.0f", batteryTemp));
         }
         else {
             tvBatteryTemperature.setText("n/a");
@@ -1640,8 +1641,8 @@ public class MainActivity extends BaseActivity
                                 JSONArray predictedNext = obj.getJSONArray("predicted_next");
 
                                 if (predictedNext.length() == 2) {
-                                    Integer cpupred = (int)Math.round(predictedNext.getDouble(0));
-                                    Integer batterypred = (int)Math.round(predictedNext.getDouble(1));
+                                    int cpupred = (int)Math.round(predictedNext.getDouble(0));
+                                    int batterypred = (int)Math.round(predictedNext.getDouble(1));
 
                                     if (cpupred >= nMaxCPUTemp || batterypred >= nMaxBatteryTemp) {
                                         enableCooling(true);
@@ -1725,7 +1726,7 @@ public class MainActivity extends BaseActivity
         buttonDrawable = DrawableCompat.wrap(buttonDrawable);
 
         if(enabled) {
-            DrawableCompat.setTint(buttonDrawable, getResources().getColor(R.color.c_green));
+            DrawableCompat.setTint(buttonDrawable, getResources().getColor(R.color.bg_green));
             btnStart.setBackground(buttonDrawable);
             btnStart.setTextColor(getResources().getColor(R.color.c_white));
         } else {
@@ -1739,8 +1740,12 @@ public class MainActivity extends BaseActivity
 
     private void pauseMiner() {
         if (!isDevicePaused()) {
-            if(!isDeviceCooling())
+            if(!isDeviceCooling()) {
                 setMinerStatus(STATE_PAUSED);
+
+                enableStartBtn(true);
+                btnStart.setText(getResources().getString(R.string.resume));
+            }
 
             if (binder != null) {
                 binder.getService().sendInput("p");

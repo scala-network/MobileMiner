@@ -105,6 +105,7 @@
                         app:icon="@drawable/ic_qrcode"
                         app:iconGravity="textStart"
                         app:iconSize="18dp"
+                        app:iconTint="@color/btn_icon_default"
                         app:cornerRadius="5dp"
                         tools:ignore="ButtonStyle,UnusedAttribute" />
 
@@ -122,6 +123,7 @@
                         app:icon="@drawable/ic_paste"
                         app:iconGravity="textStart"
                         app:iconSize="18dp"
+                        app:iconTint="@color/btn_icon_default"
                         app:cornerRadius="5dp"
                         tools:ignore="UnusedAttribute" />
 
@@ -389,7 +391,7 @@
                     android:paddingEnd="0dp"
                     android:progress="4"
                     android:progressDrawable="@drawable/seekbar_ruler_yellow"
-                    android:thumbTint="@color/c_light_grey"
+                    android:thumbTint="@color/c_white"
                     android:thumbOffset="0dp"
                     tools:ignore="UnusedAttribute" />
 
@@ -458,7 +460,7 @@
                     android:paddingEnd="0dp"
                     android:progress="3"
                     android:progressDrawable="@drawable/seekbar_ruler_blue"
-                    android:thumbTint="@color/c_light_grey"
+                    android:thumbTint="@color/c_white"
                     android:thumbOffset="0dp"
                     tools:ignore="UnusedAttribute" />
 
@@ -527,7 +529,7 @@
                     android:paddingEnd="0dp"
                     android:progress="3"
                     android:progressDrawable="@drawable/seekbar_ruler_blue"
-                    android:thumbTint="@color/c_light_grey"
+                    android:thumbTint="@color/c_white"
                     android:thumbOffset="0dp"
                     tools:ignore="UnusedAttribute" />
 
@@ -598,7 +600,7 @@
                     android:paddingEnd="0dp"
                     android:progress="3"
                     android:progressDrawable="@drawable/seekbar_ruler_blue"
-                    android:thumbTint="@color/c_light_grey"
+                    android:thumbTint="@color/c_white"
                     android:thumbOffset="0dp"
                     tools:ignore="UnusedAttribute" />
 
