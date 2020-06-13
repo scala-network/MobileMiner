@@ -1747,7 +1747,7 @@ public class MainActivity extends BaseActivity
 
     private void disableAmaycOnError(String error) {
         bDisableAmayc = true;
-        appendLogOutputFormattedText(getResources().getString(R.string.amaycerror));
+        appendLogOutputFormattedText(error);
         appendLogOutputFormattedText(getResources().getString(R.string.statictempcontrol));
     }
 

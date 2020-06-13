@@ -58,9 +58,27 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <com.github.mikephil.charting.charts.BarChart
-                    android:layout_height="match_parent"
-                    android:layout_width="match_parent"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/hashrate"
+                    android:gravity="start"
+                    android:textColor="@color/txt_secondary"
+                    android:layout_marginBottom="5dp"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <ProgressBar
+                    android:id="@+id/progress_device"
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="5dp"
+                    android:layout_marginTop="7dp"
+                    android:layout_marginBottom="3dp"
+                    android:max="100"
+                    android:progress="0"
+                    android:progressDrawable="@drawable/progressbar_rounded_yellow">
+                </ProgressBar>
 
                 <TextView
                     android:layout_width="match_parent"

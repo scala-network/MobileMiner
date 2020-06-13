@@ -293,7 +293,16 @@ public class Tools {
             "/sys/devices/platform/s5p-tmu/curr_temp",
             "/sys/htc/cpu_temp",
             "/sys/devices/platform/tegra-i2c.3/i2c-4/4-004c/ext_temperature",
-            "/sys/devices/platform/tegra-tsensor/tsensor_temperature"
+            "/sys/devices/platform/tegra-tsensor/tsensor_temperature",
+            "/sys/devices/system/cpu/cpu0/cpufreq/cpu_temp",
+            "/sys/devices/system/cpu/cpu0/cpufreq/FakeShmoo_cpu_temp",
+            "/sys/devices/virtual/hwmon/hwmon1/temp1_input", //Nokia N1, sensor name in 'sensor'
+            "/sys/devices/platform/s5p-tmu/curr_temp",
+            "/sys/devices/platform/s5p-tmu/temperature",
+            "/sys/class/thermal/thermal_zone3/temp",
+            "/sys/class/thermal/thermal_zone4/temp",
+            "/sys/class/hwmon/hwmon0/temp1_input",
+            "/sys/class/hwmon/hwmonX/temp1_input"
     };
 
     static private String sCPUTempSysFile = "";
@@ -339,7 +348,7 @@ public class Tools {
         for (String sysFile : CPU_TEMP_SYS_FILE) {
             output = getCPUTempFromFile(sysFile);
 
-            if (output < 100.0f) { // ugly temporary workaround
+            if (output > 0.0f && output < 100.0f) { // ugly temporary workaround
                 sCPUTempSysFile = sysFile;
                 return output;
             }
@@ -348,30 +357,6 @@ public class Tools {
         sCPUTempSysFile = "err";
 
         return output;
-    }
-
-    private static String readFile(String file, char endChar, byte[] mBuffer) {
-        StrictMode.ThreadPolicy savedPolicy = StrictMode.allowThreadDiskReads();
-
-        try (FileInputStream is = new FileInputStream(file)) {
-            int len = is.read(mBuffer);
-            is.close();
-
-            if (len > 0) {
-                int i;
-                for (i = 0; i < len; i++) {
-                    if (mBuffer[i] == endChar) {
-                        break;
-                    }
-                }
-                return new String(mBuffer, 0, i);
-            }
-        } catch (IOException ignored) {
-        } finally {
-            StrictMode.setThreadPolicy(savedPolicy);
-        }
-
-        return null;
     }
 
     static public String parseCurrency(String value, long coinUnits, long denominationUnits, String symbol) {
