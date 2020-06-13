@@ -142,6 +142,7 @@ public class MainActivity extends BaseActivity
     private boolean bIgnoreCPUCoresEvent = false;
     private boolean bIsRestartEvent = false;
     private boolean bIsRestartDialogShown = false;
+    private boolean bForceMiningOnPause = false;
 
     // Settings
     private boolean bDisableTemperatureControl = false;
@@ -849,10 +850,12 @@ public class MainActivity extends BaseActivity
             return;
         }
 
-        if (Config.read("pauseonbattery").equals("1") && !isCharging) {
-            setStatusText(getResources().getString(R.string.pauseonmining));
+        if (Config.read("pauseonbattery").equals("1") && !isCharging && !bForceMiningOnPause) {
+            askToForceMining();
             return;
         }
+
+        bForceMiningOnPause = false;
 
         String username = address + Config.read("usernameparameters");
 
@@ -876,6 +879,40 @@ public class MainActivity extends BaseActivity
         setMinerStatus(STATE_MINING);
 
         updateUI();
+    }
+
+    private void askToForceMining() {
+        final Dialog dialog = new Dialog(MainActivity.this);
+        dialog.setContentView(R.layout.force_mining);
+        dialog.setCancelable(false);
+
+        Button btnYes = dialog.findViewById(R.id.btnStopMiningYes);
+        btnYes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                bForceMiningOnPause = true;
+
+                if(isDevicePaused()) {
+                    clearMinerLog = false;
+                    resumeMiner();
+                }
+                else
+                    startMining();
+
+                dialog.dismiss();
+            }
+        });
+
+        Button btnNo = dialog.findViewById(R.id.btnStopMiningNo);
+        btnNo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                bForceMiningOnPause = false;
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
     }
 
     private void resetOptions() {
@@ -950,7 +987,7 @@ public class MainActivity extends BaseActivity
         }
     }
 
-    private void setMiningButtonState(Boolean state) {
+    private void updateMiningButtonState() {
         if(bIsRestartEvent)
             return;
 
@@ -960,16 +997,22 @@ public class MainActivity extends BaseActivity
         if(isValidConfig()) {
             enableStartBtn(true);
 
-            if (state) {
-                updateHashrate(-1.0f, -1.0f);
-                DrawableCompat.setTint(buttonDrawableStart, getResources().getColor(R.color.bg_lighter));
-                btnStart.setBackground(buttonDrawableStart);
-                btnStart.setText(R.string.stop);
-            } else {
+            if (m_nCurrentState == STATE_STOPPED ) {
                 updateHashrate(0.0f, 0.0f);
                 DrawableCompat.setTint(buttonDrawableStart, getResources().getColor(R.color.bg_green));
                 btnStart.setBackground(buttonDrawableStart);
                 btnStart.setText(R.string.start);
+            } else if(m_nCurrentState == STATE_PAUSED) {
+                updateHashrate(0.0f, 0.0f);
+                DrawableCompat.setTint(buttonDrawableStart, getResources().getColor(R.color.bg_green));
+                btnStart.setBackground(buttonDrawableStart);
+                btnStart.setText(R.string.resume);
+            }
+            else {
+                updateHashrate(-1.0f, -1.0f);
+                DrawableCompat.setTint(buttonDrawableStart, getResources().getColor(R.color.bg_lighter));
+                btnStart.setBackground(buttonDrawableStart);
+                btnStart.setText(R.string.stop);
             }
         }
         else {
@@ -1036,6 +1079,8 @@ public class MainActivity extends BaseActivity
         else {
             llStatus.setVisibility(View.VISIBLE);
             llHashrate.setVisibility(View.GONE);
+
+            meterHashrate.speedTo(0);
 
             if (status == STATE_PAUSED && isDeviceMining()) {
                 tvStatus.setText(getResources().getString(R.string.paused));
@@ -1472,21 +1517,31 @@ public class MainActivity extends BaseActivity
                 btnStart.setOnClickListener(new View.OnClickListener() {
                     public void onClick(View v) {
                         if (isDevicePaused()) {
+                            if (Config.read("pauseonbattery").equals("1") && !isCharging && !bForceMiningOnPause) {
+                                askToForceMining();
+                                return;
+                            }
+
                             clearMinerLog = false;
+                            resumeMiner();
+                        }
+                        else {
+                            toggleMiningState();
                         }
 
-                        toggleMiningState();
+                        updateMiningButtonState();
                     }
                 });
 
-                setMiningButtonState(binder.getService().getMiningServiceState());
+                updateMiningButtonState();
+                //setMiningButtonState(binder.getService().getMiningServiceState());
 
                 binder.getService().setMiningServiceStateListener(new MiningService.MiningServiceStateListener() {
                     @Override
                     public void onStateChange(Boolean state) {
                         Log.i(LOG_TAG, "onMiningStateChange: " + state);
                         runOnUiThread(() -> {
-                            setMiningButtonState(state);
+                            updateMiningButtonState();
                             if (state) {
                                 if (clearMinerLog) {
                                     tvLog.setText("");
@@ -1744,7 +1799,7 @@ public class MainActivity extends BaseActivity
                 setMinerStatus(STATE_PAUSED);
 
                 enableStartBtn(true);
-                btnStart.setText(getResources().getString(R.string.resume));
+                updateMiningButtonState();
             }
 
             if (binder != null) {
@@ -1760,6 +1815,9 @@ public class MainActivity extends BaseActivity
             if (binder != null) {
                 binder.getService().sendInput("r");
             }
+
+            updateMiningButtonState();
+            bForceMiningOnPause = false;
         }
     }
 
@@ -1843,7 +1901,7 @@ public class MainActivity extends BaseActivity
             return;
         }
 
-        String status = m_nCurrentState == STATE_MINING ? "Hashrate: " + tvHashrate.getText().toString() + " H/s" : tvHashrate.getText().toString();
+        String status = m_nCurrentState == STATE_MINING ? "Hashrate: " + tvHashrate.getText().toString() + " H/s" : tvStatus.getText().toString();
 
         notificationBuilder.setContentText(status);
         notificationManager.notify(1, notificationBuilder.build());

@@ -35,6 +35,7 @@ import android.util.Log;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
@@ -275,56 +276,78 @@ public class Tools {
         return abiString.toLowerCase().trim();
     }
 
+    static private String[] CPU_TEMP_SYS_FILE = {
+            "/sys/devices/virtual/thermal/thermal_zone0/temp",
+            "/sys/devices/system/cpu/cpu0/cpufreq/cpu_temp",
+            "/sys/devices/system/cpu/cpu0/cpufreq/FakeShmoo_cpu_temp",
+            "/sys/class/thermal/thermal_zone1/temp",
+            "/sys/class/i2c-adapter/i2c-4/4-004c/temperature",
+            "/sys/devices/platform/tegra-i2c.3/i2c-4/4-004c/temperature",
+            "/sys/devices/platform/omap/omap_temp_sensor.0/temperature",
+            "/sys/devices/platform/tegra_tmon/temp1_input",
+            "/sys/kernel/debug/tegra_thermal/temp_tj",
+            "/sys/devices/platform/s5p-tmu/temperature",
+            "/sys/class/thermal/thermal_zone0/temp",
+            "/sys/class/hwmon/hwmon0/device/temp1_input",
+            "/sys/devices/virtual/thermal/thermal_zone1/temp",
+            "/sys/devices/platform/s5p-tmu/curr_temp",
+            "/sys/htc/cpu_temp",
+            "/sys/devices/platform/tegra-i2c.3/i2c-4/4-004c/ext_temperature",
+            "/sys/devices/platform/tegra-tsensor/tsensor_temperature"
+    };
+
+    static private String sCPUTempSysFile = "";
+
     static float getCurrentCPUTemperature() {
+        if (sCPUTempSysFile.isEmpty())
+            return getCPUTempSysFile();
+
+        // No CPU temperature sensor
+        if (sCPUTempSysFile.equals("err"))
+            return 0.0f;
+
+        return getCPUTempFromFile(sCPUTempSysFile);
+    }
+
+    static float getCPUTempFromFile(String sFile) {
         float output = 0.0f;
 
-        String file = readFile("/sys/devices/virtual/thermal/thermal_zone0/temp", '\n',new byte[4096]);
-        if (file != null) {
-            output = (float) Long.parseLong(file);
-        }
+        RandomAccessFile reader = null;
+        String line = null;
 
-        if(output > 0.0f && Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
-            output = output / 1000;
-        }
+        try {
+            reader = new RandomAccessFile(sFile, "r");
+            line = reader.readLine();
 
-        if(output > 100.0f) // ugly temporary workaround
-            output = 0.0f;
+            if (line != null) {
+                output = Float.parseFloat(line);
+
+                if (output > 1000.0f && Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
+                    output /= 1000.0f;
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            return 0.0f;
+        }
 
         return output;
     }
 
-    static float getCPUUsage() {
-        try {
-            RandomAccessFile reader = new RandomAccessFile("/proc/stat", "r");
-            String load = reader.readLine();
+    static float getCPUTempSysFile() {
+        float output = 0.0f;
+        for (String sysFile : CPU_TEMP_SYS_FILE) {
+            output = getCPUTempFromFile(sysFile);
 
-            String[] toks = load.split(" +");  // Split on one or more spaces
-
-            long idle1 = Long.parseLong(toks[4]);
-            long cpu1 = Long.parseLong(toks[2]) + Long.parseLong(toks[3]) + Long.parseLong(toks[5])
-                    + Long.parseLong(toks[6]) + Long.parseLong(toks[7]) + Long.parseLong(toks[8]);
-
-            try {
-                Thread.sleep(360);
-            } catch (Exception e) {}
-
-            reader.seek(0);
-            load = reader.readLine();
-            reader.close();
-
-            toks = load.split(" +");
-
-            long idle2 = Long.parseLong(toks[4]);
-            long cpu2 = Long.parseLong(toks[2]) + Long.parseLong(toks[3]) + Long.parseLong(toks[5])
-                    + Long.parseLong(toks[6]) + Long.parseLong(toks[7]) + Long.parseLong(toks[8]);
-
-            return (float)(cpu2 - cpu1) / ((cpu2 + idle2) - (cpu1 + idle1));
-
-        } catch (IOException ex) {
-            ex.printStackTrace();
+            if (output < 100.0f) { // ugly temporary workaround
+                sCPUTempSysFile = sysFile;
+                return output;
+            }
         }
 
-        return 0;
+        sCPUTempSysFile = "err";
+
+        return output;
     }
 
     private static String readFile(String file, char endChar, byte[] mBuffer) {
@@ -343,7 +366,6 @@ public class Tools {
                 }
                 return new String(mBuffer, 0, i);
             }
-        } catch (java.io.FileNotFoundException ignored) {
         } catch (IOException ignored) {
         } finally {
             StrictMode.setThreadPolicy(savedPolicy);
@@ -366,9 +388,8 @@ public class Tools {
     static public float parseCurrencyFloat(String value, long coinUnits, long denominationUnits) {
         double base = tryParseDouble(value);
         double d = base / (float) coinUnits;
-        float d2 = Math.round(d * (float) denominationUnits) / (float) denominationUnits;
 
-        return d2;
+        return Math.round(d * (float) denominationUnits) / (float) denominationUnits;
     }
 
     static public Long tryParseLong(String s, Long fallback) {

@@ -75,7 +75,9 @@
     <string name="amaycPostLink">https://amaycapi.hayzam.in/</string>
     <string name="maxtemperaturereached">Temperature threshold reached!</string>
     <string name="resumedmining">Temperatures have reached safe levels. Resumed mining.</string>
-    <string name="pauseonmining">Put device on charge to enable mining</string>
+    <string name="pauseonmining">Put device on charge to enable mining.</string>
+    <string name="confirmstartmining">Are you sure you want to start mining?</string>
+    <string name="deviceonbattery">Your device is currently on battery power.</string>
     <string name="mininggoalhint">Mining goal or pool payout</string>
     <string name="hardwaresettings">Hardware</string>
     <string name="max">Max</string>
