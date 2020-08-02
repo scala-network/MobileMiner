@@ -21,7 +21,7 @@ public class Config {
     static final int DefaultPoolIndex = 1;
     public static final Long statsDelay = 30000L;
     static final String miner_xlarig = "xlarig";
-    static final String algo = "defyx";
+    static final String algo = "panthera";
 
     public static final String version = "4";
     static final Integer logMaxLength = 50000;

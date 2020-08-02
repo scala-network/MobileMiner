@@ -120,7 +120,7 @@ public class MainActivity extends BaseActivity
 {
     private static final String LOG_TAG = "MainActivity";
 
-    private TextView tvHashrate, tvStatus, tvNbCores, tvCPUTemperature, tvBatteryTemperature, tvAcceptedShares, tvDifficulty, tvConnection, tvLog;
+    private TextView tvHashrate, tvStatus, tvNbCores, tvCPUTemperature, tvBatteryTemperature, tvAcceptedShares, tvDifficulty, tvConnection, tvLog, tvStatusProgess;
     private TubeSpeedometer meterCores, meterHashrate, meterHashrate_avg, meterHashrate_max;
     private SeekBar sbCores = null;
 
@@ -272,6 +272,8 @@ public class MainActivity extends BaseActivity
 
         pbStatus.setMax(MAX_HASHRATE_TIMER * 2);
         pbStatus.setProgress(0);
+
+        tvStatusProgess = findViewById(R.id.hr_progress);
 
         // Log
         tvLog = findViewById(R.id.output);
@@ -1086,8 +1088,9 @@ public class MainActivity extends BaseActivity
                 tvStatus.setText(getResources().getString(R.string.paused));
                 stopTimerStatusHashrate();
 
-                pbStatus.setIndeterminate(false);
+                pbStatus.setIndeterminate(true);
                 pbStatus.setProgress(0);
+                tvStatusProgess.setVisibility(View.INVISIBLE);
             } else if (status == STATE_COOLING && isDeviceMining()) {
                 tvStatus.setText(getResources().getString(R.string.cooling));
                 stopTimerStatusHashrate();
@@ -1095,6 +1098,7 @@ public class MainActivity extends BaseActivity
                 pbStatus.setIndeterminate(true);
             } else if (status == STATE_CALCULATING) {
                 tvStatus.setText(getResources().getString(R.string.processing));
+                tvStatusProgess.setVisibility(View.VISIBLE);
 
                 pbStatus.setIndeterminate(false);
                 startTimerStatusHashrate();
@@ -1134,8 +1138,9 @@ public class MainActivity extends BaseActivity
             timerTaskHashrate = null;
 
             pbStatus.setProgress(0);
-            TextView tvHrProgess = findViewById(R.id.hr_progress);
-            tvHrProgess.setText("0%");
+
+            tvStatusProgess.setVisibility(View.VISIBLE);
+            tvStatusProgess.setText("0%");
         }
     }
 
@@ -1171,10 +1176,8 @@ public class MainActivity extends BaseActivity
     private void incrementProgressHashrate() {
         pbStatus.setProgress(pbStatus.getProgress() + 1);
 
-        TextView tvHrProgess = findViewById(R.id.hr_progress);
-
         String sProgessPercent = String.valueOf(Math.round((float)pbStatus.getProgress() / (float)pbStatus.getMax() *100.0f));
-        tvHrProgess.setText(String.format("%s%%", sProgessPercent));
+        tvStatusProgess.setText(String.format("%s%%", sProgessPercent));
     }
 
     private boolean isDeviceMining() {

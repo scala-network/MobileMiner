@@ -11,9 +11,7 @@ public class Workers extends AsyncTask<String, Integer, String> {
 
     public Workers(){
         data.hashes =0;
-
     }
-
 
     @Override
     protected void onPreExecute() {
@@ -28,7 +26,6 @@ public class Workers extends AsyncTask<String, Integer, String> {
 
     @Override
     protected void onProgressUpdate(Integer... values) {
-
         //Update the progress of current task
     }
 
