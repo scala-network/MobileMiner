@@ -89,7 +89,7 @@ public final class ProviderManager {
                 "Scala Project (Official Pool)",
                 "mine.scalaproject.io",
                 "3333",
-                1,
+                3,
                 "https://pool.scalaproject.io",
                 "95.111.237.231"
         );
