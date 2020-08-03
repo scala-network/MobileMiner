@@ -159,7 +159,7 @@ public class PoolItem {
             case 2:
                 return "cryptonote-nodejs-pool";
             case 3:
-                return "xla-nodejs-pool";
+                return "scala-pool";
             default:
                 return "unknown";
         }
@@ -175,6 +175,8 @@ public class PoolItem {
                 mPoolInterface = new CryptonoteNodejsPool(this);
                 break;
             case 3:
+                mPoolInterface = new ScalaPool(this);
+                break;
             default:
                 mPoolInterface = new NoPool(this);
         }
