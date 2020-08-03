@@ -102,7 +102,7 @@ public final class NodejsPool extends ProviderAbstract {
         }
 
         try {
-            url = mPoolItem.getApiUrl() + "/stats_address?address=" + getWalletAddress();
+            url = mPoolItem.getApiUrl() + "/miner/" + getWalletAddress() + "/stats";
             String symbol = mBlockData.coin.symbol;
             String dataStatsAddress  = Json.fetch(url);
             JSONObject joStatsAddress = new JSONObject(dataStatsAddress);

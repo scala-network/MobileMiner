@@ -72,7 +72,7 @@
     <string name="MoneroMinerLink">&lt;a href=&quot;https://github.com/upost/MoneroMiner&quot;&gt;MoneroMiner&lt;/a&gt;</string>
     <string name="MaterialDesignLink">&lt;a href=&quot;https://material.io/resources/&quot;&gt;Material Design&lt;/a&gt;</string>
     <string name="FontAwesomeLink">&lt;a href=&quot;https://fontawesome.com/license&quot;&gt;Font Awesome&lt;/a&gt;</string>
-    <string name="amaycPostLink">https://amaycapi.hayzam.in/</string>
+    <string name="amaycPostLink">https://amayc.scalaproject.io/</string>
     <string name="maxtemperaturereached">Temperature threshold reached!</string>
     <string name="resumedmining">Temperatures have reached safe levels. Resumed mining.</string>
     <string name="pauseonmining">Put device on charge to enable mining.</string>
