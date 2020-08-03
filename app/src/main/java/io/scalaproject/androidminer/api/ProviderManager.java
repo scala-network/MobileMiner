@@ -94,6 +94,16 @@ public final class ProviderManager {
                 "95.111.237.231"
         );
 
+        // FastPool
+        add(
+                "FastPool",
+                "fastpool.xyz",
+                "10126",
+                2, // CryptonoteNodeJS
+                "https://fastpool.xyz/xla/",
+                "130.185.202.159"
+        );
+
         // GNTL
         add(
                 "GNTL",
