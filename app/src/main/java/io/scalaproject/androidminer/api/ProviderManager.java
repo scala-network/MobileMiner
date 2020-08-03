@@ -124,6 +124,16 @@ public final class ProviderManager {
                 "138.201.217.40"
         );
 
+        // LetsHashIt
+        add(
+                "LetsHashIt",
+                "letshash.it",
+                "2332",
+                2,
+                "https://letshash.it/xla",
+                "95.111.246.231"
+        );
+
         // LuckyPool
         add(
                 "LuckyPool",
@@ -132,16 +142,6 @@ public final class ProviderManager {
                 1, // NodeJS
                 "https://scala.luckypool.io",
                 "51.89.96.162"
-        );
-
-        // Miner.Rocks
-        add(
-                "Miner.Rocks",
-                "stellite.miner.rocks",
-                "30091",
-                2, // CryptonoteNodeJS
-                "https://stellite.miner.rocks",
-                "54.38.232.67"
         );
     }
 }
