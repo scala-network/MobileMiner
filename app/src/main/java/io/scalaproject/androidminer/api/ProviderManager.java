@@ -111,7 +111,7 @@ public final class ProviderManager {
                 "40002",
                 1, // NodeJS
                 "https://xla.pool.gntl.co.uk",
-                "83.151.238.38"
+                "83.151.238.34"
         );
 
         // HeroMiners
