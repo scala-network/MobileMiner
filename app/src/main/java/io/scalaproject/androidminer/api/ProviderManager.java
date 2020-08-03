@@ -84,44 +84,54 @@ public final class ProviderManager {
         // User Defined
         add("custom", "custom", "3333", 0, "", "");
 
-        // 0: Scala Official pool
+        // Scala Official pool
         add(
                 "Scala Project (Official Pool)",
                 "mine.scalaproject.io",
                 "3333",
-                3,
+                3, // Scala
                 "https://pool.scalaproject.io",
                 "95.111.237.231"
         );
 
-        // 1: Another Scala pool : Miner.Rocks
-        add(
-                "Miner.Rocks",
-                "stellite.miner.rocks",
-                "30091",
-                2,
-                "https://stellite.miner.rocks",
-                "54.38.232.67"
-        );
-
-        // 2: Another Scala pool : HeroMiners
-        add(
-                "HeroMiners",
-                "scala.herominers.com",
-                "10130",
-                2,
-                "https://scala.herominers.com",
-                "138.201.217.40"
-        );
-
-        // 3: Another Scala pool : GNTL
+        // GNTL
         add(
                 "GNTL",
                 "xla.pool.gntl.co.uk",
                 "40002",
-                1,
+                1, // NodeJS
                 "https://xla.pool.gntl.co.uk",
                 "83.151.238.38"
+        );
+
+        // HeroMiners
+        add(
+                "HeroMiners",
+                "scala.herominers.com",
+                "10130",
+                2, // CryptonoteNodeJS
+                "https://scala.herominers.com",
+                "138.201.217.40"
+        );
+
+        // LuckyPool
+        add(
+                "LuckyPool",
+                "scala.luckypool.io",
+                "6677",
+                1, // NodeJS
+                "https://scala.luckypool.io",
+                "51.89.96.162"
+        );
+
+        // Miner.Rocks
+        add(
+                "Miner.Rocks",
+                "stellite.miner.rocks",
+                "30091",
+                2, // CryptonoteNodeJS
+                "https://stellite.miner.rocks",
+                "54.38.232.67"
         );
     }
 }
