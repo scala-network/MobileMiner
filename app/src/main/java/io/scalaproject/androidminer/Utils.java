@@ -42,9 +42,18 @@ final class Utils {
     static String SCALA_XLA_ADDRESS = "SvkFLjR4DST5bAG8SSHWfta4MsCzRrDEPNx72cTetqcoPfkwi7cFA2sYGG2Tf51rQ9EMSPHVuzxeoS4Y7ieicg5A1M24A8TTW";
     static String SCALA_LTC_ADDRESS = "LeLK5hopvfArVyKtkZBzF3B5wj6rGrNUGk";
 
+    static String ADDRESS_REGEX_MAIN = "^S+([1-9A-HJ-NP-Za-km-z]{96})$";
+    static String ADDRESS_REGEX_SUB = "^Ss+([1-9A-HJ-NP-Za-km-z]{107})$";
+
     static boolean verifyAddress(String input) {
-        Pattern p = Pattern.compile("^S[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]{96}$");
+        Pattern p = Pattern.compile(Utils.ADDRESS_REGEX_MAIN);
         Matcher m = p.matcher(input.trim());
+        if(m.matches()) {
+            return true;
+        }
+
+        p = Pattern.compile(Utils.ADDRESS_REGEX_SUB);
+        m = p.matcher(input.trim());
         return m.matches();
     }
 
