@@ -355,8 +355,7 @@ public class Tools {
         }
 
         sCPUTempSysFile = "err";
-
-        return output;
+        return 0.0f;
     }
 
     static public String parseCurrency(String value, long coinUnits, long denominationUnits, String symbol) {
