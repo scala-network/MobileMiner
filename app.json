@@ -14,7 +14,8 @@
       "port" : "10126",
       "poolType"  :  2, 
       "poolUrl" : "https://fastpool.xyz/xla/",
-      "poolIp" : "130.185.202.159"
+      "poolIp" : "130.185.202.159",
+      "apiUrl" : "https://fastpool.xyz:10130/stats"
     },
     {
       "key" : "GNTL",

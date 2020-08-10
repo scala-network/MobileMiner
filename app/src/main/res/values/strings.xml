@@ -62,7 +62,6 @@
     <string name="startmining">I am ready!</string>
     <string name="mininglog">Mining Log</string>
 
-    <string name="githubAppJson">"https://raw.githubusercontent.com/ahmyi/ScalaMobileMiner/master/app.json"</string>
     <string name="githubLink">https://github.com/scala-network/MobileMiner/releases</string>
     <string name="discordLink">https://discord.gg/djAFVvy</string>
     <string name="mediumLink">https://medium.com/scala/</string>

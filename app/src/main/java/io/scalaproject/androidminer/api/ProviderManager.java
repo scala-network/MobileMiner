@@ -10,10 +10,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -114,8 +112,9 @@ public final class ProviderManager {
         }
 
         if(jsonString.isEmpty()) {
-            String uri = getResources().getString(R.string.githubAppJson);
-            jsonString  = Json.fetch(uri);
+
+            String url = Config.githubAppJson;
+            jsonString  = Json.fetch(url);
         }
 
         try {
@@ -125,8 +124,9 @@ public final class ProviderManager {
 
             for(int i=0; i< pools.length(); i++) {
                 JSONObject pool = pools.getJSONObject(i);
-                add(pool.getString("key"),pool.getString("pool"),pool.getString("port"),pool.getInt("pooltype"), pool.getString("poolUrl"), pool.getString("poolIp"));
+                add(pool.getString("key"),pool.getString("pool"),pool.getString("port"),pool.getInt("poolType"), pool.getString("poolUrl"), pool.getString("poolIp"));
             }
+
 
         } catch (JSONException e) {
             e.printStackTrace();

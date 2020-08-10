@@ -22,6 +22,7 @@ public class Config {
     public static final Long statsDelay = 30000L;
     public static final String miner_xlarig = "xlarig";
     static final String algo = "panthera";
+    public static final String githubAppJson = "https://raw.githubusercontent.com/ahmyi/ScalaMobileMiner/master/app.json";
 
     public static final String version = "4";
     static final Integer logMaxLength = 50000;

@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -22,6 +23,8 @@ import androidx.core.content.ContextCompat;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
+import io.scalaproject.androidminer.api.ProviderManager;
+
 public class WizardAddressActivity extends BaseActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -32,7 +35,14 @@ public class WizardAddressActivity extends BaseActivity {
             finish();
             return;
         }
+        int SDK_INT = android.os.Build.VERSION.SDK_INT;
+        if (SDK_INT > 8) {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
+                    .permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+        }
 
+        ProviderManager.generate();
         setContentView(R.layout.fragment_wizard_address);
     }
 
@@ -110,6 +120,7 @@ public class WizardAddressActivity extends BaseActivity {
         Config.write("address", strAddress);
 
         startActivity(new Intent(WizardAddressActivity.this, WizardPoolActivity.class));
+
         finish();
     }
 
