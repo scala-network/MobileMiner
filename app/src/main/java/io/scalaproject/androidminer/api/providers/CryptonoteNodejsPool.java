@@ -9,13 +9,22 @@
 package io.scalaproject.androidminer.api.providers;
 
 import android.util.Log;
+import android.view.View;
+import android.widget.TextView;
+
+import com.android.volley.Request;
+import com.android.volley.toolbox.StringRequest;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.ocpsoft.prettytime.PrettyTime;
 
+import java.text.DecimalFormat;
 import java.util.Date;
 
+import io.scalaproject.androidminer.R;
+import io.scalaproject.androidminer.Utils;
+import io.scalaproject.androidminer.WizardPoolActivity;
 import io.scalaproject.androidminer.api.ProviderData;
 import io.scalaproject.androidminer.network.Json;
 import io.scalaproject.androidminer.api.ProviderAbstract;
@@ -30,7 +39,31 @@ public class CryptonoteNodejsPool extends ProviderAbstract {
     public CryptonoteNodejsPool(PoolItem pi){
         super(pi);
     }
+    public StringRequest getStringRequest(WizardPoolActivity activity, View view) {
+        String url = mPoolItem.getApiUrl() + "/stats";
+        Log.i(LOG_TAG, "URL: : " + url);
 
+        return new StringRequest(Request.Method.GET, url,
+                response -> {
+                    try {
+                        Log.i(LOG_TAG, "response: " + response);
+
+                        JSONObject obj = new JSONObject(response);
+                        JSONObject objConfig = obj.getJSONObject("config");
+                        JSONObject objConfigPool = obj.getJSONObject("pool");
+                        TextView tvMiners = view.findViewById(R.id.minersScala);
+                        tvMiners.setText(String.format("%s %s", objConfigPool.getString("miners"), activity.getResources().getString(R.string.miners)));
+//
+                        TextView tvHr = view.findViewById(R.id.hrScala);
+                        float fHr = Utils.convertStringToFloat(objConfigPool.getString("hashrate")) / 1000.0f;
+                        tvHr.setText(String.format("%s kH/s", new DecimalFormat("##.#").format(fHr)));
+
+                    } catch (Exception e) {
+                        //Do nothing
+                    }
+                }
+                , WizardPoolActivity::parseVolleyError);
+    }
     @Override
     protected void onBackgroundFetchData() {
         PrettyTime pTime = new PrettyTime();

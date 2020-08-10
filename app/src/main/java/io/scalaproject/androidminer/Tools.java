@@ -265,7 +265,7 @@ public class Tools {
         return output;
     }
 
-    static String getABI() {
+    public static String getABI() {
         String abiString;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             abiString = Build.SUPPORTED_ABIS[0];
