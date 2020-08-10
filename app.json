@@ -20,7 +20,7 @@
       "key" : "LuckyPool",
       "pool" : "scala.luckypool.io",
       "port" : "6677",
-      "poolType"  :  1,
+      "poolType"  :  2,
       "poolUrl" : "https://scala.luckypool.io",
       "poolIp" : "51.89.96.162"
     }
