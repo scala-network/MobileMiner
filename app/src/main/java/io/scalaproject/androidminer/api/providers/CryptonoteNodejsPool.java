@@ -46,7 +46,6 @@ public class CryptonoteNodejsPool extends ProviderAbstract {
         return new StringRequest(Request.Method.GET, url,
                 response -> {
                     try {
-                        Log.i(LOG_TAG, "response: " + response);
 
                         JSONObject obj = new JSONObject(response);
                         JSONObject objConfig = obj.getJSONObject("config");

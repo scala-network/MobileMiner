@@ -47,17 +47,17 @@ public class ScalaPool extends ProviderAbstract {
         return new StringRequest(Request.Method.GET, url,
                 response -> {
                     try {
-                        Log.i(LOG_TAG, "response: " + response);
 
                         JSONObject obj = new JSONObject(response);
-                        JSONObject objStats = obj.getJSONObject("pool_statistics");
-
+                        JSONObject objConfig = obj.getJSONObject("config");
+                        JSONObject objConfigPool = obj.getJSONObject("pool");
                         TextView tvMiners = view.findViewById(R.id.minersScala);
-                        tvMiners.setText(String.format("%s %s", objStats.getString("miners"), activity.getResources().getString(R.string.miners)));
-
+                        tvMiners.setText(String.format("%s %s", objConfigPool.getString("miners"), activity.getResources().getString(R.string.miners)));
+//
                         TextView tvHr = view.findViewById(R.id.hrScala);
-                        float fHr = Utils.convertStringToFloat(objStats.getString("hashRate")) / 1000.0f;
+                        float fHr = Utils.convertStringToFloat(objConfigPool.getString("hashrate")) / 1000.0f;
                         tvHr.setText(String.format("%s kH/s", new DecimalFormat("##.#").format(fHr)));
+
 
                     } catch (Exception e) {
                         //Do nothing
