@@ -41,7 +41,7 @@ public class CryptonoteNodejsPool extends ProviderAbstract {
     }
     public StringRequest getStringRequest(WizardPoolActivity activity, View view) {
         String url = mPoolItem.getApiUrl() + "/stats";
-        return new StringRequest(Request.Method.GET, mPoolItem.getStatsURL(),
+        return new StringRequest(Request.Method.GET, mPoolItem.getApiUrl(),
                 response -> {
                     try {
                         Log.i(LOG_TAG, "response: " + response);
