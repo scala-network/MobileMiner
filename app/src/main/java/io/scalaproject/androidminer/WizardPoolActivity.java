@@ -50,24 +50,32 @@ public class WizardPoolActivity extends BaseActivity {
         // Scala
         PoolItem[] pools = ProviderManager.getPools();
         View[] lls = new View[pools.length];
+        LinearLayout parentLayout = (LinearLayout)findViewById(R.id.buttonContainer);
 
         for(int i=0;i<pools.length;i++) {
+            PoolItem pool = pools[i];
+            if(pool.getApiUrl() == null) {
+                continue;
+            }
             LayoutInflater vi = (LayoutInflater) getApplicationContext()
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            View llScala = vi.inflate(R.layout.scalall, null);
+            final View llScala = vi.inflate(R.layout.scalall, null);
             lls[i] = llScala;
-
+            parentLayout.addView(llScala);
             llScala.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View view) {
-                    int bottom = view.getPaddingBottom();
-                    int top = view.getPaddingTop();
-                    int right = view.getPaddingRight();
-                    int left = view.getPaddingLeft();
-                    view.setBackgroundResource(R.drawable.corner_radius_lighter);
-                    view.setPadding(left, top, right, bottom);
+                    int bottom = llScala.getPaddingBottom();
+                    int top = llScala.getPaddingTop();
+                    int right = llScala.getPaddingRight();
+                    int left = llScala.getPaddingLeft();
+                    llScala.setBackgroundResource(R.drawable.corner_radius_lighter);
+                    llScala.setPadding(left, top, right, bottom);
                     for(int o = 0;o< lls.length;o++) {
                         View ll = lls[o];
-                        if(view != ll) {
+                        if(ll == null) {
+                            continue;
+                        }
+                        if(llScala != ll) {
                             bottom = ll.getPaddingBottom();
                             top = ll.getPaddingTop();
                             right = ll.getPaddingRight();
@@ -80,7 +88,7 @@ public class WizardPoolActivity extends BaseActivity {
                     }
                 }
             });
-            PoolItem pool = pools[i];
+
             StringRequest stringRequest = pool.getInterface().getStringRequest(this, llScala);
             queue.add(stringRequest);
         }

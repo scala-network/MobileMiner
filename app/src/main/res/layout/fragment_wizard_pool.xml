@@ -7,6 +7,7 @@
 	android:background="@color/bg_body">
 
 	<LinearLayout
+		android:id="@+id/buttonContainer"
 		android:layout_width="fill_parent"
 		android:layout_height="fill_parent"
 		android:layout_marginStart="15dp"
@@ -23,7 +24,6 @@
 			android:textColor="@color/txt_headline"
 			android:textSize="16sp"
 			android:textStyle="bold" />
-
 
 
 	</LinearLayout>
