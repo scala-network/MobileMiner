@@ -13,14 +13,14 @@ import android.content.SharedPreferences;
 import java.util.HashMap;
 
 public class Config {
-    final static String[] SUPPORTED_ARCHITECTURES = {"arm64-v8a", "armeabi-v7a"};
+    public final static String[] SUPPORTED_ARCHITECTURES = {"arm64-v8a", "armeabi-v7a"};
 
     private static Config mSettings;
     private SharedPreferences preferences;
 
     static final int DefaultPoolIndex = 1;
     public static final Long statsDelay = 30000L;
-    static final String miner_xlarig = "xlarig";
+    public static final String miner_xlarig = "xlarig";
     static final String algo = "panthera";
 
     public static final String version = "4";

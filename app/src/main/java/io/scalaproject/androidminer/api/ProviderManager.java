@@ -4,8 +4,27 @@
 
 package io.scalaproject.androidminer.api;
 
+import android.util.Log;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
+
 import io.scalaproject.androidminer.Config;
+import io.scalaproject.androidminer.R;
+import io.scalaproject.androidminer.Tools;
+import io.scalaproject.androidminer.network.Json;
+
+import static io.scalaproject.androidminer.Tools.getReadableHashRateString;
+import static io.scalaproject.androidminer.Tools.parseCurrency;
+import static io.scalaproject.androidminer.Tools.tryParseLong;
 
 public final class ProviderManager {
 
@@ -81,67 +100,41 @@ public final class ProviderManager {
         if(!mPools.isEmpty())
             return;
 
-        // User Defined
         add("custom", "custom", "3333", 0, "", "");
 
-        // Scala Official pool
-        add(
-                "Scala Project (Official Pool)",
-                "mine.scalaproject.io",
-                "3333",
-                3, // Scala
-                "https://pool.scalaproject.io",
-                "95.111.237.231"
-        );
+        String lastFetched = Config.read("RepositoryLastFetched");
+        String jsonString = "";
+        if(!lastFetched.isEmpty()) {
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
+            Date todayDate = Calendar.getInstance().getTime();
+            String todayString = formatter.format(todayDate);
+            if(lastFetched == todayString){
+                jsonString = Config.read("RepositoryJson");
+            }
+        }
 
-        // FastPool
-        add(
-                "FastPool",
-                "fastpool.xyz",
-                "10126",
-                2, // CryptonoteNodeJS
-                "https://fastpool.xyz/xla/",
-                "130.185.202.159"
-        );
+        if(jsonString.isEmpty()) {
+            String uri = getResources().getString(R.string.githubAppJson);
+            jsonString  = Json.fetch(uri);
+        }
 
-        // GNTL
-        add(
-                "GNTL",
-                "xla.pool.gntl.co.uk",
-                "40002",
-                1, // NodeJS
-                "https://xla.pool.gntl.co.uk",
-                "83.151.238.34"
-        );
+        try {
 
-        // HeroMiners
-        add(
-                "HeroMiners",
-                "scala.herominers.com",
-                "10130",
-                2, // CryptonoteNodeJS
-                "https://scala.herominers.com",
-                "138.201.217.40"
-        );
+            JSONObject data = new JSONObject(jsonString);
+            JSONArray pools = data.getJSONArray("pools");
 
-        // LetsHashIt
-        add(
-                "LetsHashIt",
-                "letshash.it",
-                "2332",
-                2,
-                "https://letshash.it/xla",
-                "95.111.246.231"
-        );
+            for(int i=0; i< pools.length(); i++) {
+                JSONObject pool = pools.getJSONObject(i);
+                add(pool.getString("key"),pool.getString("pool"),pool.getString("port"),pool.getInt("pooltype"), pool.getString("poolUrl"), pool.getString("poolIp"));
+            }
 
-        // LuckyPool
-        add(
-                "LuckyPool",
-                "scala.luckypool.io",
-                "6677",
-                1, // NodeJS
-                "https://scala.luckypool.io",
-                "51.89.96.162"
-        );
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
+
+
+
     }
 }
