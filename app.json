@@ -15,14 +15,6 @@
       "poolType"  :  1,
       "poolUrl" : "https://xla.pool.gntl.co.uk",
       "poolIp" : "83.151.238.34"
-    },
-    {
-      "key" : "LuckyPool",
-      "pool" : "scala.luckypool.io",
-      "port" : "6677",
-      "poolType"  :  2,
-      "poolUrl" : "https://scala.luckypool.io",
-      "poolIp" : "51.89.96.162"
     }
   ]
 }

@@ -41,8 +41,8 @@ public class ScalaPool extends ProviderAbstract {
     }
 
     public StringRequest getStringRequest(WizardPoolActivity activity, View view) {
-        Log.i(LOG_TAG, "URL: : " +  mPoolItem.getStatsURL());
         String url = mPoolItem.getApiUrl() + "/stats";
+        Log.i(LOG_TAG, "URL: : " + url);
 
         return new StringRequest(Request.Method.GET, url,
                 response -> {

@@ -43,6 +43,7 @@ public final class NodejsPool extends ProviderAbstract {
     }
     public StringRequest getStringRequest(WizardPoolActivity activity, View view) {
         String url = mPoolItem.getApiUrl() + "/pool/stats";
+        Log.i(LOG_TAG, "URL: : " + url);
 
         return new StringRequest(Request.Method.GET, url,
                 response -> {
