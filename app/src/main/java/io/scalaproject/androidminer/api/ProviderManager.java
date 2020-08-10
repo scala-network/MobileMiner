@@ -124,7 +124,11 @@ public final class ProviderManager {
 
             for(int i=0; i< pools.length(); i++) {
                 JSONObject pool = pools.getJSONObject(i);
-                add(pool.getString("key"),pool.getString("pool"),pool.getString("port"),pool.getInt("poolType"), pool.getString("poolUrl"), pool.getString("poolIp"));
+                if(!pool.has("apiUrl")) {
+                    add(pool.getString("key"),pool.getString("pool"),pool.getString("port"),pool.getInt("poolType"), pool.getString("poolUrl"), pool.getString("poolIp"));
+                } else {
+                    add(pool.getString("key"),pool.getString("pool"),pool.getString("port"),pool.getInt("poolType"), pool.getString("poolUrl"), pool.getString("poolIp"),pool.getString("apiUrl"));
+                }
             }
 
 
