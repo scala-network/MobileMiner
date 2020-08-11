@@ -334,8 +334,14 @@ public class Tools {
                 if (output > 1000.0f && Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
                     output /= 1000.0f;
                 }
+
+                if(output > 100.0f) { // error while reading file
+                    sCPUTempSysFile = "";
+                    return 0.0f;
+                }
             }
         } catch (IOException e) {
+            sCPUTempSysFile = "";
             e.printStackTrace();
             return 0.0f;
         }
