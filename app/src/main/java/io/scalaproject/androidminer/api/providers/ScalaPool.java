@@ -77,7 +77,9 @@ public class ScalaPool extends ProviderAbstract {
             JSONObject joStats = new JSONObject(dataStatsNetwork);
             JSONObject joStatsConfig = joStats.getJSONObject("config");
             //JSONObject joStatsLastBlock = joStats.getJSONObject("lastblock");
+/*
             JSONObject joStatsNetwork = joStats.getJSONObject("network");
+*/
             JSONObject joStatsPool = joStats.getJSONObject("pool");
             JSONObject joStatsPoolStats = joStatsPool.getJSONObject("stats");
 
@@ -94,10 +96,11 @@ public class ScalaPool extends ProviderAbstract {
             mBlockData.pool.blocks = joStatsPool.optString("roundHashes", "0");
             mBlockData.pool.minPayout = parseCurrency(joStatsConfig.optString("minPaymentThreshold", "0"), mBlockData.coin.units, mBlockData.coin.denominationUnit, mBlockData.coin.symbol);
 
-            mBlockData.network.lastBlockHeight = joStatsNetwork.optString("height");
-            mBlockData.network.difficulty = getReadableHashRateString(joStatsNetwork.optLong("difficulty"));
-            mBlockData.network.lastBlockTime = pTime.format(new Date(joStatsNetwork.optLong("timestamp") * 1000));
-            mBlockData.network.lastRewardAmount = parseCurrency(joStatsNetwork.optString("reward", "0"), mBlockData.coin.units, mBlockData.coin.denominationUnit, mBlockData.coin.symbol);
+            mBlockData.network.lastBlockHeight = joStatsPoolStats.optString("height");
+            mBlockData.network.difficulty = getReadableHashRateString(joStatsPoolStats.optLong("difficulty"));
+            mBlockData.network.lastBlockTime = pTime.format(new Date(joStatsPoolStats.optLong("timestamp")));
+            mBlockData.network.lastRewardAmount = parseCurrency(joStatsPoolStats.optString("lastblock_lastReward", "0"), mBlockData.coin.units, mBlockData.coin.denominationUnit, mBlockData.coin.symbol);
+            mBlockData.network.difficulty = getReadableHashRateString(joStatsPoolStats.optLong("roundShares"));
         } catch (JSONException e) {
             Log.i(LOG_TAG, "NETWORK\n" + e.toString());
             e.printStackTrace();
