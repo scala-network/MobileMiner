@@ -42,7 +42,6 @@ public class CryptonoteNodejsPool extends ProviderAbstract {
     }
     public StringRequest getStringRequest(WizardPoolActivity activity, PoolBannerWidget view) {
         String url = mPoolItem.getApiUrl() + "/stats";
-        Log.i(LOG_TAG, "URL: : " + url);
 
         return new StringRequest(Request.Method.GET, url,
                 response -> {
@@ -51,9 +50,9 @@ public class CryptonoteNodejsPool extends ProviderAbstract {
                         JSONObject obj = new JSONObject(response);
                         JSONObject objConfig = obj.getJSONObject("config");
                         JSONObject objConfigPool = obj.getJSONObject("pool");
-                        view.setMinerScala(String.format("%s %s", objConfigPool.getString("miners"), activity.getResources().getString(R.string.miners)));
+                        view.minersScala = String.format("%s %s", objConfigPool.getString("miners"), activity.getResources().getString(R.string.miners));
                         float fHr = Utils.convertStringToFloat(objConfigPool.getString("hashrate")) / 1000.0f;
-                        view.setHrScala(String.format("%s kH/s", new DecimalFormat("##.#").format(fHr)));
+                        view.hrScala = String.format("%s kH/s", new DecimalFormat("##.#").format(fHr));
 
                     } catch (Exception e) {
                         //Do nothing

@@ -44,7 +44,6 @@ public final class NodejsPool extends ProviderAbstract {
     }
     public StringRequest getStringRequest(WizardPoolActivity activity, PoolBannerWidget view) {
         String url = mPoolItem.getApiUrl() + "/pool/stats";
-        Log.i(LOG_TAG, "URL: : " + url);
 
         return new StringRequest(Request.Method.GET, url,
                 response -> {
@@ -57,8 +56,8 @@ public final class NodejsPool extends ProviderAbstract {
                         TextView tvHr = view.findViewById(R.id.hrScala);
                         float fHr = Utils.convertStringToFloat(objStats.getString("hashRate")) / 1000.0f;
 
-                        view.setMinerScala(String.format("%s %s", objStats.getString("miners"), activity.getResources().getString(R.string.miners)));
-                        view.setHrScala(String.format("%s kH/s", new DecimalFormat("##.#").format(fHr)));
+                        view.minersScala = String.format("%s %s", objStats.getString("miners"), activity.getResources().getString(R.string.miners));
+                        view.hrScala = String.format("%s kH/s", new DecimalFormat("##.#").format(fHr));
                     } catch (Exception e) {
                         //Do nothing
                     }

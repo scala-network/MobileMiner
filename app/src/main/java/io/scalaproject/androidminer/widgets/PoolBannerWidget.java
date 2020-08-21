@@ -35,39 +35,36 @@ public class PoolBannerWidget extends LinearLayout {
 
     }
     ImageView icon;
-    TextView minersScala;
-    TextView hrScala;
-    TextView poolName;
-    TextView recommendPool;
-
+    TextView tvMinersScala;
+    TextView tvHrScala;
+    TextView tvPoolName;
+    TextView tvRecommendPool;
+    public String minersScala = "Miners Scala";
+    public String hrScala = "0H/s";
+    public String poolName = "Scala Pool";
+    public boolean recommendPool = false;
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
         icon = findViewById(R.id.icon);
-        poolName = findViewById(R.id.poolName);
-        minersScala = findViewById(R.id.minersScala);
-        hrScala = findViewById(R.id.hrScala);
-        recommendPool = findViewById(R.id.recommendPool);
+        tvPoolName = findViewById(R.id.poolName);
+        tvMinersScala = findViewById(R.id.minersScala);
+        tvHrScala = findViewById(R.id.hrScala);
+        tvRecommendPool = findViewById(R.id.recommendPool);
+
+        refresh();
     }
 
-    public PoolBannerWidget setPoolName(String pool_name) {
-        poolName.setText(pool_name);
-        return this;
+    public void refresh() {
+        tvPoolName.setText(poolName);
+        tvHrScala.setText(hrScala);
+        tvMinersScala.setText(minersScala);
+        tvRecommendPool.setVisibility(recommendPool ? View.VISIBLE : View.INVISIBLE);
+
+//        this.setVisibility(View.INVISIBLE);
+//        this.setVisibility(View.GONE);
+//        this.setVisibility(View.VISIBLE);
     }
 
-    public PoolBannerWidget isRecommendPool(boolean rec) {
-        recommendPool.setVisibility(rec ? View.VISIBLE : View.INVISIBLE);
-        return this;
-    }
-
-    public PoolBannerWidget setHrScala(String hr) {
-        hrScala.setText(hr);
-        return this;
-    }
-
-    public PoolBannerWidget setMinerScala(String miners_scala) {
-        minersScala.setText(miners_scala);
-        return this;
-    }
 
 }

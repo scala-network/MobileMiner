@@ -34,7 +34,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:text="@string/scala_project"
             android:textColor="@color/txt_secondary"
             android:textSize="14sp"
             android:textStyle="bold" />
@@ -44,7 +43,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:text="minersScala"
             android:textColor="@color/txt_main"
             android:textSize="14sp" />
 
@@ -78,7 +76,6 @@
             android:layout_height="wrap_content"
             android:layout_gravity="right|center_vertical|end"
             android:gravity="right"
-            android:text="0 H/s"
             android:textColor="@color/txt_main"
             android:textSize="12sp" />
 

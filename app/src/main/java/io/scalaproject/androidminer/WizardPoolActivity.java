@@ -44,8 +44,6 @@ public class WizardPoolActivity extends BaseActivity {
 
         setContentView(R.layout.fragment_wizard_pool);
 
-        View rootView = findViewById(android.R.id.content).getRootView();
-
         RequestQueue queue = Volley.newRequestQueue(this);
 
         // Scala
