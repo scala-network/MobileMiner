@@ -15,6 +15,7 @@ import java.util.Timer;
 
 import io.scalaproject.androidminer.Config;
 import io.scalaproject.androidminer.WizardPoolActivity;
+import io.scalaproject.androidminer.widgets.PoolBannerWidget;
 
 public abstract class ProviderAbstract extends AsyncTask<Void, Void, Void> {
 
@@ -36,7 +37,7 @@ public abstract class ProviderAbstract extends AsyncTask<Void, Void, Void> {
         return Config.read("address");
     }
 
-    abstract public StringRequest getStringRequest(WizardPoolActivity activity, View view);
+    abstract public StringRequest getStringRequest(WizardPoolActivity activity, PoolBannerWidget view);
 
     @Override
     protected void onPostExecute(Void aVoid) {

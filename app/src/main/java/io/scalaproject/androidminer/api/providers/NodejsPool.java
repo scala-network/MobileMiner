@@ -30,6 +30,7 @@ import io.scalaproject.androidminer.api.ProviderData;
 import io.scalaproject.androidminer.api.ProviderAbstract;
 import io.scalaproject.androidminer.api.PoolItem;
 import io.scalaproject.androidminer.network.Json;
+import io.scalaproject.androidminer.widgets.PoolBannerWidget;
 
 import static io.scalaproject.androidminer.Tools.getReadableHashRateString;
 import static io.scalaproject.androidminer.Tools.parseCurrency;
@@ -41,7 +42,7 @@ public final class NodejsPool extends ProviderAbstract {
     public NodejsPool(PoolItem poolItem){
         super(poolItem);
     }
-    public StringRequest getStringRequest(WizardPoolActivity activity, View view) {
+    public StringRequest getStringRequest(WizardPoolActivity activity, PoolBannerWidget view) {
         String url = mPoolItem.getApiUrl() + "/pool/stats";
         Log.i(LOG_TAG, "URL: : " + url);
 
@@ -52,13 +53,12 @@ public final class NodejsPool extends ProviderAbstract {
                         JSONObject obj = new JSONObject(response);
                         JSONObject objStats = obj.getJSONObject("pool_statistics");
 
-                        TextView tvMiners = view.findViewById(R.id.minersScala);
-                        tvMiners.setText(String.format("%s %s", objStats.getString("miners"), activity.getResources().getString(R.string.miners)));
 
                         TextView tvHr = view.findViewById(R.id.hrScala);
                         float fHr = Utils.convertStringToFloat(objStats.getString("hashRate")) / 1000.0f;
-                        tvHr.setText(String.format("%s kH/s", new DecimalFormat("##.#").format(fHr)));
 
+                        view.setMinerScala(String.format("%s %s", objStats.getString("miners"), activity.getResources().getString(R.string.miners)));
+                        view.setHrScala(String.format("%s kH/s", new DecimalFormat("##.#").format(fHr)));
                     } catch (Exception e) {
                         //Do nothing
                     }
