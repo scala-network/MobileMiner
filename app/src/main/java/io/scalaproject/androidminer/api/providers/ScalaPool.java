@@ -64,7 +64,7 @@ public class ScalaPool extends ProviderAbstract {
             mBlockData.network.lastBlockHeight = joStatsLastBlock.optString("height");
             mBlockData.network.difficulty = getReadableHashRateString(joStatsNetwork.optLong("difficulty"));
             mBlockData.network.lastBlockTime = pTime.format(new Date(joStatsLastBlock.optLong("timestamp") * 1000));
-            mBlockData.network.lastRewardAmount = parseCurrency(joStatsPool.optString("lastblock_lastReward", "0"), mBlockData.coin.units, mBlockData.coin.denominationUnit, mBlockData.coin.symbol);
+            mBlockData.network.lastRewardAmount = parseCurrency(joStatsPoolStats.optString("lastblock_lastReward", "0"), mBlockData.coin.units, mBlockData.coin.denominationUnit, mBlockData.coin.symbol);
         } catch (JSONException e) {
             Log.i(LOG_TAG, "NETWORK\n" + e.toString());
             e.printStackTrace();
