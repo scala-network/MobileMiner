@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/widget_pool_banner"
     android:layout_width="match_parent"
-    android:layout_height="70dp"
+    android:layout_height="wrap_content"
     android:layout_marginTop="15dp"
     android:background="@drawable/corner_radius_lighter_border_blue"
     android:orientation="horizontal"
@@ -13,15 +13,16 @@
     android:paddingBottom="15dp">
 
     <ImageView
-        android:id="@+id/icon"
-        android:layout_width="15dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="start"
+        android:id="@+id/imageView"
+        android:layout_width="238dp"
+        android:layout_height="40dp"
+        android:layout_gravity="start|center_vertical"
         android:layout_weight="1"
+        android:contentDescription="@string/log"
         app:srcCompat="@drawable/ic_launcher_round" />
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="356dp"
         android:layout_height="match_parent"
         android:layout_gravity="center_vertical"
         android:layout_marginStart="15dp"
@@ -34,8 +35,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
+            android:text="@string/scala_project"
             android:textColor="@color/txt_secondary"
-            android:textSize="14sp"
+            android:textSize="12sp"
             android:textStyle="bold" />
 
         <TextView
@@ -43,41 +45,36 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
+            android:text=""
             android:textColor="@color/txt_main"
-            android:textSize="14sp" />
+            android:textSize="12sp" />
 
     </LinearLayout>
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal" />
-
     <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="284dp"
+        android:layout_height="match_parent"
         android:layout_weight="1"
         android:background="@drawable/corner_radius_lighter"
         android:orientation="vertical">
 
         <TextView
             android:id="@+id/recommendPool"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="right|center_vertical"
-            android:text="@string/recommended"
+            android:layout_gravity="center_vertical"
             android:textColor="@color/txt_inactive"
-            android:textSize="10sp" />
+            android:textSize="12sp" />
 
         <TextView
             android:id="@+id/hrScala"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right|center_vertical|end"
-            android:gravity="right"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="end|center_vertical"
+            android:text="@string/h_s"
             android:textColor="@color/txt_main"
             android:textSize="12sp" />
 
     </LinearLayout>
+
 </LinearLayout>

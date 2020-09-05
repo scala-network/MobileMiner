@@ -46,20 +46,26 @@ public class ScalaPool extends ProviderAbstract {
         return new StringRequest(Request.Method.GET, url,
                 response -> {
                     try {
+                        view.recommendPool = mPoolItem.getKey().toLowerCase().contains("official");
+                        view.poolName = mPoolItem.getKey();
+
                         JSONObject obj = new JSONObject(response);
                         JSONObject objConfig = obj.getJSONObject("config");
                         JSONObject objConfigPool = obj.getJSONObject("pool");
 
                         float fHr = Utils.convertStringToFloat(objConfigPool.getString("hashrate")) / 1000.0f;
-                        Log.d(LOG_TAG, "Getting pool hashrates" +objConfigPool.getString("hashrate"));
-                        view.recommendPool = false;
-                        view.poolName = "Official Pool";
+                        String frmt = "K";
+                        if(fHr > 1000) {
+                            frmt = "M";
+                            fHr = fHr / 1000.0f;
+                        }
+                        view.hrScala =  String.format("%s %sH/s", new DecimalFormat("##.#").format(fHr), frmt);
                         view.minersScala = String.format("%s %s", objConfigPool.getString("miners"), activity.getResources().getString(R.string.miners));
-                        view.hrScala = String.format("%s kH/s", new DecimalFormat("##.#").format(fHr));
 
                     } catch (Exception e) {
                         //Do nothing
                     }
+                    view.refresh();
                 }
                 , WizardPoolActivity::parseVolleyError);
     }

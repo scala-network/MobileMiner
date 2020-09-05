@@ -48,6 +48,9 @@ public final class NodejsPool extends ProviderAbstract {
         return new StringRequest(Request.Method.GET, url,
                 response -> {
                     try {
+                        view.recommendPool = mPoolItem.getKey().toLowerCase().contains("official");
+                        view.poolName = mPoolItem.getKey();
+
 
                         JSONObject obj = new JSONObject(response);
                         JSONObject objStats = obj.getJSONObject("pool_statistics");
@@ -55,12 +58,17 @@ public final class NodejsPool extends ProviderAbstract {
 
                         TextView tvHr = view.findViewById(R.id.hrScala);
                         float fHr = Utils.convertStringToFloat(objStats.getString("hashRate")) / 1000.0f;
-
+                        String frmt = "K";
+                        if(fHr > 1000) {
+                            frmt = "M";
+                            fHr = fHr / 1000.0f;
+                        }
                         view.minersScala = String.format("%s %s", objStats.getString("miners"), activity.getResources().getString(R.string.miners));
-                        view.hrScala = String.format("%s kH/s", new DecimalFormat("##.#").format(fHr));
+                        view.hrScala = String.format("%s %sH/s", new DecimalFormat("##.#").format(fHr), frmt);
                     } catch (Exception e) {
                         //Do nothing
                     }
+                    view.refresh();
                 }
                 , WizardPoolActivity::parseVolleyError);
     }

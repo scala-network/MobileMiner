@@ -46,17 +46,25 @@ public class CryptonoteNodejsPool extends ProviderAbstract {
         return new StringRequest(Request.Method.GET, url,
                 response -> {
                     try {
+                        view.recommendPool = mPoolItem.getKey().toLowerCase().contains("official");
+                        view.poolName = mPoolItem.getKey();
 
                         JSONObject obj = new JSONObject(response);
-                        JSONObject objConfig = obj.getJSONObject("config");
                         JSONObject objConfigPool = obj.getJSONObject("pool");
                         view.minersScala = String.format("%s %s", objConfigPool.getString("miners"), activity.getResources().getString(R.string.miners));
                         float fHr = Utils.convertStringToFloat(objConfigPool.getString("hashrate")) / 1000.0f;
-                        view.hrScala = String.format("%s kH/s", new DecimalFormat("##.#").format(fHr));
+                        String frmt = "K";
+                        if(fHr > 1000) {
+                            frmt = "M";
+                            fHr = fHr / 1000.0f;
+                        }
+                        view.hrScala = String.format("%s %sH/s", new DecimalFormat("##.#").format(fHr),frmt);
 
                     } catch (Exception e) {
                         //Do nothing
                     }
+                    view.refresh();
+
                 }
                 , WizardPoolActivity::parseVolleyError);
     }

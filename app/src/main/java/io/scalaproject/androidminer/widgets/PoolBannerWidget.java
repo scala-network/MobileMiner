@@ -46,16 +46,14 @@ public class PoolBannerWidget extends LinearLayout {
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
+    }
+
+    public void refresh() {
         icon = findViewById(R.id.icon);
         tvPoolName = findViewById(R.id.poolName);
         tvMinersScala = findViewById(R.id.minersScala);
         tvHrScala = findViewById(R.id.hrScala);
         tvRecommendPool = findViewById(R.id.recommendPool);
-
-        refresh();
-    }
-
-    public void refresh() {
         tvPoolName.setText(poolName);
         tvHrScala.setText(hrScala);
         tvMinersScala.setText(minersScala);
