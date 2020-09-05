@@ -76,8 +76,7 @@ public class ScalaPool extends ProviderAbstract {
 
             JSONObject joStats = new JSONObject(dataStatsNetwork);
             JSONObject joStatsConfig = joStats.getJSONObject("config");
-            //JSONObject joStatsLastBlock = joStats.getJSONObject("lastblock");
-/*
+            JSONObject joStatsLastBlock = joStats.getJSONObject("lastblock");
             JSONObject joStatsNetwork = joStats.getJSONObject("network");
 */
             JSONObject joStatsPool = joStats.getJSONObject("pool");
@@ -88,19 +87,17 @@ public class ScalaPool extends ProviderAbstract {
             mBlockData.coin.symbol = joStatsConfig.optString("symbol").toUpperCase();
             mBlockData.coin.denominationUnit = tryParseLong(joStatsConfig.optString("denominationUnit"), 1L);
 
-            //mBlockData.pool.lastBlockHeight = joStatsPoolStats.optString("lastblock_height");
             mBlockData.pool.difficulty = getReadableHashRateString(joStatsPoolStats.optLong("totalDiff"));
-            mBlockData.pool.lastBlockTime = pTime.format(new Date(joStatsPoolStats.optLong("lastBlockFound")));
-            //mBlockData.pool.lastRewardAmount = parseCurrency(joStatsPoolStats.optString("lastblock_reward", "0"), mBlockData.coin.units, mBlockData.coin.denominationUnit, mBlockData.coin.symbol);
+            mBlockData.pool.lastBlockTime = pTime.format(new Date(joStatsPoolStats.optLong("lastblock_timestamp") * 1000));
+            mBlockData.pool.lastRewardAmount = parseCurrency(joStatsPoolStats.optString("lastblock_lastReward", "0"), mBlockData.coin.units, mBlockData.coin.denominationUnit, mBlockData.coin.symbol);
             mBlockData.pool.hashrate = String.valueOf(tryParseLong(joStatsPool.optString("hashrate"),0L) / 1000L);
-            mBlockData.pool.blocks = joStatsPool.optString("roundHashes", "0");
+            mBlockData.pool.blocks = joStatsPoolStats.optString("blocksFound", "0");
             mBlockData.pool.minPayout = parseCurrency(joStatsConfig.optString("minPaymentThreshold", "0"), mBlockData.coin.units, mBlockData.coin.denominationUnit, mBlockData.coin.symbol);
 
-            mBlockData.network.lastBlockHeight = joStatsPoolStats.optString("height");
-            mBlockData.network.difficulty = getReadableHashRateString(joStatsPoolStats.optLong("difficulty"));
-            mBlockData.network.lastBlockTime = pTime.format(new Date(joStatsPoolStats.optLong("timestamp")));
+            mBlockData.network.lastBlockHeight = joStatsLastBlock.optString("height");
+            mBlockData.network.difficulty = getReadableHashRateString(joStatsNetwork.optLong("difficulty"));
+            mBlockData.network.lastBlockTime = pTime.format(new Date(joStatsLastBlock.optLong("timestamp") * 1000));
             mBlockData.network.lastRewardAmount = parseCurrency(joStatsPoolStats.optString("lastblock_lastReward", "0"), mBlockData.coin.units, mBlockData.coin.denominationUnit, mBlockData.coin.symbol);
-            mBlockData.network.difficulty = getReadableHashRateString(joStatsPoolStats.optLong("roundShares"));
         } catch (JSONException e) {
             Log.i(LOG_TAG, "NETWORK\n" + e.toString());
             e.printStackTrace();
@@ -124,7 +121,7 @@ public class ScalaPool extends ProviderAbstract {
             String balance = parseCurrency(joStatsAddressStats.optString("balance", "0"), coin.units, coin.denominationUnit, coin.symbol);
             String paid = parseCurrency(joStatsAddressStats.optString("paid", "0"), coin.units, coin.denominationUnit, coin.symbol);
             String lastShare = pTime.format(new Date(joStatsAddressStats.optLong("lastShare") * 1000));
-            String blocks = String.valueOf(tryParseLong(joStatsAddressStats.optString("blocks"), 0L));
+            String blocks = String.valueOf(tryParseLong(joStatsAddressStats.optString("roundHashes"), 0L));
 
             Log.i(LOG_TAG, "hashRate: " + hashRate);
 
