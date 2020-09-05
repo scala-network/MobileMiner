@@ -16,6 +16,8 @@ public class SplashActivity extends Activity {
         SharedPreferences preferences = getSharedPreferences(getPackageName() + "_preferences", MODE_PRIVATE);
         Config.initialize(preferences);
 
+        // Config.clear(); //Uncomment to debug splashactivity
+
         String configversion = Config.read("config_version");
         if(!configversion.equals(Config.version)) {
             Config.clear();

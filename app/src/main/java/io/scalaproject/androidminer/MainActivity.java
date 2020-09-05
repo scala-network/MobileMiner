@@ -246,7 +246,6 @@ public class MainActivity extends BaseActivity
         navigationView.setOnNavigationItemSelectedListener(this);
 
         // Open Settings the first time the app is launched
-        Config.clear();
         if (Config.read("address").equals("")) {
             navigationView.getMenu().getItem(2).setChecked(true);
 
