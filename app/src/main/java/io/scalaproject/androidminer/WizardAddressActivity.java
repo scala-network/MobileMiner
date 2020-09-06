@@ -12,11 +12,13 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
 
 import androidx.core.content.ContextCompat;
 
@@ -26,6 +28,7 @@ import com.google.android.material.textfield.TextInputLayout;
 import io.scalaproject.androidminer.api.ProviderManager;
 
 public class WizardAddressActivity extends BaseActivity {
+    private TextView tvAddress;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,13 +47,14 @@ public class WizardAddressActivity extends BaseActivity {
 
         ProviderManager.generate();
         setContentView(R.layout.fragment_wizard_address);
+        View view2 = findViewById(android.R.id.content).getRootView();
+        tvAddress = view2.findViewById(R.id.addressWizard);
+
+
     }
 
     public void onPaste(View view) {
-        View view2 = findViewById(android.R.id.content).getRootView();
-
-        TextInputEditText etAddress = view2.findViewById(R.id.addressWizard);
-        etAddress.setText(Utils.pasteFromClipboard(WizardAddressActivity.this));
+        tvAddress.setText(Utils.pasteFromClipboard(WizardAddressActivity.this));
     }
 
     public void onScanQrCode(View view) {
@@ -70,7 +74,6 @@ public class WizardAddressActivity extends BaseActivity {
     }
 
     private void startQrCodeActivity() {
-        View view2 = findViewById(android.R.id.content).getRootView();
 
         Context appContext = WizardAddressActivity.this;
 
@@ -78,8 +81,7 @@ public class WizardAddressActivity extends BaseActivity {
             Intent intent = new Intent(appContext, QrCodeScannerActivity.class);
             startActivity(intent);
 
-            TextView tvAddress = view2.findViewById(R.id.address);
-            tvAddress.setText(Config.read("address"));
+
         } catch (Exception e) {
             Toast.makeText(appContext, e.getMessage(), Toast.LENGTH_SHORT).show();
         }
@@ -100,10 +102,9 @@ public class WizardAddressActivity extends BaseActivity {
     }
 
     public void onNext(View view) {
-        View view2 = findViewById(android.R.id.content).getRootView();
 
-        TextView tvAddress = view2.findViewById(R.id.addressWizard);
         String strAddress = tvAddress.getText().toString();
+        View view2 = findViewById(android.R.id.content).getRootView();
 
         TextInputLayout til = view2.findViewById(R.id.addressIL);
 
@@ -128,6 +129,12 @@ public class WizardAddressActivity extends BaseActivity {
         if (view.requestFocus()) {
             getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
         }
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        tvAddress.setText(Config.read("address"));
+
     }
 
     public void onMineScala(View view) {

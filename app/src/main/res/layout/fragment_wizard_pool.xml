@@ -36,17 +36,19 @@
 		<Button
 			android:layout_width="match_parent"
 			android:layout_height="55dp"
-			android:layout_marginTop="15dp"
 			android:layout_marginStart="15dp"
+			android:layout_marginTop="15dp"
 			android:layout_marginEnd="15dp"
 			android:layout_marginBottom="15dp"
 			android:backgroundTint="@color/bg_blue"
 			android:onClick="onNext"
 			android:text="@string/next"
-			android:textSize="14sp"
 			android:textAllCaps="false"
 			android:textColor="@color/txt_button_filled"
-			app:cornerRadius="5dp" />
+			android:textSize="14sp"
+			android:visibility="invisible"
+			app:cornerRadius="5dp"
+			tools:visibility="invisible" />
 
 	</RelativeLayout>
 

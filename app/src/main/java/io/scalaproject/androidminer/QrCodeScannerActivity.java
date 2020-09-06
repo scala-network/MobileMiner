@@ -26,6 +26,8 @@ public class QrCodeScannerActivity extends AppCompatActivity implements BarcodeR
 
     public TextView scanResult;
     BarcodeCapture barcodeCapture;
+    public static final String XLA_SCHEME = "scala:";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,6 +59,9 @@ public class QrCodeScannerActivity extends AppCompatActivity implements BarcodeR
     @Override
     public void onRetrieved(final Barcode barcode) {
         String miner = barcode.displayValue;
+        if(miner.startsWith(XLA_SCHEME)) {
+            miner = miner.substring(XLA_SCHEME.length());
+        }
         scanResult.setText("Scala Address : " + miner);
         if(Utils.verifyAddress(miner)) {
             Log.d("CONSOLE:QRCODE", "Barcode read: " + barcode.displayValue);

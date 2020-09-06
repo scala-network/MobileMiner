@@ -43,7 +43,7 @@ public final class Utils {
     static String SCALA_LTC_ADDRESS = "LeLK5hopvfArVyKtkZBzF3B5wj6rGrNUGk";
 
     static String ADDRESS_REGEX_MAIN = "^S+([1-9A-HJ-NP-Za-km-z]{96})$";
-    static String ADDRESS_REGEX_SUB = "^Ss+([1-9A-HJ-NP-Za-km-z]{107})$";
+    static String ADDRESS_REGEX_SUB = "^Ss+([1-9A-HJ-NP-Za-km-z]{96})$";
 
     static boolean verifyAddress(String input) {
         Pattern p = Pattern.compile(Utils.ADDRESS_REGEX_MAIN);

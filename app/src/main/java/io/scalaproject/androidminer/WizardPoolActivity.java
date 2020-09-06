@@ -25,6 +25,7 @@ import java.text.DecimalFormat;
 
 import io.scalaproject.androidminer.api.PoolItem;
 import io.scalaproject.androidminer.api.ProviderManager;
+import io.scalaproject.androidminer.widgets.PoolBannerWidget;
 
 public class WizardPoolActivity extends BaseActivity {
     private static final String LOG_TAG = "WizardPoolActivity";
@@ -43,53 +44,66 @@ public class WizardPoolActivity extends BaseActivity {
 
         setContentView(R.layout.fragment_wizard_pool);
 
-        View rootView = findViewById(android.R.id.content).getRootView();
-
         RequestQueue queue = Volley.newRequestQueue(this);
-
+        View view = findViewById(android.R.id.content).getRootView();
         // Scala
         PoolItem[] pools = ProviderManager.getPools();
-        View[] lls = new View[pools.length];
-        LinearLayout parentLayout = (LinearLayout)findViewById(R.id.buttonContainer);
+
+        PoolBannerWidget[] lls = new PoolBannerWidget[pools.length];
+
+        LinearLayout parentLayout = view.findViewById(R.id.buttonContainer);
 
         for(int i=0;i<pools.length;i++) {
+
             PoolItem pool = pools[i];
             if(pool.getApiUrl() == null) {
                 continue;
             }
+
             LayoutInflater vi = (LayoutInflater) getApplicationContext()
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            final View llScala = vi.inflate(R.layout.scalall, null);
-            lls[i] = llScala;
-            parentLayout.addView(llScala);
-            llScala.setOnClickListener(new View.OnClickListener() {
+
+            PoolBannerWidget poolBannerWidget =  new PoolBannerWidget(this);
+
+            lls[i] = poolBannerWidget;
+
+            parentLayout.addView(poolBannerWidget);
+
+            poolBannerWidget.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View view) {
-                    int bottom = llScala.getPaddingBottom();
-                    int top = llScala.getPaddingTop();
-                    int right = llScala.getPaddingRight();
-                    int left = llScala.getPaddingLeft();
-                    llScala.setBackgroundResource(R.drawable.corner_radius_lighter);
-                    llScala.setPadding(left, top, right, bottom);
+//                    int bottom = view.getPaddingBottom();
+//                    int top = view.getPaddingTop();
+//                    int right = view.getPaddingRight();
+//                    int left = view.getPaddingLeft();
+//                    view.setBackgroundResource(R.drawable.corner_radius_lighter_border_blue);
+//                    view.setPadding(left, top, right, bottom);
+
                     for(int o = 0;o< lls.length;o++) {
                         View ll = lls[o];
                         if(ll == null) {
                             continue;
                         }
-                        if(llScala != ll) {
-                            bottom = ll.getPaddingBottom();
-                            top = ll.getPaddingTop();
-                            right = ll.getPaddingRight();
-                            left = ll.getPaddingLeft();
-                            ll.setBackgroundResource(R.drawable.corner_radius_lighter_border_blue);
-                            ll.setPadding(left, top, right, bottom);
+                        if(view != ll) {
+//                            bottom = ll.getPaddingBottom();
+//                            top = ll.getPaddingTop();
+//                            right = ll.getPaddingRight();
+//                            left = ll.getPaddingLeft();
+
+//                            ll.setBackgroundResource(R.drawable.corner_radius_lighter);
+//                            ll.setPadding(left, top, right, bottom);
                         } else {
                             selectedPoolIndex = o+1;
+                            Config.write("selected_pool", Integer.toString(selectedPoolIndex));
+
+                            startActivity(new Intent(WizardPoolActivity.this, WizardSettingsActivity.class));
+                            finish();
                         }
                     }
+                    Log.i("MININGPOOL", "UUUU : " + selectedPoolIndex);
                 }
             });
 
-            StringRequest stringRequest = pool.getInterface().getStringRequest(this, llScala);
+            StringRequest stringRequest = pool.getInterface().getStringRequest(this, poolBannerWidget);
             queue.add(stringRequest);
         }
 
@@ -100,10 +114,5 @@ public class WizardPoolActivity extends BaseActivity {
     }
 
 
-    public void onNext(View view) {
-        Config.write("selected_pool", Integer.toString(selectedPoolIndex));
 
-        startActivity(new Intent(WizardPoolActivity.this, WizardSettingsActivity.class));
-        finish();
-    }
 }

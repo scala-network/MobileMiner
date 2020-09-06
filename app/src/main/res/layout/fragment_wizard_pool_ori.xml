@@ -1,0 +1,388 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content"
+	android:background="@color/bg_body">
+
+	<LinearLayout
+		android:orientation="vertical"
+		android:layout_width="fill_parent"
+		android:layout_height="fill_parent"
+		android:layout_marginTop="15dp"
+		android:layout_marginStart="15dp"
+		android:layout_marginEnd="15dp"
+		android:layout_marginBottom="15dp">
+
+		<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_gravity="start"
+			android:text="@string/selectminingpool"
+			android:textStyle="bold"
+			android:textColor="@color/txt_headline"
+			android:textSize="16sp" />
+
+		<LinearLayout
+			android:id="@+id/llScala"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:orientation="horizontal"
+			android:background="@drawable/corner_radius_lighter_border_blue"
+			android:layout_marginTop="15dp"
+			android:paddingTop="15dp"
+			android:paddingLeft="15dp"
+			android:paddingRight="15dp"
+			android:paddingBottom="15dp"
+			android:onClick="onClickScala">
+
+			<ImageView
+				android:layout_width="40dp"
+				android:layout_height="40dp"
+				android:layout_gravity="start|center_vertical"
+				app:srcCompat="@drawable/ic_launcher_round" />
+
+			<LinearLayout
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_gravity="center_vertical"
+				android:orientation="vertical"
+				android:background="@drawable/corner_radius_lighter"
+				android:layout_marginStart="15dp">
+
+				<TextView
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_gravity="center_vertical"
+					android:text="@string/scala_project"
+					android:textColor="@color/txt_secondary"
+					android:textStyle="bold"
+					android:textSize="14sp" />
+
+				<TextView
+					android:id="@+id/minersScala"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_gravity="center_vertical"
+					android:text=""
+					android:textColor="@color/txt_main"
+					android:textSize="14sp" />
+
+			</LinearLayout>
+
+			<Space
+				android:layout_width="0dp"
+				android:layout_height="match_parent"
+				android:layout_weight="1"/>
+
+			<LinearLayout
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:orientation="vertical"
+				android:background="@drawable/corner_radius_lighter">
+
+				<TextView
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_gravity="center_vertical"
+					android:text="@string/recommended"
+					android:textColor="@color/txt_inactive"
+					android:textSize="12sp" />
+
+				<TextView
+					android:id="@+id/hrScala"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_gravity="end|center_vertical"
+					android:text=""
+					android:textColor="@color/txt_main"
+					android:textSize="14sp" />
+
+			</LinearLayout>
+
+		</LinearLayout>
+
+		<LinearLayout
+			android:id="@+id/llMR"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:orientation="horizontal"
+			android:background="@drawable/corner_radius_lighter"
+			android:layout_marginTop="7dp"
+			android:paddingTop="15dp"
+			android:paddingLeft="15dp"
+			android:paddingRight="15dp"
+			android:paddingBottom="15dp"
+			android:onClick="onClickMR">
+
+			<TextView
+				android:layout_width="40dp"
+				android:layout_height="40dp"
+				android:layout_gravity="center_vertical"
+				android:background="@drawable/circle_grey"
+				android:gravity="center"
+				android:text="MR"
+				android:textColor="@color/txt_secondary"
+				android:textStyle="bold"
+				android:textSize="18sp"
+				tools:ignore="HardcodedText" />
+
+			<LinearLayout
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_gravity="center_vertical"
+				android:orientation="vertical"
+				android:background="@drawable/corner_radius_lighter"
+				android:layout_marginStart="15dp">
+
+				<TextView
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_gravity="center_vertical"
+					android:text="Miner.Rocks"
+					android:textColor="@color/txt_secondary"
+					android:textStyle="bold"
+					android:textSize="14sp"
+					tools:ignore="HardcodedText" />
+
+				<TextView
+					android:id="@+id/minersMR"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_gravity="center_vertical"
+					android:text=""
+					android:textColor="@color/txt_main"
+					android:textSize="14sp" />
+
+			</LinearLayout>
+
+			<Space
+				android:layout_width="0dp"
+				android:layout_height="match_parent"
+				android:layout_weight="1"/>
+
+			<LinearLayout
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:orientation="vertical"
+				android:background="@drawable/corner_radius_lighter">
+
+				<TextView
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_gravity="center_vertical"
+					android:text=""
+					android:textColor="@color/txt_main"
+					android:textSize="12sp" />
+
+				<TextView
+					android:id="@+id/hrMR"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_gravity="center_vertical"
+					android:text=""
+					android:textColor="@color/txt_main"
+					android:textSize="14sp" />
+
+			</LinearLayout>
+
+		</LinearLayout>
+
+		<LinearLayout
+			android:id="@+id/llHM"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:orientation="horizontal"
+			android:background="@drawable/corner_radius_lighter"
+			android:layout_marginTop="7dp"
+			android:paddingTop="15dp"
+			android:paddingLeft="15dp"
+			android:paddingRight="15dp"
+			android:paddingBottom="15dp"
+			android:onClick="onClickHM">
+
+			<TextView
+				android:layout_width="40dp"
+				android:layout_height="40dp"
+				android:layout_gravity="center_vertical"
+				android:background="@drawable/circle_grey"
+				android:gravity="center"
+				android:text="HM"
+				android:textColor="@color/txt_secondary"
+				android:textStyle="bold"
+				android:textSize="18sp"
+				tools:ignore="HardcodedText" />
+
+			<LinearLayout
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_gravity="center_vertical"
+				android:orientation="vertical"
+				android:background="@drawable/corner_radius_lighter"
+				android:layout_marginStart="15dp">
+
+				<TextView
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_gravity="center_vertical"
+					android:text="HeroMiners"
+					android:textColor="@color/txt_secondary"
+					android:textStyle="bold"
+					android:textSize="14sp"
+					tools:ignore="HardcodedText" />
+
+				<TextView
+					android:id="@+id/minersHM"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_gravity="center_vertical"
+					android:text=""
+					android:textColor="@color/txt_main"
+					android:textSize="14sp" />
+
+			</LinearLayout>
+
+			<Space
+				android:layout_width="0dp"
+				android:layout_height="match_parent"
+				android:layout_weight="1"/>
+
+			<LinearLayout
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:orientation="vertical"
+				android:background="@drawable/corner_radius_lighter">
+
+				<TextView
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_gravity="center_vertical"
+					android:text=""
+					android:textColor="@color/txt_main"
+					android:textSize="12sp" />
+
+				<TextView
+					android:id="@+id/hrHM"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_gravity="center_vertical"
+					android:text=""
+					android:textColor="@color/txt_main"
+					android:textSize="14sp" />
+
+			</LinearLayout>
+
+		</LinearLayout>
+
+		<LinearLayout
+			android:id="@+id/llGNTL"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:orientation="horizontal"
+			android:background="@drawable/corner_radius_lighter"
+			android:layout_marginTop="7dp"
+			android:paddingTop="15dp"
+			android:paddingLeft="15dp"
+			android:paddingRight="15dp"
+			android:paddingBottom="15dp"
+			android:onClick="onClickGNTL">
+
+			<TextView
+				android:layout_width="40dp"
+				android:layout_height="40dp"
+				android:layout_gravity="center_vertical"
+				android:background="@drawable/circle_grey"
+				android:gravity="center"
+				android:text="G"
+				android:textColor="@color/txt_secondary"
+				android:textStyle="bold"
+				android:textSize="18sp"
+				tools:ignore="HardcodedText" />
+
+			<LinearLayout
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_gravity="center_vertical"
+				android:orientation="vertical"
+				android:background="@drawable/corner_radius_lighter"
+				android:layout_marginStart="15dp">
+
+				<TextView
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_gravity="center_vertical"
+					android:text="GNTL"
+					android:textColor="@color/txt_secondary"
+					android:textStyle="bold"
+					android:textSize="14sp"
+					tools:ignore="HardcodedText" />
+
+				<TextView
+					android:id="@+id/minersGNTL"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_gravity="center_vertical"
+					android:text=""
+					android:textColor="@color/txt_main"
+					android:textSize="14sp" />
+
+			</LinearLayout>
+
+			<Space
+				android:layout_width="0dp"
+				android:layout_height="match_parent"
+				android:layout_weight="1"/>
+
+			<LinearLayout
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:orientation="vertical"
+				android:background="@drawable/corner_radius_lighter">
+
+				<TextView
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_gravity="center_vertical"
+					android:text=""
+					android:textColor="@color/txt_main"
+					android:textSize="12sp" />
+
+				<TextView
+					android:id="@+id/hrGNTL"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_gravity="center_vertical"
+					android:text=""
+					android:textColor="@color/txt_main"
+					android:textSize="14sp" />
+
+			</LinearLayout>
+
+		</LinearLayout>
+
+	</LinearLayout>
+
+	<RelativeLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_alignParentBottom="true">
+
+		<Button
+			android:layout_width="match_parent"
+			android:layout_height="55dp"
+			android:layout_marginTop="15dp"
+			android:layout_marginStart="15dp"
+			android:layout_marginEnd="15dp"
+			android:layout_marginBottom="15dp"
+			android:backgroundTint="@color/bg_blue"
+			android:onClick="onNext"
+			android:text="@string/next"
+			android:textSize="14sp"
+			android:textAllCaps="false"
+			android:textColor="@color/txt_button_filled"
+			app:cornerRadius="5dp" />
+
+	</RelativeLayout>
+
+</RelativeLayout>
