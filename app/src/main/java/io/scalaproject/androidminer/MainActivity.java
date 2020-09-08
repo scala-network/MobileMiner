@@ -45,6 +45,7 @@ import android.graphics.Point;
 import android.graphics.PorterDuff;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
+import android.hardware.SensorManager;
 import android.net.Uri;
 import android.os.BatteryManager;
 import android.os.Build;
@@ -486,7 +487,9 @@ public class MainActivity extends BaseActivity
         updateStartButton();
         resetAvgMaxHashrate();
 
+
         updateUI();
+
     }
 
     @Override
@@ -703,6 +706,7 @@ public class MainActivity extends BaseActivity
         refreshLogOutputView();
         updateCores();
         adjustMetricsLayout();
+
     }
 
     private void adjustMetricsLayout() {

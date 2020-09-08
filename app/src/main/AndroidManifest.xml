@@ -30,7 +30,6 @@
 
         <activity
             android:name="io.scalaproject.androidminer.MainActivity"
-            android:configChanges="orientation|screenSize"
             android:windowSoftInputMode="adjustPan|stateHidden"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
