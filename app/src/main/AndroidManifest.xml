@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest package="io.scalaproject.androidminer"
+<manifest package="shmutalov.verusminer9000"
           xmlns:android="http://schemas.android.com/apk/res/android">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -29,14 +29,14 @@
             android:resource="@color/c_white" />
 
         <activity
-            android:name="io.scalaproject.androidminer.MainActivity"
+            android:name="shmutalov.verusminer9000.MainActivity"
             android:configChanges="orientation|screenSize"
             android:windowSoftInputMode="adjustPan|stateHidden"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
 
         <activity
-            android:name="io.scalaproject.androidminer.SplashActivity">
+            android:name="shmutalov.verusminer9000.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
@@ -44,41 +44,41 @@
         </activity>
 
 	    <activity
-            android:name="io.scalaproject.androidminer.QrCodeScannerActivity"
-            android:parentActivityName="io.scalaproject.androidminer.MainActivity">
+            android:name="shmutalov.verusminer9000.QrCodeScannerActivity"
+            android:parentActivityName="shmutalov.verusminer9000.MainActivity">
         </activity>
 
         <activity
-            android:name="io.scalaproject.androidminer.WizardHomeActivity"
-            android:parentActivityName="io.scalaproject.androidminer.MainActivity">
+            android:name="shmutalov.verusminer9000.WizardHomeActivity"
+            android:parentActivityName="shmutalov.verusminer9000.MainActivity">
         </activity>
 
         <activity
-            android:name="io.scalaproject.androidminer.WizardAddressActivity"
-            android:parentActivityName="io.scalaproject.androidminer.MainActivity">
+            android:name="shmutalov.verusminer9000.WizardAddressActivity"
+            android:parentActivityName="shmutalov.verusminer9000.MainActivity">
         </activity>
 
         <activity
-            android:name="io.scalaproject.androidminer.WizardPoolActivity"
-            android:parentActivityName="io.scalaproject.androidminer.MainActivity">
+            android:name="shmutalov.verusminer9000.WizardPoolActivity"
+            android:parentActivityName="shmutalov.verusminer9000.MainActivity">
         </activity>
 
         <activity
-            android:name="io.scalaproject.androidminer.WizardSettingsActivity"
-            android:parentActivityName="io.scalaproject.androidminer.MainActivity">
+            android:name="shmutalov.verusminer9000.WizardSettingsActivity"
+            android:parentActivityName="shmutalov.verusminer9000.MainActivity">
         </activity>
 
         <activity
-            android:name="io.scalaproject.androidminer.BaseActivity"
-            android:parentActivityName="io.scalaproject.androidminer.MainActivity">
+            android:name="shmutalov.verusminer9000.BaseActivity"
+            android:parentActivityName="shmutalov.verusminer9000.MainActivity">
         </activity>
 
         <service
-            android:name="io.scalaproject.androidminer.MiningService"
+            android:name="shmutalov.verusminer9000.MiningService"
             android:enabled="true"/>
 
         <receiver
-            android:name="io.scalaproject.androidminer.NotificationsReceiver"
+            android:name="shmutalov.verusminer9000.NotificationsReceiver"
             android:enabled="true">
             <intent-filter>
                 <action android:name="OPEN_ACTION"/>

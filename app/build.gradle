@@ -11,7 +11,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "io.scalaproject.androidminer"
+        applicationId "shmutalov.verusminer9000"
         minSdkVersion 19
         targetSdkVersion 28 // to avoid an error 13 when running exe in assets folder (sdk 29 gives the error)
         versionCode 7

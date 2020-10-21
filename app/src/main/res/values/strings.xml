@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Scala Miner</string>
+    <string name="app_name">Verus Miner 9000</string>
     <string name="navigation_drawer_open">Open Navigation Drawer</string>
     <string name="navigation_drawer_close">Close Navigation Drawer</string>
     <string name="mining_pool_address">Mining pool URL</string>
@@ -62,12 +62,12 @@
     <string name="startmining">I am ready!</string>
     <string name="mininglog">Mining Log</string>
 
-    <string name="githubLink">https://github.com/scala-network/MobileMiner/releases</string>
-    <string name="discordLink">https://discord.gg/djAFVvy</string>
-    <string name="mediumLink">https://medium.com/scala/</string>
-    <string name="twitterLink">https://twitter.com/scalahq</string>
-    <string name="telegramLink">https://t.me/scalaNews</string>
-    <string name="ScalaLink">&lt;a href=&quot;https://scalaproject.io&quot;&gt;Scala&lt;/a&gt;</string>
+    <string name="githubLink">https://github.com/shmutalov/MobileMiner/releases</string>
+    <string name="discordLink">https://verus.io/discord</string>
+    <string name="mediumLink">https://medium.com/veruscoin/</string>
+    <string name="twitterLink">https://twitter.com/VerusCoin</string>
+    <string name="telegramLink">https://t.me/VerusCommunity</string>
+    <string name="ScalaLink">&lt;a href=&quot;https://veruscoin.io&quot;&gt;Verus&lt;/a&gt;</string>
     <string name="Mine2getherLink">&lt;a href=&quot;https://github.com/Mine2Gether/m2g_android_miner&quot;&gt;Mine2gether&lt;/a&gt;</string>
     <string name="MoneroMinerLink">&lt;a href=&quot;https://github.com/upost/MoneroMiner&quot;&gt;MoneroMiner&lt;/a&gt;</string>
     <string name="MaterialDesignLink">&lt;a href=&quot;https://material.io/resources/&quot;&gt;Material Design&lt;/a&gt;</string>
@@ -98,7 +98,7 @@
     <string name="donationadresses">Donations</string>
     <string name="donationadressbtc_copied">BTC Donation Address copied.</string>
     <string name="donationadresseth_copied">ETH Donation Address copied.</string>
-    <string name="donationadressxla_copied">XLA Donation Address copied.</string>
+    <string name="donationadressverus_copied">VRSC Donation Address copied.</string>
     <string name="statictempcontrol">Switched to static temperature control.</string>
     <string name="debuginfo">Debug Info</string>
     <string name="debuginfo_copied">Debug Information copied.</string>
@@ -113,8 +113,8 @@
     <string name="or">or</string>
     <string name="skip">Skip</string>
     <string name="paper_wallet_url">https://scalaproject.io/paper-wallet.php</string>
-    <string name="cli_wallet_url">https://github.com/scala-network/Scala/releases</string>
-    <string name="gui_wallet_url">https://github.com/scala-network/scala-electron-gui/releases</string>
+    <string name="cli_wallet_url">https://github.com/VerusCoin/VerusCoin/releases</string>
+    <string name="gui_wallet_url">https://github.com/VerusCoin/Verus-Desktop/releases</string>
     <string name="ok">OK</string>
     <string name="save">Save</string>
     <string name="devicemining">Device Mining</string>
@@ -140,12 +140,12 @@
     <string name="stopmining">Do you want to restart mining?</string>
     <string name="newparametersapplied">The mining process must be restarted in order for the new parameters to be applied.</string>
 
-    <string name="donate_help">If you would like to help build this project, feel free to specify a donation level here.\n\nFor example, a value of 5 will make your device mine 5 minutes out of 100 to fund Scala project.\n\nThe default value is 0.</string>
+    <string name="donate_help">If you would like to help build this project, feel free to specify a donation level here.\n\nFor example, a value of 5 will make your device mine 5 minutes out of 100 to fund Verus project.\n\nThe default value is 0.</string>
     <string name="mininggoal_help">The mining goal should reflect the pool payout setting, but you can also specify a custom value for your device.\n\nThe default value is the minimum payout value of the specified mining pool.</string>
     <string name="temp_control_warning">This application implements two layers of protection for your device.\n\nThe first one is the As-Much-As-You-Can (AMAYC) machine learning algorithm that can predict when your device will overheat and pause the miner until the device\'s temperature has normalized.\n\nThe second one is a static temperature monitoring that will automatically pause the miner if your device reaches one of the maximum temperatures defined in the settings.</string>
     <string name="temp_control_ownrisks">Turning this feature off might cause damage to your device. Do it at your own risk!</string>
     <string name="shares_help">Your mining reward is based on the amount of shares that contributed to the resolution of a block.</string>
-    <string name="donation_addresses_help">If you would like to help build this project, you can send BTC, ETH or XLA to the project\'s wallet.\n\nDonations support the contributors and help the team pay for the project expenses. Thanks for your support!</string>
+    <string name="donation_addresses_help">If you would like to help build this project, you can send BTC, ETH or VRSC to the project\'s wallet.\n\nDonations support the contributors and help the team pay for the project expenses. Thanks for your support!</string>
     <string name="pool_options_help">These parameters are optional, you can leave them blank if you don\'t know what they represent.\n\nTo add a static difficulty or a paymentID, specify it in the \'Username parameters\' field. For example, enter \'+500\' to configure a static difficulty of 500.\n\nMake sure you respect the selected pool configuration. The value of this field will be appended as is to the wallet address.</string>
     <string name="hardware_settings_help">Your device will start cooling when the CPU or battery reach the specified temperatures.\n\nThe cooldown threshold defines the temperature at which the application will resume the mining process.</string>
 
