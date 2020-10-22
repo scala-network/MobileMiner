@@ -9,29 +9,29 @@ import shmutalov.verusminer9000.Config;
 
 public final class ProviderManager {
 
-    static private ArrayList<PoolItem> mPools = new ArrayList<PoolItem>();
+    private static final ArrayList<PoolItem> mPools = new ArrayList<>();
 
-    static public void add(PoolItem poolItem) {
+    public static void add(PoolItem poolItem) {
         mPools.add(poolItem);
     }
 
-    static public void add(String key, String pool,String port, int poolType, String poolUrl, String poolIP) {
+    public static void add(String key, String pool,String port, int poolType, String poolUrl, String poolIP) {
         mPools.add(new PoolItem(key, pool, port, poolType, poolUrl, poolIP));
     }
 
-    static public void add(String key, String pool, String port, int poolType, String poolUrl, String poolIP, String poolApi) {
+    public static void add(String key, String pool, String port, int poolType, String poolUrl, String poolIP, String poolApi) {
         mPools.add(new PoolItem(key, pool, port, poolType, poolUrl, poolIP, poolApi, "",""));
     }
 
-    static public PoolItem[] getPools() {
+    public static PoolItem[] getPools() {
         return mPools.toArray(new PoolItem[mPools.size()]);
     }
 
-    static public PoolItem getPoolById(int idx) {
+    public static PoolItem getPoolById(int idx) {
         return mPools.get(idx);
     }
 
-    static public PoolItem getPoolById(String idx) {
+    public static PoolItem getPoolById(String idx) {
         int index = Integer.parseInt(idx);
 
         if (idx.equals("") || mPools.size() < index || mPools.size() == 0) {
@@ -41,9 +41,9 @@ public final class ProviderManager {
         return mPools.get(index);
     }
 
-    static final public ProviderData data = new ProviderData();
+    public static final ProviderData data = new ProviderData();
 
-    static public PoolItem getSelectedPool() {
+    public static PoolItem getSelectedPool() {
         if(request.mPoolItem != null) {
             return request.mPoolItem;
         }
@@ -55,7 +55,8 @@ public final class ProviderManager {
 
         return getPoolById(sp);
     }
-    static public void afterSave() {
+
+    public static void afterSave() {
         if(request.mPoolItem != null)  {
             return;
         }
@@ -71,9 +72,9 @@ public final class ProviderManager {
         request.start();
     }
 
-    static final public ProviderRequest request = new ProviderRequest();
+    public static final ProviderRequest request = new ProviderRequest();
 
-    static public void generate() {
+    public static void generate() {
         request.stop();
         request.mPoolItem = null;
         //mPools.clear();
@@ -84,64 +85,54 @@ public final class ProviderManager {
         // User Defined
         add("custom", "custom", "3333", 0, "", "");
 
-        // Scala Official pool
+        // Verus Official pool
         add(
-                "Scala Project (Official Pool)",
-                "mine.scalaproject.io",
-                "3333",
-                3, // Scala
-                "https://pool.scalaproject.io",
-                "95.111.237.231"
+                "Verus Project (Official Pool)",
+                "stratum+tcp://pool.veruscoin.io",
+                "9999",
+                0,
+                "https://pool.veruscoin.io/",
+                ""
         );
 
-        // FastPool
+        // Alphatech IT
         add(
-                "FastPool",
-                "fastpool.xyz",
-                "10126",
-                2, // CryptonoteNodeJS
-                "https://fastpool.xyz/xla/",
-                "130.185.202.159"
+                "Alphatech IT",
+                "stratum+tcp://verus.alphatechit.co.uk",
+                "9999",
+                0,
+                "https://verus.alphatechit.co.uk/",
+                ""
         );
 
-        // GNTL
+        // Luckpool (NA)
         add(
-                "GNTL",
-                "xla.pool.gntl.co.uk",
-                "40002",
-                1, // NodeJS
-                "https://xla.pool.gntl.co.uk",
-                "83.151.238.34"
+                "Luckpool (NA)",
+                "stratum+tcp://na.luckpool.net",
+                "3956",
+                0,
+                "https://luckpool.net/verus",
+                ""
         );
 
-        // HeroMiners
+        // Luckpool (EU)
         add(
-                "HeroMiners",
-                "scala.herominers.com",
-                "10130",
-                2, // CryptonoteNodeJS
-                "https://scala.herominers.com",
-                "138.201.217.40"
+                "Luckpool (EU)",
+                "stratum+tcp://eu.luckpool.net",
+                "3956",
+                0,
+                "https://luckpool.net/verus",
+                ""
         );
 
-        // LetsHashIt
+        // Luckpool (AP)
         add(
-                "LetsHashIt",
-                "letshash.it",
-                "2332",
-                2,
-                "https://letshash.it/xla",
-                "95.111.246.231"
-        );
-
-        // LuckyPool
-        add(
-                "LuckyPool",
-                "scala.luckypool.io",
-                "6677",
-                1, // NodeJS
-                "https://scala.luckypool.io",
-                "51.89.96.162"
+                "Luckpool (AP)",
+                "stratum+tcp://ap.luckpool.net",
+                "3956",
+                0,
+                "https://luckpool.net/verus",
+                ""
         );
     }
 }

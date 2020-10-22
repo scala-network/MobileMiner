@@ -8,6 +8,7 @@
 
 package shmutalov.verusminer9000;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -45,90 +46,63 @@ public class AboutFragment extends Fragment {
         tvFontAwesome = view.findViewById(R.id.FontAwesomeURL);
 
         Button btnGitHub = view.findViewById(R.id.btnGitHub);
-        btnGitHub.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Uri uri = Uri.parse(getResources().getString(R.string.githubLink));
-                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                startActivity(intent);
-            }
+        btnGitHub.setOnClickListener(view19 -> {
+            Uri uri = Uri.parse(getResources().getString(R.string.githubLink));
+            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+            startActivity(intent);
         });
 
         Button btnDiscord = view.findViewById(R.id.btnDiscord);
-        btnDiscord.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Uri uri = Uri.parse(getResources().getString(R.string.discordLink));
-                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                startActivity(intent);
-            }
+        btnDiscord.setOnClickListener(view18 -> {
+            Uri uri = Uri.parse(getResources().getString(R.string.discordLink));
+            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+            startActivity(intent);
         });
 
         Button btnMedium = view.findViewById(R.id.btnMedium);
-        btnMedium.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Uri uri = Uri.parse(getResources().getString(R.string.mediumLink));
-                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                startActivity(intent);
-            }
+        btnMedium.setOnClickListener(view17 -> {
+            Uri uri = Uri.parse(getResources().getString(R.string.mediumLink));
+            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+            startActivity(intent);
         });
 
         Button btnTwitter = view.findViewById(R.id.btnTwitter);
-        btnTwitter.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Uri uri = Uri.parse(getResources().getString(R.string.twitterLink));
-                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                startActivity(intent);
-            }
+        btnTwitter.setOnClickListener(view16 -> {
+            Uri uri = Uri.parse(getResources().getString(R.string.twitterLink));
+            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+            startActivity(intent);
         });
 
         Button btnTelegram = view.findViewById(R.id.btnTelegram);
-        btnTelegram.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Uri uri = Uri.parse(getResources().getString(R.string.telegramLink));
-                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                startActivity(intent);
-            }
+        btnTelegram.setOnClickListener(view15 -> {
+            Uri uri = Uri.parse(getResources().getString(R.string.telegramLink));
+            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+            startActivity(intent);
         });
 
         Button btnDonationAddressesHelp = view.findViewById(R.id.btnDonationsHelp);
-        btnDonationAddressesHelp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // inflate the layout of the popup window
-                View popupView = inflater.inflate(R.layout.helper_donation_addresses, null);
-                Utils.showPopup(v, inflater, popupView);
-            }
+        btnDonationAddressesHelp.setOnClickListener(v -> {
+            // inflate the layout of the popup window
+            View popupView = inflater.inflate(R.layout.helper_donation_addresses, null);
+            Utils.showPopup(v, inflater, popupView);
         });
 
         Button btnDonateBTC = view.findViewById(R.id.btnDonateBTC);
-        btnDonateBTC.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Utils.copyToClipboard("Scala BTC Donation Address", Utils.SCALA_BTC_ADDRESS);
-                Toast.makeText(getContext(), R.string.donationadressbtc_copied, Toast.LENGTH_SHORT).show();
-            }
+        btnDonateBTC.setOnClickListener(view14 -> {
+            Utils.copyToClipboard("Scala BTC Donation Address", Utils.SCALA_BTC_ADDRESS);
+            Toast.makeText(getContext(), R.string.donationadressbtc_copied, Toast.LENGTH_SHORT).show();
         });
 
         Button btnDonateETH = view.findViewById(R.id.btnDonateETH);
-        btnDonateETH.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Utils.copyToClipboard("Scala ETH Donation Address", Utils.SCALA_ETH_ADDRESS);
-                Toast.makeText(getContext(), R.string.donationadresseth_copied, Toast.LENGTH_SHORT).show();
-            }
+        btnDonateETH.setOnClickListener(view13 -> {
+            Utils.copyToClipboard("Scala ETH Donation Address", Utils.SCALA_ETH_ADDRESS);
+            Toast.makeText(getContext(), R.string.donationadresseth_copied, Toast.LENGTH_SHORT).show();
         });
 
         Button btnDonateXLA = view.findViewById(R.id.btnDonateXLA);
-        btnDonateXLA.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Utils.copyToClipboard("VRSC Donation Address", Utils.VERUS_DONATION_ADDRESS);
-                Toast.makeText(getContext(), R.string.donationadressverus_copied, Toast.LENGTH_SHORT).show();
-            }
+        btnDonateXLA.setOnClickListener(view12 -> {
+            Utils.copyToClipboard("VRSC Donation Address", Utils.VERUS_DONATION_ADDRESS);
+            Toast.makeText(getContext(), R.string.donationadressverus_copied, Toast.LENGTH_SHORT).show();
         });
 
         StringBuilder cpuinfo = new StringBuilder(Config.read("CPUINFO").trim());
@@ -172,19 +146,17 @@ public class AboutFragment extends Fragment {
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy hh:mm a", Locale.ENGLISH);
         String build_time_debug = formatter.format(calendar.getTime());
 
+        Context appContext = MainActivity.getContextOfApplication();
         String sDebugInfo = "Version Code: " + BuildConfig.VERSION_CODE + "\n" +
                 "Version Name: " + BuildConfig.VERSION_NAME + "\n" +
                 "Build Time: " + build_time_debug + "\n\n" +
-                "Device Name: " + Tools.getDeviceName() + "\n" +
+                "Device Name: " + Tools.getDeviceName(appContext) + "\n" +
                 "CPU Info: " + cpuinfo;
 
         Button btnDebugInfo = view.findViewById(R.id.btnDebugInfo);
-        btnDebugInfo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Utils.copyToClipboard("Scala Miner Debug Info", sDebugInfo);
-                Toast.makeText(getContext(), getResources().getString(R.string.debuginfo_copied), Toast.LENGTH_SHORT).show();
-            }
+        btnDebugInfo.setOnClickListener(view1 -> {
+            Utils.copyToClipboard("Scala Miner Debug Info", sDebugInfo);
+            Toast.makeText(getContext(), getResources().getString(R.string.debuginfo_copied), Toast.LENGTH_SHORT).show();
         });
 
         return view;

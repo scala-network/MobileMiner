@@ -28,14 +28,12 @@ package shmutalov.verusminer9000;
 
 import android.content.Context;
 import android.os.Build;
-import android.os.StrictMode;
+import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.Log;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
@@ -51,11 +49,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
+import shmutalov.verusminer9000.miner.MiningConfig;
+
 public class Tools {
 
     private static final String LOG_TAG = "MiningSvc";
 
-    static String loadConfigTemplate(Context context, String path) {
+    public static String loadConfigTemplate(Context context, String path) {
         try {
             StringBuilder buf = new StringBuilder();
             InputStream json = context.getAssets().open(path);
@@ -73,7 +73,7 @@ public class Tools {
         }
     }
 
-    private static void copyFile(Context context, String assetFilePath, String localFilePath) {
+    public static void copyFile(Context context, String assetFilePath, String localFilePath) {
         try {
             InputStream in = context.getAssets().open(assetFilePath);
             FileOutputStream out = new FileOutputStream(localFilePath);
@@ -93,7 +93,7 @@ public class Tools {
         }
     }
 
-    static void copyDirectoryContents(Context context, String assetFilePath, String localFilePath) {
+    public static void copyDirectoryContents(Context context, String assetFilePath, String localFilePath) {
 
         String[] folder;
 
@@ -125,15 +125,24 @@ public class Tools {
         }
     }
 
-    static String getDeviceName() {
-        String manufacturer = Build.MANUFACTURER;
-        String model = Build.MODEL;
+    public static String getDeviceName(Context context) {
+        String name = Settings.Secure.getString(context.getContentResolver(), "device_name");
+        if (name == null || name.isEmpty()) {
+            return getDeviceModel();
+        }
+
+        return name;
+    }
+
+    private static String getDeviceModel() {
+        String manufacturer = Build.MANUFACTURER.replace(" ", "");
+        String model = Build.MODEL.replace(" ", "");
 
         if (model.startsWith(manufacturer)) {
             return capitalize(model);
         }
 
-        return capitalize(manufacturer) + " " + model;
+        return capitalize(manufacturer) + model;
     }
 
     private static String capitalize(String str) {
@@ -157,6 +166,7 @@ public class Tools {
 
         return phrase.toString();
     }
+
     private static boolean isAssetDirectory(Context context, String pathInAssetsDir){
 
         InputStream inputStream = null;
@@ -177,7 +187,7 @@ public class Tools {
         return isDirectory;
     }
 
-    static void logDirectoryFiles(final File folder) {
+    public static void logDirectoryFiles(final File folder) {
         for (final File f : Objects.requireNonNull(folder.listFiles())) {
 
             if (f.isDirectory()) {
@@ -190,7 +200,7 @@ public class Tools {
         }
     }
 
-    static void deleteDirectoryContents(final File folder) {
+    public static void deleteDirectoryContents(final File folder) {
         for (final File f : Objects.requireNonNull(folder.listFiles())) {
 
             if (f.isDirectory()) {
@@ -205,16 +215,13 @@ public class Tools {
         }
     }
 
-    static void writeConfig(String configTemplate, MiningService.MiningConfig miningConfig, String privatePath) {
+    public static void writeConfig(String configTemplate, MiningConfig miningConfig, String privatePath) {
         String config = configTemplate
                 .replace("$algo$", miningConfig.algo)
                 .replace("$url$", miningConfig.pool)
                 .replace("$username$", miningConfig.username)
                 .replace("$pass$", miningConfig.password)
-
-                .replace("$legacythreads$", Integer.toString(miningConfig.legacyThreads))
-                .replace("$legacyintensity$", Integer.toString(miningConfig.legacyIntensity))
-                .replace("$legacyalgo$", miningConfig.algo)
+                .replace("$workername$", miningConfig.workername)
 
                 .replace("$urlhost$", miningConfig.poolHost)
                 .replace("$urlport$", miningConfig.poolPort)
@@ -230,11 +237,11 @@ public class Tools {
         }
     }
 
-    static Map<String, String> getCPUInfo() {
+    public static Map<String, String> getCPUInfo() {
         Map<String, String> output = new HashMap<>();
 
         try {
-            BufferedReader br = null;
+            BufferedReader br;
             br = new BufferedReader(new FileReader("/proc/cpuinfo"));
 
             String str;
@@ -265,18 +272,19 @@ public class Tools {
         return output;
     }
 
-    static String getABI() {
+    public static String getABI() {
         String abiString;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            abiString = Build.SUPPORTED_ABIS[0];
-        } else {
-            abiString = Build.CPU_ABI;
-        }
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//            abiString = Build.SUPPORTED_ABIS[0];
+//        } else {
+//            abiString = Build.CPU_ABI;
+//        }
 
+        abiString = Build.SUPPORTED_ABIS[0];
         return abiString.toLowerCase().trim();
     }
 
-    static private String[] CPU_TEMP_SYS_FILE = {
+    private static final String[] CPU_TEMP_SYS_FILE = {
             "/sys/devices/virtual/thermal/thermal_zone0/temp",
             "/sys/devices/system/cpu/cpu0/cpufreq/cpu_temp",
             "/sys/devices/system/cpu/cpu0/cpufreq/FakeShmoo_cpu_temp",
@@ -307,7 +315,7 @@ public class Tools {
 
     static private String sCPUTempSysFile = "";
 
-    static float getCurrentCPUTemperature() {
+    public static float getCurrentCPUTemperature() {
         if (sCPUTempSysFile.isEmpty())
             return getCPUTempSysFile();
 
@@ -321,8 +329,8 @@ public class Tools {
     static float getCPUTempFromFile(String sFile) {
         float output = 0.0f;
 
-        RandomAccessFile reader = null;
-        String line = null;
+        RandomAccessFile reader;
+        String line;
 
         try {
             reader = new RandomAccessFile(sFile, "r");
@@ -350,7 +358,7 @@ public class Tools {
     }
 
     static float getCPUTempSysFile() {
-        float output = 0.0f;
+        float output;
         for (String sysFile : CPU_TEMP_SYS_FILE) {
             output = getCPUTempFromFile(sysFile);
 
@@ -364,7 +372,7 @@ public class Tools {
         return 0.0f;
     }
 
-    static public String parseCurrency(String value, long coinUnits, long denominationUnits, String symbol) {
+    public static String parseCurrency(String value, long coinUnits, long denominationUnits, String symbol) {
         double d2 = parseCurrencyFloat(value, coinUnits, denominationUnits);
 
         Log.i(LOG_TAG, "parseCurrency: d2: " + d2);
@@ -375,14 +383,14 @@ public class Tools {
         return nf.format(d2) + " " + symbol.toUpperCase();
     }
 
-    static public float parseCurrencyFloat(String value, long coinUnits, long denominationUnits) {
+    public static float parseCurrencyFloat(String value, long coinUnits, long denominationUnits) {
         double base = tryParseDouble(value);
         double d = base / (float) coinUnits;
 
         return Math.round(d * (float) denominationUnits) / (float) denominationUnits;
     }
 
-    static public Long tryParseLong(String s, Long fallback) {
+    public static Long tryParseLong(String s, Long fallback) {
         try {
             return Long.parseLong(s);
         } catch (Exception e) {
@@ -398,7 +406,7 @@ public class Tools {
         }
     }
 
-    static public String getReadableHashRateString(long hashrate) {
+    public static String getReadableHashRateString(long hashrate) {
         BigDecimal bn = new BigDecimal(hashrate);
         BigDecimal bnThousand = new BigDecimal(1000);
 

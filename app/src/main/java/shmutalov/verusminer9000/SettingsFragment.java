@@ -36,6 +36,7 @@ import android.widget.AdapterView;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.SwitchCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
@@ -50,7 +51,7 @@ public class SettingsFragment extends Fragment {
     private static final String LOG_TAG = "MiningSvc";
 
     TextInputLayout tilAddress;
-    private EditText edAddress, edWorkerName, edUsernameparameters;
+    private EditText edAddress, edPassword, edWorkerName, edUsernameparameters;
 
     private Integer nMaxCPUTemp = 65; // 55,60,65,70,75
     private Integer nMaxBatteryTemp = 40; // 30,35,40,45,50
@@ -82,6 +83,7 @@ public class SettingsFragment extends Fragment {
         edPool = view.findViewById(R.id.pool);
         edPort = view.findViewById(R.id.port);
         edUsernameparameters = view.findViewById(R.id.usernameparameters);
+        edPassword = view.findViewById(R.id.password);
         edWorkerName = view.findViewById(R.id.workername);
 
         edMiningGoal = view.findViewById(R.id.mininggoal);
@@ -118,12 +120,7 @@ public class SettingsFragment extends Fragment {
         spPool.setAdapter(adapter);
 
         ImageView imgSpinnerDown = view.findViewById(R.id.imgSpinnerDown);
-        imgSpinnerDown.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                spPool.performClick();
-            }
-        });
+        imgSpinnerDown.setOnClickListener(v -> spPool.performClick());
 
         // CPU Cores
         int cores = Runtime.getRuntime().availableProcessors();
@@ -190,6 +187,10 @@ public class SettingsFragment extends Fragment {
 
         if (!Config.read("usernameparameters").isEmpty()) {
             edUsernameparameters.setText(Config.read("usernameparameters"));
+        }
+
+        if (!Config.read("password").isEmpty()) {
+            edPassword.setText(Config.read("password"));
         }
 
         if (!Config.read("workername").isEmpty()) {
@@ -281,6 +282,7 @@ public class SettingsFragment extends Fragment {
                 if (Config.read("init").equals("1")) {
                     edAddress.setText(Config.read("address"));
                     edUsernameparameters.setText(Config.read("usernameparameters"));
+                    edPassword.setText(Config.read("password"));
                     edWorkerName.setText(Config.read("workername"));
                 }
 
@@ -355,9 +357,14 @@ public class SettingsFragment extends Fragment {
 
             Config.write("usernameparameters", edUsernameparameters.getText().toString().trim());
 
+            String password = edPassword.getText().toString().trim();
+
+            Log.i(LOG_TAG,"Password : *");
+            Config.write("password", password);
+
             String workername = edWorkerName.getText().toString().trim();
             if(workername.isEmpty()) {
-                workername = Tools.getDeviceName();
+                workername = Tools.getDeviceName(appContext);
             }
 
             Log.i(LOG_TAG,"Worker Name : " + workername);

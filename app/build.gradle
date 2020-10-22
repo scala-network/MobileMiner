@@ -12,7 +12,7 @@ android {
 
     defaultConfig {
         applicationId "shmutalov.verusminer9000"
-        minSdkVersion 19
+        minSdkVersion 23
         targetSdkVersion 28 // to avoid an error 13 when running exe in assets folder (sdk 29 gives the error)
         versionCode 7
         versionName "2.1.0"
@@ -30,10 +30,10 @@ android {
 }
 
 dependencies {
-    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
-    implementation 'com.google.android.material:material:1.1.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.2'
+    implementation 'com.google.android.material:material:1.2.1'
     implementation 'com.github.KingsMentor:MobileVisionBarcodeScanner:2.0.0'
-    implementation 'androidx.appcompat:appcompat:1.1.0'
+    implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'org.ocpsoft.prettytime:prettytime:4.0.2.Final'
     implementation 'com.android.volley:volley:1.1.1'

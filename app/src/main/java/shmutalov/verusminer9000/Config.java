@@ -13,28 +13,24 @@ import android.content.SharedPreferences;
 import java.util.HashMap;
 
 public class Config {
-    final static String[] SUPPORTED_ARCHITECTURES = {"arm64-v8a", "armeabi-v7a"};
-
     private static Config mSettings;
     private SharedPreferences preferences;
 
-    static final int DefaultPoolIndex = 1;
+    public static final int DefaultPoolIndex = 1;
     public static final Long statsDelay = 30000L;
-    static final String miner_xlarig = "xlarig";
-    static final String algo = "panthera";
 
     public static final String version = "4";
-    static final Integer logMaxLength = 50000;
-    static final Integer logPruneLength = 1000;
+    public static final Integer logMaxLength = 50000;
+    public static final Integer logPruneLength = 1000;
 
-    private HashMap<String,String> mConfigs = new HashMap<String, String>();
+    private final HashMap<String,String> mConfigs = new HashMap<>();
 
     static void initialize(SharedPreferences preferences) {
         mSettings = new Config();
         mSettings.preferences = preferences;
     }
 
-    static void write(String key, String value) {
+    public static void write(String key, String value) {
         if(!key.startsWith("system:")) {
             mSettings.preferences.edit().putString(key, value).apply();
         }
@@ -46,7 +42,7 @@ public class Config {
         mSettings.mConfigs.put(key, value);
     }
 
-    static void clear() {
+    public static void clear() {
         mSettings.preferences.edit().clear().apply();
         mSettings.mConfigs.clear();
     }

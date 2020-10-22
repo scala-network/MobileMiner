@@ -24,13 +24,11 @@
 //
 // Please see the included LICENSE file for more information.
 
-package shmutalov.verusminer9000;
+package shmutalov.verusminer9000.miner;
 
 import android.app.NotificationManager;
-import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Binder;
 import android.os.IBinder;
 import android.os.PowerManager;
 import android.text.TextUtils;
@@ -43,7 +41,6 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.RequestFuture;
 import com.android.volley.toolbox.Volley;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -54,24 +51,27 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
-import java.net.Inet4Address;
-import java.net.Inet6Address;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
+import shmutalov.verusminer9000.Config;
+import shmutalov.verusminer9000.Tools;
 import shmutalov.verusminer9000.api.PoolItem;
 import shmutalov.verusminer9000.api.ProviderManager;
 
 import static android.os.PowerManager.*;
 
-public class MiningService extends Service {
+public class ScalaMiningService extends AbstractMiningService {
 
     private static final String LOG_TAG = "MiningSvc";
+
+    private static final String miner_xlarig = "xlarig";
+    private static final String algo = "panthera";
+    private static final String[] SUPPORTED_ARCHITECTURES = {"arm64-v8a", "armeabi-v7a"};
+
     private Process process;
     private String configTemplate;
     private String privatePath;
@@ -88,7 +88,19 @@ public class MiningService extends Service {
     private String lastOutput = "";
     private static RequestQueue reqQueue;
 
-    private static String API_IP = "https://json.geoiplookup.io/";
+    private static final String JSON_GEOIPLOOKUP_API_URL = "https://json.geoiplookup.io/";
+
+    public class ScalaMiningServiceBinder extends AbstractMiningServiceBinder {
+        @Override
+        public AbstractMiningService getService() {
+            return ScalaMiningService.this;
+        }
+    }
+
+    @Override
+    public String[] getSupportedArchitectures() {
+        return SUPPORTED_ARCHITECTURES;
+    }
 
     @Override
     public void onCreate()
@@ -108,14 +120,10 @@ public class MiningService extends Service {
         notificationManager.cancelAll();
     }
 
-    private MiningServiceStateListener listener = null;
+    private IMiningServiceStateListener listener = null;
 
-    public interface MiningServiceStateListener {
-        void onStateChange(Boolean state);
-        void onStatusChange(String status, float speed, float max, Integer accepted, Integer difficulty, Integer connection);
-    }
-
-    public void setMiningServiceStateListener(MiningServiceStateListener listener) {
+    @Override
+    public void setMiningServiceStateListener(IMiningServiceStateListener listener) {
         if (this.listener != null) this.listener = null;
         this.listener = listener;
     }
@@ -131,6 +139,7 @@ public class MiningService extends Service {
         if (listener != null) listener.onStatusChange(status, speed, max, accepted, difficulty, connection);
     }
 
+    @Override
     public Boolean getMiningServiceState() {
         return mMiningServiceState;
     }
@@ -143,9 +152,9 @@ public class MiningService extends Service {
 
         Log.i(LOG_TAG, "MINING SERVICE ABI: " + abi);
 
-        String assetExtension = Config.miner_xlarig;
+        String assetExtension = miner_xlarig;
 
-        if (Arrays.asList(Config.SUPPORTED_ARCHITECTURES).contains(abi)) {
+        if (Arrays.asList(SUPPORTED_ARCHITECTURES).contains(abi)) {
             assetPath = assetExtension + "/" + abi;
             libraryPath = "lib" + "/" + abi;
             configPath = assetExtension + "/config.json";
@@ -167,45 +176,39 @@ public class MiningService extends Service {
         }
     }
 
-    class MiningServiceBinder extends Binder {
-        MiningService getService() {
-            return MiningService.this;
-        }
-    }
-
     private static String createCpuConfig(int cores, int threads, int intensity) {
-        String cpuConfig = "";
+        StringBuilder cpuConfig = new StringBuilder();
 
-        for (int i = 0; i < cores; i++) {
-            for (int j = 0; j < threads; j++) {
-                if (!cpuConfig.equals("")) {
-                    cpuConfig += ",";
+        for (int core = 0; core < cores; core++) {
+            for (int thread = 0; thread < threads; thread++) {
+                if (!cpuConfig.toString().equals("")) {
+                    cpuConfig.append(",");
                 }
-                cpuConfig += "[" + intensity + "," + i + "]";
+                cpuConfig
+                        .append("[")
+                        .append(intensity)
+                        .append(",")
+                        .append(core)
+                        .append("]");
             }
         }
 
         return "[" + cpuConfig + "]";
     }
 
-    static class MiningConfig {
-        String username, pool, password, algo, assetExtension, cpuConfig, poolHost, poolPort;
-        int cores, threads, intensity, legacyThreads, legacyIntensity;
-    }
-
-    public MiningConfig newConfig(String address, String password, int cores, int threads, int intensity) {
+    @Override
+    public MiningConfig newConfig(String address, String password, String workername, int cores, int threads, int intensity) {
         MiningConfig config = new MiningConfig();
         PoolItem pi = ProviderManager.getSelectedPool();
+
+        config.algo = algo;
         config.username = address;
         config.cores = cores;
         config.threads = threads;
         config.intensity = intensity;
         config.password = password;
-        config.algo = Config.algo;
-        config.assetExtension = Config.miner_xlarig;
-
-        config.legacyThreads = threads * cores;
-        config.legacyIntensity = intensity;
+        config.workername = workername;
+        config.assetExtension = miner_xlarig;
 
         assert pi != null;
         config.poolHost = pi.getPool();
@@ -224,9 +227,10 @@ public class MiningService extends Service {
 
     @Override
     public IBinder onBind(Intent intent) {
-        return new MiningServiceBinder();
+        return new ScalaMiningServiceBinder();
     }
 
+    @Override
     public void stopMining() {
         if (outputHandler != null) {
             outputHandler.interrupt();
@@ -244,11 +248,11 @@ public class MiningService extends Service {
         }
     }
 
-    public static String getIpByHost(PoolItem pi) {
+    private static String getIpByHost(PoolItem pi) {
         String hostIP = "";
 
         RequestFuture<JSONObject> future = RequestFuture.newFuture();
-        JsonObjectRequest request = new JsonObjectRequest(API_IP + pi.getPool(), new JSONObject(), future, future);
+        JsonObjectRequest request = new JsonObjectRequest(JSON_GEOIPLOOKUP_API_URL + pi.getPool(), new JSONObject(), future, future);
         reqQueue.add(request);
 
         try {
@@ -264,6 +268,7 @@ public class MiningService extends Service {
         return hostIP + ":" + pi.getPort();
     }
 
+    @Override
     public void startMining(MiningConfig config) {
         stopMining();
         new startMiningAsync().execute(config);
@@ -298,7 +303,7 @@ public class MiningService extends Service {
         }
     }
 
-    public void startMiningProcess(MiningConfig config) {
+    private void startMiningProcess(MiningConfig config) {
         Log.i(LOG_TAG, "starting...");
 
         if (process != null) {
@@ -320,7 +325,7 @@ public class MiningService extends Service {
         try {
             Tools.writeConfig(configTemplate, config, privatePath);
 
-            String[] args = {"./" + Config.miner_xlarig};
+            String[] args = {"./" + miner_xlarig};
 
             ProcessBuilder pb = new ProcessBuilder(args);
 
@@ -339,10 +344,10 @@ public class MiningService extends Service {
 
             process = pb.start();
 
-            outputHandler = new MiningService.OutputReaderThread(process.getInputStream(), Config.miner_xlarig);
+            outputHandler = new ScalaMiningService.OutputReaderThread(process.getInputStream());
             outputHandler.start();
 
-            inputHandler = new MiningService.InputReaderThread(process.getOutputStream());
+            inputHandler = new ScalaMiningService.InputReaderThread(process.getOutputStream());
             inputHandler.start();
 
             if (procMon != null) {
@@ -367,6 +372,7 @@ public class MiningService extends Service {
         return accepted;
     }
 
+    @Override
     public String getOutput() {
 
         if (outputHandler != null && outputHandler.getOutput() != null) {
@@ -376,9 +382,24 @@ public class MiningService extends Service {
         return lastOutput;
     }
 
-    public void sendInput(String s) {
+    @Override
+    public void pauseMiner() {
         if (inputHandler != null) {
-            inputHandler.sendInput(s);
+            inputHandler.sendInput("p");
+        }
+    }
+
+    @Override
+    public void resumeMiner() {
+        if (inputHandler != null) {
+            inputHandler.sendInput("r");
+        }
+    }
+
+    @Override
+    public void toggleHashrate() {
+        if (inputHandler != null) {
+            inputHandler.sendInput("h");
         }
     }
 
@@ -409,10 +430,10 @@ public class MiningService extends Service {
     }
 
     private class OutputReaderThread extends Thread {
-        private InputStream inputStream;
-        private StringBuilder output = new StringBuilder();
+        private final InputStream inputStream;
+        private final StringBuilder output = new StringBuilder();
 
-        OutputReaderThread(InputStream inputStream, String miner) {
+        OutputReaderThread(InputStream inputStream) {
             this.inputStream = inputStream;
         }
 
@@ -424,17 +445,17 @@ public class MiningService extends Service {
                 accepted++;
 
                 if(lineCompare.contains("diff")) {
-                    int i = lineCompare.indexOf("diff ") + "diff ".length();
-                    int imax = lineCompare.indexOf(" ", i);
-                    String diff = lineCompare.substring(i, imax).trim();
-                    difficulty = Integer.parseInt(lineCompare.substring(i, imax).trim());;
+                    int start = lineCompare.indexOf("diff ") + "diff ".length();
+                    int end = lineCompare.indexOf(" ", start);
+                    String diff = lineCompare.substring(start, end).trim();
+                    difficulty = Integer.parseInt(diff);
                 }
 
                 if(lineCompare.contains("ms)")) {
-                    int i = lineCompare.indexOf("(", lineCompare.length() - 10) + 1;
-                    int imax = lineCompare.indexOf("ms)");
-                    String conn = lineCompare.substring(i, imax).trim();
-                    connection = Integer.parseInt(lineCompare.substring(i, imax).trim());;
+                    int start = lineCompare.indexOf("(", lineCompare.length() - 10) + 1;
+                    int end = lineCompare.indexOf("ms)");
+                    String conn = lineCompare.substring(start, end).trim();
+                    connection = Integer.parseInt(conn);
                 }
 
             } else if (lineCompare.contains("speed")) {
@@ -489,7 +510,7 @@ public class MiningService extends Service {
 
     private class InputReaderThread extends Thread {
 
-        private OutputStream outputStream;
+        private final OutputStream outputStream;
         private BufferedWriter writer;
 
         InputReaderThread(OutputStream outputStream) {
@@ -501,11 +522,10 @@ public class MiningService extends Service {
                 writer = new BufferedWriter(new OutputStreamWriter(outputStream));
 
                 while (true) {
-
                     try {
                         Thread.sleep(250);
                     } catch (InterruptedException e) {
-
+                        // ignore
                     }
 
                     if (currentThread().isInterrupted()) return;

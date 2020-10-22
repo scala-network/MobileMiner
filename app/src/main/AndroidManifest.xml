@@ -74,7 +74,7 @@
         </activity>
 
         <service
-            android:name="shmutalov.verusminer9000.MiningService"
+            android:name="shmutalov.verusminer9000.miner.ScalaMiningService"
             android:enabled="true"/>
 
         <receiver

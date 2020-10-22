@@ -112,6 +112,11 @@ import shmutalov.verusminer9000.api.PoolItem;
 import shmutalov.verusminer9000.api.ProviderData;
 import shmutalov.verusminer9000.api.ProviderManager;
 import shmutalov.verusminer9000.controls.SimpleTriangleIndicator;
+import shmutalov.verusminer9000.miner.AbstractMiningService;
+import shmutalov.verusminer9000.miner.AbstractMiningServiceBinder;
+import shmutalov.verusminer9000.miner.IMiningServiceStateListener;
+import shmutalov.verusminer9000.miner.MiningConfig;
+import shmutalov.verusminer9000.miner.ScalaMiningService;
 
 import static android.os.PowerManager.PARTIAL_WAKE_LOCK;
 
@@ -136,7 +141,7 @@ public class MainActivity extends BaseActivity
 
     private boolean validArchitecture = true;
 
-    private MiningService.MiningServiceBinder binder;
+    private AbstractMiningServiceBinder binder;
     private boolean bPayoutDataReceived = false;
 
     private boolean bIgnoreCPUCoresEvent = false;
@@ -233,7 +238,8 @@ public class MainActivity extends BaseActivity
         }
 
         if(!isServerConnectionBound) {
-            Intent intent = new Intent(this, MiningService.class);
+            // TODO: make abstract
+            Intent intent = new Intent(this, ScalaMiningService.class);
             bindService(intent, serverConnection, BIND_AUTO_CREATE);
             startService(intent);
             isServerConnectionBound = true;
@@ -374,46 +380,35 @@ public class MainActivity extends BaseActivity
                     dialog.setCancelable(false);
 
                     Button btnYes = dialog.findViewById(R.id.btnStopMiningYes);
-                    btnYes.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            nCores = sbCores.getProgress();
-                            Config.write("cores", Integer.toString(nCores));
+                    btnYes.setOnClickListener(v -> {
+                        nCores = sbCores.getProgress();
+                        Config.write("cores", Integer.toString(nCores));
 
-                            bIsRestartEvent = true;
+                        bIsRestartEvent = true;
 
-                            MainActivity.this.stopMining(); // Stop mining
+                        MainActivity.this.stopMining(); // Stop mining
 
-                            // Start miner with small delay
-                            new Handler().postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
-                                    MainActivity.this.startMining(); // Start mining
-                                }
-                            }, 1000);
+                        // Start miner with small delay
+                        new Handler().postDelayed(() -> {
+                            MainActivity.this.startMining(); // Start mining
+                        }, 1000);
 
-                            updateCores();
+                        updateCores();
 
-                            dialog.dismiss();
-                            bIsRestartDialogShown = false;
-                        }
+                        dialog.dismiss();
+                        bIsRestartDialogShown = false;
                     });
 
                     Button btnNo = dialog.findViewById(R.id.btnStopMiningNo);
-                    btnNo.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            runOnUiThread(new Runnable() {
-                                public void run() {
-                                    bIgnoreCPUCoresEvent = true;
-                                    sbCores.setProgress(nCores);
-                                    bIgnoreCPUCoresEvent = false;
-                                }
-                            });
+                    btnNo.setOnClickListener(v -> {
+                        runOnUiThread(() -> {
+                            bIgnoreCPUCoresEvent = true;
+                            sbCores.setProgress(nCores);
+                            bIgnoreCPUCoresEvent = false;
+                        });
 
-                            dialog.dismiss();
-                            bIsRestartDialogShown = false;
-                        }
+                        dialog.dismiss();
+                        bIsRestartDialogShown = false;
                     });
 
                     dialog.show();
@@ -427,7 +422,9 @@ public class MainActivity extends BaseActivity
             }
         });
 
-        if (!Arrays.asList(Config.SUPPORTED_ARCHITECTURES).contains(Tools.getABI())) {
+        // TODO: make abstract
+        AbstractMiningService miner = new ScalaMiningService();
+        if (!Arrays.asList(miner.getSupportedArchitectures()).contains(Tools.getABI())) {
             String sArchError = "Your architecture is not supported: " + Tools.getABI();
             appendLogOutputFormattedText(sArchError);
             refreshLogOutputView();
@@ -437,13 +434,10 @@ public class MainActivity extends BaseActivity
         }
 
         Button btnShare = findViewById(R.id.btnShare);
-        btnShare.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Bitmap bitmap = takeScreenshot();
-                saveBitmap(bitmap);
-                shareIt();
-            }
+        btnShare.setOnClickListener(v -> {
+            Bitmap bitmap = takeScreenshot();
+            saveBitmap(bitmap);
+            shareIt();
         });
 
         ProviderManager.generate();
@@ -498,7 +492,7 @@ public class MainActivity extends BaseActivity
     }
 
     public void onShowCores(View view) {
-        sendInput("h");
+        toggleHashrate();
     }
 
     public void startTimerTemperatures() {
@@ -509,11 +503,7 @@ public class MainActivity extends BaseActivity
         timerTaskTemperatures = new TimerTask() {
             @Override
             public void run() {
-                runOnUiThread(new Runnable() {
-                    public void run() {
-                        updateTemperatures();
-                    }
-                });
+                runOnUiThread(() -> updateTemperatures());
             }
         };
 
@@ -699,8 +689,9 @@ public class MainActivity extends BaseActivity
         // Worker Name
         TextView tvWorkerName = findViewById(R.id.workername);
         String sWorkerName = Config.read("workername");
-        if(!sWorkerName.equals(""))
+        if(!sWorkerName.equals("")) {
             tvWorkerName.setText(sWorkerName);
+        }
 
         updatePayoutWidgetStatus();
         refreshLogOutputView();
@@ -730,12 +721,7 @@ public class MainActivity extends BaseActivity
     }
 
     public void updateStartButton() {
-        if (isValidConfig()) {
-            enableStartBtn(true);
-        }
-        else {
-            enableStartBtn(false);
-        }
+        enableStartBtn(isValidConfig());
     }
 
     private void updateCores() {
@@ -816,7 +802,7 @@ public class MainActivity extends BaseActivity
 
         if(!ProviderManager.data.isNew) {
             updatePayoutWidget(ProviderManager.data);
-            enablePayoutWidget(true, "XLA");
+            enablePayoutWidget(true, "VRSC");
         }
     }
 
@@ -852,8 +838,9 @@ public class MainActivity extends BaseActivity
             return;
         }
 
-        String password = Config.read("workername");
         String address = Config.read("address");
+        String password = Config.read("password");
+        String workername = Config.read("workername");
 
         if (!Utils.verifyAddress(address)) {
             setStatusText("Invalid wallet address.");
@@ -873,10 +860,11 @@ public class MainActivity extends BaseActivity
 
         loadSettings();
 
-        MiningService s = binder.getService();
-        MiningService.MiningConfig cfg = s.newConfig(
+        AbstractMiningService s = binder.getService();
+        MiningConfig cfg = s.newConfig(
                 username,
                 password,
+                workername,
                 nCores,
                 nThreads,
                 nIntensity
@@ -897,29 +885,23 @@ public class MainActivity extends BaseActivity
         dialog.setCancelable(false);
 
         Button btnYes = dialog.findViewById(R.id.btnStopMiningYes);
-        btnYes.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                bForceMiningOnPause = true;
+        btnYes.setOnClickListener(v -> {
+            bForceMiningOnPause = true;
 
-                if(isDevicePaused()) {
-                    clearMinerLog = false;
-                    resumeMiner();
-                }
-                else
-                    startMining();
-
-                dialog.dismiss();
+            if(isDevicePaused()) {
+                clearMinerLog = false;
+                resumeMiner();
             }
+            else
+                startMining();
+
+            dialog.dismiss();
         });
 
         Button btnNo = dialog.findViewById(R.id.btnStopMiningNo);
-        btnNo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                bForceMiningOnPause = false;
-                dialog.dismiss();
-            }
+        btnNo.setOnClickListener(v -> {
+            bForceMiningOnPause = false;
+            dialog.dismiss();
         });
 
         dialog.show();
@@ -966,7 +948,8 @@ public class MainActivity extends BaseActivity
         }
 
         if(!isServerConnectionBound) {
-            Intent intent = new Intent(this, MiningService.class);
+            // TODO: make abstract
+            Intent intent = new Intent(this, ScalaMiningService.class);
             bindService(intent, serverConnection, BIND_AUTO_CREATE);
             startService(intent);
             isServerConnectionBound = true;
@@ -1127,11 +1110,7 @@ public class MainActivity extends BaseActivity
         timerTaskHashrate = new TimerTask() {
             @Override
             public void run() {
-                runOnUiThread(new Runnable() {
-                    public void run() {
-                        incrementProgressHashrate();
-                    }
-                });
+                runOnUiThread(() -> incrementProgressHashrate());
             }
         };
 
@@ -1209,12 +1188,7 @@ public class MainActivity extends BaseActivity
             updateHashrateTicks(fMax);
 
             // Start timer
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    updateHashrateMeter(fSpeed, fMax);
-                }
-            }, 2000);
+            new Handler().postDelayed(() -> updateHashrateMeter(fSpeed, fMax), 2000);
         }
         else {
             updateHashrateTicks(fMax);
@@ -1520,34 +1494,32 @@ public class MainActivity extends BaseActivity
         }
     }
 
-    private ServiceConnection serverConnection = new ServiceConnection() {
+    private final ServiceConnection serverConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
-            binder = (MiningService.MiningServiceBinder) iBinder;
+            binder = (AbstractMiningServiceBinder) iBinder;
             if (validArchitecture) {
-                btnStart.setOnClickListener(new View.OnClickListener() {
-                    public void onClick(View v) {
-                        if (isDevicePaused()) {
-                            if (Config.read("pauseonbattery").equals("1") && !isCharging && !bForceMiningOnPause) {
-                                askToForceMining();
-                                return;
-                            }
-
-                            clearMinerLog = false;
-                            resumeMiner();
-                        }
-                        else {
-                            toggleMiningState();
+                btnStart.setOnClickListener(v -> {
+                    if (isDevicePaused()) {
+                        if (Config.read("pauseonbattery").equals("1") && !isCharging && !bForceMiningOnPause) {
+                            askToForceMining();
+                            return;
                         }
 
-                        updateMiningButtonState();
+                        clearMinerLog = false;
+                        resumeMiner();
                     }
+                    else {
+                        toggleMiningState();
+                    }
+
+                    updateMiningButtonState();
                 });
 
                 updateMiningButtonState();
                 //setMiningButtonState(binder.getService().getMiningServiceState());
 
-                binder.getService().setMiningServiceStateListener(new MiningService.MiningServiceStateListener() {
+                binder.getService().setMiningServiceStateListener(new IMiningServiceStateListener() {
                     @Override
                     public void onStateChange(Boolean state) {
                         Log.i(LOG_TAG, "onMiningStateChange: " + state);
@@ -1814,7 +1786,7 @@ public class MainActivity extends BaseActivity
             }
 
             if (binder != null) {
-                binder.getService().sendInput("p");
+                binder.getService().pauseMiner();
             }
         }
     }
@@ -1824,7 +1796,7 @@ public class MainActivity extends BaseActivity
             setMinerStatus(STATE_MINING);
 
             if (binder != null) {
-                binder.getService().sendInput("r");
+                binder.getService().resumeMiner();
             }
 
             updateMiningButtonState();
@@ -1832,22 +1804,9 @@ public class MainActivity extends BaseActivity
         }
     }
 
-    private void sendInput(String s) {
-        if (s.equals("p")) {
-            pauseMiner();
-        }
-        else if (s.equals("r")) {
-            if(isDeviceCooling()) {
-                setStatusText(getResources().getString(R.string.amaycpaused));
-                return;
-            }
-
-            resumeMiner();
-        }
-        else {
-            if (binder != null) {
-                binder.getService().sendInput(s);
-            }
+    private void toggleHashrate() {
+        if (binder != null) {
+            binder.getService().toggleHashrate();
         }
     }
 
@@ -1939,8 +1898,6 @@ public class MainActivity extends BaseActivity
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);
             fos.flush();
             fos.close();
-        } catch (FileNotFoundException e) {
-            Log.e(LOG_TAG, e.getMessage(), e);
         } catch (IOException e) {
             Log.e(LOG_TAG, e.getMessage(), e);
         }

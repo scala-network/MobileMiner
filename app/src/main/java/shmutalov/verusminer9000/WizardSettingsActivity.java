@@ -50,15 +50,12 @@ public class WizardSettingsActivity extends BaseActivity {
         tvCooldown = view.findViewById(R.id.cooldownthreshold);
 
         Button btnHardwareHelp = view.findViewById(R.id.btnHardwareHelp);
-        btnHardwareHelp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // inflate the layout of the popup window
-                LayoutInflater inflater = LayoutInflater.from(getApplicationContext());
+        btnHardwareHelp.setOnClickListener(v -> {
+            // inflate the layout of the popup window
+            LayoutInflater inflater = LayoutInflater.from(getApplicationContext());
 
-                View popupView = inflater.inflate(R.layout.helper_hardware_settings, null);
-                Utils.showPopup(v, inflater, popupView);
-            }
+            View popupView = inflater.inflate(R.layout.helper_hardware_settings, null);
+            Utils.showPopup(v, inflater, popupView);
         });
 
         // Cores
@@ -200,7 +197,7 @@ public class WizardSettingsActivity extends BaseActivity {
     }
 
     public void onStart(View view) {
-        Config.write("workername", Tools.getDeviceName());
+        Config.write("workername", Tools.getDeviceName(getApplicationContext()));
 
         Config.write("cores", Integer.toString(sbCores.getProgress()));
         Config.write("maxcputemp", Integer.toString(getCPUTemp()));

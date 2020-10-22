@@ -36,6 +36,7 @@
       "url": "$url$",
       "user": "$username$",
       "pass": "$pass$",
+      "workername": "$workername$",
       "rig-id": null,
       "nicehash": false,
       "keepalive": false,

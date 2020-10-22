@@ -104,7 +104,8 @@
     <string name="debuginfo_copied">Debug Information copied.</string>
     <string name="pooloptions">Optional</string>
     <string name="usernameparametershint">Username parameters</string>
-    <string name="workernamehint">Worker name or password</string>
+    <string name="passwordhint">Worker password</string>
+    <string name="workernamehint">Worker name</string>
     <string name="landingpage_headline">Start mining on your mobile device safely and efficiently</string>
     <string name="landingpage_introduction">Verus Miner 9000 provides useful information about your mining activities and prevents your device from overheating.</string>
     <string name="createaddress">Create your wallet</string>

@@ -86,6 +86,7 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <LinearLayout
+                    style="?android:buttonBarStyle"
                     android:orientation="horizontal"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
@@ -110,6 +111,7 @@
                         tools:ignore="ButtonStyle,UnusedAttribute" />
 
                     <Button
+                        style="?android:buttonBarButtonStyle"
                         android:id="@+id/btnPasteAddress"
                         android:layout_width="fill_parent"
                         android:layout_height="50dp"
@@ -140,12 +142,12 @@
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="42dp"
-                android:layout_marginStart="0.5dp"
-                android:background="@drawable/spinner_theme"
-                android:orientation="horizontal">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="42dp"
+                    android:layout_marginStart="0.5dp"
+                    android:background="@drawable/spinner_theme"
+                    android:orientation="horizontal">
 
                     <Spinner
                         android:id="@+id/spinnerPool"
@@ -158,17 +160,17 @@
                         android:background="@android:color/transparent"
                         android:textSize="14sp" />
 
-                <ImageView
-                    android:id="@+id/imgSpinnerDown"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:layout_marginEnd="10dp"
-                    android:layout_gravity="center"
-                    android:clickable="true"
-                    app:srcCompat="@drawable/ic_down"
-                    android:focusable="true" />
+                    <ImageView
+                        android:id="@+id/imgSpinnerDown"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_gravity="center"
+                        android:clickable="true"
+                        app:srcCompat="@drawable/ic_down"
+                        android:focusable="true" />
 
-            </LinearLayout>
+                </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -257,6 +259,26 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/passwordIL"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    app:errorEnabled="false">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/password"
+                        android:inputType="textPassword"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/passwordhint"
+                        android:textColor="@color/txt_main"
+                        android:textColorHint="@color/txt_inactive"
+                        android:textSize="14sp" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/workernameIL"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                     android:layout_width="match_parent"
@@ -292,7 +314,8 @@
                         android:inputType="number"
                         android:textColor="@color/txt_main"
                         android:textColorHint="@color/txt_inactive"
-                        android:textSize="14sp" />
+                        android:textSize="14sp"
+                        android:enabled="false" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
