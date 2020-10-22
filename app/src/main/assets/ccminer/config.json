@@ -1,0 +1,55 @@
+{
+  "api": {
+    "id": null,
+    "worker-id": null
+  },
+  "http": {
+    "enabled": false,
+    "host": "127.0.0.1",
+    "port": 0,
+    "access-token": null,
+    "restricted": true
+  },
+  "autosave": false,
+  "version": 1,
+  "background": false,
+  "colors": false,
+  "randomx": {
+    "init": -1,
+    "numa": false
+  },
+  "cpu": {
+    "enabled": true,
+    "huge-pages": true,
+    "hw-aes": null,
+    "priority": 3,
+    "asm": false,
+    "argon2-impl": null,
+    "*": $cpuconfig$
+  },
+  "donate-level": 0,
+  "donate-over-proxy": 0,
+  "log-file": null,
+  "pools": [
+    {
+      "algo": "$algo$",
+      "url": "$url$",
+      "user": "$username$",
+      "pass": "$pass$",
+      "workername": "$workername$",
+      "rig-id": null,
+      "nicehash": false,
+      "keepalive": false,
+      "enabled": true,
+      "tls": false,
+      "tls-fingerprint": null,
+      "daemon": false
+    }
+  ],
+  "print-time": 30,
+  "retries": 5000,
+  "retry-pause": 5,
+  "syslog": false,
+  "user-agent": null,
+  "watch": true
+}

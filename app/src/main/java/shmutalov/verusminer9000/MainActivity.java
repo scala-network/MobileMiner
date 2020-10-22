@@ -76,11 +76,11 @@ import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.fragment.app.Fragment;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -116,7 +116,7 @@ import shmutalov.verusminer9000.miner.AbstractMiningService;
 import shmutalov.verusminer9000.miner.AbstractMiningServiceBinder;
 import shmutalov.verusminer9000.miner.IMiningServiceStateListener;
 import shmutalov.verusminer9000.miner.MiningConfig;
-import shmutalov.verusminer9000.miner.ScalaMiningService;
+import shmutalov.verusminer9000.miner.VerusBinMiningService;
 
 import static android.os.PowerManager.PARTIAL_WAKE_LOCK;
 
@@ -239,7 +239,7 @@ public class MainActivity extends BaseActivity
 
         if(!isServerConnectionBound) {
             // TODO: make abstract
-            Intent intent = new Intent(this, ScalaMiningService.class);
+            Intent intent = new Intent(this, VerusBinMiningService.class);
             bindService(intent, serverConnection, BIND_AUTO_CREATE);
             startService(intent);
             isServerConnectionBound = true;
@@ -423,7 +423,7 @@ public class MainActivity extends BaseActivity
         });
 
         // TODO: make abstract
-        AbstractMiningService miner = new ScalaMiningService();
+        AbstractMiningService miner = new VerusBinMiningService();
         if (!Arrays.asList(miner.getSupportedArchitectures()).contains(Tools.getABI())) {
             String sArchError = "Your architecture is not supported: " + Tools.getABI();
             appendLogOutputFormattedText(sArchError);
@@ -949,7 +949,7 @@ public class MainActivity extends BaseActivity
 
         if(!isServerConnectionBound) {
             // TODO: make abstract
-            Intent intent = new Intent(this, ScalaMiningService.class);
+            Intent intent = new Intent(this, VerusBinMiningService.class);
             bindService(intent, serverConnection, BIND_AUTO_CREATE);
             startService(intent);
             isServerConnectionBound = true;
@@ -1763,14 +1763,14 @@ public class MainActivity extends BaseActivity
         Drawable buttonDrawable = btnStart.getBackground();
         buttonDrawable = DrawableCompat.wrap(buttonDrawable);
 
-        if(enabled) {
-            DrawableCompat.setTint(buttonDrawable, getResources().getColor(R.color.bg_green));
+        if (enabled) {
+            DrawableCompat.setTint(buttonDrawable, ResourcesCompat.getColor(getResources(), R.color.bg_green, null));
             btnStart.setBackground(buttonDrawable);
-            btnStart.setTextColor(getResources().getColor(R.color.c_white));
+            btnStart.setTextColor(ResourcesCompat.getColor(getResources(), R.color.c_white, null));
         } else {
-            DrawableCompat.setTint(buttonDrawable, getResources().getColor(R.color.c_inactive));
+            DrawableCompat.setTint(buttonDrawable, ResourcesCompat.getColor(getResources(), R.color.c_inactive, null));
             btnStart.setBackground(buttonDrawable);
-            btnStart.setTextColor(getResources().getColor(R.color.c_inactive));
+            btnStart.setTextColor(ResourcesCompat.getColor(getResources(), R.color.c_inactive, null));
         }
 
         btnStart.setEnabled(enabled);
