@@ -264,19 +264,15 @@ public class SettingsFragment extends Fragment {
             }
         });
 
-        swDisableTempControl.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v) {
-                boolean checked = ((Switch)v).isChecked();
-                if (checked) {
-                    // inflate the layout of the popup window
-                    View popupView = inflater.inflate(R.layout.warning_amayc, null);
-                    Utils.showPopup(v, inflater, popupView);
-                }
-
-                enableAmaycControl(!checked);
+        swDisableTempControl.setOnClickListener(v -> {
+            boolean checked = ((Switch)v).isChecked();
+            if (checked) {
+                // inflate the layout of the popup window
+                View popupView = inflater.inflate(R.layout.warning_amayc, null);
+                Utils.showPopup(v, inflater, popupView);
             }
+
+            enableAmaycControl(!checked);
         });
 
         spPool.setOnItemSelectedListener(new OnItemSelectedListener() {
@@ -308,7 +304,7 @@ public class SettingsFragment extends Fragment {
             }
         });
 
-        PoolItem poolItem = null;
+        PoolItem poolItem;
         String poolSelected = Config.read("selected_pool");
         int sp = Config.DefaultPoolIndex;
         if (poolSelected.isEmpty()) {
@@ -325,14 +321,14 @@ public class SettingsFragment extends Fragment {
             poolSelected = Integer.toString(sp);
         }
 
-        if(poolSelected.equals("0")) {
+        if (poolSelected.equals("0")) {
             edPool.setText(Config.read("custom_pool"));
             edPort.setText(Config.read("custom_port"));
-        } else if(!Config.read("custom_port").isEmpty()) {
+        } else if (!Config.read("custom_port").isEmpty()) {
             assert poolItem != null;
             edPool.setText(poolItem.getKey());
             edPort.setText(Config.read("custom_port"));
-        }else{
+        } else {
             Config.write("custom_pool","");
             Config.write("custom_port","");
             edPool.setText(poolItem.getKey());
@@ -341,108 +337,105 @@ public class SettingsFragment extends Fragment {
 
         spPool.setSelection(Integer.parseInt(poolSelected));
 
-        bSave.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // Validate address
-                String address = edAddress.getText().toString().trim();
+        bSave.setOnClickListener(view1 -> {
+            // Validate address
+            String address = edAddress.getText().toString().trim();
 
-                if(address.isEmpty() || !Utils.verifyAddress(address)) {
-                    tilAddress.setErrorEnabled(true);
-                    tilAddress.setError(getResources().getString(R.string.invalidaddress));
-                    requestFocus(edAddress);
-                    return;
-                }
-
-                tilAddress.setErrorEnabled(false);
-                tilAddress.setError(null);
-
-                Config.write("address", address);
-
-                Config.write("usernameparameters", edUsernameparameters.getText().toString().trim());
-
-                String workername = edWorkerName.getText().toString().trim();
-                if(workername.isEmpty()) {
-                    workername = Tools.getDeviceName();
-                }
-
-                Log.i(LOG_TAG,"Worker Name : " + workername);
-                Config.write("workername", workername);
-                edWorkerName.setText(workername);
-
-                String key = spPool.getSelectedItem().toString();
-                int selectedPosition = Config.DefaultPoolIndex;
-
-                PoolItem[] pools = ProviderManager.getPools();
-                for(int i = 0; i < pools.length; i++) {
-                    PoolItem pi = pools[i];
-                    if(pi.getKey().equals(key)) {
-                        selectedPosition = i;
-                        break;
-                    }
-                }
-
-                PoolItem pi = ProviderManager.getPoolById(selectedPosition);
-                String port = edPort.getText().toString().trim();
-                String pool = edPool.getText().toString().trim();
-
-                Log.i(LOG_TAG,"PoolType : " + pi.getPoolType());
-                if(pi.getPoolType() == 0) {
-                    Config.write("custom_pool", pool);
-                    Config.write("custom_port", port);
-                } else if(!port.isEmpty() && !pi.getPort().equals(port)) {
-                    Config.write("custom_pool", "");
-                    Config.write("custom_port", port);
-                } else {
-                    Config.write("custom_port", "");
-                    Config.write("custom_pool", "");
-                }
-
-                Log.i(LOG_TAG,"SelectedPool : " + selectedPosition);
-                Config.write("selected_pool", Integer.toString(selectedPosition));
-                Config.write("cores", Integer.toString(sbCores.getProgress()));
-                Config.write("threads", "1"); // Default value
-                Config.write("intensity", "1"); // Default value
-
-                Config.write("maxcputemp", Integer.toString(getCPUTemp()));
-                Config.write("maxbatterytemp", Integer.toString(getBatteryTemp()));
-                Config.write("cooldownthreshold", Integer.toString(getCooldownTheshold()));
-                Config.write("disableamayc", (swDisableTempControl.isChecked() ? "1" : "0"));
-
-                String mininggoal = edMiningGoal.getText().toString().trim();
-                if(!mininggoal.isEmpty()) {
-                    Config.write("mininggoal", mininggoal);
-                }
-
-                Config.write("pauseonbattery", swPauseOnBattery.isChecked() ? "1" : "0");
-                Config.write("keepscreenonwhenmining", swKeepScreenOnWhenMining.isChecked() ? "1" : "0");
-
-                Config.write("init", "1");
-
-                Toast.makeText(appContext, "Settings Saved", Toast.LENGTH_SHORT).show();
-
-                MainActivity main = (MainActivity) getActivity();
-                assert main != null;
-                main.stopMining();
-                main.loadSettings();
-                main.setTitle(getResources().getString(R.string.home));
-
-                if (getFragmentManager() != null) {
-                    for (Fragment fragment : getFragmentManager().getFragments()) {
-                        if (fragment != null) {
-                            getFragmentManager().beginTransaction().remove(fragment).commit();
-                            ProviderManager.afterSave();
-                        }
-                    }
-                }
-
-                BottomNavigationView nav = main.findViewById(R.id.main_navigation);
-                nav.getMenu().getItem(0).setChecked(true);
-
-                main.updateStartButton();
-                main.updateStatsListener();
-                main.updateUI();
+            if(address.isEmpty() || !Utils.verifyAddress(address)) {
+                tilAddress.setErrorEnabled(true);
+                tilAddress.setError(getResources().getString(R.string.invalidaddress));
+                requestFocus(edAddress);
+                return;
             }
+
+            tilAddress.setErrorEnabled(false);
+            tilAddress.setError(null);
+
+            Config.write("address", address);
+
+            Config.write("usernameparameters", edUsernameparameters.getText().toString().trim());
+
+            String workername = edWorkerName.getText().toString().trim();
+            if(workername.isEmpty()) {
+                workername = Tools.getDeviceName();
+            }
+
+            Log.i(LOG_TAG,"Worker Name : " + workername);
+            Config.write("workername", workername);
+            edWorkerName.setText(workername);
+
+            String key = spPool.getSelectedItem().toString();
+            int selectedPosition = Config.DefaultPoolIndex;
+
+            PoolItem[] pools1 = ProviderManager.getPools();
+            for(int i = 0; i < pools1.length; i++) {
+                PoolItem pi = pools1[i];
+                if(pi.getKey().equals(key)) {
+                    selectedPosition = i;
+                    break;
+                }
+            }
+
+            PoolItem pi = ProviderManager.getPoolById(selectedPosition);
+            String port = edPort.getText().toString().trim();
+            String pool = edPool.getText().toString().trim();
+
+            Log.i(LOG_TAG,"PoolType : " + pi.getPoolType());
+            if(pi.getPoolType() == 0) {
+                Config.write("custom_pool", pool);
+                Config.write("custom_port", port);
+            } else if(!port.isEmpty() && !pi.getPort().equals(port)) {
+                Config.write("custom_pool", "");
+                Config.write("custom_port", port);
+            } else {
+                Config.write("custom_port", "");
+                Config.write("custom_pool", "");
+            }
+
+            Log.i(LOG_TAG,"SelectedPool : " + selectedPosition);
+            Config.write("selected_pool", Integer.toString(selectedPosition));
+            Config.write("cores", Integer.toString(sbCores.getProgress()));
+            Config.write("threads", "1"); // Default value
+            Config.write("intensity", "1"); // Default value
+
+            Config.write("maxcputemp", Integer.toString(getCPUTemp()));
+            Config.write("maxbatterytemp", Integer.toString(getBatteryTemp()));
+            Config.write("cooldownthreshold", Integer.toString(getCooldownTheshold()));
+            Config.write("disableamayc", (swDisableTempControl.isChecked() ? "1" : "0"));
+
+            String mininggoal = edMiningGoal.getText().toString().trim();
+            if(!mininggoal.isEmpty()) {
+                Config.write("mininggoal", mininggoal);
+            }
+
+            Config.write("pauseonbattery", swPauseOnBattery.isChecked() ? "1" : "0");
+            Config.write("keepscreenonwhenmining", swKeepScreenOnWhenMining.isChecked() ? "1" : "0");
+
+            Config.write("init", "1");
+
+            Toast.makeText(appContext, "Settings Saved", Toast.LENGTH_SHORT).show();
+
+            MainActivity main = (MainActivity) getActivity();
+            assert main != null;
+            main.stopMining();
+            main.loadSettings();
+            main.setTitle(getResources().getString(R.string.home));
+
+            if (getFragmentManager() != null) {
+                for (Fragment fragment : getFragmentManager().getFragments()) {
+                    if (fragment != null) {
+                        getFragmentManager().beginTransaction().remove(fragment).commit();
+                        ProviderManager.afterSave();
+                    }
+                }
+            }
+
+            BottomNavigationView nav = main.findViewById(R.id.main_navigation);
+            nav.getMenu().getItem(0).setChecked(true);
+
+            main.updateStartButton();
+            main.updateStatsListener();
+            main.updateUI();
         });
 
         edPool.addTextChangedListener(new TextWatcher() {
@@ -480,72 +473,57 @@ public class SettingsFragment extends Fragment {
         Button btnPasteAddress = view.findViewById(R.id.btnPasteAddress);
         btnPasteAddress.setOnClickListener(v -> edAddress.setText(Utils.pasteFromClipboard(MainActivity.getContextOfApplication())));
 
-        bQrCode.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Context appContext = MainActivity.getContextOfApplication();
-                if (Build.VERSION.SDK_INT >= 23) {
-                    if (ContextCompat.checkSelfPermission(appContext, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-                        requestPermissions(new String[]{Manifest.permission.CAMERA}, 100);
-                    }
-                    else {
-                        startQrCodeActivity();
-                    }
+        bQrCode.setOnClickListener(v -> {
+            Context appContext1 = MainActivity.getContextOfApplication();
+
+            // TODO: Fix QR Code bug, then enable that feature
+            if (true) {
+                Toast.makeText(appContext1, "QR Code scanning feature temporary disabled.", Toast.LENGTH_LONG).show();
+                return;
+            }
+
+            if (Build.VERSION.SDK_INT >= 23) {
+                if (ContextCompat.checkSelfPermission(appContext1, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                    requestPermissions(new String[]{Manifest.permission.CAMERA}, 100);
+                } else {
+                    startQrCodeActivity();
                 }
-                else {
-                    Toast.makeText(appContext, "This version of Android does not support Qr Code.", Toast.LENGTH_LONG).show();
-                }
+            } else {
+                Toast.makeText(appContext1, "This version of Android does not support Qr Code.", Toast.LENGTH_LONG).show();
             }
         });
 
         Button btnMineScala = view.findViewById(R.id.btnMineScala);
-        btnMineScala.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final Dialog dialog = new Dialog(getContext());
-                dialog.setContentView(R.layout.mine_scala);
-                dialog.setCancelable(false);
+        btnMineScala.setOnClickListener(v -> {
+            final Dialog dialog = new Dialog(getContext());
+            dialog.setContentView(R.layout.mine_scala);
+            dialog.setCancelable(false);
 
-                Button btnYes = dialog.findViewById(R.id.btnYes);
-                btnYes.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        edAddress.setText(Utils.VERUS_DONATION_ADDRESS);
+            Button btnYes = dialog.findViewById(R.id.btnYes);
+            btnYes.setOnClickListener(v1 -> {
+                edAddress.setText(Utils.VERUS_DONATION_ADDRESS);
 
-                        dialog.dismiss();
-                    }
-                });
+                dialog.dismiss();
+            });
 
-                Button btnNo = dialog.findViewById(R.id.btnNo);
-                btnNo.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        dialog.dismiss();
-                    }
-                });
+            Button btnNo = dialog.findViewById(R.id.btnNo);
+            btnNo.setOnClickListener(v12 -> dialog.dismiss());
 
-                dialog.show();
-            }
+            dialog.show();
         });
 
         Button btnHardwareHelp = view.findViewById(R.id.btnHardwareHelp);
-        btnHardwareHelp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // inflate the layout of the popup window
-                View popupView = inflater.inflate(R.layout.helper_hardware_settings, null);
-                Utils.showPopup(v, inflater, popupView);
-            }
+        btnHardwareHelp.setOnClickListener(v -> {
+            // inflate the layout of the popup window
+            View popupView = inflater.inflate(R.layout.helper_hardware_settings, null);
+            Utils.showPopup(v, inflater, popupView);
         });
 
         Button btnAmaycWarning = view.findViewById(R.id.btnAmaycWarning);
-        btnAmaycWarning.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // inflate the layout of the popup window
-                View popupView = inflater.inflate(R.layout.warning_amayc, null);
-                Utils.showPopup(v, inflater, popupView);
-            }
+        btnAmaycWarning.setOnClickListener(v -> {
+            // inflate the layout of the popup window
+            View popupView = inflater.inflate(R.layout.warning_amayc, null);
+            Utils.showPopup(v, inflater, popupView);
         });
 
         return view;
@@ -594,11 +572,17 @@ public class SettingsFragment extends Fragment {
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         Context appContext = MainActivity.getContextOfApplication();
+
+        // TODO: Fix QR Code bug, then enable that feature
+        if (true) {
+            Toast.makeText(appContext, "QR Code scanning feature temporary disabled.", Toast.LENGTH_LONG).show();
+            return;
+        }
+
         if (requestCode == 100) {
             if (permissions[0].equals(Manifest.permission.CAMERA) && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 startQrCodeActivity();
-            }
-            else {
+            } else {
                 Toast.makeText(appContext,"Camera Permission Denied.", Toast.LENGTH_LONG).show();
             }
         }

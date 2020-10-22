@@ -45,7 +45,12 @@ public class WizardAddressActivity extends BaseActivity {
 
     public void onScanQrCode(View view) {
         Context appContext = WizardAddressActivity.this;
-
+        // TODO: Fix QR Code bug, then enable that feature
+        if (true) {
+            Toast.makeText(appContext, "QR Code scanning feature temporary disabled.", Toast.LENGTH_LONG).show();
+            return;
+        }
+        
         if (Build.VERSION.SDK_INT >= 23) {
             if (ContextCompat.checkSelfPermission(appContext, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
                 requestPermissions(new String[]{Manifest.permission.CAMERA}, 100);
@@ -78,6 +83,11 @@ public class WizardAddressActivity extends BaseActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         Context appContext = WizardAddressActivity.this;
+        // TODO: Fix QR Code bug, then enable that feature
+        if (true) {
+            Toast.makeText(appContext, "QR Code scanning feature temporary disabled.", Toast.LENGTH_LONG).show();
+            return;
+        }
 
         if (requestCode == 100) {
             if (permissions[0].equals(Manifest.permission.CAMERA) && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
@@ -125,24 +135,16 @@ public class WizardAddressActivity extends BaseActivity {
         dialog.setCancelable(false);
 
         Button btnYes = dialog.findViewById(R.id.btnYes);
-        btnYes.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                View view2 = findViewById(android.R.id.content).getRootView();
-                TextView tvAddress = view2.findViewById(R.id.addressWizard);
-                tvAddress.setText(Utils.VERUS_DONATION_ADDRESS);
+        btnYes.setOnClickListener(v -> {
+            View view2 = findViewById(android.R.id.content).getRootView();
+            TextView tvAddress = view2.findViewById(R.id.addressWizard);
+            tvAddress.setText(Utils.VERUS_DONATION_ADDRESS);
 
-                dialog.dismiss();
-            }
+            dialog.dismiss();
         });
 
         Button btnNo = dialog.findViewById(R.id.btnNo);
-        btnNo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
+        btnNo.setOnClickListener(v -> dialog.dismiss());
 
         dialog.show();
     }
