@@ -33,12 +33,9 @@ public class QrCodeScannerActivity extends AppCompatActivity implements BarcodeR
         barcodeCapture = (BarcodeCapture) getSupportFragmentManager().findFragmentById(R.id.barcode);
         barcodeCapture.setRetrieval(this);
 
-        findViewById(R.id.stop).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                barcodeCapture.stopScanning();
-                finish();
-            }
+        findViewById(R.id.stop).setOnClickListener(v -> {
+            barcodeCapture.stopScanning();
+            finish();
         });
 
         scanResult = findViewById(R.id.scanResult);
@@ -57,7 +54,7 @@ public class QrCodeScannerActivity extends AppCompatActivity implements BarcodeR
     @Override
     public void onRetrieved(final Barcode barcode) {
         String miner = barcode.displayValue;
-        scanResult.setText("Scala Address : " + miner);
+        scanResult.setText("Verus Address : " + miner);
         if(Utils.verifyAddress(miner)) {
             Log.d("CONSOLE:QRCODE", "Barcode read: " + barcode.displayValue);
 
@@ -69,7 +66,7 @@ public class QrCodeScannerActivity extends AppCompatActivity implements BarcodeR
             return;
         }
 
-        Toast.makeText(MainActivity.contextOfApplication, "Invalid scala address", Toast.LENGTH_SHORT).show();
+        Toast.makeText(MainActivity.contextOfApplication, "Invalid verus address", Toast.LENGTH_SHORT).show();
     }
 
     @Override

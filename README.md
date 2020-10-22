@@ -1,14 +1,14 @@
-# Scala Android Miner
+# Verus Miner 9000
 
-A high performance and open-source application for mining Scala on Android mobile devices.
+A high performance and open-source application for mining Veruscoin on Android mobile devices.
 
 <p align="left">
-  <img src="https://scalaproject.io/assets/img/mobile-miner.png" width="350" title="hover text">
+  <img src="https://wiki.veruscoin.io/img/favicon.png" width="350" title="Veruscoin">
 </p>
 
 ## Supported CPU instruction sets
-- **armeabi-v7a**
 - **arm64-v8a**
+- **x86-64**
 
 ## Features		
 - AMAYC machine-learning algorithm to protect the device
@@ -20,9 +20,10 @@ A high performance and open-source application for mining Scala on Android mobil
 - Live Pool statistics for pools based on nodejs-pool cryptonote-nodejs-pool frameworks
 
 ## Miner
-This application is built upon the libraries of XLArig, the official Scala (XLA) CPU miner.
-- Miner: [XLArig](https://github.com/scala-network/XLArig)
-- Algorithm: [DefyX](https://medium.com/scala-network/scalas-v6-testnet-and-new-proof-of-work-information-3ba2a4eb0ad8)
+This application is built upon the libraries of ccminer
+- Miner: [ccminer](https://github.com/monkins1010/ccminer)
+- Android port: [ccminer](https://github.com/shmutalov/ccminer)
+- Algorithm: [Verushash](https://veruscoin.io/downloads/VerusVision.pdf)
 
 ## Usage
 ### Settings
@@ -32,7 +33,7 @@ When opening the application for the first time, you have to specify the pool th
 The 'Worker name or pool options' field can be left blank if the pool doesn't use any options/password. In this case, the worker name will be set to your device type (make and model) by default so you can easily identify it on the pool.
 
 #### Wallet Address
-Specifies the Scala wallet address that will be used with the mining pool. A validation has been added to this field to make sure you enter a valid address. You can also use the provided QR code functionnality to retrieve the address. Currently, only the [Official Pool](https://pool.scalaproject.io) and the [Official GUI Wallet](https://github.com/scala-network/scala-electron-gui) support QR code functionnality.
+Specifies the Veruscoin wallet address that will be used with the mining pool. A validation has been added to this field to make sure you enter a valid address. You can also use the provided QR code functionnality to retrieve the address. Currently, only the [Official Pool](https://pool.scalaproject.io) and the [Official GUI Wallet](https://github.com/scala-network/scala-electron-gui) support QR code functionnality.
 
 #### Hardware Settings
 ##### CPU Cores
@@ -75,22 +76,20 @@ The application will keep mining even when your device is on standby mode. So ke
 - Unified design for the all-in-one application
 
 ## Donations
-Donations setting has been set to 0% in the XLArig lib embedded within the application.
-* XLA: `SEiTBcLGpfm3uj5b5RaZDGSUoAGnLCyG5aJjAwko67jqRwWEH26NFPd26EUpdL1zh4RTmTdRWLz8WCmk5F4umYaFByMtJT6RLjD6vzApQJWfi`
-* BTC: `1XTLY5LqdBXRW6hcHtnuMU7c68mAyW6qm`
-* ETH: `0x133a15dF7177823Dd407ca87A190bbE4585a379e`
+* VRSC: `RKE5YdseSU6becMtpHKn4z9N4ahRkqm1cV`
 
 ## Credits
+* Forked from [MobileMiner](https://github.com/scala-network/MobileMiner)
 * Forked from [Mine2gether](https://github.com/Mine2Gether/m2g_android_miner)
 * Original code from [MoneroMiner](https://github.com/upost/MoneroMiner)
 
 ## Contacts
-* [Website](https://scalaproject.io/)
+* [Website](https://veruscoin.io/)
 * hello@scalaproject.io
-* [Discord](https://discord.gg/djAFVvy)
-* [Twitter](https://twitter.com/scalahq)
+* [Discord](https://verus.io/discord)
+* [Twitter](https://twitter.com/VerusCoin)
 
 
 # License
 
-XLARig and Mobile Miner is licensed as GPLv3, thus this derivative work also is. You need to consider this if you plan to publish an Android application. You'd propably need to make it GPLv3 also, unless you can somehow make use of the GPL clause which allows to bundle a GPLv3 binary with another proprietary licensed binary.
+ccminer, XLARig and Mobile Miner is licensed as GPLv3, thus this derivative work also is. You need to consider this if you plan to publish an Android application. You'd propably need to make it GPLv3 also, unless you can somehow make use of the GPL clause which allows to bundle a GPLv3 binary with another proprietary licensed binary.

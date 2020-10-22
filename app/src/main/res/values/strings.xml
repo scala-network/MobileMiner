@@ -16,7 +16,7 @@
     <string name="celsius">°C</string>
     <string name="cputemp">CPU:</string>
     <string name="batterytemp">Battery:</string>
-    <string name="cooling">Cooling...</string>
+    <string name="cooling">Cooling…</string>
     <string name="paused">Paused</string>
     <string name="cancel">Cancel</string>
     <string name="hashrate">Hashrate</string>
@@ -26,7 +26,7 @@
     <string name="pool">Pool</string>
     <string name="cpu">CPU</string>
     <string name="scanqrcode">QR Code</string>
-    <string name="processing">Retrieving Hashrate...</string>
+    <string name="processing">Retrieving Hashrate…</string>
     <string name="disclaimer">Disclaimer</string>
     <string name="shares">Shares</string>
     <string name="invalid">Invalid</string>
@@ -93,7 +93,7 @@
     <string name="amaycpaused">Cannot resume mining when device is cooling</string>
     <string name="amaycerror">AMAYC: Cannot reach distant server.</string>
     <string name="miningpaused">Mining paused until temperatures return to safe levels.</string>
-    <string name="miningbackground">Scala Miner is still mining in the background.</string>
+    <string name="miningbackground">Verus Miner 9000 is still mining in the background.</string>
     <string name="donationsinfo">Donations support the contributors and help pay for the project infrastructure.</string>
     <string name="donationadresses">Donations</string>
     <string name="donationadressbtc_copied">BTC Donation Address copied.</string>
@@ -106,7 +106,7 @@
     <string name="usernameparametershint">Username parameters</string>
     <string name="workernamehint">Worker name or password</string>
     <string name="landingpage_headline">Start mining on your mobile device safely and efficiently</string>
-    <string name="landingpage_introduction">Scala Miner provides useful information about your mining activities and prevents your device from overheating.</string>
+    <string name="landingpage_introduction">Verus Miner 9000 provides useful information about your mining activities and prevents your device from overheating.</string>
     <string name="createaddress">Create your wallet</string>
     <string name="disclaimer_agreement">By using this application, you confirm your knowledge and acceptance of the Disclaimer</string>
     <string name="paper">Paper</string>
@@ -134,7 +134,7 @@
     <string name="miners">Miners</string>
     <string name="advanced">Advanced</string>
     <string name="supporttheproject">Do you want to support the project?</string>
-    <string name="minetoscala">The Scala donation address will then be used for mining.</string>
+    <string name="minetoscala">The Veruscoin donation address will then be used for mining.</string>
     <string name="sure">Sure!</string>
     <string name="nothanks">Nope.</string>
     <string name="stopmining">Do you want to restart mining?</string>
