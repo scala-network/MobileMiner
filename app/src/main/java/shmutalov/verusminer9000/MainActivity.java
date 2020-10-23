@@ -125,7 +125,7 @@ public class MainActivity extends BaseActivity
 {
     private static final String LOG_TAG = "MainActivity";
 
-    private TextView tvHashrate, tvStatus, tvNbCores, tvCPUTemperature, tvBatteryTemperature, tvAcceptedShares, tvDifficulty, tvConnection, tvLog, tvStatusProgess;
+    private TextView tvHashrate, tvStatus, tvNbCores, tvCPUTemperature, tvBatteryTemperature, tvAcceptedShares, tvDifficulty, tvLog, tvStatusProgess;
     private TubeSpeedometer meterCores, meterHashrate, meterHashrate_avg, meterHashrate_max;
     private SeekBar sbCores = null;
 
@@ -345,7 +345,6 @@ public class MainActivity extends BaseActivity
 
         tvAcceptedShares = findViewById(R.id.acceptedshare);
         tvDifficulty  = findViewById(R.id.difficulty);
-        tvConnection  = findViewById(R.id.connection);
 
         btnStart = findViewById(R.id.start);
         enableStartBtn(false);
@@ -717,16 +716,13 @@ public class MainActivity extends BaseActivity
 
         ImageView imgAcceptedShare = findViewById(R.id.imgacceptedshare);
         ImageView imgDifficulty = findViewById(R.id.imgdifficulty);
-        ImageView imgConnection = findViewById(R.id.imgconnection);
 
         if(height < 2000) {
             imgAcceptedShare.setVisibility(View.GONE);
             imgDifficulty.setVisibility(View.GONE);
-            imgConnection.setVisibility(View.GONE);
         } else {
             imgAcceptedShare.setVisibility(View.VISIBLE);
             imgDifficulty.setVisibility(View.VISIBLE);
-            imgConnection.setVisibility(View.VISIBLE);
         }
     }
 
@@ -1162,7 +1158,12 @@ public class MainActivity extends BaseActivity
 
     private void updateHashrateTicks(double max) {
         SpeedView meterTicks = findViewById(R.id.meter_hashrate_ticks);
-        if(meterTicks.getTickNumber() == 0 && max > 0) {
+        if (meterTicks.getTickNumber() == 0) {
+            meterTicks.setTickNumber(10);
+            meterTicks.setTextColor(ResourcesCompat.getColor(getResources(), R.color.txt_main, getTheme()));
+        }
+
+        if (max > 0) {
             float hrMax = (float)(nNbMaxCores * max / nCores);
             if(!nCores.equals(nNbMaxCores)) {
                 hrMax = hrMax * 1.05f;
@@ -1170,7 +1171,7 @@ public class MainActivity extends BaseActivity
 
             meterTicks.setMaxSpeed(hrMax);
             meterTicks.setTickNumber(10);
-            meterTicks.setTextColor(ResourcesCompat.getColor(getResources(), R.color.txt_main, getTheme()));
+            //meterTicks.setTextColor(ResourcesCompat.getColor(getResources(), R.color.txt_main, getTheme()));
 
             meterHashrate.setMaxSpeed(hrMax);
             meterHashrate_avg.setMaxSpeed(hrMax);
@@ -1202,14 +1203,12 @@ public class MainActivity extends BaseActivity
             return;
 
         SpeedView meterTicks = findViewById(R.id.meter_hashrate_ticks);
-        if(meterTicks.getTickNumber() == 0) {
-            updateHashrateTicks(max);
+        updateHashrateTicks(max);
 
+        if (meterTicks.getTickNumber() == 0) {
             // Start timer
             new Handler().postDelayed(() -> updateHashrateMeter(speed, max), 2000);
-        }
-        else {
-            updateHashrateTicks(max);
+        } else {
             updateHashrateMeter(speed, max);
         }
     }
@@ -1220,7 +1219,7 @@ public class MainActivity extends BaseActivity
         tvHashrate.setText(String.format(Locale.getDefault(), "%.1f", speed));
         setMinerStatus(STATE_MINING);
 
-        if(speed <= 0.0f) {
+        if(speed <= 0.0) {
             tvHashrate.setTextColor(ResourcesCompat.getColor(getResources(), R.color.txt_inactive, getTheme()));
         } else {
             tvHashrate.setTextColor(ResourcesCompat.getColor(getResources(), R.color.c_white, getTheme()));
@@ -1545,14 +1544,11 @@ public class MainActivity extends BaseActivity
                             if (state) {
                                 if (clearMinerLog) {
                                     tvLog.setText("");
-                                    tvAcceptedShares.setText("0");
+                                    tvAcceptedShares.setText("0 / 0");
                                     tvAcceptedShares.setTextColor(ResourcesCompat.getColor(getResources(), R.color.txt_inactive, getTheme()));
 
                                     tvDifficulty.setText("0");
                                     tvDifficulty.setTextColor(ResourcesCompat.getColor(getResources(), R.color.txt_inactive, getTheme()));
-
-                                    tvConnection.setText("0");
-                                    tvConnection.setTextColor(ResourcesCompat.getColor(getResources(), R.color.txt_inactive, getTheme()));
 
                                     updateHashrate(-1.0, -1.0);
                                 }
@@ -1572,9 +1568,8 @@ public class MainActivity extends BaseActivity
                     public void onStatusChange(String status, double speed, double max, long accepted, long total, double difficuly, int connection) {
                         runOnUiThread(() -> {
                             appendLogOutputText(status);
-                            tvAcceptedShares.setText(Long.toString(accepted));
+                            tvAcceptedShares.setText(accepted + " / " + total);
                             tvDifficulty.setText(NumberFormat.getNumberInstance(Locale.getDefault()).format(difficuly));
-                            tvConnection.setText(Integer.toString(connection));
 
                             if(nLastShareCount != accepted) {
                                 nLastShareCount = accepted;
@@ -1583,7 +1578,6 @@ public class MainActivity extends BaseActivity
                             if(accepted == 1) {
                                 tvAcceptedShares.setTextColor(ResourcesCompat.getColor(getResources(), R.color.c_white, getTheme()));
                                 tvDifficulty.setTextColor(ResourcesCompat.getColor(getResources(), R.color.c_white, getTheme()));
-                                tvConnection.setTextColor(ResourcesCompat.getColor(getResources(), R.color.c_white, getTheme()));
                             }
 
                             updateHashrate(speed, max);

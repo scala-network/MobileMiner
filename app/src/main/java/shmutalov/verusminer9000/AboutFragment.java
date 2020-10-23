@@ -155,7 +155,7 @@ public class AboutFragment extends Fragment {
 
         Button btnDebugInfo = view.findViewById(R.id.btnDebugInfo);
         btnDebugInfo.setOnClickListener(view1 -> {
-            Utils.copyToClipboard("Scala Miner Debug Info", sDebugInfo);
+            Utils.copyToClipboard("Verus Miner 9000 Debug Info", sDebugInfo);
             Toast.makeText(getContext(), getResources().getString(R.string.debuginfo_copied), Toast.LENGTH_SHORT).show();
         });
 

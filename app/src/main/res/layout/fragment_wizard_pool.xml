@@ -55,7 +55,7 @@
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
 					android:layout_gravity="center_vertical"
-					android:text="@string/scala_project"
+					android:text="@string/verus_project"
 					android:textColor="@color/txt_secondary"
 					android:textStyle="bold"
 					android:textSize="14sp" />

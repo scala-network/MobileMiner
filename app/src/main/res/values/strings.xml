@@ -157,6 +157,7 @@
     <string name="btc">BTC</string>
     <string name="eth">ETH</string>
     <string name="xla">XLA</string>
+    <string name="vrsc">VRSC</string>
     <string name="cpu_cores">CPU Cores</string>
     <string name="hashes_second">Hashes/second</string>
     <string name="log">Mining Log</string>
@@ -176,7 +177,7 @@
     <string name="made_with">Made with</string>
     <string name="by">by</string>
     <string name="forked_from">Forked from</string>
-    <string name="scala_project">Scala Project</string>
+    <string name="verus_project">Verus Project</string>
     <string name="recommended">(Recommended)</string>
     <string name="stop">Stop</string>
     <string name="start">Start</string>
