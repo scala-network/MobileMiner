@@ -97,10 +97,6 @@ import com.android.volley.RequestQueue;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.github.anastr.speedviewlib.SpeedView;
-import com.github.anastr.speedviewlib.TubeSpeedometer;
-import com.github.anastr.speedviewlib.components.Section;
-import com.github.anastr.speedviewlib.components.indicators.LineIndicator;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import org.json.JSONArray;
@@ -111,7 +107,6 @@ import shmutalov.verusminer9000.api.IProviderListener;
 import shmutalov.verusminer9000.api.PoolItem;
 import shmutalov.verusminer9000.api.ProviderData;
 import shmutalov.verusminer9000.api.ProviderManager;
-import shmutalov.verusminer9000.controls.SimpleTriangleIndicator;
 import shmutalov.verusminer9000.miner.AbstractMiningService;
 import shmutalov.verusminer9000.miner.AbstractMiningServiceBinder;
 import shmutalov.verusminer9000.miner.IMiningServiceStateListener;
@@ -126,7 +121,6 @@ public class MainActivity extends BaseActivity
     private static final String LOG_TAG = "MainActivity";
 
     private TextView tvHashrate, tvStatus, tvNbCores, tvCPUTemperature, tvBatteryTemperature, tvAcceptedShares, tvDifficulty, tvLog, tvStatusProgess;
-    private TubeSpeedometer meterCores, meterHashrate, meterHashrate_avg, meterHashrate_max;
     private SeekBar sbCores = null;
 
     private LinearLayout llMain, llLog, llHashrate, llStatus;
@@ -290,53 +284,7 @@ public class MainActivity extends BaseActivity
         nNbMaxCores = Runtime.getRuntime().availableProcessors();
         nCores = Utils.parseIntOrDefault(Config.read("cores"), nNbMaxCores == 1 ? 1 : nNbMaxCores - 1);
 
-        // Create a dummy meter to add "gaps" to the Cores meter, to separate every core value
-        TubeSpeedometer meterCoresGap = findViewById(R.id.meter_cores_gap);
-        meterCoresGap.setMaxSpeed(nNbMaxCores);
-        meterCoresGap.setTickNumber(nNbMaxCores + 1); // Keep this line to patch a bug in the meter implementation
-        meterCoresGap.setOnPrintTickLabel((integer, aFloat) -> {
-            String tick = "▮";
-            Spannable textSpan = new SpannableString(tick);
-            textSpan.setSpan(new StyleSpan(android.graphics.Typeface.BOLD), 0, 1, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
-
-            return textSpan;
-        });
-        meterCoresGap.invalidate();
-
-        meterCores = findViewById(R.id.meter_cores);
-        meterCores.makeSections(1, ResourcesCompat.getColor(getResources(), R.color.c_yellow, getTheme()), Section.Style.SQUARE);
-        meterCores.setMaxSpeed(nNbMaxCores);
-        meterCores.speedTo(nCores, 0);
-
         tvNbCores = findViewById(R.id.nbcores);
-
-        // Hashrate
-        meterHashrate = findViewById(R.id.meter_hashrate);
-        meterHashrate.makeSections(1, ResourcesCompat.getColor(getResources(), R.color.c_blue, getTheme()), Section.Style.SQUARE);
-
-        LineIndicator indicator_speed = new LineIndicator(contextOfApplication, 0.15f);
-        indicator_speed.setColor(ResourcesCompat.getColor(getResources(), R.color.c_white, getTheme()));
-        indicator_speed.setWidth(14.0f);
-        meterHashrate.setIndicator(indicator_speed);
-
-        // Average Meter
-        meterHashrate_avg = findViewById(R.id.meter_hashrate_avg);
-        meterHashrate_avg.makeSections(1, ResourcesCompat.getColor(getResources(), android.R.color.transparent, getTheme()), Section.Style.SQUARE);
-
-        SimpleTriangleIndicator indicator_avg = new SimpleTriangleIndicator(contextOfApplication);
-        indicator_avg.setWidth(40.0f);
-        indicator_avg.setColor(ResourcesCompat.getColor(getResources(), R.color.txt_main, getTheme()));
-        meterHashrate_avg.setIndicator(indicator_avg);
-
-        // Max Meter
-        meterHashrate_max = findViewById(R.id.meter_hashrate_max);
-        meterHashrate_max.makeSections(1, ResourcesCompat.getColor(getResources(), android.R.color.transparent, getTheme()), Section.Style.SQUARE);
-
-        SimpleTriangleIndicator indicator_max = new SimpleTriangleIndicator(contextOfApplication);
-        indicator_max.setWidth(40.0f);
-        indicator_max.setColor(ResourcesCompat.getColor(getResources(), R.color.c_orange, getTheme()));
-        meterHashrate_max.setIndicator(indicator_max);
-
         tvHashrate = findViewById(R.id.hashrate);
         tvStatus = findViewById(R.id.miner_status);
 
@@ -737,8 +685,6 @@ public class MainActivity extends BaseActivity
     private void updateCores() {
         String sCores = nCores + "/" + nNbMaxCores;
         tvNbCores.setText(sCores);
-
-        meterCores.speedTo(nCores, 0);
     }
 
     @Override
@@ -1020,18 +966,18 @@ public class MainActivity extends BaseActivity
             enableStartBtn(true);
 
             if (m_nCurrentState == STATE_STOPPED ) {
-                updateHashrate(0.0f, 0.0f);
+                updateHashrate(0.0, 0.0);
                 DrawableCompat.setTint(buttonDrawableStart, ResourcesCompat.getColor(getResources(), R.color.bg_green, getTheme()));
                 btnStart.setBackground(buttonDrawableStart);
                 btnStart.setText(R.string.start);
             } else if(m_nCurrentState == STATE_PAUSED) {
-                updateHashrate(0.0f, 0.0f);
+                updateHashrate(0.0, 0.0);
                 DrawableCompat.setTint(buttonDrawableStart, ResourcesCompat.getColor(getResources(), R.color.bg_green, getTheme()));
                 btnStart.setBackground(buttonDrawableStart);
                 btnStart.setText(R.string.resume);
             }
             else {
-                updateHashrate(-1.0f, -1.0f);
+                updateHashrate(-1.0, -1.0);
                 DrawableCompat.setTint(buttonDrawableStart, ResourcesCompat.getColor(getResources(), R.color.bg_lighter, getTheme()));
                 btnStart.setBackground(buttonDrawableStart);
                 btnStart.setText(R.string.stop);
@@ -1065,18 +1011,13 @@ public class MainActivity extends BaseActivity
             llStatus.setVisibility(View.GONE);
             llHashrate.setVisibility(View.VISIBLE);
 
-            tvHashrate.setText("0");
+            tvHashrate.setText("0.00");
             tvHashrate.setTextColor(ResourcesCompat.getColor(getResources(), R.color.txt_inactive, getTheme()));
 
             View v = findViewById(R.id.main_navigation);
             v.setKeepScreenOn(false);
 
-            meterHashrate.speedTo(0);
-            meterHashrate_avg.setVisibility(View.GONE);
-            meterHashrate_max.setVisibility(View.GONE);
-
             stopTimerStatusHashrate();
-            resetHashrateTicks();
             enableSliderCores(true);
         }
         else if(status == STATE_MINING) {
@@ -1101,8 +1042,6 @@ public class MainActivity extends BaseActivity
         else {
             llStatus.setVisibility(View.VISIBLE);
             llHashrate.setVisibility(View.GONE);
-
-            meterHashrate.speedTo(0);
 
             if (status == STATE_PAUSED && isDeviceMining()) {
                 tvStatus.setText(getResources().getString(R.string.paused));
@@ -1139,7 +1078,7 @@ public class MainActivity extends BaseActivity
         timerTaskHashrate = new TimerTask() {
             @Override
             public void run() {
-                runOnUiThread(() -> incrementProgressHashrate());
+            runOnUiThread(() -> incrementProgressHashrate());
             }
         };
 
@@ -1157,40 +1096,6 @@ public class MainActivity extends BaseActivity
 
             tvStatusProgess.setVisibility(View.VISIBLE);
             tvStatusProgess.setText("0%");
-        }
-    }
-
-    private void resetHashrateTicks() {
-        SpeedView meterTicks = findViewById(R.id.meter_hashrate_ticks);
-        meterTicks.setMaxSpeed(500);
-        meterTicks.setTickNumber(0);
-        meterTicks.setTextColor(ResourcesCompat.getColor(getResources(), android.R.color.transparent, getTheme()));
-
-        meterHashrate.setMaxSpeed(500);
-        meterHashrate_avg.setMaxSpeed(500);
-        meterHashrate_max.setMaxSpeed(500);
-    }
-
-    private void updateHashrateTicks(double max) {
-        SpeedView meterTicks = findViewById(R.id.meter_hashrate_ticks);
-        if (meterTicks.getTickNumber() == 0) {
-            meterTicks.setTickNumber(10);
-            meterTicks.setTextColor(ResourcesCompat.getColor(getResources(), R.color.txt_main, getTheme()));
-        }
-
-        if (max > 0) {
-            float hrMax = (float)(nNbMaxCores * max / nCores);
-            if(!nCores.equals(nNbMaxCores)) {
-                hrMax = hrMax * 1.05f;
-            }
-
-            meterTicks.setMaxSpeed(hrMax);
-            meterTicks.setTickNumber(10);
-            //meterTicks.setTextColor(ResourcesCompat.getColor(getResources(), R.color.txt_main, getTheme()));
-
-            meterHashrate.setMaxSpeed(hrMax);
-            meterHashrate_avg.setMaxSpeed(hrMax);
-            meterHashrate_max.setMaxSpeed(hrMax);
         }
     }
 
@@ -1217,21 +1122,11 @@ public class MainActivity extends BaseActivity
         if(!isDeviceMining() || speed < 0.0)
             return;
 
-        SpeedView meterTicks = findViewById(R.id.meter_hashrate_ticks);
-        updateHashrateTicks(max);
-
-        if (meterTicks.getTickNumber() == 0) {
-            // Start timer
-            new Handler().postDelayed(() -> updateHashrateMeter(speed, max), 2000);
-        } else {
-            updateHashrateMeter(speed, max);
-        }
+        updateHashrateMeter(speed, max);
     }
 
     private void updateHashrateMeter(double speed, double max) {
-        meterHashrate.speedTo(Math.round(speed));
-
-        tvHashrate.setText(String.format(Locale.getDefault(), "%.1f", speed));
+        tvHashrate.setText(String.format(Locale.getDefault(), "%.2f", speed));
         setMinerStatus(STATE_MINING);
 
         if(speed <= 0.0) {
@@ -1250,20 +1145,14 @@ public class MainActivity extends BaseActivity
         TextView tvMaxHr = findViewById(R.id.maxhr);
 
         // Average Hashrate
-        if(speed > 0.0) {
+        if (speed > 0.0) {
             nHrCount++;
             sumHr += speed;
 
             float avgHr = (float)(sumHr / (double) nHrCount);
             tvAvgHr.setText(String.format(Locale.getDefault(), "%.1f", avgHr));
-
-            if (meterHashrate_avg.getVisibility() == View.GONE)
-                meterHashrate_avg.setVisibility(View.VISIBLE);
-            meterHashrate_avg.setSpeedAt(avgHr);
-        }
-        else {
+        } else {
             tvAvgHr.setText(String.format(Locale.getDefault(), "%.1f", 0.0));
-            meterHashrate_avg.setVisibility(View.GONE);
         }
 
         // Max Hashrate
@@ -1272,14 +1161,8 @@ public class MainActivity extends BaseActivity
                 maxHr = max;
 
             tvMaxHr.setText(String.format(Locale.getDefault(), "%.1f", maxHr));
-
-            if(meterHashrate_max.getVisibility() == View.GONE)
-                meterHashrate_max.setVisibility(View.VISIBLE);
-            meterHashrate_max.setSpeedAt((float)maxHr);
-        }
-        else {
+        } else {
             tvMaxHr.setText(String.format(Locale.getDefault(), "%.1f", 0.0));
-            meterHashrate_max.setVisibility(View.GONE);
         }
     }
 
@@ -1832,12 +1715,6 @@ public class MainActivity extends BaseActivity
         }
     }
 
-    private void toggleHashrate() {
-        if (binder != null) {
-            binder.getService().toggleHashrate();
-        }
-    }
-
     public static final String OPEN_ACTION = "OPEN_ACTION";
     public static final String STOP_ACTION = "STOP_ACTION";
 
@@ -1899,7 +1776,7 @@ public class MainActivity extends BaseActivity
             return;
         }
 
-        String status = m_nCurrentState == STATE_MINING ? "Hashrate: " + tvHashrate.getText().toString() + " kH/s" : tvStatus.getText().toString();
+        String status = m_nCurrentState == STATE_MINING ? "Hashrate: " + tvHashrate.getText().toString() : tvStatus.getText().toString();
 
         notificationBuilder.setContentText(status);
         notificationManager.notify(1, notificationBuilder.build());

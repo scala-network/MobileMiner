@@ -181,125 +181,7 @@
             <FrameLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center" >
-
-                <com.github.anastr.speedviewlib.SpeedView
-                    android:id="@+id/meter_hashrate_ticks"
-                    android:layout_width="296dp"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    app:sv_minSpeed="0"
-                    app:sv_maxSpeed="500"
-                    app:sv_tickNumber="0"
-                    app:sv_tickPadding="15dp"
-                    app:sv_markColor="@color/txt_main"
-                    app:sv_centerCircleColor="@color/bg_body"
-                    app:sv_indicator="NoIndicator"
-                    app:sv_indicatorColor="@color/c_white"
-                    app:sv_indicatorWidth="0dp"
-                    app:sv_speedTextSize="0dp"
-                    app:sv_backgroundCircleColor="@color/bg_body"
-                    app:sv_speedBackgroundColor="@color/bg_body"
-                    app:sv_speedometerWidth="2dp"
-                    app:sv_textSize="10dp"
-                    app:sv_textColor="@android:color/transparent"
-                    app:sv_tickRotation="false"
-                    app:sv_unitTextSize="0dp"
-                    app:sv_withEffects="false"
-                    app:sv_withTremble="false" />
-
-                <com.github.anastr.speedviewlib.TubeSpeedometer
-                    android:id="@+id/meter_cores"
-                    android:layout_width="200dp"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    app:sv_markColor="@android:color/transparent"
-                    app:sv_centerCircleColor="@color/bg_body"
-                    app:sv_minSpeed="0"
-                    app:sv_maxSpeed="4"
-                    app:sv_tickNumber="5"
-                    app:sv_indicator="NoIndicator"
-                    app:sv_indicatorWidth="0dp"
-                    app:sv_speedTextSize="0dp"
-                    app:sv_speedometerBackColor="@color/bg_lighter"
-                    app:sv_speedometerWidth="2dp"
-                    app:sv_textSize="0dp"
-                    app:sv_unitTextSize="0dp"
-                    app:sv_withTremble="false" />
-
-                <com.github.anastr.speedviewlib.TubeSpeedometer
-                    android:id="@+id/meter_cores_gap"
-                    android:layout_width="215dp"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    app:sv_markColor="@android:color/transparent"
-                    app:sv_centerCircleColor="@color/bg_body"
-                    app:sv_tickPadding="0sp"
-                    app:sv_minSpeed="0"
-                    app:sv_maxSpeed="4"
-                    app:sv_tickNumber="5"
-                    app:sv_indicator="NoIndicator"
-                    app:sv_indicatorWidth="0dp"
-                    app:sv_speedTextSize="0dp"
-                    app:sv_speedometerWidth="0dp"
-                    app:sv_speedometerBackColor="@color/bg_body"
-                    app:sv_textSize="25sp"
-                    app:sv_textColor="@color/bg_body"
-                    app:sv_unitTextSize="0dp"
-                    app:sv_withTremble="false" />
-
-                <com.github.anastr.speedviewlib.TubeSpeedometer
-                    android:id="@+id/meter_hashrate_avg"
-                    android:layout_width="250dp"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    app:sv_minSpeed="0"
-                    app:sv_maxSpeed="500"
-                    app:sv_indicator="TriangleIndicator"
-                    app:sv_indicatorColor="@color/txt_main"
-                    app:sv_indicatorWidth="10dp"
-                    app:sv_speedTextSize="0dp"
-                    app:sv_speedometerBackColor="@android:color/transparent"
-                    app:sv_speedometerWidth="5dp"
-                    app:sv_textSize="0dp"
-                    app:sv_unitTextSize="0dp"
-                    app:sv_withTremble="false" />
-
-                <com.github.anastr.speedviewlib.TubeSpeedometer
-                    android:id="@+id/meter_hashrate_max"
-                    android:layout_width="250dp"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    app:sv_minSpeed="0"
-                    app:sv_maxSpeed="500"
-                    app:sv_indicator="TriangleIndicator"
-                    app:sv_indicatorColor="@color/c_orange"
-                    app:sv_indicatorWidth="10dp"
-                    app:sv_speedTextSize="0dp"
-                    app:sv_speedometerBackColor="@android:color/transparent"
-                    app:sv_speedometerWidth="5dp"
-                    app:sv_textSize="0dp"
-                    app:sv_unitTextSize="0dp"
-                    app:sv_withTremble="false" />
-
-                <com.github.anastr.speedviewlib.TubeSpeedometer
-                    android:id="@+id/meter_hashrate"
-                    android:layout_width="305dp"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    app:sv_minSpeed="0"
-                    app:sv_maxSpeed="500"
-                    app:sv_indicator="QuarterLineIndicator"
-                    app:sv_indicatorColor="@color/c_white"
-                    app:sv_indicatorWidth="3dp"
-                    app:sv_speedTextSize="0dp"
-                    app:sv_speedometerBackColor="@color/bg_lighter"
-                    app:sv_speedometerWidth="7dp"
-                    app:sv_textSize="0dp"
-                    app:sv_unitTextSize="0dp"
-                    app:sv_withTremble="true"
-                    app:sv_trembleDegree="2"
-                    app:sv_trembleDuration="500"/>
+                android:layout_gravity="center_horizontal" >
 
                 <LinearLayout
                     android:id="@+id/layout_hashrate"
@@ -311,27 +193,28 @@
                     android:visibility="visible">
 
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:gravity="start"
-                        android:text="@string/hashes_second"
-                        android:textSize="14sp"
-                        android:textStyle="normal"
-                        android:textColor="@color/txt_main" />
-
-                    <TextView
                         android:id="@+id/hashrate"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:includeFontPadding="false"
                         android:textAlignment="center"
-                        android:text="0"
+                        android:text="0.00"
                         android:textSize="55sp"
                         android:textStyle="bold"
                         android:textColor="@color/txt_inactive"
                         android:visibility="visible"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="end"
+                        android:text="@string/hashes_second"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        android:textAllCaps="true"
+                        android:textColor="@color/txt_main" />
 
                     <View
                         android:id="@+id/view_separator"
@@ -355,7 +238,7 @@
                             android:layout_gravity="center"
                             android:gravity="end"
                             android:text="@string/avg"
-                            android:textSize="12sp"
+                            android:textSize="20sp"
                             android:textStyle="bold"
                             android:textAllCaps="true"
                             android:textColor="@color/txt_main" />
@@ -368,7 +251,7 @@
                             android:layout_gravity="center"
                             android:gravity="end"
                             android:text="@string/na"
-                            android:textSize="12sp"
+                            android:textSize="20sp"
                             android:textColor="@color/txt_secondary" />
 
                         <Space
@@ -381,7 +264,7 @@
                             android:layout_gravity="center"
                             android:gravity="end"
                             android:text="@string/max"
-                            android:textSize="12sp"
+                            android:textSize="20sp"
                             android:textStyle="bold"
                             android:textAllCaps="true"
                             android:textColor="@color/c_orange" />
@@ -394,7 +277,7 @@
                             android:layout_gravity="center"
                             android:gravity="end"
                             android:text="@string/na"
-                            android:textSize="12sp"
+                            android:textSize="20sp"
                             android:textColor="@color/txt_secondary" />
 
                     </LinearLayout>
@@ -456,12 +339,16 @@
                         android:indeterminate="false"
                         android:progressDrawable="@drawable/progressbar_rounded_blue">
                     </ProgressBar>
-
                 </LinearLayout>
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp"
+                    android:layout_gravity="bottom"/>
 
                 <LinearLayout
                     android:baselineAligned="false"
-                    android:layout_width="150dp"
+                    android:layout_width="200dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="110dp"
                     android:orientation="horizontal"
@@ -475,8 +362,8 @@
                         android:layout_gravity="center">
 
                         <ImageView
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
                             android:layout_gravity="center"
                             app:srcCompat="@drawable/ic_cores" />
 
@@ -486,8 +373,8 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:gravity="end"
-                            android:text="-"
-                            android:textSize="12sp"
+                            android:text="8/8"
+                            android:textSize="14sp"
                             android:textColor="@color/c_yellow" />
 
                     </LinearLayout>
@@ -500,8 +387,8 @@
                         android:layout_gravity="center">
 
                         <ImageView
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
                             android:layout_gravity="center"
                             app:srcCompat="@drawable/ic_miner" />
 
@@ -519,7 +406,7 @@
                                 android:layout_gravity="center"
                                 android:gravity="end"
                                 android:text="-"
-                                android:textSize="12sp"
+                                android:textSize="14sp"
                                 android:textColor="@color/txt_secondary" />
 
                             <TextView
@@ -528,7 +415,7 @@
                                 android:layout_gravity="center"
                                 android:textColor="@color/txt_secondary"
                                 android:text="@string/celsius"
-                                android:textSize="12sp"/>
+                                android:textSize="14sp"/>
 
                         </LinearLayout>
 
@@ -542,8 +429,8 @@
                         android:layout_gravity="center">
 
                         <ImageView
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
                             android:layout_gravity="center"
                             app:srcCompat="@drawable/ic_battery" />
 
@@ -561,7 +448,7 @@
                                 android:layout_gravity="center"
                                 android:gravity="end"
                                 android:text="-"
-                                android:textSize="12sp"
+                                android:textSize="14sp"
                                 android:textColor="@color/txt_secondary" />
 
                             <TextView
@@ -570,7 +457,7 @@
                                 android:layout_gravity="center"
                                 android:textColor="@color/txt_secondary"
                                 android:text="@string/celsius"
-                                android:textSize="12sp"/>
+                                android:textSize="14sp"/>
 
                         </LinearLayout>
 
