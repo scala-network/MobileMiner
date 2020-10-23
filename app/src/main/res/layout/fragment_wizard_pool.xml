@@ -25,7 +25,7 @@
 			android:textSize="16sp" />
 
 		<LinearLayout
-			android:id="@+id/llScala"
+			android:id="@+id/llVeruspool"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:orientation="horizontal"
@@ -35,13 +35,13 @@
 			android:paddingLeft="15dp"
 			android:paddingRight="15dp"
 			android:paddingBottom="15dp"
-			android:onClick="onClickScala">
+			android:onClick="onClickVerus">
 
 			<ImageView
 				android:layout_width="40dp"
 				android:layout_height="40dp"
 				android:layout_gravity="start|center_vertical"
-				app:srcCompat="@drawable/ic_launcher_round" />
+				app:srcCompat="@drawable/ic_verus_logo_blue" />
 
 			<LinearLayout
 				android:layout_width="wrap_content"
@@ -104,7 +104,7 @@
 		</LinearLayout>
 
 		<LinearLayout
-			android:id="@+id/llMR"
+			android:id="@+id/llAlphatechIT"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:orientation="horizontal"
@@ -114,19 +114,13 @@
 			android:paddingLeft="15dp"
 			android:paddingRight="15dp"
 			android:paddingBottom="15dp"
-			android:onClick="onClickMR">
+			android:onClick="onClickAlphatechIT">
 
-			<TextView
+			<ImageView
 				android:layout_width="40dp"
 				android:layout_height="40dp"
-				android:layout_gravity="center_vertical"
-				android:background="@drawable/circle_grey"
-				android:gravity="center"
-				android:text="MR"
-				android:textColor="@color/txt_secondary"
-				android:textStyle="bold"
-				android:textSize="18sp"
-				tools:ignore="HardcodedText" />
+				android:layout_gravity="start|center_vertical"
+				app:srcCompat="@drawable/alphatech_it_logo" />
 
 			<LinearLayout
 				android:layout_width="wrap_content"
@@ -140,14 +134,14 @@
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
 					android:layout_gravity="center_vertical"
-					android:text="Miner.Rocks"
+					android:text="Alphatech IT"
 					android:textColor="@color/txt_secondary"
 					android:textStyle="bold"
 					android:textSize="14sp"
 					tools:ignore="HardcodedText" />
 
 				<TextView
-					android:id="@+id/minersMR"
+					android:id="@+id/minersAlphatechIT"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
 					android:layout_gravity="center_vertical"
@@ -177,7 +171,7 @@
 					android:textSize="12sp" />
 
 				<TextView
-					android:id="@+id/hrMR"
+					android:id="@+id/hrAlphatechIT"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
 					android:layout_gravity="center_vertical"
@@ -190,7 +184,7 @@
 		</LinearLayout>
 
 		<LinearLayout
-			android:id="@+id/llHM"
+			android:id="@+id/llLuckpoolNA"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:orientation="horizontal"
@@ -200,19 +194,13 @@
 			android:paddingLeft="15dp"
 			android:paddingRight="15dp"
 			android:paddingBottom="15dp"
-			android:onClick="onClickHM">
+			android:onClick="onClickLPNA">
 
-			<TextView
+			<ImageView
 				android:layout_width="40dp"
 				android:layout_height="40dp"
-				android:layout_gravity="center_vertical"
-				android:background="@drawable/circle_grey"
-				android:gravity="center"
-				android:text="HM"
-				android:textColor="@color/txt_secondary"
-				android:textStyle="bold"
-				android:textSize="18sp"
-				tools:ignore="HardcodedText" />
+				android:layout_gravity="start|center_vertical"
+				app:srcCompat="@drawable/luckpool_logo" />
 
 			<LinearLayout
 				android:layout_width="wrap_content"
@@ -226,14 +214,14 @@
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
 					android:layout_gravity="center_vertical"
-					android:text="HeroMiners"
+					android:text="Luckpool (NA)"
 					android:textColor="@color/txt_secondary"
 					android:textStyle="bold"
 					android:textSize="14sp"
 					tools:ignore="HardcodedText" />
 
 				<TextView
-					android:id="@+id/minersHM"
+					android:id="@+id/minersLuckpoolNA"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
 					android:layout_gravity="center_vertical"
@@ -263,7 +251,7 @@
 					android:textSize="12sp" />
 
 				<TextView
-					android:id="@+id/hrHM"
+					android:id="@+id/hrLuckpoolNA"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
 					android:layout_gravity="center_vertical"
@@ -276,7 +264,7 @@
 		</LinearLayout>
 
 		<LinearLayout
-			android:id="@+id/llGNTL"
+			android:id="@+id/llLuckpoolEU"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:orientation="horizontal"
@@ -286,19 +274,13 @@
 			android:paddingLeft="15dp"
 			android:paddingRight="15dp"
 			android:paddingBottom="15dp"
-			android:onClick="onClickGNTL">
+			android:onClick="onClickLPEU">
 
-			<TextView
+			<ImageView
 				android:layout_width="40dp"
 				android:layout_height="40dp"
-				android:layout_gravity="center_vertical"
-				android:background="@drawable/circle_grey"
-				android:gravity="center"
-				android:text="G"
-				android:textColor="@color/txt_secondary"
-				android:textStyle="bold"
-				android:textSize="18sp"
-				tools:ignore="HardcodedText" />
+				android:layout_gravity="start|center_vertical"
+				app:srcCompat="@drawable/luckpool_logo" />
 
 			<LinearLayout
 				android:layout_width="wrap_content"
@@ -312,14 +294,14 @@
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
 					android:layout_gravity="center_vertical"
-					android:text="GNTL"
+					android:text="Luckpool (EU)"
 					android:textColor="@color/txt_secondary"
 					android:textStyle="bold"
 					android:textSize="14sp"
 					tools:ignore="HardcodedText" />
 
 				<TextView
-					android:id="@+id/minersGNTL"
+					android:id="@+id/minersLuckpoolEU"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
 					android:layout_gravity="center_vertical"
@@ -349,7 +331,87 @@
 					android:textSize="12sp" />
 
 				<TextView
-					android:id="@+id/hrGNTL"
+					android:id="@+id/hrLuckpoolEU"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_gravity="center_vertical"
+					android:text=""
+					android:textColor="@color/txt_main"
+					android:textSize="14sp" />
+
+			</LinearLayout>
+
+		</LinearLayout>
+
+		<LinearLayout
+			android:id="@+id/llLuckpoolAP"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:orientation="horizontal"
+			android:background="@drawable/corner_radius_lighter"
+			android:layout_marginTop="7dp"
+			android:paddingTop="15dp"
+			android:paddingLeft="15dp"
+			android:paddingRight="15dp"
+			android:paddingBottom="15dp"
+			android:onClick="onClickLPAP">
+
+			<ImageView
+				android:layout_width="40dp"
+				android:layout_height="40dp"
+				android:layout_gravity="start|center_vertical"
+				app:srcCompat="@drawable/luckpool_logo" />
+
+			<LinearLayout
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_gravity="center_vertical"
+				android:orientation="vertical"
+				android:background="@drawable/corner_radius_lighter"
+				android:layout_marginStart="15dp">
+
+				<TextView
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_gravity="center_vertical"
+					android:text="Luckpool (AP)"
+					android:textColor="@color/txt_secondary"
+					android:textStyle="bold"
+					android:textSize="14sp"
+					tools:ignore="HardcodedText" />
+
+				<TextView
+					android:id="@+id/minersLuckpoolAP"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_gravity="center_vertical"
+					android:text=""
+					android:textColor="@color/txt_main"
+					android:textSize="14sp" />
+
+			</LinearLayout>
+
+			<Space
+				android:layout_width="0dp"
+				android:layout_height="match_parent"
+				android:layout_weight="1"/>
+
+			<LinearLayout
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:orientation="vertical"
+				android:background="@drawable/corner_radius_lighter">
+
+				<TextView
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_gravity="center_vertical"
+					android:text=""
+					android:textColor="@color/txt_main"
+					android:textSize="12sp" />
+
+				<TextView
+					android:id="@+id/hrLuckpoolAP"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
 					android:layout_gravity="center_vertical"
@@ -368,11 +430,34 @@
 		android:layout_height="wrap_content"
 		android:layout_alignParentBottom="true">
 
+		<TextView
+			android:id="@+id/dummyView"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_centerHorizontal="true" />
+
 		<Button
+			android:layout_toStartOf="@id/dummyView"
 			android:layout_width="match_parent"
 			android:layout_height="55dp"
 			android:layout_marginTop="15dp"
 			android:layout_marginStart="15dp"
+			android:layout_marginEnd="5dp"
+			android:layout_marginBottom="15dp"
+			android:backgroundTint="@color/btn_bg_default"
+			android:onClick="onSkip"
+			android:text="@string/skip"
+			android:textSize="14sp"
+			android:textAllCaps="false"
+			android:textColor="@color/txt_button_filled"
+			app:cornerRadius="5dp" />
+
+		<Button
+			android:layout_toEndOf="@id/dummyView"
+			android:layout_width="match_parent"
+			android:layout_height="55dp"
+			android:layout_marginTop="15dp"
+			android:layout_marginStart="5dp"
 			android:layout_marginEnd="15dp"
 			android:layout_marginBottom="15dp"
 			android:backgroundTint="@color/bg_blue"

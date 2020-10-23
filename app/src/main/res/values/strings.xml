@@ -112,8 +112,8 @@
     <string name="disclaimer_agreement">By using this application, you confirm your knowledge and acceptance of the Disclaimer</string>
     <string name="paper">Paper</string>
     <string name="or">or</string>
-    <string name="skip">Skip</string>
-    <string name="paper_wallet_url">https://scalaproject.io/paper-wallet.php</string>
+    <string name="skip">SKIP</string>
+    <string name="mobile_wallet_url">https://github.com/VerusCoin/Verus-Mobile/releases</string>
     <string name="cli_wallet_url">https://github.com/VerusCoin/VerusCoin/releases</string>
     <string name="gui_wallet_url">https://github.com/VerusCoin/Verus-Desktop/releases</string>
     <string name="ok">OK</string>
@@ -121,7 +121,7 @@
     <string name="devicemining">Device Mining</string>
     <string name="nightmode">Night Mode</string>
     <string name="newacceptedshare">New Accepted Share!</string>
-    <string name="next">Next</string>
+    <string name="next">NEXT</string>
     <string name="walletaddress2">Wallet Address</string>
     <string name="paste">Paste</string>
     <string name="selectminingpool">Select Mining Pool</string>
