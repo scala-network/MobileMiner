@@ -20,25 +20,26 @@
 
 		<LinearLayout
 			android:orientation="vertical"
-			android:layout_width="wrap_content"
+			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:layout_gravity="center"
 			android:background="@color/bg_body">
 
-			<ImageView
-				android:id="@+id/splashscreen"
-				android:layout_width="wrap_content"
-				android:layout_height="100dp"
-				android:src="@mipmap/ic_logo_colors"/>
-
 			<TextView
 				android:layout_width="fill_parent"
 				android:layout_height="wrap_content"
-				android:text="MINER"
+				android:text="VERUS MINER"
 				android:gravity="center"
 				android:textSize="30sp"
 				android:textStyle="bold"
 				android:textColor="@color/txt_headline"/>
+
+			<ImageView
+				android:id="@+id/splashscreen"
+				android:layout_width="200dp"
+				android:layout_height="200dp"
+				android:layout_gravity="center"
+				android:src="@mipmap/ic_launcher"/>
 
 		</LinearLayout>
 

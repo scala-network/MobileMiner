@@ -136,7 +136,7 @@
                 <ImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    app:srcCompat="@mipmap/ic_logo_colors" />
+                    app:srcCompat="@mipmap/ic_launcher" />
 
                 <Space
                     android:layout_width="0dp"
