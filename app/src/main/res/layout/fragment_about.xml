@@ -53,30 +53,30 @@
                     android:textColor="@color/txt_main"
                     android:textSize="14sp"/>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp"
-                android:gravity="start"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/build"
-                    android:textColor="@color/c_grey"
-                    android:textSize="14sp"/>
-
-                <TextView
-                    android:id="@+id/build"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
                     android:gravity="start"
-                    android:text=""
-                    android:textColor="@color/c_grey"
-                    android:textSize="14sp"/>
+                    android:orientation="horizontal">
 
-            </LinearLayout>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/build"
+                        android:textColor="@color/c_grey"
+                        android:textSize="14sp"/>
+
+                    <TextView
+                        android:id="@+id/build"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="start"
+                        android:text=""
+                        android:textColor="@color/c_grey"
+                        android:textSize="14sp"/>
+
+                </LinearLayout>
 
                 <Button
                     android:id="@+id/btnDebugInfo"
@@ -115,7 +115,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="start"
-                        android:text="@string/made_with"
+                        android:text="@string/ported_with"
                         android:textColor="@color/txt_main"
                         android:textSize="14sp"/>
 
@@ -152,59 +152,79 @@
 
                 </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="start|center"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="start"
-                    android:text="@string/forked_from"
-                    android:textColor="@color/txt_main"
-                    android:textSize="14sp"/>
+                    android:gravity="start|center"
+                    android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/Mine2getherURL"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="start"
-                    android:text=""
-                    android:textColor="@color/c_blue"
-                    android:textColorLink="@color/c_blue"
-                    android:textSize="14sp" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="start"
+                        android:text="@string/forked_from"
+                        android:textColor="@color/txt_main"
+                        android:textSize="14sp"/>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="3dp"
-                    android:layout_marginEnd="3dp"
-                    android:gravity="start"
-                    android:text="@string/and"
-                    android:textColor="@color/txt_main"
-                    android:textSize="14sp"/>
+                    <TextView
+                        android:id="@+id/Mine2getherURL"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="start"
+                        android:text=""
+                        android:textColor="@color/c_blue"
+                        android:textColorLink="@color/c_blue"
+                        android:textSize="14sp" />
 
-                <TextView
-                    android:id="@+id/MoneroMinerURL"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="start"
-                    android:text=""
-                    android:textColor="@color/c_blue"
-                    android:textColorLink="@color/c_blue"
-                    android:textSize="14sp" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="3dp"
+                        android:layout_marginEnd="3dp"
+                        android:gravity="start"
+                        android:text=", "
+                        android:textColor="@color/txt_main"
+                        android:textSize="14sp"/>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="start"
-                    android:text="."
-                    android:textColor="@color/txt_main"
-                    android:textSize="14sp"/>
+                    <TextView
+                        android:id="@+id/MoneroMinerURL"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="start"
+                        android:text=""
+                        android:textColor="@color/c_blue"
+                        android:textColorLink="@color/c_blue"
+                        android:textSize="14sp" />
 
-            </LinearLayout>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="3dp"
+                        android:layout_marginEnd="3dp"
+                        android:gravity="start"
+                        android:text="@string/and"
+                        android:textColor="@color/txt_main"
+                        android:textSize="14sp"/>
+
+                    <TextView
+                        android:id="@+id/MobileMinerURL"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="start"
+                        android:text=""
+                        android:textColor="@color/c_blue"
+                        android:textColorLink="@color/c_blue"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="start"
+                        android:text="."
+                        android:textColor="@color/txt_main"
+                        android:textSize="14sp"/>
+
+                </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -296,43 +316,13 @@
                     android:orientation="horizontal">
 
                     <Button
-                        android:id="@+id/btnDonateBTC"
+                        android:id="@+id/btnDonateVRSC"
                         android:layout_width="100dp"
                         android:layout_height="45dp"
                         android:backgroundTint="@color/bg_lighter"
                         android:insetLeft="2dp"
                         android:insetRight="2dp"
-                        android:text="@string/btc"
-                        android:textSize="14sp"
-                        android:textColor="@color/txt_button_filled"
-                        app:cornerRadius="5dp"
-                        app:iconPadding="0dp"
-                        app:icon="@drawable/ic_copy"
-                        app:iconTint="@color/btn_icon_default"/>
-
-                    <Button
-                        android:id="@+id/btnDonateETH"
-                        android:layout_width="100dp"
-                        android:layout_height="45dp"
-                        android:backgroundTint="@color/bg_lighter"
-                        android:insetLeft="2dp"
-                        android:insetRight="2dp"
-                        android:text="@string/eth"
-                        android:textSize="14sp"
-                        android:textColor="@color/txt_button_filled"
-                        app:cornerRadius="5dp"
-                        app:iconPadding="0dp"
-                        app:icon="@drawable/ic_copy"
-                        app:iconTint="@color/btn_icon_default"/>
-
-                    <Button
-                        android:id="@+id/btnDonateXLA"
-                        android:layout_width="100dp"
-                        android:layout_height="45dp"
-                        android:backgroundTint="@color/bg_lighter"
-                        android:insetLeft="2dp"
-                        android:insetRight="2dp"
-                        android:text="@string/xla"
+                        android:text="@string/vrsc"
                         android:textSize="14sp"
                         android:textColor="@color/txt_button_filled"
                         app:cornerRadius="5dp"

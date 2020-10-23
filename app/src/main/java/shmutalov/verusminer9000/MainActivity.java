@@ -772,25 +772,38 @@ public class MainActivity extends BaseActivity
 
                 break;
             }
-            case R.id.menu_stats: {
-                StatsFragment fragment_stats = (StatsFragment) getSupportFragmentManager().findFragmentByTag("fragment_stats");
-                if (fragment_stats == null) {
-                    fragment_stats = new StatsFragment();
-                }
-
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment_stats, "fragment_stats").commit();
-
-                llMain.setVisibility(View.VISIBLE);
-                llLog.setVisibility(View.GONE);
-
-                break;
-            }
+//            case R.id.menu_stats: {
+//                StatsFragment fragment_stats = (StatsFragment) getSupportFragmentManager().findFragmentByTag("fragment_stats");
+//                if (fragment_stats == null) {
+//                    fragment_stats = new StatsFragment();
+//                }
+//
+//                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment_stats, "fragment_stats").commit();
+//
+//                llMain.setVisibility(View.VISIBLE);
+//                llLog.setVisibility(View.GONE);
+//
+//                break;
+//            }
             case R.id.menu_settings: {
                 SettingsFragment settings_fragment = (SettingsFragment) getSupportFragmentManager().findFragmentByTag("settings_fragment");
                 if (settings_fragment == null) {
                     settings_fragment = new SettingsFragment();
                 }
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, settings_fragment, "settings_fragment").commit();
+
+                llMain.setVisibility(View.VISIBLE);
+                llLog.setVisibility(View.GONE);
+
+                break;
+            }
+            case R.id.menu_about: {
+                AboutFragment fragment_about = (AboutFragment) getSupportFragmentManager().findFragmentByTag("fragment_about");
+                if (fragment_about == null) {
+                    fragment_about = new AboutFragment();
+                }
+
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment_about, "fragment_about").commit();
 
                 llMain.setVisibility(View.VISIBLE);
                 llLog.setVisibility(View.GONE);

@@ -67,9 +67,10 @@
     <string name="mediumLink">https://medium.com/veruscoin/</string>
     <string name="twitterLink">https://twitter.com/VerusCoin</string>
     <string name="telegramLink">https://t.me/VerusCommunity</string>
-    <string name="ScalaLink">&lt;a href=&quot;https://veruscoin.io&quot;&gt;Verus&lt;/a&gt;</string>
+    <string name="MadeByLink">&lt;a href=&quot;https://github.com/shmutalov&quot;&gt;shmutalov&lt;/a&gt;</string>
     <string name="Mine2getherLink">&lt;a href=&quot;https://github.com/Mine2Gether/m2g_android_miner&quot;&gt;Mine2gether&lt;/a&gt;</string>
     <string name="MoneroMinerLink">&lt;a href=&quot;https://github.com/upost/MoneroMiner&quot;&gt;MoneroMiner&lt;/a&gt;</string>
+    <string name="MobileMinerLink">&lt;a href=&quot;https://github.com/scala-network/MobileMiner&quot;&gt;MobileMiner&lt;/a&gt;</string>
     <string name="MaterialDesignLink">&lt;a href=&quot;https://material.io/resources/&quot;&gt;Material Design&lt;/a&gt;</string>
     <string name="FontAwesomeLink">&lt;a href=&quot;https://fontawesome.com/license&quot;&gt;Font Awesome&lt;/a&gt;</string>
     <string name="amaycPostLink">https://amayc.scalaproject.io/</string>
@@ -174,9 +175,9 @@
     <string name="wallet_address">Wallet Address</string>
     <string name="build">Build:</string>
     <string name="credits">Credits</string>
-    <string name="made_with">Made with</string>
-    <string name="by">by</string>
-    <string name="forked_from">Forked from</string>
+    <string name="ported_with">Ported with </string>
+    <string name="by"> by </string>
+    <string name="forked_from">Forked from </string>
     <string name="verus_project">Verus Project</string>
     <string name="recommended">(Recommended)</string>
     <string name="stop">Stop</string>

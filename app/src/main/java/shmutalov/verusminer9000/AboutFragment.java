@@ -35,11 +35,12 @@ public class AboutFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_about, container, false);
 
-        TextView tvBuild, tvScala, tvMine2gether, tvMonerominer, tvMaterialDesign, tvFontAwesome;
+        TextView tvBuild, tvMadeBy, tvMine2gether, tvMonerominer, tvMobileMiner, tvMaterialDesign, tvFontAwesome;
 
         tvBuild = view.findViewById(R.id.build);
 
-        tvScala = view.findViewById(R.id.ScalaURL);
+        tvMadeBy = view.findViewById(R.id.ScalaURL);
+        tvMobileMiner = view.findViewById(R.id.MobileMinerURL);
         tvMine2gether = view.findViewById(R.id.Mine2getherURL);
         tvMonerominer = view.findViewById(R.id.MoneroMinerURL);
         tvMaterialDesign = view.findViewById(R.id.MaterialDesignURL);
@@ -87,19 +88,7 @@ public class AboutFragment extends Fragment {
             Utils.showPopup(v, inflater, popupView);
         });
 
-        Button btnDonateBTC = view.findViewById(R.id.btnDonateBTC);
-        btnDonateBTC.setOnClickListener(view14 -> {
-            Utils.copyToClipboard("Scala BTC Donation Address", Utils.SCALA_BTC_ADDRESS);
-            Toast.makeText(getContext(), R.string.donationadressbtc_copied, Toast.LENGTH_SHORT).show();
-        });
-
-        Button btnDonateETH = view.findViewById(R.id.btnDonateETH);
-        btnDonateETH.setOnClickListener(view13 -> {
-            Utils.copyToClipboard("Scala ETH Donation Address", Utils.SCALA_ETH_ADDRESS);
-            Toast.makeText(getContext(), R.string.donationadresseth_copied, Toast.LENGTH_SHORT).show();
-        });
-
-        Button btnDonateXLA = view.findViewById(R.id.btnDonateXLA);
+        Button btnDonateXLA = view.findViewById(R.id.btnDonateVRSC);
         btnDonateXLA.setOnClickListener(view12 -> {
             Utils.copyToClipboard("VRSC Donation Address", Utils.VERUS_DONATION_ADDRESS);
             Toast.makeText(getContext(), R.string.donationadressverus_copied, Toast.LENGTH_SHORT).show();
@@ -128,14 +117,20 @@ public class AboutFragment extends Fragment {
 
         tvBuild.setText(BuildConfig.VERSION_NAME + " (" + build_time + ")");
 
-        tvScala.setText(Html.fromHtml(getString(R.string.ScalaLink)));
-        tvScala.setMovementMethod(LinkMovementMethod.getInstance());
+        tvMadeBy.setText(Html.fromHtml(getString(R.string.MadeByLink)));
+        tvMadeBy.setMovementMethod(LinkMovementMethod.getInstance());
+
+        tvMine2gether.setText(Html.fromHtml(getString(R.string.Mine2getherLink)));
+        tvMine2gether.setMovementMethod(LinkMovementMethod.getInstance());
 
         tvMine2gether.setText(Html.fromHtml(getString(R.string.Mine2getherLink)));
         tvMine2gether.setMovementMethod(LinkMovementMethod.getInstance());
 
         tvMonerominer.setText(Html.fromHtml(getString(R.string.MoneroMinerLink)));
         tvMonerominer.setMovementMethod(LinkMovementMethod.getInstance());
+
+        tvMobileMiner.setText(Html.fromHtml(getString(R.string.MobileMinerLink)));
+        tvMobileMiner.setMovementMethod(LinkMovementMethod.getInstance());
 
         tvMaterialDesign.setText(Html.fromHtml(getString(R.string.MaterialDesignLink)));
         tvMaterialDesign.setMovementMethod(LinkMovementMethod.getInstance());
