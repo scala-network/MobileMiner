@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 
 import androidx.annotation.Nullable;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 
 import shmutalov.verusminer9000.api.ProviderData;
@@ -28,9 +29,6 @@ import shmutalov.verusminer9000.api.IProviderListener;
 import shmutalov.verusminer9000.api.ProviderManager;
 
 public class StatsFragment extends Fragment {
-
-    private static final String LOG_TAG = "MiningSvc";
-
     private TextView tvViewStatsOnline;
 
     protected IProviderListener statsListener;
@@ -53,7 +51,7 @@ public class StatsFragment extends Fragment {
         tvViewStatsOnline = view.findViewById(R.id.checkstatsonline);
         tvViewStatsOnline.setPaintFlags(tvViewStatsOnline.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
         tvViewStatsOnline.setEnabled(false);
-        tvViewStatsOnline.setTextColor(getResources().getColor(R.color.c_grey));
+        tvViewStatsOnline.setTextColor(ResourcesCompat.getColor(getResources(), R.color.c_grey, getContext().getTheme()));
 
         ProviderManager.request.setListener(statsListener).start();
         ProviderManager.afterSave();
@@ -139,13 +137,10 @@ public class StatsFragment extends Fragment {
         enableOnlineStats(true);
 
         String statsUrlWallet = pm.getStatsURL() + "?wallet=" + wallet;
-        tvViewStatsOnline.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Uri uri = Uri.parse(statsUrlWallet);
-                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                startActivity(intent);
-            }
+        tvViewStatsOnline.setOnClickListener(view1 -> {
+            Uri uri = Uri.parse(statsUrlWallet);
+            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+            startActivity(intent);
         });
     }
 
@@ -153,10 +148,10 @@ public class StatsFragment extends Fragment {
         tvViewStatsOnline.setEnabled(enable);
 
         if (enable) {
-            tvViewStatsOnline.setTextColor(getResources().getColor(R.color.c_blue));
+            tvViewStatsOnline.setTextColor(ResourcesCompat.getColor(getResources(), R.color.c_blue, getContext().getTheme()));
         }
         else {
-            tvViewStatsOnline.setTextColor(getResources().getColor(R.color.c_grey));
+            tvViewStatsOnline.setTextColor(ResourcesCompat.getColor(getResources(), R.color.c_grey, getContext().getTheme()));
         }
     }
 

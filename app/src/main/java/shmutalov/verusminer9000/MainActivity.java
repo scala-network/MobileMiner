@@ -160,19 +160,19 @@ public class MainActivity extends BaseActivity
     private Integer nCores = 1;
     private Integer nIntensity = 1;
 
-    private Integer nLastShareCount = 0;
+    private long nLastShareCount = 0;
 
     private Integer nNbMaxCores = 0;
 
-    private float fSumHr = 0.0f;
+    private double sumHr = 0.0;
     private Integer nHrCount = 0;
-    private float fMaxHr = 0.0f;
+    private double maxHr = 0.0;
 
     // Temperature Control
     private Timer timerTemperatures = null;
     private TimerTask timerTaskTemperatures = null;
-    private List<String> listCPUTemp = new ArrayList<>();
-    private List<String> listBatteryTemp = new ArrayList<>();
+    private final List<String> listCPUTemp = new ArrayList<>();
+    private final List<String> listBatteryTemp = new ArrayList<>();
     private boolean isCharging = false;
 
     public static Context contextOfApplication;
@@ -304,7 +304,7 @@ public class MainActivity extends BaseActivity
         meterCoresGap.invalidate();
 
         meterCores = findViewById(R.id.meter_cores);
-        meterCores.makeSections(1, getResources().getColor(R.color.c_yellow), Section.Style.SQUARE);
+        meterCores.makeSections(1, ResourcesCompat.getColor(getResources(), R.color.c_yellow, getTheme()), Section.Style.SQUARE);
         meterCores.setMaxSpeed(nNbMaxCores);
         meterCores.speedTo(nCores, 0);
 
@@ -312,29 +312,29 @@ public class MainActivity extends BaseActivity
 
         // Hashrate
         meterHashrate = findViewById(R.id.meter_hashrate);
-        meterHashrate.makeSections(1, getResources().getColor(R.color.c_blue), Section.Style.SQUARE);
+        meterHashrate.makeSections(1, ResourcesCompat.getColor(getResources(), R.color.c_blue, getTheme()), Section.Style.SQUARE);
 
         LineIndicator indicator_speed = new LineIndicator(contextOfApplication, 0.15f);
-        indicator_speed.setColor(getResources().getColor(R.color.c_white));
+        indicator_speed.setColor(ResourcesCompat.getColor(getResources(), R.color.c_white, getTheme()));
         indicator_speed.setWidth(14.0f);
         meterHashrate.setIndicator(indicator_speed);
 
         // Average Meter
         meterHashrate_avg = findViewById(R.id.meter_hashrate_avg);
-        meterHashrate_avg.makeSections(1, getResources().getColor(android.R.color.transparent), Section.Style.SQUARE);
+        meterHashrate_avg.makeSections(1, ResourcesCompat.getColor(getResources(), android.R.color.transparent, getTheme()), Section.Style.SQUARE);
 
         SimpleTriangleIndicator indicator_avg = new SimpleTriangleIndicator(contextOfApplication);
         indicator_avg.setWidth(40.0f);
-        indicator_avg.setColor(getResources().getColor(R.color.txt_main));
+        indicator_avg.setColor(ResourcesCompat.getColor(getResources(), R.color.txt_main, getTheme()));
         meterHashrate_avg.setIndicator(indicator_avg);
 
         // Max Meter
         meterHashrate_max = findViewById(R.id.meter_hashrate_max);
-        meterHashrate_max.makeSections(1, getResources().getColor(android.R.color.transparent), Section.Style.SQUARE);
+        meterHashrate_max.makeSections(1, ResourcesCompat.getColor(getResources(), android.R.color.transparent, getTheme()), Section.Style.SQUARE);
 
         SimpleTriangleIndicator indicator_max = new SimpleTriangleIndicator(contextOfApplication);
         indicator_max.setWidth(40.0f);
-        indicator_max.setColor(getResources().getColor(R.color.c_orange));
+        indicator_max.setColor(ResourcesCompat.getColor(getResources(), R.color.c_orange, getTheme()));
         meterHashrate_max.setIndicator(indicator_max);
 
         tvHashrate = findViewById(R.id.hashrate);
@@ -674,13 +674,23 @@ public class MainActivity extends BaseActivity
     }
 
     private boolean isValidConfig() {
+        Log.i(LOG_TAG, "isValidConfig");
         PoolItem pi = ProviderManager.getSelectedPool();
 
-        return  Config.read("init").equals("1") &&
-                !Config.read("address").equals("") &&
+        String init = Config.read("init");
+        String address = Config.read("address");
+        String pool = pi == null ? "" : pi.getPool();
+        String port = pi == null ? "" : pi.getPort();
+
+        boolean result = init.equals("1") &&
+                !address.equals("") &&
                 pi != null &&
                 !pi.getPool().equals("") &&
                 !pi.getPort().equals("");
+
+        Log.i(LOG_TAG, String.format("isValidConfig [init = %s, address = %s, pool = %s, port = %s] == %b", init, address, pool, port, result));
+
+        return result;
     }
 
     public void updateUI() {
@@ -721,6 +731,8 @@ public class MainActivity extends BaseActivity
     }
 
     public void updateStartButton() {
+        Log.i(LOG_TAG, "updateStartButton");
+
         enableStartBtn(isValidConfig());
     }
 
@@ -812,6 +824,8 @@ public class MainActivity extends BaseActivity
     }
 
     public void loadSettings() {
+        Log.i(LOG_TAG, "loadSettings");
+
         if (!Config.read("init").equals("1"))
             return;
 
@@ -831,6 +845,8 @@ public class MainActivity extends BaseActivity
     }
 
     private void startMining() {
+        Log.i(LOG_TAG, "stopMining");
+
         if (binder == null) return;
 
         if (!Config.read("init").equals("1")) {
@@ -914,12 +930,14 @@ public class MainActivity extends BaseActivity
 
         nLastShareCount = 0;
 
-        fSumHr = 0.0f;
+        sumHr = 0.0f;
         nHrCount = 0;
-        fMaxHr = 0.0f;
+        maxHr = 0.0f;
     }
 
     public void stopMining() {
+        Log.i(LOG_TAG, "stopMining");
+
         if(binder == null) {
             return;
         }
@@ -992,18 +1010,18 @@ public class MainActivity extends BaseActivity
 
             if (m_nCurrentState == STATE_STOPPED ) {
                 updateHashrate(0.0f, 0.0f);
-                DrawableCompat.setTint(buttonDrawableStart, getResources().getColor(R.color.bg_green));
+                DrawableCompat.setTint(buttonDrawableStart, ResourcesCompat.getColor(getResources(), R.color.bg_green, getTheme()));
                 btnStart.setBackground(buttonDrawableStart);
                 btnStart.setText(R.string.start);
             } else if(m_nCurrentState == STATE_PAUSED) {
                 updateHashrate(0.0f, 0.0f);
-                DrawableCompat.setTint(buttonDrawableStart, getResources().getColor(R.color.bg_green));
+                DrawableCompat.setTint(buttonDrawableStart, ResourcesCompat.getColor(getResources(), R.color.bg_green, getTheme()));
                 btnStart.setBackground(buttonDrawableStart);
                 btnStart.setText(R.string.resume);
             }
             else {
                 updateHashrate(-1.0f, -1.0f);
-                DrawableCompat.setTint(buttonDrawableStart, getResources().getColor(R.color.bg_lighter));
+                DrawableCompat.setTint(buttonDrawableStart, ResourcesCompat.getColor(getResources(), R.color.bg_lighter, getTheme()));
                 btnStart.setBackground(buttonDrawableStart);
                 btnStart.setText(R.string.stop);
             }
@@ -1020,12 +1038,12 @@ public class MainActivity extends BaseActivity
         Rect bounds = sbCores.getProgressDrawable().getBounds();
 
         if(enable) {
-            sbCores.setProgressDrawable(getResources().getDrawable(R.drawable.seekbar_ruler_yellow));
-            sbCores.getThumb().setColorFilter(getResources().getColor(R.color.c_white), PorterDuff.Mode.SRC_IN);
+            sbCores.setProgressDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.seekbar_ruler_yellow, getTheme()));
+            sbCores.getThumb().setColorFilter(ResourcesCompat.getColor(getResources(), R.color.c_white, getTheme()), PorterDuff.Mode.SRC_IN);
         }
         else {
-            sbCores.setProgressDrawable(getResources().getDrawable(R.drawable.seekbar_ruler_inactive));
-            sbCores.getThumb().setColorFilter(getResources().getColor(R.color.c_light_grey), PorterDuff.Mode.SRC_IN);
+            sbCores.setProgressDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.seekbar_ruler_inactive, getTheme()));
+            sbCores.getThumb().setColorFilter(ResourcesCompat.getColor(getResources(), R.color.c_light_grey, getTheme()), PorterDuff.Mode.SRC_IN);
         }
 
         sbCores.getProgressDrawable().setBounds(bounds);
@@ -1037,7 +1055,7 @@ public class MainActivity extends BaseActivity
             llHashrate.setVisibility(View.VISIBLE);
 
             tvHashrate.setText("0");
-            tvHashrate.setTextColor(getResources().getColor(R.color.txt_inactive));
+            tvHashrate.setTextColor(ResourcesCompat.getColor(getResources(), R.color.txt_inactive, getTheme()));
 
             View v = findViewById(R.id.main_navigation);
             v.setKeepScreenOn(false);
@@ -1057,7 +1075,7 @@ public class MainActivity extends BaseActivity
                 llStatus.setVisibility(View.GONE);
                 llHashrate.setVisibility(View.VISIBLE);
 
-                tvHashrate.setTextColor(getResources().getColor(R.color.c_white));
+                tvHashrate.setTextColor(ResourcesCompat.getColor(getResources(), R.color.c_white, getTheme()));
 
                 stopTimerStatusHashrate();
             }
@@ -1135,24 +1153,24 @@ public class MainActivity extends BaseActivity
         SpeedView meterTicks = findViewById(R.id.meter_hashrate_ticks);
         meterTicks.setMaxSpeed(500);
         meterTicks.setTickNumber(0);
-        meterTicks.setTextColor(getResources().getColor(android.R.color.transparent));
+        meterTicks.setTextColor(ResourcesCompat.getColor(getResources(), android.R.color.transparent, getTheme()));
 
         meterHashrate.setMaxSpeed(500);
         meterHashrate_avg.setMaxSpeed(500);
         meterHashrate_max.setMaxSpeed(500);
     }
 
-    private void updateHashrateTicks(float fMax) {
+    private void updateHashrateTicks(double max) {
         SpeedView meterTicks = findViewById(R.id.meter_hashrate_ticks);
-        if(meterTicks.getTickNumber() == 0 && fMax > 0) {
-            float hrMax = nNbMaxCores * fMax / nCores;
+        if(meterTicks.getTickNumber() == 0 && max > 0) {
+            float hrMax = (float)(nNbMaxCores * max / nCores);
             if(!nCores.equals(nNbMaxCores)) {
                 hrMax = hrMax * 1.05f;
             }
 
             meterTicks.setMaxSpeed(hrMax);
             meterTicks.setTickNumber(10);
-            meterTicks.setTextColor(getResources().getColor(R.color.txt_main));
+            meterTicks.setTextColor(ResourcesCompat.getColor(getResources(), R.color.txt_main, getTheme()));
 
             meterHashrate.setMaxSpeed(hrMax);
             meterHashrate_avg.setMaxSpeed(hrMax);
@@ -1179,75 +1197,74 @@ public class MainActivity extends BaseActivity
         return m_nCurrentState == STATE_COOLING;
     }
 
-    private void updateHashrate(float fSpeed, float fMax) {
-        if(!isDeviceMining() || fSpeed < 0.0f)
+    private void updateHashrate(double speed, double max) {
+        if(!isDeviceMining() || speed < 0.0)
             return;
 
         SpeedView meterTicks = findViewById(R.id.meter_hashrate_ticks);
         if(meterTicks.getTickNumber() == 0) {
-            updateHashrateTicks(fMax);
+            updateHashrateTicks(max);
 
             // Start timer
-            new Handler().postDelayed(() -> updateHashrateMeter(fSpeed, fMax), 2000);
+            new Handler().postDelayed(() -> updateHashrateMeter(speed, max), 2000);
         }
         else {
-            updateHashrateTicks(fMax);
-            updateHashrateMeter(fSpeed, fMax);
+            updateHashrateTicks(max);
+            updateHashrateMeter(speed, max);
         }
     }
 
-    private void updateHashrateMeter(float fSpeed, float fMax) {
-        meterHashrate.speedTo(Math.round(fSpeed));
+    private void updateHashrateMeter(double speed, double max) {
+        meterHashrate.speedTo(Math.round(speed));
 
-        tvHashrate.setText(String.format(Locale.getDefault(), "%.1f", fSpeed));
+        tvHashrate.setText(String.format(Locale.getDefault(), "%.1f", speed));
         setMinerStatus(STATE_MINING);
 
-        if(fSpeed <= 0.0f) {
-            tvHashrate.setTextColor(getResources().getColor(R.color.txt_inactive));
-        }
-        else {
-            tvHashrate.setTextColor(getResources().getColor(R.color.c_white));
+        if(speed <= 0.0f) {
+            tvHashrate.setTextColor(ResourcesCompat.getColor(getResources(), R.color.txt_inactive, getTheme()));
+        } else {
+            tvHashrate.setTextColor(ResourcesCompat.getColor(getResources(), R.color.c_white, getTheme()));
         }
 
-        updateAvgMaxHashrate(fSpeed, fMax);
+        updateAvgMaxHashrate(speed, max);
     }
 
-    private void resetAvgMaxHashrate() { updateAvgMaxHashrate(0.0f, 0.0f); }
+    private void resetAvgMaxHashrate() { updateAvgMaxHashrate(0.0, 0.0); }
 
-    private void updateAvgMaxHashrate(float fSpeed, float fMax) {
+    private void updateAvgMaxHashrate(double speed, double max) {
         TextView tvAvgHr = findViewById(R.id.avghr);
         TextView tvMaxHr = findViewById(R.id.maxhr);
 
         // Average Hashrate
-        if(fSpeed > 0.0f) {
+        if(speed > 0.0) {
             nHrCount++;
-            fSumHr += fSpeed;
+            sumHr += speed;
 
-            float fAvgHr = fSumHr / (float) nHrCount;
-            tvAvgHr.setText(String.format(Locale.getDefault(), "%.1f", fAvgHr));
+            float avgHr = (float)(sumHr / (double) nHrCount);
+            tvAvgHr.setText(String.format(Locale.getDefault(), "%.1f", avgHr));
 
             if (meterHashrate_avg.getVisibility() == View.GONE)
                 meterHashrate_avg.setVisibility(View.VISIBLE);
-            meterHashrate_avg.setSpeedAt(fAvgHr);
+            meterHashrate_avg.setSpeedAt(avgHr);
         }
         else {
-            tvAvgHr.setText(String.format(Locale.getDefault(), "%.1f", 0.0f));
+            tvAvgHr.setText(String.format(Locale.getDefault(), "%.1f", 0.0));
             meterHashrate_avg.setVisibility(View.GONE);
         }
 
         // Max Hashrate
-        if(fMax > 0.0f) {
-            if(fMax > fMaxHr)
-                fMaxHr = fMax;
+        if(max > 0.0) {
+            if(max > maxHr)
+                maxHr = max;
 
-            tvMaxHr.setText(String.format(Locale.getDefault(), "%.1f", fMaxHr));
+            tvMaxHr.setText(String.format(Locale.getDefault(), "%.1f", maxHr));
 
             if(meterHashrate_max.getVisibility() == View.GONE)
                 meterHashrate_max.setVisibility(View.VISIBLE);
-            meterHashrate_max.setSpeedAt(fMaxHr);
+            meterHashrate_max.setSpeedAt((float)maxHr);
         }
         else {
-            tvMaxHr.setText(String.format(Locale.getDefault(), "%.1f", 0.0f));
+            tvMaxHr.setText(String.format(Locale.getDefault(), "%.1f", 0.0));
             meterHashrate_max.setVisibility(View.GONE);
         }
     }
@@ -1300,8 +1317,8 @@ public class MainActivity extends BaseActivity
                 if (text.contains(tmpFormat)) {
                     int i = text.indexOf(tmpFormat);
                     int imax = i + tmpFormat.length();
-                    textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_white)), i, imax, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-                    textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_grey)), imax, text.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    textSpan.setSpan(new ForegroundColorSpan(ResourcesCompat.getColor(getResources(), R.color.c_white, getTheme())), i, imax, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    textSpan.setSpan(new ForegroundColorSpan(ResourcesCompat.getColor(getResources(), R.color.c_grey, getTheme())), imax, text.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
                     return textSpan;
                 }
@@ -1313,14 +1330,14 @@ public class MainActivity extends BaseActivity
         // Format time
         formatText = "]";
         if(text.contains(formatText)) {
-            textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_dark_grey)), 0, 10, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            textSpan.setSpan(new ForegroundColorSpan(ResourcesCompat.getColor(getResources(), R.color.c_dark_grey, getTheme())), 0, 10, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             textSpan.setSpan(new StyleSpan(android.graphics.Typeface.NORMAL), 0, 10, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
         }
 
         if (speed) {
             int i = text.indexOf("]");
             int max = text.lastIndexOf("s");
-            textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_blue)), i+1, max+1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            textSpan.setSpan(new ForegroundColorSpan(ResourcesCompat.getColor(getResources(), R.color.c_blue, getTheme())), i+1, max+1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             textSpan.setSpan(new StyleSpan(android.graphics.Typeface.NORMAL), i, max+1, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
             return textSpan;
         }
@@ -1329,7 +1346,7 @@ public class MainActivity extends BaseActivity
         if(text.contains(formatText)) {
             int i = text.indexOf(formatText);
             int imax = i + formatText.length();
-            textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_green)), i, imax, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            textSpan.setSpan(new ForegroundColorSpan(ResourcesCompat.getColor(getResources(), R.color.c_green, getTheme())), i, imax, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             textSpan.setSpan(new StyleSpan(android.graphics.Typeface.NORMAL), i, imax, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
             return textSpan;
         }
@@ -1338,7 +1355,7 @@ public class MainActivity extends BaseActivity
         if(text.contains(formatText)) {
             int i = text.indexOf(formatText);
             int imax = i + formatText.length();
-            textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_white)), i, imax, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            textSpan.setSpan(new ForegroundColorSpan(ResourcesCompat.getColor(getResources(), R.color.c_white, getTheme())), i, imax, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             textSpan.setSpan(new StyleSpan(android.graphics.Typeface.NORMAL), i, imax, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
             return textSpan;
         }
@@ -1347,7 +1364,7 @@ public class MainActivity extends BaseActivity
         if(text.contains(formatText)) {
             int i = text.indexOf(formatText);
             int imax = i + formatText.length();
-            textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_grey)), i, imax, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            textSpan.setSpan(new ForegroundColorSpan(ResourcesCompat.getColor(getResources(), R.color.c_grey, getTheme())), i, imax, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             textSpan.setSpan(new StyleSpan(android.graphics.Typeface.NORMAL), i, imax, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
             return textSpan;
         }
@@ -1356,7 +1373,7 @@ public class MainActivity extends BaseActivity
         if(text.contains(formatText)) {
             int i = text.indexOf(formatText);
             int imax = i + formatText.length();
-            textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_grey)), i, imax, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            textSpan.setSpan(new ForegroundColorSpan(ResourcesCompat.getColor(getResources(), R.color.c_grey, getTheme())), i, imax, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             textSpan.setSpan(new StyleSpan(android.graphics.Typeface.NORMAL), i, imax, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
             return textSpan;
         }
@@ -1365,7 +1382,7 @@ public class MainActivity extends BaseActivity
         if(text.contains(formatText)) {
             int i = text.indexOf(formatText);
             int imax = i + formatText.length();
-            textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_grey)), i, imax, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            textSpan.setSpan(new ForegroundColorSpan(ResourcesCompat.getColor(getResources(), R.color.c_grey, getTheme())), i, imax, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             textSpan.setSpan(new StyleSpan(android.graphics.Typeface.NORMAL), i, imax, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
             return textSpan;
         }
@@ -1374,7 +1391,7 @@ public class MainActivity extends BaseActivity
         if(text.contains(formatText)) {
             int i = text.indexOf(formatText);
             int imax = i + formatText.length();
-            textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_grey)), i, imax, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            textSpan.setSpan(new ForegroundColorSpan(ResourcesCompat.getColor(getResources(), R.color.c_grey, getTheme())), i, imax, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             textSpan.setSpan(new StyleSpan(android.graphics.Typeface.NORMAL), i, imax, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
             return textSpan;
         }
@@ -1383,7 +1400,7 @@ public class MainActivity extends BaseActivity
         if(text.contains(formatText)) {
             int i = text.indexOf(formatText);
             int imax = i + formatText.length();
-            textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_grey)), i, imax, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            textSpan.setSpan(new ForegroundColorSpan(ResourcesCompat.getColor(getResources(), R.color.c_grey, getTheme())), i, imax, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             textSpan.setSpan(new StyleSpan(android.graphics.Typeface.NORMAL), i, imax, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
             return textSpan;
         }
@@ -1392,7 +1409,7 @@ public class MainActivity extends BaseActivity
         if(text.contains(formatText)) {
             int i = text.indexOf(formatText);
             int imax = i + formatText.length();
-            textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_grey)), i, imax, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            textSpan.setSpan(new ForegroundColorSpan(ResourcesCompat.getColor(getResources(), R.color.c_grey, getTheme())), i, imax, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             textSpan.setSpan(new StyleSpan(android.graphics.Typeface.NORMAL), i, imax, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
             return textSpan;
         }
@@ -1401,7 +1418,7 @@ public class MainActivity extends BaseActivity
         if(text.contains(formatText)) {
             int i = text.indexOf(formatText);
             int imax = i + formatText.length();
-            textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_white)), i, imax, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            textSpan.setSpan(new ForegroundColorSpan(ResourcesCompat.getColor(getResources(), R.color.c_white, getTheme())), i, imax, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             textSpan.setSpan(new StyleSpan(android.graphics.Typeface.BOLD), i, imax, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
             return textSpan;
         }
@@ -1410,7 +1427,7 @@ public class MainActivity extends BaseActivity
         if(text.contains(formatText)) {
             int i = text.indexOf(formatText);
             int imax = i + formatText.length();
-            textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_grey)), i, imax, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            textSpan.setSpan(new ForegroundColorSpan(ResourcesCompat.getColor(getResources(), R.color.c_grey, getTheme())), i, imax, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             textSpan.setSpan(new StyleSpan(android.graphics.Typeface.NORMAL), i, imax, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
             return textSpan;
         }
@@ -1419,7 +1436,7 @@ public class MainActivity extends BaseActivity
         if(text.contains(formatText)) {
             int i = text.indexOf(formatText);
             int imax = i + formatText.length();
-            textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_white)), i, imax, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            textSpan.setSpan(new ForegroundColorSpan(ResourcesCompat.getColor(getResources(), R.color.c_white, getTheme())), i, imax, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             textSpan.setSpan(new StyleSpan(android.graphics.Typeface.BOLD), i, imax, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
             return textSpan;
         }
@@ -1428,7 +1445,7 @@ public class MainActivity extends BaseActivity
         if(text.contains(formatText)) {
             int i = text.indexOf(formatText);
             int imax = text.length();
-            textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_red)), i, imax, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            textSpan.setSpan(new ForegroundColorSpan(ResourcesCompat.getColor(getResources(), R.color.c_red, getTheme())), i, imax, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             textSpan.setSpan(new StyleSpan(android.graphics.Typeface.NORMAL), i, imax, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
             return textSpan;
         }
@@ -1437,7 +1454,7 @@ public class MainActivity extends BaseActivity
         if(text.contains(formatText)) {
             int i = text.indexOf(formatText);
             int imax = text.length();
-            textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_red)), i, imax, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            textSpan.setSpan(new ForegroundColorSpan(ResourcesCompat.getColor(getResources(), R.color.c_red, getTheme())), i, imax, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             textSpan.setSpan(new StyleSpan(android.graphics.Typeface.NORMAL), i, imax, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
             return textSpan;
         }
@@ -1446,7 +1463,7 @@ public class MainActivity extends BaseActivity
         if(text.contains(formatText)) {
             int i = text.indexOf(formatText);
             int imax = text.length();
-            textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_red)), i, imax, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            textSpan.setSpan(new ForegroundColorSpan(ResourcesCompat.getColor(getResources(), R.color.c_red, getTheme())), i, imax, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             textSpan.setSpan(new StyleSpan(android.graphics.Typeface.NORMAL), i, imax, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
             return textSpan;
         }
@@ -1455,7 +1472,7 @@ public class MainActivity extends BaseActivity
         if(text.contains(formatText)) {
             int i = text.indexOf(formatText);
             int imax = text.length();
-            textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_white)), i, imax, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            textSpan.setSpan(new ForegroundColorSpan(ResourcesCompat.getColor(getResources(), R.color.c_white, getTheme())), i, imax, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             textSpan.setSpan(new StyleSpan(android.graphics.Typeface.NORMAL), i, imax, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
             return textSpan;
         }
@@ -1529,15 +1546,15 @@ public class MainActivity extends BaseActivity
                                 if (clearMinerLog) {
                                     tvLog.setText("");
                                     tvAcceptedShares.setText("0");
-                                    tvAcceptedShares.setTextColor(getResources().getColor(R.color.txt_inactive));
+                                    tvAcceptedShares.setTextColor(ResourcesCompat.getColor(getResources(), R.color.txt_inactive, getTheme()));
 
                                     tvDifficulty.setText("0");
-                                    tvDifficulty.setTextColor(getResources().getColor(R.color.txt_inactive));
+                                    tvDifficulty.setTextColor(ResourcesCompat.getColor(getResources(), R.color.txt_inactive, getTheme()));
 
                                     tvConnection.setText("0");
-                                    tvConnection.setTextColor(getResources().getColor(R.color.txt_inactive));
+                                    tvConnection.setTextColor(ResourcesCompat.getColor(getResources(), R.color.txt_inactive, getTheme()));
 
-                                    updateHashrate(-1.0f, -1.0f);
+                                    updateHashrate(-1.0, -1.0);
                                 }
                                 clearMinerLog = true;
                                 setStatusText("Miner Started");
@@ -1552,21 +1569,21 @@ public class MainActivity extends BaseActivity
 
                     @SuppressLint("SetTextI18n")
                     @Override
-                    public void onStatusChange(String status, float speed, float max, Integer accepted, Integer difficuly, Integer connection) {
+                    public void onStatusChange(String status, double speed, double max, long accepted, long total, double difficuly, int connection) {
                         runOnUiThread(() -> {
                             appendLogOutputText(status);
-                            tvAcceptedShares.setText(Integer.toString(accepted));
+                            tvAcceptedShares.setText(Long.toString(accepted));
                             tvDifficulty.setText(NumberFormat.getNumberInstance(Locale.getDefault()).format(difficuly));
                             tvConnection.setText(Integer.toString(connection));
 
-                            if(!nLastShareCount.equals(accepted)) {
+                            if(nLastShareCount != accepted) {
                                 nLastShareCount = accepted;
                             }
 
                             if(accepted == 1) {
-                                tvAcceptedShares.setTextColor(getResources().getColor(R.color.c_white));
-                                tvDifficulty.setTextColor(getResources().getColor(R.color.c_white));
-                                tvConnection.setTextColor(getResources().getColor(R.color.c_white));
+                                tvAcceptedShares.setTextColor(ResourcesCompat.getColor(getResources(), R.color.c_white, getTheme()));
+                                tvDifficulty.setTextColor(ResourcesCompat.getColor(getResources(), R.color.c_white, getTheme()));
+                                tvConnection.setTextColor(ResourcesCompat.getColor(getResources(), R.color.c_white, getTheme()));
                             }
 
                             updateHashrate(speed, max);
@@ -1760,17 +1777,19 @@ public class MainActivity extends BaseActivity
     }
 
     private void enableStartBtn(boolean enabled) {
+        Log.i(LOG_TAG, "enableStartBtn: " + enabled);
+
         Drawable buttonDrawable = btnStart.getBackground();
         buttonDrawable = DrawableCompat.wrap(buttonDrawable);
 
         if (enabled) {
-            DrawableCompat.setTint(buttonDrawable, ResourcesCompat.getColor(getResources(), R.color.bg_green, null));
+            DrawableCompat.setTint(buttonDrawable, ResourcesCompat.getColor(getResources(), R.color.bg_green, getTheme()));
             btnStart.setBackground(buttonDrawable);
-            btnStart.setTextColor(ResourcesCompat.getColor(getResources(), R.color.c_white, null));
+            btnStart.setTextColor(ResourcesCompat.getColor(getResources(), R.color.c_white, getTheme()));
         } else {
-            DrawableCompat.setTint(buttonDrawable, ResourcesCompat.getColor(getResources(), R.color.c_inactive, null));
+            DrawableCompat.setTint(buttonDrawable, ResourcesCompat.getColor(getResources(), R.color.c_inactive, getTheme()));
             btnStart.setBackground(buttonDrawable);
-            btnStart.setTextColor(ResourcesCompat.getColor(getResources(), R.color.c_inactive, null));
+            btnStart.setTextColor(ResourcesCompat.getColor(getResources(), R.color.c_inactive, getTheme()));
         }
 
         btnStart.setEnabled(enabled);
@@ -1918,7 +1937,7 @@ public class MainActivity extends BaseActivity
     private boolean clearMinerLog = true;
     static boolean lastIsCharging = false;
     static float batteryTemp = 0.0f;
-    private BroadcastReceiver batteryInfoReceiver = new BroadcastReceiver() {
+    private final BroadcastReceiver batteryInfoReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent batteryStatusIntent) {
             if(context == null || batteryStatusIntent == null)

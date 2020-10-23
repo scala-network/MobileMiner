@@ -32,6 +32,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.IBinder;
 import android.os.PowerManager;
+import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -81,11 +82,12 @@ public class VerusBinMiningService extends AbstractMiningService {
     private InputReaderThread inputHandler;
     private ProcessMonitor procMon;
     private PowerManager.WakeLock wl;
-    private int accepted = 0;
-    private int difficulty = 0;
+    private long accepted = 0;
+    private long total = 0;
+    private double difficulty = 0.0;
     private int connection = 0;
-    private float speed = 0.0f;
-    private float max = 0.0f;
+    private double speed = 0.0f;
+    private double max = 0.0f;
     private String lastAssetPath;
     private String lastOutput = "";
     private static RequestQueue reqQueue;
@@ -137,8 +139,8 @@ public class VerusBinMiningService extends AbstractMiningService {
         if (listener != null) listener.onStateChange(state);
     }
 
-    private void raiseMiningServiceStatusChange(String status, float speed, float max, Integer accepted, Integer difficulty, Integer connection) {
-        if (listener != null) listener.onStatusChange(status, speed, max, accepted, difficulty, connection);
+    private void raiseMiningServiceStatusChange(String status, double speed, double max, long accepted, long total, double difficulty, int connection) {
+        if (listener != null) listener.onStatusChange(status, speed, max, accepted, total, difficulty, connection);
     }
 
     @Override
@@ -328,12 +330,15 @@ public class VerusBinMiningService extends AbstractMiningService {
 
             String[] args = {
                     "./" + miner_ccminer,
+                    "--no-color",
                     "-a", algo,
                     "-o", config.poolHost + ":" + config.poolPort,
                     "-u", config.workername.isEmpty() ? config.username : config.username + "." + config.workername,
                     "-p", config.password,
-                    "-t", String.valueOf(config.threads)
+                    "-t", String.valueOf(config.cores)
             };
+
+            Log.i(LOG_TAG, TextUtils.join(" ", args));
 
             ProcessBuilder pb = new ProcessBuilder(args);
 
@@ -372,11 +377,11 @@ public class VerusBinMiningService extends AbstractMiningService {
         }
     }
 
-    public float getSpeed() {
+    public double getSpeed() {
         return speed;
     }
 
-    public int getAccepted() {
+    public long getAccepted() {
         return accepted;
     }
 
@@ -447,50 +452,44 @@ public class VerusBinMiningService extends AbstractMiningService {
 
         private void processLogLine(String line) {
             output.append(line).append(System.getProperty("line.separator"));
-//
-//            String lineCompare = line.toLowerCase();
-//            if (lineCompare.contains("accepted")) {
-//                accepted++;
-//
-//                if(lineCompare.contains("diff")) {
-//                    int start = lineCompare.indexOf("diff ") + "diff ".length();
-//                    int end = lineCompare.indexOf(" ", start);
-//                    String diff = lineCompare.substring(start, end).trim();
-//                    difficulty = Integer.parseInt(diff);
-//                }
-//
-//                if(lineCompare.contains("ms)")) {
-//                    int start = lineCompare.indexOf("(", lineCompare.length() - 10) + 1;
-//                    int end = lineCompare.indexOf("ms)");
-//                    String conn = lineCompare.substring(start, end).trim();
-//                    connection = Integer.parseInt(conn);
-//                }
-//
-//            } else if (lineCompare.contains("speed")) {
-//                String[] split = TextUtils.split(line, " ");
-//                String tmpSpeed = split[4];
-//                if (tmpSpeed.equals("n/a")) {
-//                    tmpSpeed = split[5];
-//                    if (tmpSpeed.equals("n/a")) {
-//                        tmpSpeed = split[6];
-//                    }
-//                }
-//
-//                speed = Float.parseFloat(tmpSpeed.trim());
-//
-//                if (lineCompare.contains("max")) {
-//                    int i = lineCompare.indexOf("max ") + "max ".length();
-//                    int imax = lineCompare.indexOf(" ", i);
-//                    String tmpMax = lineCompare.substring(i, imax).trim();
-//                    max = Float.parseFloat(tmpMax);
-//                }
-//            }
-//
+
+            // [2020-10-23 14:30:33] accepted: 2/3 (diff 274824.194), 1472.33 kH/s yes!
+
+            int acceptedIdxStart = line.indexOf("accepted");
+            if (acceptedIdxStart > 0) {
+                // accepted shares
+                int accStart = acceptedIdxStart + 10;
+                int accEnd = line.indexOf("/", accStart);
+                String acc = line.substring(accStart, accEnd);
+                accepted = Long.parseLong(acc);
+
+                // total shares
+                int totalEnd = line.indexOf(" ", accEnd);
+                String tot = line.substring(accEnd + 1, totalEnd);
+                total = Long.parseLong(tot);
+
+                // difficulty
+                int diffStart = totalEnd + 7;
+                int diffEnd = line.indexOf(")", diffStart);
+                String diff = line.substring(diffStart, diffEnd);
+                difficulty = Double.parseDouble(diff);
+
+                // hashrate
+                int speedStart = diffEnd + 3;
+                int speedEnd = line.indexOf(" ", speedStart);
+                String spd = line.substring(speedStart, speedEnd);
+                speed = Double.parseDouble(spd);
+
+                if (speed > max) {
+                    max = speed;
+                }
+            }
+
             if (output.length() > Config.logMaxLength) {
                 output.delete(0, output.indexOf(Objects.requireNonNull(System.getProperty("line.separator")), Config.logPruneLength) + 1);
             }
 //
-//            raiseMiningServiceStatusChange(line, speed, max, accepted, difficulty, connection);
+            raiseMiningServiceStatusChange(line, speed, max, accepted, total, difficulty, connection);
         }
 
         public void run() {
@@ -498,7 +497,7 @@ public class VerusBinMiningService extends AbstractMiningService {
                 BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
                 String line;
                 while ((line = reader.readLine()) != null) {
-
+                    //line = line.replaceAll("\u001B\\[[;\\d]*[ -/]*[@-~]", "");
                     Log.i(LOG_TAG, "miner: " + line);
 
                     processLogLine(line);

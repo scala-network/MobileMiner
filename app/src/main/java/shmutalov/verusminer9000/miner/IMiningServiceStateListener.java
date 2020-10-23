@@ -2,5 +2,5 @@ package shmutalov.verusminer9000.miner;
 
 public interface IMiningServiceStateListener {
     void onStateChange(Boolean state);
-    void onStatusChange(String status, float speed, float max, Integer accepted, Integer difficulty, Integer connection);
+    void onStatusChange(String status, double speed, double max, long accepted, long total, double difficulty, int connection);
 }

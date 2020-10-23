@@ -18,6 +18,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.core.content.res.ResourcesCompat;
+
 public class WizardHomeActivity extends BaseActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -57,7 +59,7 @@ public class WizardHomeActivity extends BaseActivity {
         TextView tvDisclaimer = view.findViewById(R.id.disclaimer);
         tvDisclaimer.setText(ss);
         tvDisclaimer.setMovementMethod(LinkMovementMethod.getInstance());
-        tvDisclaimer.setLinkTextColor(getResources().getColor(R.color.c_blue));
+        tvDisclaimer.setLinkTextColor(ResourcesCompat.getColor(getResources(), R.color.c_blue, getTheme()));
         tvDisclaimer.setHighlightColor(Color.TRANSPARENT);
     }
 
@@ -89,12 +91,9 @@ public class WizardHomeActivity extends BaseActivity {
 
         Button btnOK = dialog.findViewById(R.id.btnAgree);
 
-        btnOK.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Config.write("disclaimer_agreed", "1");
-                dialog.dismiss();
-            }
+        btnOK.setOnClickListener(v -> {
+            Config.write("disclaimer_agreed", "1");
+            dialog.dismiss();
         });
 
         dialog.show();
