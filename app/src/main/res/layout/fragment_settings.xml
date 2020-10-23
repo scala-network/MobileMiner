@@ -168,6 +168,7 @@
                         android:layout_gravity="center"
                         android:clickable="true"
                         app:srcCompat="@drawable/ic_down"
+                        android:contentDescription="@string/selectminingpool"
                         android:focusable="true" />
 
                 </LinearLayout>
@@ -660,7 +661,7 @@
                         android:layout_weight="1"
                         tools:ignore="NestedWeights" />
 
-                    <Switch
+                    <com.google.android.material.switchmaterial.SwitchMaterial
                         android:id="@+id/chkPauseOnBattery"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -696,7 +697,7 @@
                         android:layout_weight="1"
                         tools:ignore="NestedWeights" />
 
-                    <Switch
+                    <com.google.android.material.switchmaterial.SwitchMaterial
                         android:id="@+id/chkKeepScreenOnWhenMining"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -746,7 +747,7 @@
                         android:layout_weight="1"
                         tools:ignore="NestedWeights" />
 
-                    <Switch
+                    <com.google.android.material.switchmaterial.SwitchMaterial
                         android:id="@+id/chkAmaycOff"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

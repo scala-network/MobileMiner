@@ -28,7 +28,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.Spinner;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemSelectedListener;
@@ -36,11 +35,11 @@ import android.widget.AdapterView;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.widget.SwitchCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.google.android.material.textfield.TextInputLayout;
 
 import shmutalov.verusminer9000.api.PoolItem;
@@ -72,7 +71,7 @@ public class SettingsFragment extends Fragment {
         SeekBar sbCores;
         TextView tvCoresNb, tvCoresMax;
 
-        Switch swDisableTempControl, swPauseOnBattery, swKeepScreenOnWhenMining;
+        SwitchMaterial swDisableTempControl, swPauseOnBattery, swKeepScreenOnWhenMining;
 
         View view = inflater.inflate(R.layout.fragment_settings, container, false);
         Context appContext = MainActivity.getContextOfApplication();
@@ -266,7 +265,7 @@ public class SettingsFragment extends Fragment {
         });
 
         swDisableTempControl.setOnClickListener(v -> {
-            boolean checked = ((Switch)v).isChecked();
+            boolean checked = ((SwitchMaterial)v).isChecked();
             if (checked) {
                 // inflate the layout of the popup window
                 View popupView = inflater.inflate(R.layout.warning_amayc, null);
