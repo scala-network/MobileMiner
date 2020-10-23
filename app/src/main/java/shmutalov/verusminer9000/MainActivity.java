@@ -1300,7 +1300,7 @@ public class MainActivity extends BaseActivity
         boolean speed = false;
         if (text.contains("speed")) {
             text = text.replace("speed ", "");
-            text = text.replace("H/s ", "");
+            text = text.replace("kH/s ", "");
             speed = true;
         }
 
@@ -1884,7 +1884,7 @@ public class MainActivity extends BaseActivity
             return;
         }
 
-        String status = m_nCurrentState == STATE_MINING ? "Hashrate: " + tvHashrate.getText().toString() + " H/s" : tvStatus.getText().toString();
+        String status = m_nCurrentState == STATE_MINING ? "Hashrate: " + tvHashrate.getText().toString() + " kH/s" : tvStatus.getText().toString();
 
         notificationBuilder.setContentText(status);
         notificationManager.notify(1, notificationBuilder.build());
