@@ -752,13 +752,13 @@
                 android:layout_weight="1"/>
 
             <ImageView
-                android:id="@+id/showCores"
+                android:id="@+id/clearLog"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_gravity="bottom"
                 android:clickable="true"
-                android:onClick="onShowCores"
-                app:srcCompat="@drawable/ic_hrcores"
+                android:onClick="onClearLog"
+                app:srcCompat="@drawable/ic_clear_log"
                 android:focusable="true" />
 
         </LinearLayout>

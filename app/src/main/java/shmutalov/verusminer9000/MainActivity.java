@@ -490,8 +490,10 @@ public class MainActivity extends BaseActivity
         super.onDestroy();
     }
 
-    public void onShowCores(View view) {
-        toggleHashrate();
+    public void onClearLog(View view) {
+        if (tvLog != null) {
+            tvLog.setText("");
+        }
     }
 
     public void startTimerTemperatures() {
