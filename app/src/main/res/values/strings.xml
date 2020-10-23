@@ -159,7 +159,7 @@
     <string name="xla">XLA</string>
     <string name="vrsc">VRSC</string>
     <string name="cpu_cores">CPU Cores</string>
-    <string name="hashes_second">Hashes/second</string>
+    <string name="hashes_second">Kilohashes/second</string>
     <string name="log">Mining Log</string>
     <string name="percent">%</string>
     <string name="message">Message</string>

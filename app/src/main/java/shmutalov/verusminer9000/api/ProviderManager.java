@@ -24,7 +24,7 @@ public final class ProviderManager {
     }
 
     public static PoolItem[] getPools() {
-        return mPools.toArray(new PoolItem[mPools.size()]);
+        return mPools.toArray(new PoolItem[0]);
     }
 
     public static PoolItem getPoolById(int idx) {
@@ -90,7 +90,7 @@ public final class ProviderManager {
                 "Verus Project (Official Pool)",
                 "stratum+tcp://pool.veruscoin.io",
                 "9999",
-                0,
+                1000,
                 "https://pool.veruscoin.io/",
                 ""
         );
@@ -100,7 +100,7 @@ public final class ProviderManager {
                 "Alphatech IT",
                 "stratum+tcp://verus.alphatechit.co.uk",
                 "9999",
-                0,
+                1000,
                 "https://verus.alphatechit.co.uk/",
                 ""
         );
@@ -110,7 +110,7 @@ public final class ProviderManager {
                 "Luckpool (NA)",
                 "stratum+tcp://na.luckpool.net",
                 "3956",
-                0,
+                1000,
                 "https://luckpool.net/verus",
                 ""
         );
@@ -120,7 +120,7 @@ public final class ProviderManager {
                 "Luckpool (EU)",
                 "stratum+tcp://eu.luckpool.net",
                 "3956",
-                0,
+                1000,
                 "https://luckpool.net/verus",
                 ""
         );
@@ -130,7 +130,7 @@ public final class ProviderManager {
                 "Luckpool (AP)",
                 "stratum+tcp://ap.luckpool.net",
                 "3956",
-                0,
+                1000,
                 "https://luckpool.net/verus",
                 ""
         );
