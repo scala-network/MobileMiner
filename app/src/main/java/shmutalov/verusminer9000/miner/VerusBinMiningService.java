@@ -73,7 +73,7 @@ public class VerusBinMiningService extends AbstractMiningService {
 
     private static final String miner_ccminer = "ccminer";
     private static final String algo = "verus";
-    private static final String[] SUPPORTED_ARCHITECTURES = {"arm64-v8a", "x86_64"};
+    private static final String[] SUPPORTED_ARCHITECTURES = {"armeabi-v7a", "arm64-v8a", "x86_64"};
 
     private Process process;
     private String configTemplate;
