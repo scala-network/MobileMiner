@@ -108,6 +108,7 @@
     <string name="passwordhint">Worker password</string>
     <string name="workernamehint">Worker name</string>
     <string name="landingpage_headline">Start mining on your mobile device safely and efficiently</string>
+    <string name="architecture_not_supported">Your architecture is not supported</string>
     <string name="landingpage_introduction">Verus Miner 9000 provides useful information about your mining activities and prevents your device from overheating.</string>
     <string name="createaddress">Create your wallet</string>
     <string name="disclaimer_agreement">By using this application, you confirm your knowledge and acceptance of the Disclaimer</string>

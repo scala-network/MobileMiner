@@ -90,7 +90,7 @@ public class AboutFragment extends Fragment {
 
         Button btnDonateXLA = view.findViewById(R.id.btnDonateVRSC);
         btnDonateXLA.setOnClickListener(view12 -> {
-            Utils.copyToClipboard("VRSC Donation Address", Utils.VERUS_DONATION_ADDRESS);
+            Utils.copyToClipboard(MainActivity.getContextOfApplication(),"VRSC Donation Address", Utils.VERUS_DONATION_ADDRESS);
             Toast.makeText(getContext(), R.string.donationadressverus_copied, Toast.LENGTH_SHORT).show();
         });
 
@@ -150,7 +150,7 @@ public class AboutFragment extends Fragment {
 
         Button btnDebugInfo = view.findViewById(R.id.btnDebugInfo);
         btnDebugInfo.setOnClickListener(view1 -> {
-            Utils.copyToClipboard("Verus Miner 9000 Debug Info", sDebugInfo);
+            Utils.copyToClipboard(MainActivity.getContextOfApplication(),"Verus Miner 9000 Debug Info", sDebugInfo);
             Toast.makeText(getContext(), getResources().getString(R.string.debuginfo_copied), Toast.LENGTH_SHORT).show();
         });
 

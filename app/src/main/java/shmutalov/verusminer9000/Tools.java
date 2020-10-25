@@ -339,7 +339,8 @@ public class Tools {
             if (line != null) {
                 output = Float.parseFloat(line);
 
-                if (output > 1000.0f && Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
+                //if (output > 1000.0f && Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
+                if (output > 1000.0f) {
                     output /= 1000.0f;
                 }
 

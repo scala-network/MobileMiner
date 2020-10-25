@@ -12,13 +12,26 @@ import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextPaint;
+import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.core.content.res.ResourcesCompat;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Locale;
+import java.util.Map;
+
+import shmutalov.verusminer9000.miner.AbstractMiningService;
+import shmutalov.verusminer9000.miner.VerusBinMiningService;
 
 public class WizardHomeActivity extends BaseActivity {
     @Override
@@ -31,9 +44,54 @@ public class WizardHomeActivity extends BaseActivity {
             return;
         }
 
-        setContentView(R.layout.fragment_wizard_home);
+        // check, if our device is supported
+        String abi = Tools.getABI();
+        VerusBinMiningService miner = new VerusBinMiningService();
+        boolean isSupported = Arrays.asList(miner.getSupportedArchitectures()).contains(abi);
+        if (isSupported) {
+            setContentView(R.layout.fragment_wizard_home);
+        } else {
+            setContentView(R.layout.fragment_wizard_platform_not_supported);
+        }
 
         View view = findViewById(android.R.id.content).getRootView();
+
+        if (!isSupported) {
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTimeInMillis(BuildConfig.BUILD_TIME);
+            SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy hh:mm a", Locale.ENGLISH);
+            String build_time_debug = formatter.format(calendar.getTime());
+
+            StringBuilder cpuinfo = new StringBuilder(Config.read("CPUINFO").trim());
+            if(cpuinfo.length() == 0) {
+                try {
+                    Map<String, String> m = Tools.getCPUInfo();
+
+                    cpuinfo = new StringBuilder("ABI: " + Tools.getABI() + "\n");
+                    for (Map.Entry<String, String> pair : m.entrySet()) {
+                        cpuinfo.append(pair.getKey()).append(": ").append(pair.getValue()).append("\n");
+                    }
+                } catch (Exception e) {
+                    cpuinfo = new StringBuilder();
+                }
+
+                Config.write("CPUINFO", cpuinfo.toString().trim());
+            }
+
+            String sDebugInfo = "Version Code: " + BuildConfig.VERSION_CODE + "\n" +
+                    "Version Name: " + BuildConfig.VERSION_NAME + "\n" +
+                    "Build Time: " + build_time_debug + "\n\n" +
+                    "Device Name: " + Tools.getDeviceName(view.getContext()) + "\n" +
+                    "CPU Info: " + cpuinfo;
+
+            Button btnDebugInfo = view.findViewById(R.id.btnDebugInfo);
+            btnDebugInfo.setOnClickListener(view1 -> {
+                Utils.copyToClipboard(view.getContext(),"Verus Miner 9000 Debug Info", sDebugInfo);
+                Toast.makeText(view.getContext(), view.getResources().getString(R.string.debuginfo_copied), Toast.LENGTH_SHORT).show();
+            });
+
+            return;
+        }
 
         String sDisclaimerText = getResources().getString(R.string.disclaimer_agreement);
         String sDiclaimer = getResources().getString(R.string.disclaimer);

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	android:orientation="vertical"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	android:layout_marginStart="35dp"
+	android:layout_marginEnd="35dp"
+	android:background="@color/bg_body"
+	android:weightSum="80">
+
+	<Space
+		android:layout_width="0dp"
+		android:layout_height="0dp"
+		android:layout_weight="20"/>
+
+	<LinearLayout
+		android:orientation="vertical"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_gravity="center"
+		android:background="@color/bg_body">
+
+		<TextView
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:text="VERUS MINER"
+			android:gravity="center"
+			android:textSize="30sp"
+			android:textStyle="bold"
+			android:textColor="@color/txt_headline"/>
+
+		<ImageView
+			android:id="@+id/splashscreen"
+			android:layout_width="128dp"
+			android:layout_height="128dp"
+			android:layout_gravity="center"
+			android:src="@mipmap/ic_launcher"/>
+
+	</LinearLayout>
+
+	<Space
+		android:layout_width="0dp"
+		android:layout_height="0dp"
+		android:layout_weight="5" />
+
+	<TextView
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_gravity="center"
+		android:text="@string/architecture_not_supported"
+		android:textColor="@color/c_red"
+		android:textStyle="bold"
+		android:textAlignment="center"
+		android:textSize="20sp" />
+
+	<Button
+		android:id="@+id/btnDebugInfo"
+		android:layout_width="140dp"
+		android:layout_height="45dp"
+		android:layout_gravity="center"
+		android:backgroundTint="@color/bg_lighter"
+		android:insetLeft="2dp"
+		android:insetRight="2dp"
+		android:text="@string/debuginfo"
+		android:textSize="14sp"
+		android:textColor="@color/txt_button_filled"
+		android:textAllCaps="false"
+		app:cornerRadius="5dp"
+		app:iconPadding="0dp"
+		app:icon="@drawable/ic_copy"
+		app:iconTint="@color/btn_icon_default"/>
+</LinearLayout>
