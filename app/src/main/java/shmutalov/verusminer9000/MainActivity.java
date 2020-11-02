@@ -336,9 +336,8 @@ public class MainActivity extends BaseActivity
                         MainActivity.this.stopMining(); // Stop mining
 
                         // Start miner with small delay
-                        new Handler().postDelayed(() -> {
-                            MainActivity.this.startMining(); // Start mining
-                        }, 1000);
+                        // Start mining
+                        new Handler().postDelayed(MainActivity.this::startMining, 1000);
 
                         updateCores();
 
@@ -775,11 +774,6 @@ public class MainActivity extends BaseActivity
         }
     }
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-    }
-
     public void loadSettings() {
         Log.i(LOG_TAG, "loadSettings");
 
@@ -936,11 +930,6 @@ public class MainActivity extends BaseActivity
         }
 
         refreshLogOutputView();
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
     }
 
     private void toggleMiningState() {
@@ -1494,14 +1483,14 @@ public class MainActivity extends BaseActivity
 
     private void updateTemperaturesText(float cpuTemp) {
         if (cpuTemp > 0.0) {
-            tvCPUTemperature.setText(String.format(Locale.getDefault(), "%.0f", cpuTemp));
+            tvCPUTemperature.setText(String.format(Locale.getDefault(), "%.0f %s", cpuTemp, R.string.celsius));
         }
         else {
             tvCPUTemperature.setText("n/a");
         }
 
         if (batteryTemp > 0.0) {
-            tvBatteryTemperature.setText(String.format(Locale.getDefault(), "%.0f", batteryTemp));
+            tvBatteryTemperature.setText(String.format(Locale.getDefault(), "%.0f %s", batteryTemp, R.string.celsius));
         }
         else {
             tvBatteryTemperature.setText("n/a");

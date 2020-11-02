@@ -67,9 +67,9 @@ public class WizardPoolActivity extends BaseActivity {
         };
     }
 
-    private void parseVolleyError(VolleyError error) {
+    //private void parseVolleyError(VolleyError error) {
         // Do nothing
-    }
+    //}
 
     public void onClickVerus(View view) {
         selectedPoolIndex = 1;

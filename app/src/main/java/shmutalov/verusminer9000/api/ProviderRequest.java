@@ -31,7 +31,7 @@ public class ProviderRequest{
 
     public class ProviderTask extends TimerTask{
 
-        private ProviderAbstract mProvider;
+        private final ProviderAbstract mProvider;
 
         public ProviderTask(ProviderAbstract abs) {
             mProvider = abs;

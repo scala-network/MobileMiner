@@ -14,8 +14,9 @@ import shmutalov.verusminer9000.api.providers.*;
 public class PoolItem {
 
     private int mId = 0;
-    private String mPool, mPort, mApiUrl, mPoolUrl, mPoolIP, mStatsURL, mStartUrl, mKey;
-    private int mPoolType = 0;
+    private final String mPool, mPort, mPoolUrl, mPoolIP, mKey;
+    private String mApiUrl, mStatsURL, mStartUrl;
+    private final int mPoolType;
 
     public PoolItem(String key, String pool, String port, int poolType, String poolUrl, String poolIP) {
         this.mKey = key;

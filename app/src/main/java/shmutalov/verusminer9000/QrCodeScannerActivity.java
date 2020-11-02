@@ -7,7 +7,6 @@ package shmutalov.verusminer9000;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.SparseArray;
-import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 

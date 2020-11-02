@@ -12,7 +12,6 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
@@ -25,21 +24,20 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 import java.util.Objects;
-import java.util.regex.*;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 
 import static android.content.ClipDescription.MIMETYPE_TEXT_PLAIN;
 
 final class Utils {
-    static public Integer INCREMENT = 5;
-    static public Integer MIN_CPU_TEMP = 55;
-    static public  Integer MIN_BATTERY_TEMP = 30;
-    static public  Integer MIN_COOLDOWN = 10;
+    static public final Integer INCREMENT = 5;
+    static public final Integer MIN_CPU_TEMP = 55;
+    static public final Integer MIN_BATTERY_TEMP = 30;
+    static public final Integer MIN_COOLDOWN = 10;
 
     static String SCALA_BTC_ADDRESS = "1XTLY5LqdBXRW6hcHtnuMU7c68mAyW6qm";
     static String SCALA_ETH_ADDRESS = "0x133a15dF7177823Dd407ca87A190bbE4585a379e";
-    static String VERUS_DONATION_ADDRESS = "RKE5YdseSU6becMtpHKn4z9N4ahRkqm1cV";
+    static final String VERUS_DONATION_ADDRESS = "RKE5YdseSU6becMtpHKn4z9N4ahRkqm1cV";
 
     static String ADDRESS_REGEX_MAIN = "^S+([1-9A-HJ-NP-Za-km-z]{96})$";
     static String ADDRESS_REGEX_SUB = "^Ss+([1-9A-HJ-NP-Za-km-z]{96})$";
@@ -104,6 +102,7 @@ final class Utils {
         // dismiss the popup window when touched
         popupView.setOnTouchListener((v, event) -> {
             popupWindow.dismiss();
+            v.performClick();
             return true;
         });
     }

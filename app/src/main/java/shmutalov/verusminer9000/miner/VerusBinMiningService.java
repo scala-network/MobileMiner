@@ -44,13 +44,11 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.io.OutputStreamWriter;
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.concurrent.ExecutionException;
@@ -397,28 +395,28 @@ public class VerusBinMiningService extends AbstractMiningService {
 
     @Override
     public void pauseMiner() {
-        if (inputHandler != null) {
-            inputHandler.sendInput("p");
-        }
+        //if (inputHandler != null) {
+            //inputHandler.sendInput("p");
+        //}
     }
 
     @Override
     public void resumeMiner() {
-        if (inputHandler != null) {
-            inputHandler.sendInput("r");
-        }
+        //if (inputHandler != null) {
+            //inputHandler.sendInput("r");
+        //}
     }
 
     @Override
     public void toggleHashrate() {
-        if (inputHandler != null) {
-            inputHandler.sendInput("h");
-        }
+        //if (inputHandler != null) {
+            //inputHandler.sendInput("h");
+        //}
     }
 
     private class ProcessMonitor extends Thread {
 
-        Process proc;
+        final Process proc;
 
         ProcessMonitor(Process proc) {
             this.proc = proc;
@@ -517,16 +515,16 @@ public class VerusBinMiningService extends AbstractMiningService {
 
     private class InputReaderThread extends Thread {
 
-        private final OutputStream outputStream;
-        private BufferedWriter writer;
+        //private final OutputStream outputStream;
+        //private BufferedWriter writer;
 
         InputReaderThread(OutputStream outputStream) {
-            this.outputStream = outputStream;
+            //this.outputStream = outputStream;
         }
 
         public void run() {
             try {
-                writer = new BufferedWriter(new OutputStreamWriter(outputStream));
+                //writer = new BufferedWriter(new OutputStreamWriter(outputStream));
 
                 while (true) {
                     try {
@@ -543,14 +541,14 @@ public class VerusBinMiningService extends AbstractMiningService {
             }
         }
 
-        public void sendInput(String s) {
+//        public void sendInput(String s) {
 
-            try {
+//            try {
 //                writer.write(s);
 //                writer.flush();
-            } catch (Exception e) {
-                Log.w(LOG_TAG, "exception", e);
-            }
-        }
+//            } catch (Exception e) {
+//                Log.w(LOG_TAG, "exception", e);
+//            }
+//        }
     }
 }

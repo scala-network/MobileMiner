@@ -24,7 +24,6 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
             android:layout_marginBottom="10dip"
             android:textColor="@color/txt_main"
             android:textSize="12sp"
@@ -33,7 +32,6 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
             android:textColor="@color/txt_main"
             android:textSize="12sp"
             android:textStyle="bold"
