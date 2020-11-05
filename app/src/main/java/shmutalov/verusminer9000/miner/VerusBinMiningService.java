@@ -328,6 +328,7 @@ public class VerusBinMiningService extends AbstractMiningService {
 
             String[] args = {
                     "./" + miner_ccminer,
+                    "--no-banner",
                     "--no-color",
                     "-a", algo,
                     "-o", config.poolHost + ":" + config.poolPort,
