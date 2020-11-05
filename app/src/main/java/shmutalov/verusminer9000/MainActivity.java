@@ -1483,14 +1483,14 @@ public class MainActivity extends BaseActivity
 
     private void updateTemperaturesText(float cpuTemp) {
         if (cpuTemp > 0.0) {
-            tvCPUTemperature.setText(String.format(Locale.getDefault(), "%.0f %s", cpuTemp, R.string.celsius));
+            tvCPUTemperature.setText(String.format(Locale.getDefault(), "%.0f \u2103", cpuTemp));
         }
         else {
             tvCPUTemperature.setText("n/a");
         }
 
         if (batteryTemp > 0.0) {
-            tvBatteryTemperature.setText(String.format(Locale.getDefault(), "%.0f %s", batteryTemp, R.string.celsius));
+            tvBatteryTemperature.setText(String.format(Locale.getDefault(), "%.0f \u2103", batteryTemp));
         }
         else {
             tvBatteryTemperature.setText("n/a");
