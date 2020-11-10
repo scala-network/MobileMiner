@@ -1,0 +1,7 @@
+<resources>
+
+    <style name="EditTextStyle" parent="@style/Widget.AppCompat.EditText">
+        <item name="android:importantForAutofill">noExcludeDescendants</item>
+    </style>
+
+</resources>

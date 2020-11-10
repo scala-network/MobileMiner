@@ -81,6 +81,7 @@
                         android:id="@+id/address"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        style="@style/EditTextStyle"
                         android:textSize="14sp" />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -189,17 +190,17 @@
                         android:layout_marginEnd="3dp"
                         android:layout_weight="1"
                         app:errorEnabled="false"
+                        android:hint="@string/mining_pool_address"
+                        android:textColorHint="@color/txt_inactive"
                         tools:ignore="NestedWeights">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/pool"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="@string/mining_pool_address"
                             android:inputType="textUri"
                             android:singleLine="true"
                             android:textColor="@color/txt_main"
-                            android:textColorHint="@color/txt_inactive"
                             android:textSize="14sp" />
 
                     </com.google.android.material.textfield.TextInputLayout>
@@ -210,6 +211,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="3"
+                        android:hint="@string/mining_pool_port"
+                        android:textColorHint="@color/txt_inactive"
                         app:errorEnabled="false">
 
                         <com.google.android.material.textfield.TextInputEditText
@@ -217,12 +220,10 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:ems="10"
-                            android:hint="@string/mining_pool_port"
                             android:inputType="number"
                             android:maxLength="6"
                             android:singleLine="true"
                             android:textColor="@color/txt_main"
-                            android:textColorHint="@color/txt_inactive"
                             android:textSize="14sp" />
 
                     </com.google.android.material.textfield.TextInputLayout>
@@ -246,15 +247,16 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="3dp"
+                    android:hint="@string/usernameparametershint"
+                    android:textColorHint="@color/txt_inactive"
                     app:errorEnabled="false">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/usernameparameters"
+                        style="@style/EditTextStyle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/usernameparametershint"
                         android:textColor="@color/txt_main"
-                        android:textColorHint="@color/txt_inactive"
                         android:textSize="14sp" />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -265,16 +267,17 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
+                    android:hint="@string/passwordhint"
+                    android:textColorHint="@color/txt_inactive"
                     app:errorEnabled="false">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/password"
+                        style="@style/EditTextStyle"
                         android:inputType="textPassword"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/passwordhint"
                         android:textColor="@color/txt_main"
-                        android:textColorHint="@color/txt_inactive"
                         android:textSize="14sp" />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -285,15 +288,16 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
+                    android:hint="@string/workernamehint"
+                    android:textColorHint="@color/txt_inactive"
                     app:errorEnabled="false">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/workername"
+                        style="@style/EditTextStyle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/workernamehint"
                         android:textColor="@color/txt_main"
-                        android:textColorHint="@color/txt_inactive"
                         android:textSize="14sp" />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -304,17 +308,18 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
+                    android:hint="@string/mininggoalhint"
+                    android:textColorHint="@color/txt_inactive"
                     app:errorEnabled="false">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/mininggoal"
+                        style="@style/EditTextStyle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:hint="@string/mininggoalhint"
                         android:inputType="number"
                         android:textColor="@color/txt_main"
-                        android:textColorHint="@color/txt_inactive"
                         android:textSize="14sp"
                         android:enabled="false" />
 

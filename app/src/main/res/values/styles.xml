@@ -35,4 +35,8 @@
         <!-- inactive track color (30% transparency) -->
         <item name="android:colorForeground">@color/c_grey</item>
     </style>
+
+    <style name="EditTextStyle" parent="@style/Widget.AppCompat.EditText">
+
+    </style>
 </resources>
