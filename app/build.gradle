@@ -15,7 +15,7 @@ android {
         minSdkVersion 22
         targetSdkVersion 30 // to avoid an error 13 when running exe in assets folder (sdk 29 gives the error)
         versionCode 7
-        versionName "0.0.9"
+        versionName "0.0.10"
         buildConfigField "long", "BUILD_TIME", System.currentTimeMillis() + "L"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
