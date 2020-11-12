@@ -62,12 +62,12 @@
     <string name="startmining">I am ready!</string>
     <string name="mininglog">Mining Log</string>
 
-    <string name="githubLink">https://github.com/shmutalov/MobileMiner/releases</string>
+    <string name="githubLink">https://github.com/shmutalov/VerusMiner9000/releases</string>
     <string name="discordLink">https://verus.io/discord</string>
     <string name="mediumLink">https://medium.com/veruscoin/</string>
     <string name="twitterLink">https://twitter.com/VerusCoin</string>
     <string name="telegramLink">https://t.me/VerusCommunity</string>
-    <string name="MadeByLink">&lt;a href=&quot;https://github.com/shmutalov&quot;&gt;shmutalov&lt;/a&gt;</string>
+    <string name="MadeByLink">&lt;a href=&quot;https://github.com/shmutalov/VerusMiner9000&quot;&gt;shmutalov&lt;/a&gt;</string>
     <string name="Mine2getherLink">&lt;a href=&quot;https://github.com/Mine2Gether/m2g_android_miner&quot;&gt;Mine2gether&lt;/a&gt;</string>
     <string name="MoneroMinerLink">&lt;a href=&quot;https://github.com/upost/MoneroMiner&quot;&gt;MoneroMiner&lt;/a&gt;</string>
     <string name="MobileMinerLink">&lt;a href=&quot;https://github.com/scala-network/MobileMiner&quot;&gt;MobileMiner&lt;/a&gt;</string>

@@ -1801,8 +1801,8 @@ public class MainActivity extends BaseActivity
         Uri uri = Uri.fromFile(imagePath);
         Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
         sharingIntent.setType("image/*");
-        String shareBody = "Take a look at my Scala Mobile Miner stats!";
-        sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "My Scala Mobile Miner Stats");
+        String shareBody = "Take a look at my Verus Miner 9000 stats!";
+        sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "My Verus Miner 9000 Stats");
         sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
         sharingIntent.putExtra(Intent.EXTRA_STREAM, uri);
 
