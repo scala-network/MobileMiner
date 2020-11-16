@@ -88,6 +88,7 @@ public class VerusBinMiningService extends AbstractMiningService {
     private double max = 0.0f;
     private String lastAssetPath;
     private String lastOutput = "";
+    private MiningConfig lastConfig;
     private static RequestQueue reqQueue;
 
     private static final String JSON_GEOIPLOOKUP_API_URL = "https://json.geoiplookup.io/";
@@ -272,8 +273,9 @@ public class VerusBinMiningService extends AbstractMiningService {
 
     @Override
     public void startMining(MiningConfig config) {
+        lastConfig = config;
         stopMining();
-        new startMiningAsync().execute(config);
+        new startMiningAsync().execute(lastConfig);
     }
 
     class startMiningAsync extends AsyncTask<MiningConfig, Void, String> {
@@ -396,6 +398,7 @@ public class VerusBinMiningService extends AbstractMiningService {
 
     @Override
     public void pauseMiner() {
+        stopMining();
         //if (inputHandler != null) {
             //inputHandler.sendInput("p");
         //}
@@ -403,6 +406,9 @@ public class VerusBinMiningService extends AbstractMiningService {
 
     @Override
     public void resumeMiner() {
+        if (lastConfig != null) {
+            startMining(lastConfig);
+        }
         //if (inputHandler != null) {
             //inputHandler.sendInput("r");
         //}
@@ -416,7 +422,6 @@ public class VerusBinMiningService extends AbstractMiningService {
     }
 
     private class ProcessMonitor extends Thread {
-
         final Process proc;
 
         ProcessMonitor(Process proc) {
