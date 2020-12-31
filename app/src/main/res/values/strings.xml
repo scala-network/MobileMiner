@@ -26,7 +26,7 @@
     <string name="pool">Pool</string>
     <string name="cpu">CPU</string>
     <string name="scanqrcode">QR Code</string>
-    <string name="processing">Retrieving Hashrate...</string>
+    <string name="processing">Calculating Hashrate...</string>
     <string name="disclaimer">Disclaimer</string>
     <string name="shares">Shares</string>
     <string name="invalid">Invalid</string>
@@ -112,9 +112,7 @@
     <string name="paper">Paper</string>
     <string name="or">or</string>
     <string name="skip">Skip</string>
-    <string name="paper_wallet_url">https://scalaproject.io/paper-wallet.php</string>
-    <string name="cli_wallet_url">https://github.com/scala-network/Scala/releases</string>
-    <string name="gui_wallet_url">https://github.com/scala-network/scala-electron-gui/releases</string>
+    <string name="scala_vault_play_store">https://play.google.com/store/apps/details?id=io.scalaproject.vault</string>
     <string name="ok">OK</string>
     <string name="save">Save</string>
     <string name="devicemining">Device Mining</string>

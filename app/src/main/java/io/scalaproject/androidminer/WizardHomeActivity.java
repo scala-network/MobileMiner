@@ -69,7 +69,7 @@ public class WizardHomeActivity extends BaseActivity {
     }
 
     public void onCreateWallet(View view) {
-        Uri uri = Uri.parse(getResources().getString(R.string.paper_wallet_url));
+        Uri uri = Uri.parse(getResources().getString(R.string.scala_vault_play_store));
         Intent intent = new Intent(Intent.ACTION_VIEW, uri);
         startActivity(intent);
     }
