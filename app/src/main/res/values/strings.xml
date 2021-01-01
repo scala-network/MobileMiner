@@ -64,7 +64,7 @@
 
     <string name="githubLink">https://github.com/scala-network/MobileMiner/releases</string>
     <string name="discordLink">https://discord.gg/djAFVvy</string>
-    <string name="mediumLink">https://medium.com/scala/</string>
+    <string name="mediumLink">https://medium.com/scala-network</string>
     <string name="twitterLink">https://twitter.com/scalahq</string>
     <string name="telegramLink">https://t.me/scalaofficial</string>
     <string name="ScalaLink">&lt;a href=&quot;https://scalaproject.io&quot;&gt;Scala&lt;/a&gt;</string>
