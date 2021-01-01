@@ -5,9 +5,17 @@
 package io.scalaproject.androidminer.api;
 
 import android.os.AsyncTask;
+import android.view.View;
+
+import com.android.volley.toolbox.StringRequest;
+
+import org.intellij.lang.annotations.JdkConstants;
+
 import java.util.Timer;
 
 import io.scalaproject.androidminer.Config;
+import io.scalaproject.androidminer.WizardPoolActivity;
+import io.scalaproject.androidminer.widgets.PoolBannerWidget;
 
 public abstract class ProviderAbstract extends AsyncTask<Void, Void, Void> {
 
@@ -28,6 +36,8 @@ public abstract class ProviderAbstract extends AsyncTask<Void, Void, Void> {
     final public String getWalletAddress(){
         return Config.read("address");
     }
+
+    abstract public StringRequest getStringRequest(WizardPoolActivity activity, PoolBannerWidget view);
 
     @Override
     protected void onPostExecute(Void aVoid) {

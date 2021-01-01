@@ -31,7 +31,7 @@ import java.text.ParseException;
 
 import static android.content.ClipDescription.MIMETYPE_TEXT_PLAIN;
 
-final class Utils {
+public final class Utils {
     static public Integer INCREMENT = 5;
     static public Integer MIN_CPU_TEMP = 55;
     static public  Integer MIN_BATTERY_TEMP = 30;
@@ -57,7 +57,7 @@ final class Utils {
         return m.matches();
     }
 
-    static float convertStringToFloat(String sNumber) {
+    public static float convertStringToFloat(String sNumber) {
         float total = (float) -1;
         try
         {

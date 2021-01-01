@@ -9,17 +9,27 @@
 package io.scalaproject.androidminer.api.providers;
 
 import android.util.Log;
+import android.view.View;
+import android.widget.TextView;
+
+import com.android.volley.Request;
+import com.android.volley.toolbox.StringRequest;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.ocpsoft.prettytime.PrettyTime;
 
+import java.text.DecimalFormat;
 import java.util.Date;
 
+import io.scalaproject.androidminer.R;
+import io.scalaproject.androidminer.Utils;
+import io.scalaproject.androidminer.WizardPoolActivity;
 import io.scalaproject.androidminer.api.ProviderData;
 import io.scalaproject.androidminer.network.Json;
 import io.scalaproject.androidminer.api.ProviderAbstract;
 import io.scalaproject.androidminer.api.PoolItem;
+import io.scalaproject.androidminer.widgets.PoolBannerWidget;
 
 import static io.scalaproject.androidminer.Tools.getReadableHashRateString;
 import static io.scalaproject.androidminer.Tools.parseCurrency;
@@ -30,7 +40,34 @@ public class CryptonoteNodejsPool extends ProviderAbstract {
     public CryptonoteNodejsPool(PoolItem pi){
         super(pi);
     }
+    public StringRequest getStringRequest(WizardPoolActivity activity, PoolBannerWidget view) {
+        String url = mPoolItem.getApiUrl() + "/stats";
 
+        return new StringRequest(Request.Method.GET, url,
+                response -> {
+                    try {
+                        view.recommendPool = mPoolItem.getKey().toLowerCase().contains("official");
+                        view.poolName = mPoolItem.getKey();
+
+                        JSONObject obj = new JSONObject(response);
+                        JSONObject objConfigPool = obj.getJSONObject("pool");
+                        view.minersScala = String.format("%s %s", objConfigPool.getString("miners"), activity.getResources().getString(R.string.miners));
+                        float fHr = Utils.convertStringToFloat(objConfigPool.getString("hashrate")) / 1000.0f;
+                        String frmt = "K";
+                        if(fHr > 1000) {
+                            frmt = "M";
+                            fHr = fHr / 1000.0f;
+                        }
+                        view.hrScala = String.format("%s %sH/s", new DecimalFormat("##.#").format(fHr),frmt);
+
+                    } catch (Exception e) {
+                        //Do nothing
+                    }
+                    view.refresh();
+
+                }
+                , WizardPoolActivity::parseVolleyError);
+    }
     @Override
     protected void onBackgroundFetchData() {
         PrettyTime pTime = new PrettyTime();

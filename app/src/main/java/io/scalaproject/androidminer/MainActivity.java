@@ -45,6 +45,7 @@ import android.graphics.Point;
 import android.graphics.PorterDuff;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
+import android.hardware.SensorManager;
 import android.net.Uri;
 import android.os.BatteryManager;
 import android.os.Build;
@@ -282,7 +283,9 @@ public class MainActivity extends BaseActivity
         // CPU Cores
 
         nNbMaxCores = Runtime.getRuntime().availableProcessors();
-        nCores = Integer.parseInt(Config.read("cores"));
+        String core_config = Config.read("cores");
+
+        nCores = core_config.isEmpty() ? nNbMaxCores : Integer.parseInt(core_config);
 
         // Create a dummy meter to add "gaps" to the Cores meter, to separate every core value
         TubeSpeedometer meterCoresGap = findViewById(R.id.meter_cores_gap);
@@ -446,6 +449,9 @@ public class MainActivity extends BaseActivity
             }
         });
 
+        StrictMode.ThreadPolicy policy = new
+                StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
         ProviderManager.generate();
 
         payoutListener = new IProviderListener() {
@@ -481,7 +487,9 @@ public class MainActivity extends BaseActivity
         updateStartButton();
         resetAvgMaxHashrate();
 
+
         updateUI();
+
     }
 
     @Override
@@ -698,6 +706,7 @@ public class MainActivity extends BaseActivity
         refreshLogOutputView();
         updateCores();
         adjustMetricsLayout();
+
     }
 
     private void adjustMetricsLayout() {

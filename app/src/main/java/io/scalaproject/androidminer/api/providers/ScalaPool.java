@@ -9,17 +9,27 @@
 package io.scalaproject.androidminer.api.providers;
 
 import android.util.Log;
+import android.widget.TextView;
+import android.view.View;
+
+import com.android.volley.Request;
+import com.android.volley.toolbox.StringRequest;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.ocpsoft.prettytime.PrettyTime;
 
+import java.text.DecimalFormat;
 import java.util.Date;
 
+import io.scalaproject.androidminer.R;
+import io.scalaproject.androidminer.Utils;
+import io.scalaproject.androidminer.WizardPoolActivity;
+import io.scalaproject.androidminer.api.PoolItem;
+import io.scalaproject.androidminer.api.ProviderAbstract;
 import io.scalaproject.androidminer.api.ProviderData;
 import io.scalaproject.androidminer.network.Json;
-import io.scalaproject.androidminer.api.ProviderAbstract;
-import io.scalaproject.androidminer.api.PoolItem;
+import io.scalaproject.androidminer.widgets.PoolBannerWidget;
 
 import static io.scalaproject.androidminer.Tools.getReadableHashRateString;
 import static io.scalaproject.androidminer.Tools.parseCurrency;
@@ -31,6 +41,34 @@ public class ScalaPool extends ProviderAbstract {
         super(pi);
     }
 
+    public StringRequest getStringRequest(WizardPoolActivity activity, PoolBannerWidget view) {
+        String url = mPoolItem.getApiUrl() + "/stats";
+        return new StringRequest(Request.Method.GET, url,
+                response -> {
+                    try {
+                        view.recommendPool = mPoolItem.getKey().toLowerCase().contains("official");
+                        view.poolName = mPoolItem.getKey();
+
+                        JSONObject obj = new JSONObject(response);
+                        JSONObject objConfig = obj.getJSONObject("config");
+                        JSONObject objConfigPool = obj.getJSONObject("pool");
+
+                        float fHr = Utils.convertStringToFloat(objConfigPool.getString("hashrate")) / 1000.0f;
+                        String frmt = "K";
+                        if(fHr > 1000) {
+                            frmt = "M";
+                            fHr = fHr / 1000.0f;
+                        }
+                        view.hrScala =  String.format("%s %sH/s", new DecimalFormat("##.#").format(fHr), frmt);
+                        view.minersScala = String.format("%s %s", objConfigPool.getString("miners"), activity.getResources().getString(R.string.miners));
+
+                    } catch (Exception e) {
+                        //Do nothing
+                    }
+                    view.refresh();
+                }
+                , WizardPoolActivity::parseVolleyError);
+    }
     @Override
     protected void onBackgroundFetchData() {
         PrettyTime pTime = new PrettyTime();
@@ -46,6 +84,7 @@ public class ScalaPool extends ProviderAbstract {
             JSONObject joStatsConfig = joStats.getJSONObject("config");
             JSONObject joStatsLastBlock = joStats.getJSONObject("lastblock");
             JSONObject joStatsNetwork = joStats.getJSONObject("network");
+
             JSONObject joStatsPool = joStats.getJSONObject("pool");
             JSONObject joStatsPoolStats = joStatsPool.getJSONObject("stats");
 
@@ -64,7 +103,7 @@ public class ScalaPool extends ProviderAbstract {
             mBlockData.network.lastBlockHeight = joStatsLastBlock.optString("height");
             mBlockData.network.difficulty = getReadableHashRateString(joStatsNetwork.optLong("difficulty"));
             mBlockData.network.lastBlockTime = pTime.format(new Date(joStatsLastBlock.optLong("timestamp") * 1000));
-            mBlockData.network.lastRewardAmount = parseCurrency(joStatsPoolStats.optString("lastblock_lastReward", "0"), mBlockData.coin.units, mBlockData.coin.denominationUnit, mBlockData.coin.symbol);
+            mBlockData.network.lastRewardAmount = parseCurrency(joStatsPoolStats.optString("lastblock_lastMinerReward", "0"), mBlockData.coin.units, mBlockData.coin.denominationUnit, mBlockData.coin.symbol);
         } catch (JSONException e) {
             Log.i(LOG_TAG, "NETWORK\n" + e.toString());
             e.printStackTrace();

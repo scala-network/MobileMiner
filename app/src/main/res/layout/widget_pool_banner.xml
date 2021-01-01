@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/widget_pool_banner"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="15dp"
+    android:background="@drawable/corner_radius_lighter_border_blue"
+    android:orientation="horizontal"
+    android:paddingLeft="15dp"
+    android:paddingTop="15dp"
+    android:paddingRight="15dp"
+    android:paddingBottom="15dp">
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="238dp"
+        android:layout_height="40dp"
+        android:layout_gravity="start|center_vertical"
+        android:layout_weight="1"
+        android:contentDescription="@string/log"
+        app:srcCompat="@drawable/ic_launcher_round" />
+
+    <LinearLayout
+        android:layout_width="356dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:layout_marginStart="15dp"
+        android:layout_weight="1"
+        android:background="@drawable/corner_radius_lighter"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/poolName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:text="@string/scala_project"
+            android:textColor="@color/txt_secondary"
+            android:textSize="12sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/minersScala"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:text=""
+            android:textColor="@color/txt_main"
+            android:textSize="12sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="284dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:background="@drawable/corner_radius_lighter"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/recommendPool"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:textColor="@color/txt_inactive"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/hrScala"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="end|center_vertical"
+            android:text="@string/h_s"
+            android:textColor="@color/txt_main"
+            android:textSize="12sp" />
+
+    </LinearLayout>
+
+</LinearLayout>
