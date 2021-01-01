@@ -31,14 +31,6 @@
       "poolType"  :  2,
       "poolUrl" : "https://scala.herominers.com",
       "poolIp" : "138.201.217.40"
-    },
-    {
-      "key" : "LetsHashIt",
-      "pool" : "letshash.it",
-      "port" : "2332",
-      "poolType"  :  2,
-      "poolUrl" : "https://letshash.it/xla",
-      "poolIp" : "95.111.246.231"
     }
   ]
 }
