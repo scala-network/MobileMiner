@@ -13,7 +13,7 @@
       "pool" : "fastpool.xyz",
       "port" : "10126",
       "poolType"  :  2, 
-      "poolUrl" : "https://fastpool.xyz/xla/",
+      "poolUrl" : "https://fastpool.xyz/xla",
       "poolIp" : "130.185.202.159"
     },
     {
@@ -21,7 +21,7 @@
       "pool" : "xla.pool.gntl.co.uk",
       "port" : "40002",
       "poolType"  :  1,
-      "poolUrl" : "https://fastpool.xyz/xla/",
+      "poolUrl" : "https://xla.pool.gntl.co.uk",
       "poolIp" : "83.151.238.34"
     },
     {
@@ -31,6 +31,22 @@
       "poolType"  :  1,
       "poolUrl" : "https://scala.luckypool.io",
       "poolIp" : "51.89.96.162"
+    },
+    {
+      "key" : "HeroMiners",
+      "pool" : "scala.herominers.com",
+      "port" : "10130",
+      "poolType"  :  2,
+      "poolUrl" : "https://scala.herominers.com",
+      "poolIp" : "138.201.217.40"
+    },
+    {
+      "key" : "LetsHashIt",
+      "pool" : "letshash.it",
+      "port" : "2332",
+      "poolType"  :  2,
+      "poolUrl" : "https://letshash.it/xla",
+      "poolIp" : "95.111.246.231"
     }
   ]
 }
