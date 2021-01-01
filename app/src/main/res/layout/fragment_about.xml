@@ -71,6 +71,7 @@
                     android:id="@+id/build"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="3dp"
                     android:gravity="start"
                     android:text=""
                     android:textColor="@color/c_grey"
@@ -122,6 +123,8 @@
                     <ImageView
                         android:layout_width="16dp"
                         android:layout_height="16dp"
+                        android:layout_marginStart="3dp"
+                        android:layout_marginEnd="3dp"
                         app:srcCompat="@drawable/ic_heart" />
 
                     <TextView
@@ -136,6 +139,7 @@
                         android:id="@+id/ScalaURL"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="3dp"
                         android:gravity="start"
                         android:text=""
                         android:textColor="@color/c_blue"
@@ -170,6 +174,7 @@
                     android:id="@+id/Mine2getherURL"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="3dp"
                     android:gravity="start"
                     android:text=""
                     android:textColor="@color/c_blue"

@@ -4,13 +4,13 @@
         <item android:id="@+id/menu_home"
             android:enabled="true"
             android:title="@string/home"
-            android:icon="@drawable/ic_home"
+            android:icon="@drawable/ic_home2"
             app:showAsAction="ifRoom" />
 
         <item android:id="@+id/menu_log"
             android:enabled="true"
             android:title="@string/log"
-            android:icon="@drawable/ic_log"
+            android:icon="@drawable/ic_log4"
             app:showAsAction="ifRoom" />
 
         <item android:id="@+id/menu_stats"
@@ -23,5 +23,11 @@
             android:enabled="true"
             android:title="@string/settings"
             android:icon="@drawable/ic_settings"
+            app:showAsAction="ifRoom" />
+
+        <item android:id="@+id/menu_help"
+            android:enabled="true"
+            android:title="@string/help"
+            android:icon="@drawable/ic_help"
             app:showAsAction="ifRoom" />
 </menu>
