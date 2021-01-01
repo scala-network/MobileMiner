@@ -9,14 +9,6 @@
       "poolIp" : "95.111.237.231"
     },
     {
-      "key" : "FastPool",
-      "pool" : "fastpool.xyz",
-      "port" : "10126",
-      "poolType"  :  2, 
-      "poolUrl" : "https://fastpool.xyz/xla",
-      "poolIp" : "130.185.202.159"
-    },
-    {
       "key" : "GNTL",
       "pool" : "xla.pool.gntl.co.uk",
       "port" : "40002",
