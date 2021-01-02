@@ -1927,6 +1927,7 @@ public class MainActivity extends BaseActivity
 
         String status = m_nCurrentState == STATE_MINING ? "Hashrate: " + tvHashrate.getText().toString() + " H/s" : tvStatus.getText().toString();
 
+        notificationBuilder.setSmallIcon(R.drawable.ic_launcher_round);
         notificationBuilder.setContentText(status);
         notificationManager.notify(1, notificationBuilder.build());
     }

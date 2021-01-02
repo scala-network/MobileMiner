@@ -9,28 +9,28 @@
       "poolIp" : "95.111.237.231"
     },
     {
-      "key" : "FastPool",
-      "pool" : "fastpool.xyz",
-      "port" : "10126",
-      "poolType"  :  2, 
-      "poolUrl" : "https://fastpool.xyz/xla/",
-      "poolIp" : "130.185.202.159"
-    },
-    {
       "key" : "GNTL",
       "pool" : "xla.pool.gntl.co.uk",
       "port" : "40002",
       "poolType"  :  1,
-      "poolUrl" : "https://fastpool.xyz/xla/",
+      "poolUrl" : "https://xla.pool.gntl.co.uk",
       "poolIp" : "83.151.238.34"
     },
     {
       "key" : "LuckyPool",
       "pool" : "scala.luckypool.io",
       "port" : "6677",
-      "poolType"  :  1,
+      "poolType"  :  2,
       "poolUrl" : "https://scala.luckypool.io",
       "poolIp" : "51.89.96.162"
+    },
+    {
+      "key" : "HeroMiners",
+      "pool" : "scala.herominers.com",
+      "port" : "10130",
+      "poolType"  :  2,
+      "poolUrl" : "https://scala.herominers.com",
+      "poolIp" : "138.201.217.40"
     }
   ]
 }
