@@ -48,13 +48,11 @@ public final class NodejsPool extends ProviderAbstract {
         return new StringRequest(Request.Method.GET, url,
                 response -> {
                     try {
-                        view.recommendPool = mPoolItem.getKey().toLowerCase().contains("official");
-                        view.poolName = mPoolItem.getKey();
-
+                        //view.recommendPool = mPoolItem.getKey().toLowerCase().contains("official");
+                        //view.poolName = mPoolItem.getKey();
 
                         JSONObject obj = new JSONObject(response);
                         JSONObject objStats = obj.getJSONObject("pool_statistics");
-
 
                         TextView tvHr = view.findViewById(R.id.hrScala);
                         float fHr = Utils.convertStringToFloat(objStats.getString("hashRate")) / 1000.0f;
@@ -63,6 +61,7 @@ public final class NodejsPool extends ProviderAbstract {
                             frmt = "M";
                             fHr = fHr / 1000.0f;
                         }
+
                         view.minersScala = String.format("%s %s", objStats.getString("miners"), activity.getResources().getString(R.string.miners));
                         view.hrScala = String.format("%s %sH/s", new DecimalFormat("##.#").format(fHr), frmt);
                     } catch (Exception e) {

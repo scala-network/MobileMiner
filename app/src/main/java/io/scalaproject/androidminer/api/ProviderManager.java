@@ -72,6 +72,18 @@ public final class ProviderManager {
 
         return getPoolById(sp);
     }
+
+    static public int getSelectedPoolIndex() {
+        String sp = Config.read("selected_pool");
+        if (sp.equals("")) {
+            return 0;
+        }
+
+        int index = Integer.parseInt(sp);
+
+        return index;
+    }
+
     static public void afterSave() {
         if(request.mPoolItem != null)  {
             return;
@@ -98,7 +110,7 @@ public final class ProviderManager {
         if(!mPools.isEmpty())
             return;
 
-        add("custom", "custom", "3333", 0, "", "");
+        //add("custom", "custom", "3333", 0, "", "");
 
         String lastFetched = Config.read("RepositoryLastFetched");
         String jsonString = "";
@@ -106,39 +118,31 @@ public final class ProviderManager {
             SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
             Date todayDate = Calendar.getInstance().getTime();
             String todayString = formatter.format(todayDate);
-            if(lastFetched == todayString){
+
+            if(lastFetched.equals(todayString)){
                 jsonString = Config.read("RepositoryJson");
             }
         }
 
         if(jsonString.isEmpty()) {
-
             String url = Config.githubAppJson;
             jsonString  = Json.fetch(url);
         }
 
         try {
-
             JSONObject data = new JSONObject(jsonString);
             JSONArray pools = data.getJSONArray("pools");
 
             for(int i=0; i< pools.length(); i++) {
                 JSONObject pool = pools.getJSONObject(i);
                 if(!pool.has("apiUrl")) {
-                    add(pool.getString("key"),pool.getString("pool"),pool.getString("port"),pool.getInt("poolType"), pool.getString("poolUrl"), pool.getString("poolIp"));
+                    add(pool.getString("key"), pool.getString("pool"), pool.getString("port"), pool.getInt("poolType"), pool.getString("poolUrl"), pool.getString("poolIp"));
                 } else {
-                    add(pool.getString("key"),pool.getString("pool"),pool.getString("port"),pool.getInt("poolType"), pool.getString("poolUrl"), pool.getString("poolIp"),pool.getString("apiUrl"));
+                    add(pool.getString("key"), pool.getString("pool"), pool.getString("port"), pool.getInt("poolType"), pool.getString("poolUrl"), pool.getString("poolIp"), pool.getString("apiUrl"));
                 }
             }
-
-
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
-
-
-
-
     }
 }

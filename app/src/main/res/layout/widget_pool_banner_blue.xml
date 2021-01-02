@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="15dp"
-    android:background="@drawable/corner_radius_lighter"
+    android:background="@drawable/corner_radius_lighter_border_blue"
     android:orientation="horizontal"
     android:paddingLeft="15dp"
     android:paddingTop="15dp"

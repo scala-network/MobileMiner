@@ -46,8 +46,8 @@ public class ScalaPool extends ProviderAbstract {
         return new StringRequest(Request.Method.GET, url,
                 response -> {
                     try {
-                        view.recommendPool = mPoolItem.getKey().toLowerCase().contains("official");
-                        view.poolName = mPoolItem.getKey();
+                        //view.recommendPool = mPoolItem.getKey().toLowerCase().contains("official");
+                        //view.poolName = mPoolItem.getKey();
 
                         JSONObject obj = new JSONObject(response);
                         JSONObject objConfig = obj.getJSONObject("config");
@@ -59,6 +59,7 @@ public class ScalaPool extends ProviderAbstract {
                             frmt = "M";
                             fHr = fHr / 1000.0f;
                         }
+
                         view.hrScala =  String.format("%s %sH/s", new DecimalFormat("##.#").format(fHr), frmt);
                         view.minersScala = String.format("%s %s", objConfigPool.getString("miners"), activity.getResources().getString(R.string.miners));
 

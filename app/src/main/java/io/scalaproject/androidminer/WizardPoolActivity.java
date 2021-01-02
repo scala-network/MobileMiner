@@ -20,7 +20,13 @@ import com.android.volley.RequestQueue;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.nio.charset.StandardCharsets;
+import java.security.Provider;
 import java.text.DecimalFormat;
 
 import io.scalaproject.androidminer.api.PoolItem;
@@ -30,7 +36,9 @@ import io.scalaproject.androidminer.widgets.PoolBannerWidget;
 public class WizardPoolActivity extends BaseActivity {
     private static final String LOG_TAG = "WizardPoolActivity";
 
-    private int selectedPoolIndex = 1;
+    private int selectedPoolIndex = 0;
+
+    private Context mContext = null;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -46,24 +54,22 @@ public class WizardPoolActivity extends BaseActivity {
 
         RequestQueue queue = Volley.newRequestQueue(this);
         View view = findViewById(android.R.id.content).getRootView();
-        // Scala
+
         PoolItem[] pools = ProviderManager.getPools();
 
         PoolBannerWidget[] lls = new PoolBannerWidget[pools.length];
 
         LinearLayout parentLayout = view.findViewById(R.id.buttonContainer);
 
-        for(int i=0;i<pools.length;i++) {
+        selectedPoolIndex = ProviderManager.getSelectedPoolIndex();
 
-            PoolItem pool = pools[i];
-            if(pool.getApiUrl() == null) {
-                continue;
-            }
+        for(int i = 0; i < pools.length; i++) {
+            PoolItem poolItem = pools[i];
 
-            LayoutInflater vi = (LayoutInflater) getApplicationContext()
-                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            LayoutInflater vi = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-            PoolBannerWidget poolBannerWidget =  new PoolBannerWidget(this);
+            mContext = this;
+            PoolBannerWidget poolBannerWidget =  new PoolBannerWidget(this, poolItem, i == selectedPoolIndex);
 
             lls[i] = poolBannerWidget;
 
@@ -71,48 +77,64 @@ public class WizardPoolActivity extends BaseActivity {
 
             poolBannerWidget.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View view) {
-//                    int bottom = view.getPaddingBottom();
-//                    int top = view.getPaddingTop();
-//                    int right = view.getPaddingRight();
-//                    int left = view.getPaddingLeft();
-//                    view.setBackgroundResource(R.drawable.corner_radius_lighter_border_blue);
-//                    view.setPadding(left, top, right, bottom);
+                    for(int i = 0; i < lls.length; i++) {
+                        View ll = lls[i];
 
-                    for(int o = 0;o< lls.length;o++) {
-                        View ll = lls[o];
                         if(ll == null) {
                             continue;
                         }
-                        if(view != ll) {
-//                            bottom = ll.getPaddingBottom();
-//                            top = ll.getPaddingTop();
-//                            right = ll.getPaddingRight();
-//                            left = ll.getPaddingLeft();
 
-//                            ll.setBackgroundResource(R.drawable.corner_radius_lighter);
-//                            ll.setPadding(left, top, right, bottom);
+                        //PoolBannerWidget pwv = (PoolBannerWidget)view;
+
+                        int bottom = ll.getPaddingBottom();
+                        int top = ll.getPaddingTop();
+                        int right = ll.getPaddingRight();
+                        int left = ll.getPaddingLeft();
+
+                        if(view == ll) {
+                            //pwv.setSelected(mContext, true);
+                            ll.setBackgroundResource(R.drawable.corner_radius_lighter_border_blue);
+                            selectedPoolIndex = i;
                         } else {
-                            selectedPoolIndex = o+1;
-                            Config.write("selected_pool", Integer.toString(selectedPoolIndex));
-
-                            startActivity(new Intent(WizardPoolActivity.this, WizardSettingsActivity.class));
-                            finish();
+                            //pwv.setSelected(mContext, false);
+                            ll.setBackgroundResource(R.drawable.corner_radius_lighter);
                         }
+                        ll.setPadding(left, top, right, bottom);
                     }
-                    Log.i("MININGPOOL", "UUUU : " + selectedPoolIndex);
+
+                    parentLayout.invalidate();
+
+                    Log.i("MININGPOOL", "SelectedPoolIndex : " + selectedPoolIndex);
                 }
             });
 
-            StringRequest stringRequest = pool.getInterface().getStringRequest(this, poolBannerWidget);
-            queue.add(stringRequest);
+            if(poolItem.getApiUrl() != null) {
+                StringRequest stringRequest = poolItem.getInterface().getStringRequest(this, poolBannerWidget);
+                queue.add(stringRequest);
+            }
         }
+    }
 
+    public void onNext(View view) {
+        Config.write("selected_pool", Integer.toString(selectedPoolIndex));
+
+        startActivity(new Intent(WizardPoolActivity.this, WizardSettingsActivity.class));
+        finish();
     }
 
     static public void parseVolleyError(VolleyError error) {
-        // Do nothing
+        String message = "";
+        try {
+            String responseBody = new String(error.networkResponse.data, StandardCharsets.UTF_8);
+            JSONObject data = new JSONObject(responseBody);
+            JSONArray errors = data.getJSONArray("errors");
+            JSONObject jsonMessage = errors.getJSONObject(0);
+
+            message = "VolleyError: " + jsonMessage.getString("message");
+        } catch (JSONException e) {
+            message = "JSONException: " + e.getMessage();
+        } finally {
+            Log.i("parseVolleyError:", message);
+        }
     }
-
-
-
 }

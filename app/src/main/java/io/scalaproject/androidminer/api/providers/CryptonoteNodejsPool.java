@@ -40,14 +40,15 @@ public class CryptonoteNodejsPool extends ProviderAbstract {
     public CryptonoteNodejsPool(PoolItem pi){
         super(pi);
     }
+
     public StringRequest getStringRequest(WizardPoolActivity activity, PoolBannerWidget view) {
         String url = mPoolItem.getApiUrl() + "/stats";
 
         return new StringRequest(Request.Method.GET, url,
                 response -> {
                     try {
-                        view.recommendPool = mPoolItem.getKey().toLowerCase().contains("official");
-                        view.poolName = mPoolItem.getKey();
+                        //view.recommendPool = mPoolItem.getKey().toLowerCase().contains("official");
+                        //view.poolName = mPoolItem.getKey();
 
                         JSONObject obj = new JSONObject(response);
                         JSONObject objConfigPool = obj.getJSONObject("pool");
@@ -58,6 +59,7 @@ public class CryptonoteNodejsPool extends ProviderAbstract {
                             frmt = "M";
                             fHr = fHr / 1000.0f;
                         }
+
                         view.hrScala = String.format("%s %sH/s", new DecimalFormat("##.#").format(fHr),frmt);
 
                     } catch (Exception e) {

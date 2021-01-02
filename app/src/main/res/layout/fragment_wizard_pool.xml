@@ -46,9 +46,7 @@
 			android:textAllCaps="false"
 			android:textColor="@color/txt_button_filled"
 			android:textSize="14sp"
-			android:visibility="invisible"
-			app:cornerRadius="5dp"
-			tools:visibility="invisible" />
+			app:cornerRadius="5dp" />
 
 	</RelativeLayout>
 
