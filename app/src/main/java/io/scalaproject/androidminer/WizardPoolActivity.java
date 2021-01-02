@@ -84,7 +84,7 @@ public class WizardPoolActivity extends BaseActivity {
                             continue;
                         }
 
-                        //PoolBannerWidget pwv = (PoolBannerWidget)view;
+                        PoolBannerWidget pwv = (PoolBannerWidget)view;
 
                         int bottom = ll.getPaddingBottom();
                         int top = ll.getPaddingTop();
@@ -92,12 +92,14 @@ public class WizardPoolActivity extends BaseActivity {
                         int left = ll.getPaddingLeft();
 
                         if(view == ll) {
-                            //pwv.setSelected(mContext, true);
-                            ll.setBackgroundResource(R.drawable.corner_radius_lighter_border_blue);
+                            // inflate view with new layout
+                            pwv.setSelected(mContext, true);
+                            //ll.setBackgroundResource(R.drawable.corner_radius_lighter_border_blue);
                             selectedPoolIndex = i;
                         } else {
-                            //pwv.setSelected(mContext, false);
-                            ll.setBackgroundResource(R.drawable.corner_radius_lighter);
+                            // inflate view with new layout
+                            pwv.setSelected(mContext, false);
+                            //ll.setBackgroundResource(R.drawable.corner_radius_lighter);
                         }
                         ll.setPadding(left, top, right, bottom);
                     }
