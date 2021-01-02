@@ -74,7 +74,7 @@ public class PoolBannerWidget extends LinearLayout {
         else
             inflater.inflate(R.layout.widget_pool_banner, this);
 
-        //refresh();
+        refresh();
     }
 
     public void refresh() {

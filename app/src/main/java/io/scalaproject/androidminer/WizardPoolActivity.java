@@ -84,13 +84,14 @@ public class WizardPoolActivity extends BaseActivity {
                             continue;
                         }
 
-                        PoolBannerWidget pwv = (PoolBannerWidget)view;
+                        PoolBannerWidget pwv = (PoolBannerWidget)ll;
 
                         int bottom = ll.getPaddingBottom();
                         int top = ll.getPaddingTop();
                         int right = ll.getPaddingRight();
                         int left = ll.getPaddingLeft();
 
+                        pwv.setVisibility(View.GONE);
                         if(view == ll) {
                             // inflate view with new layout
                             pwv.setSelected(mContext, true);
@@ -101,7 +102,8 @@ public class WizardPoolActivity extends BaseActivity {
                             pwv.setSelected(mContext, false);
                             //ll.setBackgroundResource(R.drawable.corner_radius_lighter);
                         }
-                        ll.setPadding(left, top, right, bottom);
+                        pwv.setVisibility(View.VISIBLE);
+                        //ll.setPadding(left, top, right, bottom);
                     }
 
                     parentLayout.invalidate();
