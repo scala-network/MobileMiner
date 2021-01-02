@@ -26,7 +26,7 @@
     <string name="pool">Pool</string>
     <string name="cpu">CPU</string>
     <string name="scanqrcode">QR Code</string>
-    <string name="processing">Retrieving Hashrate...</string>
+    <string name="processing">Calculating Hashrate...</string>
     <string name="disclaimer">Disclaimer</string>
     <string name="shares">Shares</string>
     <string name="invalid">Invalid</string>
@@ -64,9 +64,9 @@
 
     <string name="githubLink">https://github.com/scala-network/MobileMiner/releases</string>
     <string name="discordLink">https://discord.gg/djAFVvy</string>
-    <string name="mediumLink">https://medium.com/scala/</string>
+    <string name="mediumLink">https://medium.com/scala-network</string>
     <string name="twitterLink">https://twitter.com/scalahq</string>
-    <string name="telegramLink">https://t.me/scalaNews</string>
+    <string name="telegramLink">https://t.me/scalaofficial</string>
     <string name="ScalaLink">&lt;a href=&quot;https://scalaproject.io&quot;&gt;Scala&lt;/a&gt;</string>
     <string name="Mine2getherLink">&lt;a href=&quot;https://github.com/Mine2Gether/m2g_android_miner&quot;&gt;Mine2gether&lt;/a&gt;</string>
     <string name="MoneroMinerLink">&lt;a href=&quot;https://github.com/upost/MoneroMiner&quot;&gt;MoneroMiner&lt;/a&gt;</string>
@@ -112,9 +112,7 @@
     <string name="paper">Paper</string>
     <string name="or">or</string>
     <string name="skip">Skip</string>
-    <string name="paper_wallet_url">https://scalaproject.io/paper-wallet.php</string>
-    <string name="cli_wallet_url">https://github.com/scala-network/Scala/releases</string>
-    <string name="gui_wallet_url">https://github.com/scala-network/scala-electron-gui/releases</string>
+    <string name="scala_vault_play_store">https://play.google.com/store/apps/details?id=io.scalaproject.vault</string>
     <string name="ok">OK</string>
     <string name="save">Save</string>
     <string name="devicemining">Device Mining</string>
@@ -149,7 +147,7 @@
     <string name="pool_options_help">These parameters are optional, you can leave them blank if you don\'t know what they represent.\n\nTo add a static difficulty or a paymentID, specify it in the \'Username parameters\' field. For example, enter \'+500\' to configure a static difficulty of 500.\n\nMake sure you respect the selected pool configuration. The value of this field will be appended as is to the wallet address.</string>
     <string name="hardware_settings_help">Your device will start cooling when the CPU or battery reach the specified temperatures.\n\nThe cooldown threshold defines the temperature at which the application will resume the mining process.</string>
 
-    <string name="aboutapplication">An open-source cryptocurrency miner for Android devices</string>
+    <string name="aboutapplication">An open-source cryptocurrency miner for Android devices.</string>
     <string name="disclaimerText">Running your CPU at a high intensity for a prolonged duration may result in negative effects such as: battery drainage, slow response time, overheating, and may cause permanent damage to your device.\n\nWe recommend using the Temperature Settings and a low amount of CPU Cores to prevent your device from being damaged.\n\nBy using this application, you assume full responsibility for any damage that may be caused to your device, property or self.</string>
     <string name="icons_by">Icons by</string>
     <string name="and">and</string>

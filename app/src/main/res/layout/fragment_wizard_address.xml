@@ -85,6 +85,7 @@
 				app:icon="@drawable/ic_qrcode"
 				app:iconGravity="textStart"
                 app:iconSize="18dp"
+				app:iconTint="@color/btn_icon_default"
 				app:cornerRadius="5dp" />
 
             <Button
@@ -101,6 +102,7 @@
                 app:icon="@drawable/ic_paste"
                 app:iconGravity="textStart"
                 app:iconSize="18dp"
+				app:iconTint="@color/btn_icon_default"
                 app:cornerRadius="5dp" />
 
 		</LinearLayout>

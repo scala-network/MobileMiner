@@ -804,6 +804,18 @@ public class MainActivity extends BaseActivity
 
                 break;
             }
+            case R.id.menu_help: {
+                AboutFragment about_fragment = (AboutFragment) getSupportFragmentManager().findFragmentByTag("about_fragment");
+                if (about_fragment == null) {
+                    about_fragment = new AboutFragment();
+                }
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, about_fragment, "about_fragment").commit();
+
+                llMain.setVisibility(View.VISIBLE);
+                llLog.setVisibility(View.GONE);
+
+                break;
+            }
         }
 
         updateUI();

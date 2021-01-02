@@ -79,6 +79,7 @@
                     android:textColor="@color/txt_button_filled"
                     app:icon="@drawable/ic_peace"
                     app:iconSize="18dp"
+                    app:iconTint="@color/btn_icon_default"
                     app:cornerRadius="5dp" />
 
             </LinearLayout>
