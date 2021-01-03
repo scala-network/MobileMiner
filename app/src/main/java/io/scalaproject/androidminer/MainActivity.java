@@ -184,14 +184,9 @@ public class MainActivity extends BaseActivity
 
     private Button btnStart;
 
-    private final static int STATE_STOPPED = 0;
-    private final static int STATE_MINING = 1;
-    private final static int STATE_PAUSED = 2;
-    private final static int STATE_COOLING = 3;
-    private final static int STATE_CALCULATING = 4;
 
-    private static int m_nLastCurrentState = STATE_STOPPED;
-    private static int m_nCurrentState = STATE_STOPPED;
+    private static int m_nLastCurrentState = Config.STATE_STOPPED;
+    private static int m_nCurrentState = Config.STATE_STOPPED;
     public int getCurrentState() { return m_nCurrentState; }
 
     private NotificationManager notificationManager = null;
@@ -200,7 +195,7 @@ public class MainActivity extends BaseActivity
     private File imagePath = null;
 
     public static boolean isDeviceMiningBackground() {
-        return (m_nCurrentState == STATE_CALCULATING || m_nCurrentState == STATE_MINING || m_nCurrentState == STATE_COOLING);
+        return (m_nCurrentState == Config.STATE_CALCULATING || m_nCurrentState == Config.STATE_MINING || m_nCurrentState == Config.STATE_COOLING);
     }
 
     private final static int MAX_HASHRATE_TIMER = 34;
@@ -208,7 +203,6 @@ public class MainActivity extends BaseActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         contextOfApplication = getApplicationContext();
-
         if (wl != null) {
             if (wl.isHeld()) {
                 wl.release();
@@ -233,12 +227,12 @@ public class MainActivity extends BaseActivity
             isBatteryReceiverRegistered = true;
         }
 
-        if(!isServerConnectionBound) {
-            Intent intent = new Intent(this, MiningService.class);
-            bindService(intent, serverConnection, BIND_AUTO_CREATE);
-            startService(intent);
-            isServerConnectionBound = true;
-        }
+//        if(!isServerConnectionBound) {
+//            Intent intent = new Intent(this, MiningService.class);
+//            bindService(intent, serverConnection, BIND_AUTO_CREATE);
+//            startService(intent);
+//            isServerConnectionBound = true;
+//        }
 
         setContentView(R.layout.activity_main);
 
@@ -247,7 +241,9 @@ public class MainActivity extends BaseActivity
         navigationView.setOnNavigationItemSelectedListener(this);
 
         // Open Settings the first time the app is launched
-        if (Config.read("address").equals("")) {
+        String minersaddress =  Config.read("address");
+
+            if (minersaddress.equals("") || minersaddress.isEmpty()) {
             navigationView.getMenu().getItem(2).setChecked(true);
 
             SettingsFragment fragment = (SettingsFragment) getSupportFragmentManager().findFragmentByTag("settings_fragment");
@@ -899,7 +895,7 @@ public class MainActivity extends BaseActivity
 
         showNotification();
 
-        setMinerStatus(STATE_MINING);
+        setMinerStatus(Config.STATE_MINING);
 
         updateUI();
     }
@@ -955,7 +951,7 @@ public class MainActivity extends BaseActivity
             return;
         }
 
-        setMinerStatus(STATE_STOPPED);
+        setMinerStatus(Config.STATE_STOPPED);
 
         binder.getService().stopMining();
 
@@ -1020,12 +1016,12 @@ public class MainActivity extends BaseActivity
         if(isValidConfig()) {
             enableStartBtn(true);
 
-            if (m_nCurrentState == STATE_STOPPED ) {
+            if (m_nCurrentState == Config.STATE_STOPPED ) {
                 updateHashrate(0.0f, 0.0f);
                 DrawableCompat.setTint(buttonDrawableStart, getResources().getColor(R.color.bg_green));
                 btnStart.setBackground(buttonDrawableStart);
                 btnStart.setText(R.string.start);
-            } else if(m_nCurrentState == STATE_PAUSED) {
+            } else if(m_nCurrentState == Config.STATE_PAUSED) {
                 updateHashrate(0.0f, 0.0f);
                 DrawableCompat.setTint(buttonDrawableStart, getResources().getColor(R.color.bg_green));
                 btnStart.setBackground(buttonDrawableStart);
@@ -1062,7 +1058,7 @@ public class MainActivity extends BaseActivity
     }
 
     private void setMinerStatus(Integer status) {
-        if(status == STATE_STOPPED) {
+        if(status == Config.STATE_STOPPED) {
             llStatus.setVisibility(View.GONE);
             llHashrate.setVisibility(View.VISIBLE);
 
@@ -1080,9 +1076,9 @@ public class MainActivity extends BaseActivity
             resetHashrateTicks();
             enableSliderCores(true);
         }
-        else if(status == STATE_MINING) {
+        else if(status ==Config.STATE_MINING) {
             if(tvHashrate.getText().equals("0")) {
-                setMinerStatus(STATE_CALCULATING);
+                setMinerStatus(Config.STATE_CALCULATING);
             } else {
                 llStatus.setVisibility(View.GONE);
                 llHashrate.setVisibility(View.VISIBLE);
@@ -1105,19 +1101,19 @@ public class MainActivity extends BaseActivity
 
             meterHashrate.speedTo(0);
 
-            if (status == STATE_PAUSED && isDeviceMining()) {
+            if (status == Config.STATE_PAUSED && isDeviceMining()) {
                 tvStatus.setText(getResources().getString(R.string.paused));
                 stopTimerStatusHashrate();
 
                 pbStatus.setIndeterminate(true);
                 pbStatus.setProgress(0);
                 tvStatusProgess.setVisibility(View.INVISIBLE);
-            } else if (status == STATE_COOLING && isDeviceMining()) {
+            } else if (status == Config.STATE_COOLING && isDeviceMining()) {
                 tvStatus.setText(getResources().getString(R.string.cooling));
                 stopTimerStatusHashrate();
 
                 pbStatus.setIndeterminate(true);
-            } else if (status == STATE_CALCULATING) {
+            } else if (status == Config.STATE_CALCULATING) {
                 tvStatus.setText(getResources().getString(R.string.processing));
                 tvStatusProgess.setVisibility(View.VISIBLE);
 
@@ -1202,15 +1198,15 @@ public class MainActivity extends BaseActivity
     }
 
     private boolean isDeviceMining() {
-        return (m_nCurrentState == STATE_CALCULATING || m_nCurrentState == STATE_MINING);
+        return (m_nCurrentState == Config.STATE_CALCULATING || m_nCurrentState == Config.STATE_MINING);
     }
 
     private boolean isDevicePaused() {
-        return m_nCurrentState == STATE_PAUSED;
+        return m_nCurrentState == Config.STATE_PAUSED;
     }
 
     private boolean isDeviceCooling() {
-        return m_nCurrentState == STATE_COOLING;
+        return m_nCurrentState == Config.STATE_COOLING;
     }
 
     private void updateHashrate(float fSpeed, float fMax) {
@@ -1239,7 +1235,7 @@ public class MainActivity extends BaseActivity
         meterHashrate.speedTo(Math.round(fSpeed));
 
         tvHashrate.setText(String.format(Locale.getDefault(), "%.1f", fSpeed));
-        setMinerStatus(STATE_MINING);
+        setMinerStatus(Config.STATE_MINING);
 
         if(fSpeed <= 0.0f) {
             tvHashrate.setTextColor(getResources().getColor(R.color.txt_inactive));
@@ -1308,7 +1304,7 @@ public class MainActivity extends BaseActivity
             text = text.replace("r ", "");
         }
 
-        if(m_nLastCurrentState == STATE_COOLING && text.contains("resumed")) {
+        if(m_nLastCurrentState == Config.STATE_COOLING && text.contains("resumed")) {
             text = text.replace("resumed", getResources().getString(R.string.resumedmining));
         }
 
@@ -1781,7 +1777,7 @@ public class MainActivity extends BaseActivity
 
     private void enableCooling(boolean enable) {
         if(enable) {
-            setMinerStatus(STATE_COOLING);
+            setMinerStatus(Config.STATE_COOLING);
 
             pauseMiner();
 
@@ -1820,7 +1816,7 @@ public class MainActivity extends BaseActivity
     private void pauseMiner() {
         if (!isDevicePaused()) {
             if(!isDeviceCooling()) {
-                setMinerStatus(STATE_PAUSED);
+                setMinerStatus(Config.STATE_PAUSED);
 
                 enableStartBtn(true);
                 updateMiningButtonState();
@@ -1834,7 +1830,7 @@ public class MainActivity extends BaseActivity
 
     private void resumeMiner() {
         if (isDevicePaused() || isDeviceCooling()) {
-            setMinerStatus(STATE_MINING);
+            setMinerStatus(Config.STATE_MINING);
 
             if (binder != null) {
                 binder.getService().sendInput("r");
@@ -1925,7 +1921,7 @@ public class MainActivity extends BaseActivity
             return;
         }
 
-        String status = m_nCurrentState == STATE_MINING ? "Hashrate: " + tvHashrate.getText().toString() + " H/s" : tvStatus.getText().toString();
+        String status = m_nCurrentState == Config.STATE_MINING ? "Hashrate: " + tvHashrate.getText().toString() + " H/s" : tvStatus.getText().toString();
 
         notificationBuilder.setSmallIcon(R.drawable.ic_launcher_round);
         notificationBuilder.setContentText(status);
