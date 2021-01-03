@@ -12,6 +12,7 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 
+import android.os.StrictMode;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -38,6 +39,21 @@ public class WizardAddressActivity extends BaseActivity {
             return;
         }
 
+        int SDK_INT = android.os.Build.VERSION.SDK_INT;
+        if (SDK_INT > 8) {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
+                    .permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+        }
+
+        ProviderManager.generate();
+
+        if ((getIntent().getFlags() & Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT) != 0) {
+            // Activity was brought to front and not created,
+            // Thus finishing this will get us to the last viewed activity
+            finish();
+            return;
+        }
         setContentView(R.layout.fragment_wizard_address);
         View view2 = findViewById(android.R.id.content).getRootView();
         tvAddress = view2.findViewById(R.id.addressWizard);

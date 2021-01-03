@@ -9,9 +9,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.StrictMode;
-import android.util.Log;
-import io.scalaproject.androidminer.api.ProviderManager;
+
 
 public class SplashActivity extends Activity {
     @Override
@@ -19,7 +17,7 @@ public class SplashActivity extends Activity {
         SharedPreferences preferences = getSharedPreferences(getPackageName() + "_preferences", MODE_PRIVATE);
         Config.initialize(preferences);
 
-        // Config.clear(); //Uncomment to debug splashactivity
+//        Config.clear(); //Uncomment to debug splashactivity
 
         String configversion = Config.read("config_version");
         if(!configversion.equals(Config.version)) {
@@ -28,22 +26,6 @@ public class SplashActivity extends Activity {
         }
 
         super.onCreate(savedInstanceState);
-
-        int SDK_INT = android.os.Build.VERSION.SDK_INT;
-        if (SDK_INT > 8) {
-            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
-                    .permitAll().build();
-            StrictMode.setThreadPolicy(policy);
-        }
-
-        ProviderManager.generate();
-
-        if ((getIntent().getFlags() & Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT) != 0) {
-            // Activity was brought to front and not created,
-            // Thus finishing this will get us to the last viewed activity
-            finish();
-            return;
-        }
 
         setContentView(R.layout.splashscreen);
 

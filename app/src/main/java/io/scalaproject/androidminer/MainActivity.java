@@ -227,12 +227,12 @@ public class MainActivity extends BaseActivity
             isBatteryReceiverRegistered = true;
         }
 
-//        if(!isServerConnectionBound) {
-//            Intent intent = new Intent(this, MiningService.class);
-//            bindService(intent, serverConnection, BIND_AUTO_CREATE);
-//            startService(intent);
-//            isServerConnectionBound = true;
-//        }
+        if(!isServerConnectionBound) {
+            Intent intent = new Intent(this, MiningService.class);
+            bindService(intent, serverConnection, BIND_AUTO_CREATE);
+            startService(intent);
+            isServerConnectionBound = true;
+        }
 
         setContentView(R.layout.activity_main);
 

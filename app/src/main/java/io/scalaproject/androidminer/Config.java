@@ -29,7 +29,7 @@ public class Config {
     public static final Long statsDelay = 30000L;
     public static final String miner_xlarig = "xlarig";
     static final String algo = "panthera";
-    public static final String githubAppJson = "https://raw.githubusercontent.com/scala-network/MobileMiner/pool_repo_integration/app.json";
+    public static final String githubAppJson = "https://raw.githubusercontent.com/scala-network/MobileMiner/2.0.0/app.json";
 
     public static final String version = "4";
     static final Integer logMaxLength = 50000;
@@ -43,7 +43,7 @@ public class Config {
         mSettings.preferences = preferences;
     }
 
-    static void write(String key, String value) {
+    public static void write(String key, String value) {
         if(!key.startsWith("system:")) {
             mSettings.preferences.edit().putString(key, value).apply();
         }

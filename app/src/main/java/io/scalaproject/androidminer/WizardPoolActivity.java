@@ -92,6 +92,7 @@ public class WizardPoolActivity extends BaseActivity {
                         int left = ll.getPaddingLeft();
 
                         pwv.setVisibility(View.GONE);
+
                         if(view == ll) {
                             // inflate view with new layout
                             pwv.setSelected(mContext, true);
@@ -137,6 +138,8 @@ public class WizardPoolActivity extends BaseActivity {
             message = "VolleyError: " + jsonMessage.getString("message");
         } catch (JSONException e) {
             message = "JSONException: " + e.getMessage();
+        } catch (Exception e) {
+            message = "Exception: " + e.getMessage();
         } finally {
             Log.i("parseVolleyError:", message);
         }

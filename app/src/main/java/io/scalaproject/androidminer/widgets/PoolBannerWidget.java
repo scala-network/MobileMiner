@@ -19,13 +19,13 @@ public class PoolBannerWidget extends LinearLayout {
     TextView tvHrScala;
     TextView tvPoolName;
     TextView tvRecommendPool;
-
+    View tvMainWrapper;
     public String minersScala = "Miners Scala";
     public String hrScala = "0 H/s";
 
     String poolName = "Scala Pool";
     boolean recommendPool = false;
-
+    public boolean isSelected = false;
     PoolItem mPoolItem = null;
 
     public PoolBannerWidget(Context context, boolean selected) {
@@ -53,11 +53,10 @@ public class PoolBannerWidget extends LinearLayout {
     private void _initContext(Context context, boolean selected) {
         LayoutInflater inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        inflater.inflate(R.layout.widget_pool_banner, this);
 
-        if(selected)
-            inflater.inflate(R.layout.widget_pool_banner_blue, this);
-        else
-            inflater.inflate(R.layout.widget_pool_banner, this);
+            this.setBackgroundResource(R.drawable.corner_radius_grey);
+        isSelected = selected;
     }
 
     @Override
@@ -66,14 +65,9 @@ public class PoolBannerWidget extends LinearLayout {
     }
 
     public void setSelected(Context context, boolean selected) {
-        LayoutInflater inflater = (LayoutInflater) context
-                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-        if(selected)
-            inflater.inflate(R.layout.widget_pool_banner_blue, this);
-        else
-            inflater.inflate(R.layout.widget_pool_banner, this);
-
+//        LayoutInflater inflater = (LayoutInflater) context
+//                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        isSelected = selected;
         refresh();
     }
 
@@ -84,7 +78,9 @@ public class PoolBannerWidget extends LinearLayout {
             poolName = mPoolItem.getKey();
             recommendPool = mPoolItem.getKey().toLowerCase().contains("official");
         }
-
+        tvMainWrapper = findViewById(R.id.main_wrapper);
+        tvMainWrapper.setBackgroundResource(isSelected?R.drawable.corner_radius_lighter_border_blue:R.drawable.corner_radius_lighter_border_grey);
+        tvMainWrapper.setPadding(0,15,0,15);
         tvPoolName = findViewById(R.id.poolName);
         tvPoolName.setText(poolName);
 

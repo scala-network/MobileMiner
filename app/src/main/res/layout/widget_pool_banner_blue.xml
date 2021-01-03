@@ -14,7 +14,6 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="238dp"
         android:layout_height="40dp"
         android:layout_gravity="start|center_vertical"
         android:layout_weight="1"
@@ -22,11 +21,10 @@
         app:srcCompat="@drawable/ic_launcher_round" />
 
     <LinearLayout
-        android:layout_width="356dp"
         android:layout_height="match_parent"
         android:layout_gravity="center_vertical"
         android:layout_marginStart="15dp"
-        android:layout_weight="1"
+        android:layout_weight="2"
         android:background="@drawable/corner_radius_lighter"
         android:orientation="vertical">
 
@@ -52,9 +50,8 @@
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="284dp"
         android:layout_height="match_parent"
-        android:layout_weight="1"
+        android:layout_weight="3"
         android:background="@drawable/corner_radius_lighter"
         android:orientation="vertical">
 
