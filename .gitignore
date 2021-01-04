@@ -7,3 +7,5 @@ gradle/
 /build
 /captures
 .externalNativeBuild
+
+app/src/main/assets/xlarig/armeabi-v7a/xlarig.v1
