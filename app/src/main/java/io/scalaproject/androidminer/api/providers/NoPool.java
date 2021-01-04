@@ -21,16 +21,20 @@ import io.scalaproject.androidminer.WizardPoolActivity;
 import io.scalaproject.androidminer.api.ProviderAbstract;
 import io.scalaproject.androidminer.api.PoolItem;
 import io.scalaproject.androidminer.widgets.PoolBannerWidget;
+import io.scalaproject.androidminer.widgets.PoolInfoAdapter;
 
 public final class NoPool extends ProviderAbstract {
 
     public NoPool(PoolItem poolItem){
         super(poolItem);
     }
-    public StringRequest getStringRequest(WizardPoolActivity activity, PoolBannerWidget view) {
+
+    public StringRequest getStringRequest(PoolInfoAdapter poolsAdapter) {
         return new StringRequest(Request.Method.GET, mPoolItem.getStatsURL(),
                 response -> {
+                    mPoolItem.setIsValid(true);
 
+                    poolsAdapter.dataSetChanged();
                 }
                 , WizardPoolActivity::parseVolleyError);
     }

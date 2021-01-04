@@ -17,6 +17,18 @@ public class PoolItem {
     private String mPool, mPort, mApiUrl, mPoolUrl, mPoolIP, mStatsURL, mStartUrl, mKey;
     private int mPoolType = 0;
 
+    private boolean isValid = false;
+    public void setIsValid(boolean valid) { isValid = valid; }
+    public boolean isValid() { return isValid; }
+
+    private int mMiners = 0;
+    public void setMiners(int miners) { mMiners = miners; }
+    public int getMiners() { return mMiners; }
+
+    private float mHr = -1.0f;
+    public void setHr(float hr) { mHr = hr; }
+    public float getHr() { return mHr; }
+
     public PoolItem(String key, String pool, String port, int poolType, String poolUrl, String poolIP) {
         this.mKey = key;
         this.mPool = pool;
@@ -92,6 +104,10 @@ public class PoolItem {
             default:
                 break;
         }
+    }
+
+    public boolean isRecommended() {
+        return getKey().toLowerCase().contains("official");
     }
 
     public void setId(int id) {

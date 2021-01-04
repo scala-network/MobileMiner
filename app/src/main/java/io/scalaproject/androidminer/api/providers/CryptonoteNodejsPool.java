@@ -30,6 +30,7 @@ import io.scalaproject.androidminer.network.Json;
 import io.scalaproject.androidminer.api.ProviderAbstract;
 import io.scalaproject.androidminer.api.PoolItem;
 import io.scalaproject.androidminer.widgets.PoolBannerWidget;
+import io.scalaproject.androidminer.widgets.PoolInfoAdapter;
 
 import static io.scalaproject.androidminer.Tools.getReadableHashRateString;
 import static io.scalaproject.androidminer.Tools.parseCurrency;
@@ -41,32 +42,28 @@ public class CryptonoteNodejsPool extends ProviderAbstract {
         super(pi);
     }
 
-    public StringRequest getStringRequest(WizardPoolActivity activity, PoolBannerWidget view) {
+    public StringRequest getStringRequest(PoolInfoAdapter poolsAdapter) {
         String url = mPoolItem.getApiUrl() + "/stats";
 
         return new StringRequest(Request.Method.GET, url,
                 response -> {
                     try {
-                        //view.recommendPool = mPoolItem.getKey().toLowerCase().contains("official");
-                        //view.poolName = mPoolItem.getKey();
-
                         JSONObject obj = new JSONObject(response);
                         JSONObject objConfigPool = obj.getJSONObject("pool");
-                        view.minersScala = String.format("%s %s", objConfigPool.getString("miners"), activity.getResources().getString(R.string.miners));
-                        float fHr = Utils.convertStringToFloat(objConfigPool.getString("hashrate")) / 1000.0f;
-                        String frmt = "K";
-                        if(fHr > 1000) {
-                            frmt = "M";
-                            fHr = fHr / 1000.0f;
-                        }
 
-                        view.hrScala = String.format("%s %sH/s", new DecimalFormat("##.#").format(fHr),frmt);
+                        // Miners
+                        mPoolItem.setMiners(objConfigPool.getInt("miners"));
 
+                        // Hashrate
+                        mPoolItem.setHr(Utils.convertStringToFloat(objConfigPool.getString("hashrate")) / 1000.0f);
+
+                        mPoolItem.setIsValid(true);
                     } catch (Exception e) {
-                        //Do nothing
+                        mPoolItem.setIsValid(false);
                     }
-                    view.refresh();
-
+                    finally {
+                        poolsAdapter.dataSetChanged();
+                    }
                 }
                 , WizardPoolActivity::parseVolleyError);
     }
