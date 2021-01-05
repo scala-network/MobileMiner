@@ -121,7 +121,7 @@
     <string name="next">Next</string>
     <string name="walletaddress2">Wallet Address</string>
     <string name="paste">Paste</string>
-    <string name="selectminingpool">Select Mining Pool</string>
+    <string name="selectminingpool">Mining Pool</string>
     <string name="specifywalletaddress">Your Wallet Address</string>
     <string name="supportproject">Support us</string>
     <string name="enteraddress">Enter your wallet address</string>

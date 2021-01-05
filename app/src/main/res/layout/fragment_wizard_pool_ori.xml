@@ -48,7 +48,6 @@
 				android:layout_height="wrap_content"
 				android:layout_gravity="center_vertical"
 				android:orientation="vertical"
-				android:background="@drawable/corner_radius_lighter"
 				android:layout_marginStart="15dp">
 
 				<TextView

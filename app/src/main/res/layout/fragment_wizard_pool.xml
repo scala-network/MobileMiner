@@ -7,24 +7,55 @@
 	android:background="@color/bg_body">
 
 	<LinearLayout
-		android:id="@+id/buttonContainer"
-		android:layout_width="fill_parent"
-		android:layout_height="fill_parent"
-		android:layout_marginStart="15dp"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
 		android:layout_marginTop="15dp"
-		android:layout_marginEnd="15dp"
-		android:layout_marginBottom="15dp"
+		android:layout_marginLeft="15dp"
+		android:layout_marginRight="15dp"
+		android:layout_marginBottom="90dp"
 		android:orientation="vertical">
 
 		<TextView
+			android:id="@+id/tvTitle"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:layout_gravity="start"
+			android:gravity="start"
 			android:text="@string/selectminingpool"
 			android:textColor="@color/txt_headline"
-			android:textSize="16sp"
-			android:textStyle="bold" />
+			android:textStyle="bold"
+			android:textSize="20sp" />
 
+		<TextView
+			android:id="@+id/tvSwipe"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_marginBottom="8dp"
+			android:gravity="start"
+			android:text="Pull down to reload and refresh statistics"
+			android:layout_below="@+id/tvTitle"
+			android:visibility="visible"/>
+
+		<androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+			android:id="@+id/pullToRefresh"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_below="@+id/tvSwipe">
+
+			<LinearLayout
+				android:id="@+id/llPools"
+				android:layout_width="match_parent"
+				android:layout_height="match_parent"
+				android:orientation="vertical">
+
+				<androidx.recyclerview.widget.RecyclerView
+					android:id="@+id/rvPools"
+					android:layout_width="match_parent"
+					android:layout_height="match_parent"
+					android:clipToPadding="false"
+					app:layoutManager="LinearLayoutManager"
+					tools:listitem="@layout/item_pool" />
+			</LinearLayout>
+		</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 	</LinearLayout>
 
@@ -34,19 +65,20 @@
 		android:layout_alignParentBottom="true">
 
 		<Button
+			android:id="@+id/saveSettings"
 			android:layout_width="match_parent"
 			android:layout_height="55dp"
-			android:layout_marginStart="15dp"
 			android:layout_marginTop="15dp"
-			android:layout_marginEnd="15dp"
+			android:layout_marginLeft="15dp"
+			android:layout_marginRight="15dp"
 			android:layout_marginBottom="15dp"
-			android:backgroundTint="@color/bg_blue"
-			android:onClick="onNext"
+			app:backgroundTint="@color/bg_blue"
 			android:text="@string/next"
+			android:textSize="14sp"
 			android:textAllCaps="false"
 			android:textColor="@color/txt_button_filled"
-			android:textSize="14sp"
-			app:cornerRadius="5dp" />
+			app:cornerRadius="5dp"
+			tools:ignore="TooManyViews,UnusedAttribute" />
 
 	</RelativeLayout>
 
