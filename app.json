@@ -16,7 +16,7 @@
       "poolType"  :  1,
       "poolUrl" : "https://xla.pool.gntl.co.uk",
       "poolIp" : "83.151.238.34",
-      "icon" : ""
+      "icon" : "https://share.scalaproject.io/HyI8t/icon_pool.png"
     },
     {
       "key" : "LuckyPool",
@@ -25,7 +25,7 @@
       "poolType"  :  2,
       "poolUrl" : "https://scala.luckypool.io",
       "poolIp" : "51.89.96.162",
-      "icon" : ""
+      "icon" : "https://share.scalaproject.io/HyI8t/icon_pool.png"
     },
     {
       "key" : "HeroMiners",
@@ -34,7 +34,7 @@
       "poolType"  :  2,
       "poolUrl" : "https://scala.herominers.com",
       "poolIp" : "138.201.217.40",
-      "icon" : ""
+      "icon" : "https://share.scalaproject.io/HyI8t/icon_pool.png"
     }
   ]
 }
