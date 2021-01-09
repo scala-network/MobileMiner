@@ -90,7 +90,9 @@ public class PoolActivity extends BaseActivity
                 switch (type) {
                     case Toolbar.BUTTON_BACK:
                         //onDisposeRequest();
-                        onBackPressed();
+                        //onBackPressed();
+                        startActivity(new Intent(PoolActivity.this, WizardAddressActivity.class));
+                        finish();
                         break;
                     case Toolbar.BUTTON_CANCEL:
                         //onDisposeRequest();

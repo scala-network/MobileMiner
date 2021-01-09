@@ -62,7 +62,10 @@ public class WizardAddressActivity extends BaseActivity {
                 switch (type) {
                     case Toolbar.BUTTON_BACK:
                         //onDisposeRequest();
-                        onBackPressed();
+                        //onBackPressed();
+                        startActivity(new Intent(WizardAddressActivity.this, WizardHomeActivity.class));
+                        finish();
+
                         break;
                     case Toolbar.BUTTON_CANCEL:
                         //onDisposeRequest();

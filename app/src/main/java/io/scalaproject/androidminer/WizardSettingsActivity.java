@@ -50,7 +50,9 @@ public class WizardSettingsActivity extends BaseActivity {
                 switch (type) {
                     case Toolbar.BUTTON_BACK:
                         //onDisposeRequest();
-                        onBackPressed();
+                        //onBackPressed();
+                        startActivity(new Intent(WizardSettingsActivity.this, PoolActivity.class));
+                        finish();
                         break;
                     case Toolbar.BUTTON_CANCEL:
                         //onDisposeRequest();
