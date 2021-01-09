@@ -342,7 +342,7 @@ public class PoolActivity extends BaseActivity
                 poolEdit = new PoolItem();
                 poolEdit.setUserDefined(true);
                 poolEditBackup = null;
-                //ivPoolIcon.setImageBitmap(Utils.getBitmap(mContext, R.drawable.ic_pool));
+                ivPoolIcon.setImageBitmap(Utils.getBitmap(getApplicationContext(), R.drawable.ic_pool));
             }
 
             boolean isUserDefined = poolEdit.isUserDefined();

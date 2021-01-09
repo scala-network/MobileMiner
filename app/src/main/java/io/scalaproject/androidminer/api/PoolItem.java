@@ -194,6 +194,8 @@ public class PoolItem {
         this.mPoolUrl = url;
     }
 
+    public void setPoolIP(String ip) { this.mPoolIP = ip; }
+
     public String getPoolIP() {
         return this.mPoolIP;
     }
@@ -209,6 +211,11 @@ public class PoolItem {
     public int getPoolType() {
         return this.mPoolType;
     }
+
+    public void setPoolType(int type) {
+        this.mPoolType = type;
+    }
+
     public String getPoolTypeName() {
         switch (this.mPoolType) {
 //            case 0:
