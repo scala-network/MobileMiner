@@ -24,7 +24,7 @@
       "port" : "6677",
       "poolType"  :  2,
       "poolUrl" : "https://scala.luckypool.io",
-      "poolIp" : "51.89.96.162"
+      "poolIp" : "51.89.96.162",
       "icon" : ""
     },
     {
@@ -33,7 +33,7 @@
       "port" : "10130",
       "poolType"  :  2,
       "poolUrl" : "https://scala.herominers.com",
-      "poolIp" : "138.201.217.40"
+      "poolIp" : "138.201.217.40",
       "icon" : ""
     }
   ]
