@@ -1,7 +1,9 @@
 <resources>
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.MaterialComponents">
-        <!-- Customize your theme here. -->
+        <item name="windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+
         <item name="colorPrimary">@color/bg_lighter</item>
         <item name="colorPrimaryDark">@color/c_inactive</item>
         <item name="colorAccent">@color/bg_lighter</item>
@@ -53,6 +55,22 @@
         <item name="android:textColor">@color/c_grey</item>
     </style>
 
+    <style name="Toolbar" parent="@android:style/TextAppearance.DeviceDefault.Medium">
+        <item name="android:textColor">?colorPrimary</item>
+        <item name="android:textColorHint">@color/txt_inactive</item>
+    </style>
+
+    <style name="Toolbar.Title">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/txt_headline</item>
+    </style>
+
+    <style name="Toolbar.Subtitle">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/txt_secondary</item>
+    </style>
+
     <style name="TextErrorStyle" parent="@android:style/TextAppearance">
         <item name="android:textColor">@color/c_red</item>
         <item name="android:textSize">11sp</item>
@@ -65,6 +83,17 @@
         <item name="colorSwitchThumbNormal">@color/c_grey</item>
         <!-- inactive track color (30% transparency) -->
         <item name="android:colorForeground">@color/c_grey</item>
+    </style>
+
+    <style name="ScalaText" parent="@android:style/TextAppearance.DeviceDefault.Medium">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">?colorPrimary</item>
+        <item name="android:textColorHint">@color/txt_inactive</item>
+    </style>
+
+    <style name="ScalaEdit" parent="ScalaText">
+        <item name="android:textColor">?colorPrimary</item>
+        <item name="android:textSize">14sp</item>
     </style>
 
     <style name="MaterialAlertDialogCustom" parent="@style/ThemeOverlay.MaterialComponents.MaterialAlertDialog">

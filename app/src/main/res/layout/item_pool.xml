@@ -23,8 +23,8 @@
             android:id="@+id/ivIcon"
             android:layout_width="36dp"
             android:layout_height="36dp"
-            android:background="@drawable/shape_round"
-            android:src="@drawable/ic_pool" />
+            android:background="@android:color/transparent"
+            android:src="@drawable/ic_pool_default" />
 
     </LinearLayout>
 

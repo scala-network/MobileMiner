@@ -13,6 +13,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import io.scalaproject.androidminer.api.ProviderManager;
+import io.scalaproject.androidminer.widgets.Toolbar;
 
 public class WizardSettingsActivity extends BaseActivity {
     private SeekBar sbCores, sbCPUTemp, sbBatteryTemp, sbCooldown;
@@ -21,6 +22,8 @@ public class WizardSettingsActivity extends BaseActivity {
     private Integer nMaxCPUTemp = 65; // 55,60,65,70,75
     private Integer nMaxBatteryTemp = 40; // 30,35,40,45,50
     private Integer nCooldownTheshold = 15; // 10,15,20,25,30
+
+    private Toolbar toolbar;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -35,6 +38,38 @@ public class WizardSettingsActivity extends BaseActivity {
         setContentView(R.layout.fragment_wizard_settings);
 
         View view = findViewById(android.R.id.content).getRootView();
+
+        // Toolbar
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+        toolbar.setOnButtonListener(new Toolbar.OnButtonListener() {
+            @Override
+            public void onButton(int type) {
+                switch (type) {
+                    case Toolbar.BUTTON_BACK:
+                        //onDisposeRequest();
+                        onBackPressed();
+                        break;
+                    case Toolbar.BUTTON_CANCEL:
+                        //onDisposeRequest();
+                        //Helper.hideKeyboard(WalletActivity.this);
+                        onBackPressed();
+                        break;
+                    case Toolbar.BUTTON_CLOSE:
+                        finish();
+                        break;
+                    case Toolbar.BUTTON_CREDITS:
+                        //Toast.makeText(WalletActivity.this, getString(R.string.label_credits), Toast.LENGTH_SHORT).show();
+                    case Toolbar.BUTTON_NONE:
+                    default:
+                        //Timber.e("Button " + type + "pressed - how can this be?");
+                }
+            }
+        });
+
+        toolbar.setButton(Toolbar.BUTTON_BACK);
 
         sbCores = view.findViewById(R.id.seekbarcores);
         TextView tvCoresNb = view.findViewById(R.id.coresnb);

@@ -189,7 +189,7 @@ public class PoolInfoAdapter extends RecyclerView.Adapter<PoolInfoAdapter.ViewHo
 
             Bitmap icon = poolItem.getIcon();
             if(icon != null) {
-                int dim = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 32, itemView.getResources().getDisplayMetrics());
+                int dim = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 34, itemView.getResources().getDisplayMetrics());
                 ivIcon.getLayoutParams().height = dim;
                 ivIcon.getLayoutParams().width = dim;
 
@@ -200,7 +200,7 @@ public class PoolInfoAdapter extends RecyclerView.Adapter<PoolInfoAdapter.ViewHo
                 ivIcon.getLayoutParams().height = dim;
                 ivIcon.getLayoutParams().width = dim;
 
-                ivIcon.setImageBitmap(Utils.getCroppedBitmap(Utils.getBitmap(context, R.drawable.ic_pool)));
+                ivIcon.setImageBitmap(Utils.getCroppedBitmap(Utils.getBitmap(context, R.drawable.ic_pool_default)));
             }
 
             itemView.setOnClickListener(this);

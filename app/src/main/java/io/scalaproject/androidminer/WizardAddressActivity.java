@@ -24,9 +24,12 @@ import androidx.core.content.ContextCompat;
 import com.google.android.material.textfield.TextInputLayout;
 
 import io.scalaproject.androidminer.api.ProviderManager;
+import io.scalaproject.androidminer.widgets.Toolbar;
 
 public class WizardAddressActivity extends BaseActivity {
     private TextView tvAddress;
+    private Toolbar toolbar;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,7 +51,37 @@ public class WizardAddressActivity extends BaseActivity {
         View view2 = findViewById(android.R.id.content).getRootView();
         tvAddress = view2.findViewById(R.id.addressWizard);
 
+        // Toolbar
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
+        toolbar.setOnButtonListener(new Toolbar.OnButtonListener() {
+            @Override
+            public void onButton(int type) {
+                switch (type) {
+                    case Toolbar.BUTTON_BACK:
+                        //onDisposeRequest();
+                        onBackPressed();
+                        break;
+                    case Toolbar.BUTTON_CANCEL:
+                        //onDisposeRequest();
+                        //Helper.hideKeyboard(WalletActivity.this);
+                        onBackPressed();
+                        break;
+                    case Toolbar.BUTTON_CLOSE:
+                        finish();
+                        break;
+                    case Toolbar.BUTTON_CREDITS:
+                        //Toast.makeText(WalletActivity.this, getString(R.string.label_credits), Toast.LENGTH_SHORT).show();
+                    case Toolbar.BUTTON_NONE:
+                    default:
+                        //Timber.e("Button " + type + "pressed - how can this be?");
+                }
+            }
+        });
+
+        toolbar.setButton(Toolbar.BUTTON_BACK);
     }
 
     public void onPaste(View view) {

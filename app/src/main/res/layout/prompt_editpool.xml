@@ -22,6 +22,7 @@
             app:errorEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText
+                style="@style/ScalaEdit"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:hint="Name"
@@ -37,6 +38,7 @@
             app:errorEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText
+                style="@style/ScalaEdit"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:hint="URL"
@@ -53,6 +55,7 @@
             app:errorEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText
+                style="@style/ScalaEdit"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:hint="Port"
@@ -70,14 +73,11 @@
                 android:id="@+id/ivPoolIcon"
                 android:layout_width="96dp"
                 android:layout_height="96dp"
-                android:src="@drawable/ic_pool"
-                android:background="@drawable/shape_round"
-                android:visibility="visible"/>
+                android:src="@drawable/ic_pool_default"/>
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
                 android:layout_marginStart="8dp"
                 android:orientation="vertical">
 
@@ -90,22 +90,23 @@
                     android:textColor="@color/txt_main"
                     android:textSize="14sp"/>
 
-            <Button
-                android:id="@+id/btnSelectImage"
-                android:layout_width="wrap_content"
-                android:layout_height="55dp"
-                android:layout_gravity="start"
-                android:backgroundTint="@color/btn_bg_default"
-                android:insetLeft="2dp"
-                android:insetRight="2dp"
-                android:text="Upload"
-                android:textSize="14sp"
-                android:textColor="@color/txt_button_filled"
-                android:textAllCaps="false"
-                app:cornerRadius="5dp"
-                app:iconPadding="5dp"
-                app:iconTint="@color/btn_icon_default"
-                app:icon="@drawable/ic_download"/>
+                <Button
+                    android:id="@+id/btnSelectImage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="55dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_gravity="start"
+                    android:backgroundTint="@color/btn_bg_default"
+                    android:insetLeft="2dp"
+                    android:insetRight="2dp"
+                    android:text="Upload"
+                    android:textSize="14sp"
+                    android:textColor="@color/txt_button_filled"
+                    android:textAllCaps="false"
+                    app:cornerRadius="5dp"
+                    app:iconPadding="5dp"
+                    app:iconTint="@color/btn_icon_default"
+                    app:icon="@drawable/ic_download"/>
 
             </LinearLayout>
 

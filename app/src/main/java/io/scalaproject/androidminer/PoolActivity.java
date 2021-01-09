@@ -21,6 +21,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -44,12 +45,13 @@ import java.util.Set;
 import io.scalaproject.androidminer.api.PoolItem;
 import io.scalaproject.androidminer.api.ProviderManager;
 import io.scalaproject.androidminer.widgets.PoolInfoAdapter;
+import io.scalaproject.androidminer.widgets.Toolbar;
 
 public class PoolActivity extends BaseActivity
         implements PoolInfoAdapter.OnSelectPoolListener, PoolInfoAdapter.OnMenuPoolListener, View.OnClickListener {
     private static final String LOG_TAG = "WizardPoolActivity";
 
-    private int selectedPoolIndex = 0;
+    private Toolbar toolbar;
 
     private SwipeRefreshLayout pullToRefresh;
     private RecyclerView rvPools;
@@ -63,7 +65,6 @@ public class PoolActivity extends BaseActivity
     private View selectedPoolView = null;
     private PoolItem selectedPool = null;
 
-    private Context mContext = null;
     RequestQueue mPoolQueue = null;
 
     @Override
@@ -77,6 +78,38 @@ public class PoolActivity extends BaseActivity
         }
 
         setContentView(R.layout.fragment_pool);
+
+        // Toolbar
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+        toolbar.setOnButtonListener(new Toolbar.OnButtonListener() {
+            @Override
+            public void onButton(int type) {
+                switch (type) {
+                    case Toolbar.BUTTON_BACK:
+                        //onDisposeRequest();
+                        onBackPressed();
+                        break;
+                    case Toolbar.BUTTON_CANCEL:
+                        //onDisposeRequest();
+                        //Helper.hideKeyboard(WalletActivity.this);
+                        onBackPressed();
+                        break;
+                    case Toolbar.BUTTON_CLOSE:
+                        finish();
+                        break;
+                    case Toolbar.BUTTON_CREDITS:
+                        //Toast.makeText(WalletActivity.this, getString(R.string.label_credits), Toast.LENGTH_SHORT).show();
+                    case Toolbar.BUTTON_NONE:
+                    default:
+                        //Timber.e("Button " + type + "pressed - how can this be?");
+                }
+            }
+        });
+
+        toolbar.setButton(Toolbar.BUTTON_BACK);
 
         mPoolQueue = Volley.newRequestQueue(this);
         View view = findViewById(android.R.id.content).getRootView();
@@ -336,13 +369,13 @@ public class PoolActivity extends BaseActivity
                 if(icon != null)
                     ivPoolIcon.setImageBitmap(poolItem.getIcon());
                 else {
-                    ivPoolIcon.setImageBitmap(Utils.getBitmap(getApplicationContext(), R.drawable.ic_pool));
+                    ivPoolIcon.setImageBitmap(Utils.getBitmap(getApplicationContext(), R.drawable.ic_pool_default));
                 }
             } else {
                 poolEdit = new PoolItem();
                 poolEdit.setUserDefined(true);
                 poolEditBackup = null;
-                ivPoolIcon.setImageBitmap(Utils.getBitmap(getApplicationContext(), R.drawable.ic_pool));
+                ivPoolIcon.setImageBitmap(Utils.getBitmap(getApplicationContext(), R.drawable.ic_pool_default));
             }
 
             boolean isUserDefined = poolEdit.isUserDefined();
@@ -416,7 +449,7 @@ public class PoolActivity extends BaseActivity
     }
 
     public void onNext(View view) {
-        Config.write("selected_pool", Integer.toString(selectedPoolIndex));
+        Config.write("selected_pool", selectedPool.getKey());
 
         startActivity(new Intent(PoolActivity.this, WizardSettingsActivity.class));
         finish();

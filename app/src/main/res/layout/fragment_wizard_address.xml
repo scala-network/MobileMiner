@@ -5,6 +5,13 @@
 	android:layout_height="wrap_content"
 	android:background="@color/bg_body">
 
+	<io.scalaproject.androidminer.widgets.Toolbar
+		android:id="@+id/toolbar"
+		android:layout_width="match_parent"
+		android:layout_height="?attr/actionBarSize"
+		android:background="@drawable/backgound_toolbar"
+		android:minHeight="?attr/actionBarSize" />
+
 	<LinearLayout
 		android:orientation="vertical"
 		android:layout_width="fill_parent"
@@ -12,7 +19,8 @@
 		android:layout_marginTop="15dp"
 		android:layout_marginStart="15dp"
 		android:layout_marginEnd="15dp"
-		android:layout_marginBottom="15dp">
+		android:layout_marginBottom="15dp"
+		android:layout_below="@+id/toolbar" >
 
 		<LinearLayout
 			android:layout_width="match_parent"

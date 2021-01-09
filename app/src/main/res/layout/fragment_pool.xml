@@ -6,6 +6,13 @@
 	android:layout_height="match_parent"
 	android:background="@color/bg_body">
 
+	<io.scalaproject.androidminer.widgets.Toolbar
+		android:id="@+id/toolbar"
+		android:layout_width="match_parent"
+		android:layout_height="?attr/actionBarSize"
+		android:background="@drawable/backgound_toolbar"
+		android:minHeight="?attr/actionBarSize" />
+
 	<LinearLayout
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
@@ -13,6 +20,7 @@
 		android:layout_marginLeft="15dp"
 		android:layout_marginRight="15dp"
 		android:layout_marginBottom="90dp"
+		android:layout_below="@+id/toolbar"
 		android:orientation="vertical">
 
 		<TextView
@@ -75,6 +83,7 @@
 			android:layout_marginBottom="15dp"
 			app:backgroundTint="@color/bg_blue"
 			android:text="@string/next"
+			android:onClick="onNext"
 			android:textSize="14sp"
 			android:textAllCaps="false"
 			android:textColor="@color/txt_button_filled"

@@ -47,6 +47,21 @@ public final class ProviderManager {
         return mPools.get(idx);
     }
 
+    static public PoolItem getPoolByKey(String key) {
+        if (key.isEmpty() || mPools.size() == 0) {
+            return null;
+        }
+
+        for(int i = 0; i < mPools.size(); i++) {
+            PoolItem pi = mPools.get(i);
+
+            if(pi.getKey().equals(key))
+                return pi;
+        }
+
+        return null;
+    }
+
     static public PoolItem getPoolById(String idx) {
         int index = Integer.parseInt(idx);
 
