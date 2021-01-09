@@ -12,7 +12,6 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
-import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -22,7 +21,6 @@ import android.widget.Toast;
 
 import androidx.core.content.ContextCompat;
 
-import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
 import io.scalaproject.androidminer.api.ProviderManager;
@@ -120,7 +118,7 @@ public class WizardAddressActivity extends BaseActivity {
 
         Config.write("address", strAddress);
 
-        startActivity(new Intent(WizardAddressActivity.this, WizardPoolActivity.class));
+        startActivity(new Intent(WizardAddressActivity.this, PoolActivity.class));
 
         finish();
     }

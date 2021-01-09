@@ -3,7 +3,7 @@
 	xmlns:app="http://schemas.android.com/apk/res-auto"
 	xmlns:tools="http://schemas.android.com/tools"
 	android:layout_width="match_parent"
-	android:layout_height="wrap_content"
+	android:layout_height="match_parent"
 	android:background="@color/bg_body">
 
 	<LinearLayout
@@ -62,7 +62,8 @@
 	<RelativeLayout
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:layout_alignParentBottom="true">
+		android:layout_alignParentBottom="true"
+		android:visibility="visible">
 
 		<Button
 			android:id="@+id/saveSettings"
@@ -81,5 +82,30 @@
 			tools:ignore="TooManyViews,UnusedAttribute" />
 
 	</RelativeLayout>
+
+	<FrameLayout
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignParentEnd="true"
+		android:layout_alignParentBottom="true"
+		android:layout_marginRight="16dp"
+		android:layout_marginBottom="75dp"
+		android:background="@drawable/gradient_oval"
+		android:elevation="6dp">
+
+		<com.google.android.material.floatingactionbutton.FloatingActionButton
+			android:id="@+id/fabAddPool"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_gravity="bottom|end"
+			android:backgroundTint="@android:color/transparent"
+			android:backgroundTintMode="src_in"
+			app:tint="@color/btn_icon_default"
+			android:src="@drawable/ic_add_white_24dp"
+			app:borderWidth="0dp"
+			app:elevation="0dp"
+			app:fabSize="normal"
+			app:pressedTranslationZ="0dp" />
+	</FrameLayout>
 
 </RelativeLayout>

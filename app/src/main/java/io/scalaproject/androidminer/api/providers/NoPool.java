@@ -4,23 +4,12 @@
 
 package io.scalaproject.androidminer.api.providers;
 
-import android.util.Log;
-import android.view.View;
-import android.widget.TextView;
-
 import com.android.volley.Request;
 import com.android.volley.toolbox.StringRequest;
 
-import org.json.JSONObject;
-
-import java.text.DecimalFormat;
-
-import io.scalaproject.androidminer.R;
-import io.scalaproject.androidminer.Utils;
-import io.scalaproject.androidminer.WizardPoolActivity;
+import io.scalaproject.androidminer.PoolActivity;
 import io.scalaproject.androidminer.api.ProviderAbstract;
 import io.scalaproject.androidminer.api.PoolItem;
-import io.scalaproject.androidminer.widgets.PoolBannerWidget;
 import io.scalaproject.androidminer.widgets.PoolInfoAdapter;
 
 public final class NoPool extends ProviderAbstract {
@@ -36,7 +25,7 @@ public final class NoPool extends ProviderAbstract {
 
                     poolsAdapter.dataSetChanged();
                 }
-                , WizardPoolActivity::parseVolleyError);
+                , PoolActivity::parseVolleyError);
     }
     @Override
     protected void onBackgroundFetchData() {}

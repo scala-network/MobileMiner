@@ -2,8 +2,13 @@ package io.scalaproject.androidminer.widgets;
 
 import android.content.Context;
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.PopupMenu;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.graphics.Bitmap;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
@@ -28,23 +33,27 @@ import io.scalaproject.androidminer.Utils;
 import io.scalaproject.androidminer.api.PoolItem;
 
 public class PoolInfoAdapter extends RecyclerView.Adapter<PoolInfoAdapter.ViewHolder> {
-    /*public interface OnPoolSettingsListener {
-        void onSettingsPool(View view, PoolItem item);
-    }*/
+
+    public interface OnMenuPoolListener {
+        //void onInteraction(View view, PoolItem item);
+        boolean onContextInteraction(MenuItem item, PoolItem infoItem);
+    }
 
     public interface OnSelectPoolListener {
         void onSelectPool(View view, PoolItem item);
     }
 
     private final List<PoolItem> poolItems = new ArrayList<>();
-    //private final OnPoolSettingsListener onPoolSettingsListener;
+
+    private final OnMenuPoolListener onMenuPoolListener;
     private final OnSelectPoolListener onSelectPoolListener;
 
     private Context context;
 
-    public PoolInfoAdapter(Context context, OnSelectPoolListener onSelectPoolListener) {
+    public PoolInfoAdapter(Context context, OnSelectPoolListener onSelectPoolListener, OnMenuPoolListener onMenuPoolListener) {
         this.context = context;
         this.onSelectPoolListener = onSelectPoolListener;
+        this.onMenuPoolListener = onMenuPoolListener;
     }
 
     @Override
@@ -103,9 +112,10 @@ public class PoolInfoAdapter extends RecyclerView.Adapter<PoolInfoAdapter.ViewHo
     class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView tvName;
         TextView tvMiners;
-        TextView tvRecommended;
         TextView tvHr;
         ImageView ivIcon;
+        ImageButton ibOptions;
+        boolean popupOpen = false;
 
         PoolItem poolItem;
 
@@ -113,9 +123,40 @@ public class PoolInfoAdapter extends RecyclerView.Adapter<PoolInfoAdapter.ViewHo
             super(itemView);
             tvName = itemView.findViewById(R.id.tvName);
             tvMiners = itemView.findViewById(R.id.tvMiners);
-            tvRecommended = itemView.findViewById(R.id.tvRecommended);
             tvHr = itemView.findViewById(R.id.tvHr);
             ivIcon = itemView.findViewById(R.id.ivIcon);
+
+            ibOptions = itemView.findViewById(R.id.ibOptions);
+            ibOptions.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (popupOpen) return;
+                    //creating a popup menu
+                    PopupMenu popup = new PopupMenu(context, ibOptions);
+                    //inflating menu from xml resource
+                    popup.inflate(R.menu.pool_context_menu);
+                    popupOpen = true;
+                    //adding click listener
+                    popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                        @Override
+                        public boolean onMenuItemClick(MenuItem item) {
+                            if (onMenuPoolListener != null) {
+                                return onMenuPoolListener.onContextInteraction(item, poolItem);
+                            }
+                            return false;
+                        }
+                    });
+                    //displaying the popup
+                    popup.show();
+                    popup.setOnDismissListener(new PopupMenu.OnDismissListener() {
+                        @Override
+                        public void onDismiss(PopupMenu menu) {
+                            popupOpen = false;
+                        }
+                    });
+
+                }
+            });
         }
 
         void bind(final int position) {
@@ -123,7 +164,7 @@ public class PoolInfoAdapter extends RecyclerView.Adapter<PoolInfoAdapter.ViewHo
 
             tvName.setText(poolItem.getKey());
 
-            //tvRecommended.setVisibility(poolItem.isRecommended() ? View.VISIBLE : View.GONE);
+            //ibOptions.setVisibility(poolItem.isUserDefined() ? View.VISIBLE : View.GONE);
 
             if(poolItem.isValid()) {
                 // Miners
@@ -144,6 +185,22 @@ public class PoolInfoAdapter extends RecyclerView.Adapter<PoolInfoAdapter.ViewHo
             } else {
                 tvMiners.setVisibility(View.GONE);
                 tvHr.setVisibility(View.GONE);
+            }
+
+            Bitmap icon = poolItem.getIcon();
+            if(icon != null) {
+                int dim = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 32, itemView.getResources().getDisplayMetrics());
+                ivIcon.getLayoutParams().height = dim;
+                ivIcon.getLayoutParams().width = dim;
+
+                ivIcon.setImageBitmap(poolItem.getIcon());
+            }
+            else {
+                int dim = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 36, itemView.getResources().getDisplayMetrics());
+                ivIcon.getLayoutParams().height = dim;
+                ivIcon.getLayoutParams().width = dim;
+
+                ivIcon.setImageBitmap(Utils.getBitmap(context, R.drawable.ic_pool));
             }
 
             itemView.setOnClickListener(this);

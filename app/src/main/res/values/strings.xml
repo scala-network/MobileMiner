@@ -61,6 +61,7 @@
     <string name="miningstatus">Mining Status</string>
     <string name="startmining">I am ready!</string>
     <string name="mininglog">Mining Log</string>
+    <string name="value_empty">We need this!</string>
 
     <string name="githubLink">https://github.com/scala-network/MobileMiner/releases</string>
     <string name="discordLink">https://discord.gg/djAFVvy</string>

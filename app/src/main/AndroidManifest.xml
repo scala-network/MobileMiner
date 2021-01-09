@@ -58,7 +58,7 @@
         </activity>
 
         <activity
-            android:name="io.scalaproject.androidminer.WizardPoolActivity"
+            android:name="io.scalaproject.androidminer.PoolActivity"
             android:parentActivityName="io.scalaproject.androidminer.MainActivity">
         </activity>
 
