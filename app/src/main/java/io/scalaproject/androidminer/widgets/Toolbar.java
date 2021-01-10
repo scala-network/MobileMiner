@@ -24,12 +24,10 @@
 package io.scalaproject.androidminer.widgets;
 
 import android.content.Context;
-import android.os.Build;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import io.scalaproject.androidminer.R;
@@ -45,10 +43,10 @@ public class Toolbar extends androidx.appcompat.widget.Toolbar {
         onButtonListener = listener;
     }
 
-    ImageView toolbarImage;
     TextView toolbarTitle;
-    //TextView toolbarSubtitle;
+    TextView toolbarTitleCenter;
     ImageButton bMainLogo;
+    ImageButton bShare;
 
     public Toolbar(Context context) {
         super(context);
@@ -82,15 +80,15 @@ public class Toolbar extends androidx.appcompat.widget.Toolbar {
     protected void onFinishInflate() {
         super.onFinishInflate();
 
-        toolbarImage = findViewById(R.id.toolbarImage);
+        /*toolbarImage = findViewById(R.id.toolbarImage);
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
             // the vector image does not work well for androis < Nougat
             toolbarImage.getLayoutParams().width = (int) getResources().getDimension(R.dimen.logo_width);
             toolbarImage.setImageResource(R.drawable.ic_scala_logo_round);
-        }
+        }*/
 
         toolbarTitle = findViewById(R.id.toolbarTitle);
-        //toolbarSubtitle = findViewById(R.id.toolbarSubtitle);
+        toolbarTitleCenter = findViewById(R.id.toolbarTitleCenter);
 
         bMainLogo = findViewById(R.id.bMainLogo);
         bMainLogo.setOnClickListener(new View.OnClickListener() {
@@ -100,22 +98,55 @@ public class Toolbar extends androidx.appcompat.widget.Toolbar {
                 }
             }
         });
+
+        bShare = findViewById(R.id.bShare);
+        bShare.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                if (onButtonListener != null) {
+                    onButtonListener.onButton(BUTTON_SHARE);
+                }
+            }
+        });
+
+        bShare.setVisibility(View.GONE);
     }
 
-    public void setTitle(String title, String subtitle) {
-        setTitle(title);
-        setSubtitle(subtitle);
+    public void enableShareButton(boolean enabled) {
+        bShare.setVisibility(enabled ? View.VISIBLE : View.GONE);
     }
 
     public void setTitle(String title) {
-        toolbarTitle.setText(title);
-        if (title != null) {
-            toolbarImage.setVisibility(View.INVISIBLE);
+        this.setTitle(title, false);
+    }
+
+    public void setTitle(String title, boolean centered) {
+        if(!centered) {
             toolbarTitle.setVisibility(View.VISIBLE);
-            //setButton(BUTTON_NONE);
+            toolbarTitle.setText(title);
+            toolbarTitleCenter.setVisibility(View.GONE);
+
+            /*if (title != null) {
+                //toolbarImage.setVisibility(View.INVISIBLE);
+                toolbarTitle.setVisibility(View.VISIBLE);
+                //setButton(BUTTON_NONE);
+            } else {
+                //toolbarImage.setVisibility(View.INVISIBLE);
+                toolbarTitle.setVisibility(View.INVISIBLE);
+            }*/
         } else {
-            toolbarImage.setVisibility(View.INVISIBLE);
-            toolbarTitle.setVisibility(View.INVISIBLE);
+            toolbarTitleCenter.setVisibility(View.VISIBLE);
+            toolbarTitleCenter.setText(title);
+            toolbarTitle.setVisibility(View.GONE);
+
+            /*if (title != null) {
+                //toolbarImage.setVisibility(View.INVISIBLE);
+                toolbarTitle.setVisibility(View.VISIBLE);
+                toolbarTitleCenter.setVisibility(View.GONE);
+                //setButton(BUTTON_NONE);
+            } else {
+                //toolbarImage.setVisibility(View.INVISIBLE);
+                toolbarTitle.setVisibility(View.INVISIBLE);
+            }*/
         }
     }
 
@@ -124,6 +155,7 @@ public class Toolbar extends androidx.appcompat.widget.Toolbar {
     public final static int BUTTON_CLOSE = 2;
     public final static int BUTTON_CREDITS = 3;
     public final static int BUTTON_CANCEL = 4;
+    public final static int BUTTON_SHARE = 5;
 
     int buttonType = BUTTON_CREDITS;
 

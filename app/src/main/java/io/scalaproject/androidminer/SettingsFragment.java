@@ -27,7 +27,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.SeekBar;
-import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -44,13 +43,14 @@ import com.google.android.material.textfield.TextInputLayout;
 
 import io.scalaproject.androidminer.api.PoolItem;
 import io.scalaproject.androidminer.api.ProviderManager;
+import io.scalaproject.androidminer.widgets.PoolView;
+import io.scalaproject.androidminer.widgets.Toolbar;
 
 public class SettingsFragment extends Fragment {
 
     private static final String LOG_TAG = "MiningSvc";
 
-    TextInputLayout tilAddress;
-    private EditText edAddress, edWorkerName, edUsernameparameters;
+    private EditText edWorkerName, edUsernameparameters;
 
     private Integer nMaxCPUTemp = 65; // 55,60,65,70,75
     private Integer nMaxBatteryTemp = 40; // 30,35,40,45,50
@@ -65,8 +65,8 @@ public class SettingsFragment extends Fragment {
         ProviderManager.generate();
 
         Button bSave;
-        EditText edPool, edPort, edMiningGoal;
-        Spinner spPool;
+        EditText edPort, edMiningGoal;
+        PoolView pvSelectedPool;
 
         SeekBar sbCores;
         TextView tvCoresNb, tvCoresMax;
@@ -77,9 +77,15 @@ public class SettingsFragment extends Fragment {
         Context appContext = MainActivity.getContextOfApplication();
         bSave = view.findViewById(R.id.saveSettings);
 
-        tilAddress = view.findViewById(R.id.addressIL);
-        edAddress = view.findViewById(R.id.address);
-        edPool = view.findViewById(R.id.pool);
+        pvSelectedPool = view.findViewById(R.id.viewPool);
+        pvSelectedPool.setOnButtonListener(new PoolView.OnButtonListener() {
+            @Override
+            public void onButton() {
+                startActivity(new Intent(getActivity(), PoolActivity.class));
+                //finish();
+            }
+        });
+
         edPort = view.findViewById(R.id.port);
         edUsernameparameters = view.findViewById(R.id.usernameparameters);
         edWorkerName = view.findViewById(R.id.workername);
@@ -87,8 +93,6 @@ public class SettingsFragment extends Fragment {
         edMiningGoal = view.findViewById(R.id.mininggoal);
 
         Button bQrCode = view.findViewById(R.id.btnQrCode);
-
-        spPool = view.findViewById(R.id.spinnerPool);
 
         sbCores = view.findViewById(R.id.seekbarcores);
         tvCoresNb = view.findViewById(R.id.coresnb);
@@ -106,24 +110,6 @@ public class SettingsFragment extends Fragment {
         swPauseOnBattery = view.findViewById(R.id.chkPauseOnBattery);
         swKeepScreenOnWhenMining = view.findViewById(R.id.chkKeepScreenOnWhenMining);
         swDisableTempControl = view.findViewById(R.id.chkAmaycOff);
-
-        // Pool spinner
-        PoolItem[] pools = ProviderManager.getPools();
-        String[] description = new String[pools.length];
-        for(int i = 0; i< pools.length;i++) {
-            description[i] = pools[i].getKey();
-        }
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(appContext, R.layout.spinner_text_color, description);
-        spPool.setAdapter(adapter);
-
-        ImageView imgSpinnerDown = view.findViewById(R.id.imgSpinnerDown);
-        imgSpinnerDown.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                spPool.performClick();
-            }
-        });
 
         // CPU Cores
         int cores = Runtime.getRuntime().availableProcessors();
@@ -185,7 +171,7 @@ public class SettingsFragment extends Fragment {
         }
 
         if (!Config.read("address").isEmpty()) {
-            edAddress.setText(Config.read("address"));
+            //edAddress.setText(Config.read("address"));
         }
 
         if (!Config.read("usernameparameters").isEmpty()) {
@@ -279,48 +265,10 @@ public class SettingsFragment extends Fragment {
             }
         });
 
-        spPool.setOnItemSelectedListener(new OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
-                if (Config.read("init").equals("1")) {
-                    edAddress.setText(Config.read("address"));
-                    edUsernameparameters.setText(Config.read("usernameparameters"));
-                    edWorkerName.setText(Config.read("workername"));
-                }
-
-                if (position == 0){
-                    edPool.setText(Config.read("custom_pool"));
-                    edPort.setText(Config.read("custom_port"));
-                    return;
-                }
-
-                PoolItem poolItem = ProviderManager.getPoolById(position);
-
-                if(poolItem != null){
-                    edPool.setText(poolItem.getPool());
-                    edPort.setText(poolItem.getPort());
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
-
-        PoolItem poolItem = null;
+        PoolItem poolItem = ProviderManager.getSelectedPool();
         String poolSelected = Config.read("selected_pool");
-        int sp = Config.DefaultPoolIndex;
-        if (poolSelected.isEmpty()) {
-            poolSelected = Integer.toString(sp);
-        }
-        poolItem = ProviderManager.getPoolById(poolSelected);
 
-        if(poolItem == null) {
-            poolSelected = Integer.toString(sp);
-        }
-
-        poolItem = ProviderManager.getPoolById(poolSelected);
+        /*poolItem = ProviderManager.getPoolById(poolSelected);
         if (!Config.read("init").equals("1")) {
             poolSelected = Integer.toString(sp);
         }
@@ -339,13 +287,13 @@ public class SettingsFragment extends Fragment {
             edPort.setText(poolItem.getPort());
         }
 
-        spPool.setSelection(Integer.parseInt(poolSelected));
+        spPool.setSelection(Integer.parseInt(poolSelected));*/
 
         bSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // Validate address
-                String address = edAddress.getText().toString().trim();
+                /*String address = edAddress.getText().toString().trim();
 
                 if(address.isEmpty() || !Utils.verifyAddress(address)) {
                     tilAddress.setErrorEnabled(true);
@@ -357,7 +305,7 @@ public class SettingsFragment extends Fragment {
                 tilAddress.setErrorEnabled(false);
                 tilAddress.setError(null);
 
-                Config.write("address", address);
+                Config.write("address", address);*/
 
                 Config.write("usernameparameters", edUsernameparameters.getText().toString().trim());
 
@@ -370,7 +318,7 @@ public class SettingsFragment extends Fragment {
                 Config.write("workername", workername);
                 edWorkerName.setText(workername);
 
-                String key = spPool.getSelectedItem().toString();
+                /*String key = spPool.getSelectedItem().toString();
                 int selectedPosition = Config.DefaultPoolIndex;
 
                 PoolItem[] pools = ProviderManager.getPools();
@@ -387,6 +335,7 @@ public class SettingsFragment extends Fragment {
                 String pool = edPool.getText().toString().trim();
 
                 Log.i(LOG_TAG,"PoolType : " + pi.getPoolType());
+                 */ /*
                 if(pi.getPoolType() == 0) {
                     Config.write("custom_pool", pool);
                     Config.write("custom_port", port);
@@ -399,7 +348,7 @@ public class SettingsFragment extends Fragment {
                 }
 
                 Log.i(LOG_TAG,"SelectedPool : " + selectedPosition);
-                Config.write("selected_pool", Integer.toString(selectedPosition));
+                Config.write("selected_pool", Integer.toString(selectedPosition));*/
                 Config.write("cores", Integer.toString(sbCores.getProgress()));
                 Config.write("threads", "1"); // Default value
                 Config.write("intensity", "1"); // Default value
@@ -445,7 +394,7 @@ public class SettingsFragment extends Fragment {
             }
         });
 
-        edPool.addTextChangedListener(new TextWatcher() {
+        /*edPool.addTextChangedListener(new TextWatcher() {
 
             @Override
             public void afterTextChanged(Editable s) {
@@ -479,7 +428,7 @@ public class SettingsFragment extends Fragment {
 
         Button btnPasteAddress = view.findViewById(R.id.btnPasteAddress);
         btnPasteAddress.setOnClickListener(v -> edAddress.setText(Utils.pasteFromClipboard(MainActivity.getContextOfApplication())));
-
+*/
         bQrCode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -510,7 +459,7 @@ public class SettingsFragment extends Fragment {
                 btnYes.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        edAddress.setText(Utils.SCALA_XLA_ADDRESS);
+                        //edAddress.setText(Utils.SCALA_XLA_ADDRESS);
 
                         dialog.dismiss();
                     }
@@ -605,12 +554,12 @@ public class SettingsFragment extends Fragment {
     }
 
     public void updateAddress() {
-        String address =  Config.read("address");
+        /*String address =  Config.read("address");
         if (edAddress == null || address.isEmpty()) {
             return;
         }
 
-        edAddress.setText(address);
+        edAddress.setText(address);*/
     }
 
     private void requestFocus(View view) {

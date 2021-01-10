@@ -1,0 +1,126 @@
+package io.scalaproject.androidminer.widgets;
+
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.media.Image;
+import android.util.AttributeSet;
+import android.util.TypedValue;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+
+import io.scalaproject.androidminer.R;
+import io.scalaproject.androidminer.Utils;
+import io.scalaproject.androidminer.api.PoolItem;
+import io.scalaproject.androidminer.api.ProviderManager;
+
+public class PoolView extends LinearLayout {
+    public interface OnButtonListener {
+        void onButton();
+    }
+
+    PoolView.OnButtonListener onButtonListener;
+
+    public void setOnButtonListener(PoolView.OnButtonListener listener) {
+        onButtonListener = listener;
+    }
+
+    ImageView ivIcon;
+    TextView tvPoolName;
+    TextView tvPoolURL;
+    ImageButton ibOptions;
+
+    Context mContext = null;
+
+    public PoolView(Context context) {
+        super(context);
+        initializeViews(context);
+    }
+
+    public PoolView(Context context, AttributeSet attrs) {
+        super(context, attrs);
+        initializeViews(context);
+    }
+
+    public PoolView(Context context,
+                   AttributeSet attrs,
+                   int defStyle) {
+        super(context, attrs, defStyle);
+        initializeViews(context);
+    }
+
+    /**
+     * Inflates the views in the layout.
+     *
+     * @param context the current context for the view.
+     */
+    private void initializeViews(Context context) {
+        LayoutInflater inflater = (LayoutInflater) context
+                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        inflater.inflate(R.layout.view_pool, this);
+    }
+
+    @Override
+    protected void onFinishInflate() {
+        super.onFinishInflate();
+
+        ivIcon = findViewById(R.id.ivIcon);
+        tvPoolName = findViewById(R.id.tvName);
+        tvPoolURL = findViewById(R.id.tvURL);
+
+        ibOptions = findViewById(R.id.ibOptions);
+        ibOptions.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                if (onButtonListener != null) {
+                    onButtonListener.onButton();
+                }
+            }
+        });
+
+        PoolItem poolItem = ProviderManager.getSelectedPool();
+
+        tvPoolName.setText(poolItem.getKey());
+        tvPoolURL.setText(poolItem.getPool());
+
+        Bitmap icon = poolItem.getIcon();
+        if(icon != null) {
+            int dim = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 34, getResources().getDisplayMetrics());
+            ivIcon.getLayoutParams().height = dim;
+            ivIcon.getLayoutParams().width = dim;
+
+            ivIcon.setImageBitmap(Utils.getCroppedBitmap(poolItem.getIcon()));
+        }
+        else {
+            int dim = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 36, getResources().getDisplayMetrics());
+            ivIcon.getLayoutParams().height = dim;
+            ivIcon.getLayoutParams().width = dim;
+
+            ivIcon.setImageBitmap(Utils.getCroppedBitmap(Utils.getBitmap(getContext(), R.drawable.ic_pool_default)));
+        }
+    }
+
+    public void refresh() {
+        /*icon = findViewById(R.id.icon);
+
+        if(mPoolItem != null) {
+            poolName = mPoolItem.getKey();
+            recommendPool = mPoolItem.getKey().toLowerCase().contains("official");
+        }
+
+        tvPoolName = findViewById(R.id.poolName);
+        tvPoolName.setText(poolName);
+
+        tvMinersScala = findViewById(R.id.minersScala);
+        tvMinersScala.setText(minersScala);
+
+        tvHrScala = findViewById(R.id.hrScala);
+        tvHrScala.setText(hrScala);
+
+        tvRecommendPool = findViewById(R.id.recommendPool);
+        tvRecommendPool.setVisibility(recommendPool ? View.VISIBLE : View.INVISIBLE);
+*/
+    }
+}

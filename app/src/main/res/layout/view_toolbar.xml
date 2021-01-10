@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_height="match_parent"
     android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_marginTop="16dp"
     android:orientation="horizontal">
 
@@ -24,12 +25,33 @@
         android:visibility="invisible"
         tools:text="Scala Vault" />
 
-    <ImageView
-        android:id="@+id/toolbarImage"
+    <Space
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_weight="1" />
+
+    <TextView
+        android:id="@+id/toolbarTitleCenter"
+        style="@style/Toolbar.Title"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_gravity="center"
-        android:layout_marginTop="-8dp"
-        android:src="@drawable/ic_scala_logo_round"
-        android:visibility="invisible" />
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:gravity="center"
+        android:visibility="invisible"
+        tools:text="Scala Vault" />
+
+    <Space
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_weight="1" />
+
+    <ImageButton
+        android:id="@+id/bShare"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginEnd="16dp"
+        android:backgroundTint="@android:color/transparent"
+        app:iconTint="@color/c_grey"
+        android:src="@drawable/ic_share" />
+
 </LinearLayout>

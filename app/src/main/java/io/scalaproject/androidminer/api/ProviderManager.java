@@ -48,7 +48,7 @@ public final class ProviderManager {
     }
 
     static public PoolItem getPoolByKey(String key) {
-        if (key.isEmpty() || mPools.size() == 0) {
+        if (mPools.size() == 0) {
             return null;
         }
 
@@ -59,7 +59,7 @@ public final class ProviderManager {
                 return pi;
         }
 
-        return null;
+        return mPools.get(0);
     }
 
     static public PoolItem getPoolById(String idx) {
@@ -81,10 +81,10 @@ public final class ProviderManager {
 
         String sp = Config.read("selected_pool");
         if (sp.equals("")) {
-            return null;
+            return mPools.get(0);
         }
 
-        return getPoolById(sp);
+        return getPoolByKey(sp);
     }
 
     static public int getSelectedPoolIndex() {

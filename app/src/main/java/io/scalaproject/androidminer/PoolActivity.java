@@ -89,28 +89,14 @@ public class PoolActivity extends BaseActivity
             public void onButton(int type) {
                 switch (type) {
                     case Toolbar.BUTTON_BACK:
-                        //onDisposeRequest();
-                        //onBackPressed();
                         startActivity(new Intent(PoolActivity.this, WizardAddressActivity.class));
                         finish();
                         break;
-                    case Toolbar.BUTTON_CANCEL:
-                        //onDisposeRequest();
-                        //Helper.hideKeyboard(WalletActivity.this);
-                        onBackPressed();
-                        break;
-                    case Toolbar.BUTTON_CLOSE:
-                        finish();
-                        break;
-                    case Toolbar.BUTTON_CREDITS:
-                        //Toast.makeText(WalletActivity.this, getString(R.string.label_credits), Toast.LENGTH_SHORT).show();
-                    case Toolbar.BUTTON_NONE:
-                    default:
-                        //Timber.e("Button " + type + "pressed - how can this be?");
                 }
             }
         });
 
+        toolbar.setTitle("Mining Pool");
         toolbar.setButton(Toolbar.BUTTON_BACK);
 
         mPoolQueue = Volley.newRequestQueue(this);

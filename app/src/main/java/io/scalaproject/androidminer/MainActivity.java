@@ -113,6 +113,7 @@ import io.scalaproject.androidminer.api.PoolItem;
 import io.scalaproject.androidminer.api.ProviderData;
 import io.scalaproject.androidminer.api.ProviderManager;
 import io.scalaproject.androidminer.controls.SimpleTriangleIndicator;
+import io.scalaproject.androidminer.widgets.Toolbar;
 
 import static android.os.PowerManager.PARTIAL_WAKE_LOCK;
 
@@ -120,6 +121,8 @@ public class MainActivity extends BaseActivity
         implements BottomNavigationView.OnNavigationItemSelectedListener
 {
     private static final String LOG_TAG = "MainActivity";
+
+    private Toolbar toolbar;
 
     private TextView tvHashrate, tvStatus, tvNbCores, tvCPUTemperature, tvBatteryTemperature, tvAcceptedShares, tvDifficulty, tvConnection, tvLog, tvStatusProgess;
     private TubeSpeedometer meterCores, meterHashrate, meterHashrate_avg, meterHashrate_max;
@@ -241,6 +244,27 @@ public class MainActivity extends BaseActivity
         }
 
         setContentView(R.layout.activity_main);
+
+        // Toolbar
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+        toolbar.setOnButtonListener(new Toolbar.OnButtonListener() {
+            @Override
+            public void onButton(int type) {
+                switch (type) {
+                    case Toolbar.BUTTON_BACK:
+                        //startActivity(new Intent(MainActivity.this, WizardHomeActivity.class));
+                        //finish();
+                        break;
+                }
+            }
+        });
+
+        toolbar.setTitle("Wallet Address");
+        toolbar.setButton(Toolbar.BUTTON_CREDITS);
+        toolbar.enableShareButton(true);
 
         BottomNavigationView navigationView = findViewById(R.id.main_navigation);
         navigationView.getMenu().getItem(0).setChecked(true);
@@ -439,7 +463,7 @@ public class MainActivity extends BaseActivity
             validArchitecture = false;
         }
 
-        Button btnShare = findViewById(R.id.btnShare);
+        /*Button btnShare = findViewById(R.id.btnShare);
         btnShare.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -447,7 +471,7 @@ public class MainActivity extends BaseActivity
                 saveBitmap(bitmap);
                 shareIt();
             }
-        });
+        });*/
 
         StrictMode.ThreadPolicy policy = new
                 StrictMode.ThreadPolicy.Builder().permitAll().build();
@@ -487,9 +511,7 @@ public class MainActivity extends BaseActivity
         updateStartButton();
         resetAvgMaxHashrate();
 
-
         updateUI();
-
     }
 
     @Override
@@ -697,10 +719,12 @@ public class MainActivity extends BaseActivity
         loadSettings();
 
         // Worker Name
-        TextView tvWorkerName = findViewById(R.id.workername);
+        //TextView tvWorkerName = findViewById(R.id.workername);
         String sWorkerName = Config.read("workername");
-        if(!sWorkerName.equals(""))
-            tvWorkerName.setText(sWorkerName);
+        /*if(!sWorkerName.equals(""))
+            tvWorkerName.setText(sWorkerName);*/
+
+        toolbar.setTitle(sWorkerName, true);
 
         updatePayoutWidgetStatus();
         refreshLogOutputView();
@@ -759,6 +783,7 @@ public class MainActivity extends BaseActivity
                 llMain.setVisibility(View.VISIBLE);
                 llLog.setVisibility(View.GONE);
 
+                toolbar.enableShareButton(true);
                 updateStatsListener();
                 updateUI();
 
@@ -774,6 +799,7 @@ public class MainActivity extends BaseActivity
                 llMain.setVisibility(View.GONE);
                 llLog.setVisibility(View.VISIBLE);
 
+                toolbar.enableShareButton(false);
                 updateStatsListener();
                 updateUI();
 
@@ -787,6 +813,7 @@ public class MainActivity extends BaseActivity
 
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment_stats, "fragment_stats").commit();
 
+                toolbar.enableShareButton(false);
                 llMain.setVisibility(View.VISIBLE);
                 llLog.setVisibility(View.GONE);
 
@@ -799,6 +826,7 @@ public class MainActivity extends BaseActivity
                 }
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, settings_fragment, "settings_fragment").commit();
 
+                toolbar.enableShareButton(false);
                 llMain.setVisibility(View.VISIBLE);
                 llLog.setVisibility(View.GONE);
 
@@ -811,6 +839,7 @@ public class MainActivity extends BaseActivity
                 }
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, about_fragment, "about_fragment").commit();
 
+                toolbar.enableShareButton(false);
                 llMain.setVisibility(View.VISIBLE);
                 llLog.setVisibility(View.GONE);
 
