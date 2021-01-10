@@ -47,6 +47,7 @@
                         android:text="@string/walletaddress2"
                         android:textColor="@color/txt_secondary"
                         android:textSize="16sp"
+                        android:textAllCaps="true"
                         android:textStyle="bold" />
 
                     <Space
@@ -138,6 +139,7 @@
                     android:text="@string/pool"
                     android:textColor="@color/txt_secondary"
                     android:textSize="16sp"
+                    android:textAllCaps="true"
                     android:textStyle="bold" />
 
                 <io.scalaproject.androidminer.widgets.PoolView
@@ -253,6 +255,7 @@
                     android:text="@string/hardwaresettings"
                     android:textColor="@color/txt_secondary"
                     android:textSize="16sp"
+                    android:textAllCaps="true"
                     android:textStyle="bold" />
 
                 <Button
@@ -555,6 +558,7 @@
                     android:text="@string/advanced"
                     android:textColor="@color/txt_secondary"
                     android:textSize="16sp"
+                    android:textAllCaps="true"
                     android:textStyle="bold" />
 
                 <LinearLayout

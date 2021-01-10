@@ -50,7 +50,8 @@ public class SettingsFragment extends Fragment {
 
     private static final String LOG_TAG = "MiningSvc";
 
-    private EditText edWorkerName, edUsernameparameters;
+    TextInputLayout tilAddress;
+    private EditText edAddress, edWorkerName, edUsernameparameters;
 
     private Integer nMaxCPUTemp = 65; // 55,60,65,70,75
     private Integer nMaxBatteryTemp = 40; // 30,35,40,45,50
@@ -76,6 +77,9 @@ public class SettingsFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_settings, container, false);
         Context appContext = MainActivity.getContextOfApplication();
         bSave = view.findViewById(R.id.saveSettings);
+
+        tilAddress = view.findViewById(R.id.addressIL);
+        edAddress = view.findViewById(R.id.address);
 
         pvSelectedPool = view.findViewById(R.id.viewPool);
         pvSelectedPool.setOnButtonListener(new PoolView.OnButtonListener() {
@@ -171,7 +175,7 @@ public class SettingsFragment extends Fragment {
         }
 
         if (!Config.read("address").isEmpty()) {
-            //edAddress.setText(Config.read("address"));
+            edAddress.setText(Config.read("address"));
         }
 
         if (!Config.read("usernameparameters").isEmpty()) {
@@ -293,7 +297,7 @@ public class SettingsFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 // Validate address
-                /*String address = edAddress.getText().toString().trim();
+                String address = edAddress.getText().toString().trim();
 
                 if(address.isEmpty() || !Utils.verifyAddress(address)) {
                     tilAddress.setErrorEnabled(true);
@@ -305,7 +309,7 @@ public class SettingsFragment extends Fragment {
                 tilAddress.setErrorEnabled(false);
                 tilAddress.setError(null);
 
-                Config.write("address", address);*/
+                Config.write("address", address);
 
                 Config.write("usernameparameters", edUsernameparameters.getText().toString().trim());
 
@@ -424,11 +428,11 @@ public class SettingsFragment extends Fragment {
                     }
                 }
             }
-        });
+        });*/
 
         Button btnPasteAddress = view.findViewById(R.id.btnPasteAddress);
         btnPasteAddress.setOnClickListener(v -> edAddress.setText(Utils.pasteFromClipboard(MainActivity.getContextOfApplication())));
-*/
+
         bQrCode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -459,8 +463,7 @@ public class SettingsFragment extends Fragment {
                 btnYes.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        //edAddress.setText(Utils.SCALA_XLA_ADDRESS);
-
+                        edAddress.setText(Utils.SCALA_XLA_ADDRESS);
                         dialog.dismiss();
                     }
                 });
@@ -554,12 +557,12 @@ public class SettingsFragment extends Fragment {
     }
 
     public void updateAddress() {
-        /*String address =  Config.read("address");
+        String address =  Config.read("address");
         if (edAddress == null || address.isEmpty()) {
             return;
         }
 
-        edAddress.setText(address);*/
+        edAddress.setText(address);
     }
 
     private void requestFocus(View view) {
