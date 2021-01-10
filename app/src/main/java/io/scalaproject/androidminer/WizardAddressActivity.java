@@ -99,7 +99,6 @@ public class WizardAddressActivity extends BaseActivity {
     }
 
     private void startQrCodeActivity() {
-
         Context appContext = WizardAddressActivity.this;
 
         try {
@@ -144,7 +143,9 @@ public class WizardAddressActivity extends BaseActivity {
 
         Config.write("address", strAddress);
 
-        startActivity(new Intent(WizardAddressActivity.this, PoolActivity.class));
+        Intent intent = new Intent(WizardAddressActivity.this, PoolActivity.class);
+        intent.putExtra(PoolActivity.RequesterType, PoolActivity.REQUESTER_WIZARD);
+        startActivity(intent);
 
         finish();
     }
@@ -154,6 +155,7 @@ public class WizardAddressActivity extends BaseActivity {
             getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
         }
     }
+
     @Override
     protected void onResume() {
         super.onResume();

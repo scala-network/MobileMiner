@@ -64,7 +64,7 @@ public class PoolView extends LinearLayout {
     }
 
     @Override
-    protected void onFinishInflate() {
+    public void onFinishInflate() {
         super.onFinishInflate();
 
         ivIcon = findViewById(R.id.ivIcon);

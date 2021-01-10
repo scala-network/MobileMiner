@@ -56,6 +56,7 @@ public class PoolActivity extends BaseActivity
     private SwipeRefreshLayout pullToRefresh;
     private RecyclerView rvPools;
     private View fabAddPool;
+    private Button bSaveSettings;
 
     private Set<PoolItem> allPools = new HashSet<>();
     //private Set<PoolItem> userdefinedPools = new HashSet<>();
@@ -66,6 +67,11 @@ public class PoolActivity extends BaseActivity
     private PoolItem selectedPool = null;
 
     RequestQueue mPoolQueue = null;
+
+    public final static String RequesterType = "Requester";
+    public final static int REQUESTER_NONE =1;
+    public final static int REQUESTER_WIZARD = 0;
+    public final static int REQUESTER_SETTINGS = 1;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -79,6 +85,13 @@ public class PoolActivity extends BaseActivity
 
         setContentView(R.layout.fragment_pool);
 
+        // If activity is created from Home Wizard
+        Intent intent = getIntent();
+        Integer requesterType = intent.getIntExtra(PoolActivity.RequesterType, PoolActivity.REQUESTER_NONE);
+
+        bSaveSettings = findViewById(R.id.bSaveSettings);
+        bSaveSettings.setVisibility(requesterType == PoolActivity.REQUESTER_WIZARD ? View.VISIBLE : View.GONE);
+
         // Toolbar
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -89,9 +102,17 @@ public class PoolActivity extends BaseActivity
             public void onButtonMain(int type) {
                 switch (type) {
                     case Toolbar.BUTTON_MAIN_BACK:
-                        startActivity(new Intent(PoolActivity.this, WizardAddressActivity.class));
-                        finish();
-                        break;
+                        if(requesterType == PoolActivity.REQUESTER_WIZARD) {
+                            startActivity(new Intent(PoolActivity.this, WizardAddressActivity.class));
+                            finish();
+                            break;
+                        } else if (requesterType == PoolActivity.REQUESTER_SETTINGS) {
+                            Config.write("selected_pool", selectedPool.getKey());
+
+                            onBackPressed();
+
+                            break;
+                        }
                 }
             }
 
@@ -110,7 +131,7 @@ public class PoolActivity extends BaseActivity
 
         fabAddPool = view.findViewById(R.id.fabAddPool);
         fabAddPool.setOnClickListener(this);
-        //fabAddPool.setVisibility(readonly ? View.GONE : View.VISIBLE);
+        fabAddPool.setVisibility(requesterType == PoolActivity.REQUESTER_WIZARD ? View.GONE : View.VISIBLE);
 
         rvPools = view.findViewById(R.id.rvPools);
         poolsAdapter = new PoolInfoAdapter(this, this, this);

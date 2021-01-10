@@ -53,6 +53,8 @@ public class SettingsFragment extends Fragment {
     TextInputLayout tilAddress;
     private EditText edAddress, edWorkerName, edUsernameparameters;
 
+    PoolView pvSelectedPool;
+
     private Integer nMaxCPUTemp = 65; // 55,60,65,70,75
     private Integer nMaxBatteryTemp = 40; // 30,35,40,45,50
     private Integer nCooldownTheshold = 15; // 10,15,20,25,30
@@ -67,7 +69,6 @@ public class SettingsFragment extends Fragment {
 
         Button bSave;
         EditText edPort, edMiningGoal;
-        PoolView pvSelectedPool;
 
         SeekBar sbCores;
         TextView tvCoresNb, tvCoresMax;
@@ -85,8 +86,9 @@ public class SettingsFragment extends Fragment {
         pvSelectedPool.setOnButtonListener(new PoolView.OnButtonListener() {
             @Override
             public void onButton() {
-                startActivity(new Intent(getActivity(), PoolActivity.class));
-                //finish();
+                Intent intent = new Intent(getActivity(), PoolActivity.class);
+                intent.putExtra(PoolActivity.RequesterType, PoolActivity.REQUESTER_SETTINGS);
+                startActivity(intent);
             }
         });
 
@@ -569,5 +571,12 @@ public class SettingsFragment extends Fragment {
         if (view.requestFocus()) {
             getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        pvSelectedPool.onFinishInflate();
     }
 }

@@ -26,9 +26,8 @@ import io.scalaproject.androidminer.api.ProviderManager;
 
 public class StatsFragment extends Fragment {
 
-    private static final String LOG_TAG = "MiningSvc";
-
     protected IProviderListener statsListener;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

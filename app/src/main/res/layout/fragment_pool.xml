@@ -64,7 +64,7 @@
 		android:visibility="visible">
 
 		<Button
-			android:id="@+id/saveSettings"
+			android:id="@+id/bSaveSettings"
 			android:layout_width="match_parent"
 			android:layout_height="55dp"
 			android:layout_marginTop="15dp"
@@ -88,7 +88,7 @@
 		android:layout_alignParentEnd="true"
 		android:layout_alignParentBottom="true"
 		android:layout_marginRight="16dp"
-		android:layout_marginBottom="75dp"
+		android:layout_marginBottom="15dp"
 		android:background="@drawable/gradient_oval"
 		android:elevation="6dp">
 
