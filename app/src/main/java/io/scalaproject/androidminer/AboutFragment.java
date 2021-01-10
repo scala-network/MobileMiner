@@ -19,6 +19,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -44,18 +45,8 @@ public class AboutFragment extends Fragment {
         tvMaterialDesign = view.findViewById(R.id.MaterialDesignURL);
         tvFontAwesome = view.findViewById(R.id.FontAwesomeURL);
 
-        Button btnGitHub = view.findViewById(R.id.btnGitHub);
-        btnGitHub.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Uri uri = Uri.parse(getResources().getString(R.string.githubLink));
-                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                startActivity(intent);
-            }
-        });
-
-        Button btnDiscord = view.findViewById(R.id.btnDiscord);
-        btnDiscord.setOnClickListener(new View.OnClickListener() {
+        ImageView ivDiscord = view.findViewById(R.id.ivDiscord);
+        ivDiscord.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Uri uri = Uri.parse(getResources().getString(R.string.discordLink));
@@ -64,8 +55,18 @@ public class AboutFragment extends Fragment {
             }
         });
 
-        Button btnMedium = view.findViewById(R.id.btnMedium);
-        btnMedium.setOnClickListener(new View.OnClickListener() {
+        ImageView ivTelegram = view.findViewById(R.id.ivTelegram);
+        ivTelegram.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Uri uri = Uri.parse(getResources().getString(R.string.telegramLink));
+                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                startActivity(intent);
+            }
+        });
+
+        ImageView ivMedium = view.findViewById(R.id.ivMedium);
+        ivMedium.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Uri uri = Uri.parse(getResources().getString(R.string.mediumLink));
@@ -74,8 +75,8 @@ public class AboutFragment extends Fragment {
             }
         });
 
-        Button btnTwitter = view.findViewById(R.id.btnTwitter);
-        btnTwitter.setOnClickListener(new View.OnClickListener() {
+        ImageView ivTwitter = view.findViewById(R.id.ivTwitter);
+        ivTwitter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Uri uri = Uri.parse(getResources().getString(R.string.twitterLink));
@@ -84,11 +85,11 @@ public class AboutFragment extends Fragment {
             }
         });
 
-        Button btnTelegram = view.findViewById(R.id.btnTelegram);
-        btnTelegram.setOnClickListener(new View.OnClickListener() {
+        ImageView ivReddit = view.findViewById(R.id.ivReddit);
+        ivReddit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Uri uri = Uri.parse(getResources().getString(R.string.telegramLink));
+                Uri uri = Uri.parse(getResources().getString(R.string.twitterLink));
                 Intent intent = new Intent(Intent.ACTION_VIEW, uri);
                 startActivity(intent);
             }

@@ -38,6 +38,7 @@
 				android:text="@string/hardwaresettings"
 				android:textColor="@color/txt_headline"
 				android:textSize="16sp"
+				android:textAllCaps="true"
 				android:textStyle="bold" />
 
 			<Button

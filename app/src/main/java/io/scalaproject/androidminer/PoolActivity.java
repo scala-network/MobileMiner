@@ -86,18 +86,24 @@ public class PoolActivity extends BaseActivity
 
         toolbar.setOnButtonListener(new Toolbar.OnButtonListener() {
             @Override
-            public void onButton(int type) {
+            public void onButtonMain(int type) {
                 switch (type) {
-                    case Toolbar.BUTTON_BACK:
+                    case Toolbar.BUTTON_MAIN_BACK:
                         startActivity(new Intent(PoolActivity.this, WizardAddressActivity.class));
                         finish();
                         break;
                 }
             }
+
+            @Override
+            public void onButtonOptions(int type) {
+                // Does nothing in pool view
+            }
         });
 
         toolbar.setTitle("Mining Pool");
-        toolbar.setButton(Toolbar.BUTTON_BACK);
+        toolbar.setButtonMain(Toolbar.BUTTON_MAIN_BACK);
+        toolbar.setButtonOptions(Toolbar.BUTTON_OPTIONS_NONE);
 
         mPoolQueue = Volley.newRequestQueue(this);
         View view = findViewById(android.R.id.content).getRootView();

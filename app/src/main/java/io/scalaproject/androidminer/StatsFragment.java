@@ -8,9 +8,6 @@
 
 package io.scalaproject.androidminer;
 
-import android.content.Intent;
-import android.graphics.Paint;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,8 +28,6 @@ public class StatsFragment extends Fragment {
 
     private static final String LOG_TAG = "MiningSvc";
 
-    private TextView tvViewStatsOnline;
-
     protected IProviderListener statsListener;
     @Nullable
     @Override
@@ -50,11 +45,6 @@ public class StatsFragment extends Fragment {
             }
         };
 
-        tvViewStatsOnline = view.findViewById(R.id.checkstatsonline);
-        tvViewStatsOnline.setPaintFlags(tvViewStatsOnline.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
-        tvViewStatsOnline.setEnabled(false);
-        tvViewStatsOnline.setTextColor(getResources().getColor(R.color.c_grey));
-
         ProviderManager.request.setListener(statsListener).start();
         ProviderManager.afterSave();
         updateFields(ProviderManager.data, view);
@@ -67,7 +57,6 @@ public class StatsFragment extends Fragment {
             return;
 
         if(d.isNew) {
-            enableOnlineStats(false);
             return;
         }
 
@@ -135,29 +124,6 @@ public class StatsFragment extends Fragment {
             TextView tvPaid = view.findViewById(R.id.paid);
             tvPaid.setText(sPaid);
         }
-
-        enableOnlineStats(true);
-
-        String statsUrlWallet = pm.getStatsURL() + "?wallet=" + wallet;
-        tvViewStatsOnline.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Uri uri = Uri.parse(statsUrlWallet);
-                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                startActivity(intent);
-            }
-        });
-    }
-
-    private void enableOnlineStats(boolean enable) {
-        tvViewStatsOnline.setEnabled(enable);
-
-        if (enable) {
-            tvViewStatsOnline.setTextColor(getResources().getColor(R.color.c_blue));
-        }
-        else {
-            tvViewStatsOnline.setTextColor(getResources().getColor(R.color.c_grey));
-        }
     }
 
     public boolean checkValidState() {
@@ -166,7 +132,6 @@ public class StatsFragment extends Fragment {
 
         if(Config.read("address").equals("")) {
             Toast.makeText(getContext(),"Wallet address is empty.", Toast.LENGTH_LONG).show();
-            enableOnlineStats(false);
             return false;
         }
 
@@ -174,17 +139,13 @@ public class StatsFragment extends Fragment {
 
         if (!Config.read("init").equals("1") || pi == null) {
             Toast.makeText(getContext(),"Start mining to view statistics.", Toast.LENGTH_LONG).show();
-            enableOnlineStats(false);
             return false;
         }
 
         if (pi.getPoolType() == 0) {
             Toast.makeText(getContext(),"Statistics are not available for custom pools.", Toast.LENGTH_LONG).show();
-            enableOnlineStats(false);
             return false;
         }
-
-        enableOnlineStats(true);
 
         return true;
     }
@@ -193,17 +154,5 @@ public class StatsFragment extends Fragment {
     public void onResume() {
         super.onResume();
         ProviderManager.request.setListener(statsListener).start();
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        enableOnlineStats(false);
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        enableOnlineStats(false);
     }
 }

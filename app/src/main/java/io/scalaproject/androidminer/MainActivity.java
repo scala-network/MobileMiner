@@ -252,19 +252,44 @@ public class MainActivity extends BaseActivity
 
         toolbar.setOnButtonListener(new Toolbar.OnButtonListener() {
             @Override
-            public void onButton(int type) {
-                switch (type) {
-                    case Toolbar.BUTTON_BACK:
-                        //startActivity(new Intent(MainActivity.this, WizardHomeActivity.class));
-                        //finish();
+            public void onButtonMain(int type) {
+                // Main button does nothing in main view
+            }
+
+            @Override
+            public void onButtonOptions(int type) {
+                switch(type) {
+                    case Toolbar.BUTTON_OPTIONS_SHARE: {
+                        Bitmap bitmap = takeScreenshot();
+                        saveBitmap(bitmap);
+                        shareIt();
+
                         break;
+                    }
+                    case Toolbar.BUTTON_OPTIONS_SHOW_CORES: {
+                        showCores();
+
+                        break;
+                    }
+                    case Toolbar.BUTTON_OPTIONS_STATS: {
+                        PoolItem pm = ProviderManager.getSelectedPool();
+                        String statsUrlWallet = pm.getStatsURL() + "?wallet=" + Config.read("address");
+                        Uri uri = Uri.parse(statsUrlWallet);
+                        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                        startActivity(intent);
+
+                        break;
+                    }
+                    default: {
+                        // Do nothing
+                    }
                 }
             }
         });
 
         toolbar.setTitle("Wallet Address");
-        toolbar.setButton(Toolbar.BUTTON_CREDITS);
-        toolbar.enableShareButton(true);
+        toolbar.setButtonMain(Toolbar.BUTTON_MAIN_LOGO);
+        toolbar.setButtonOptions(Toolbar.BUTTON_OPTIONS_SHARE);
 
         BottomNavigationView navigationView = findViewById(R.id.main_navigation);
         navigationView.getMenu().getItem(0).setChecked(true);
@@ -463,16 +488,6 @@ public class MainActivity extends BaseActivity
             validArchitecture = false;
         }
 
-        /*Button btnShare = findViewById(R.id.btnShare);
-        btnShare.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Bitmap bitmap = takeScreenshot();
-                saveBitmap(bitmap);
-                shareIt();
-            }
-        });*/
-
         StrictMode.ThreadPolicy policy = new
                 StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
@@ -512,6 +527,8 @@ public class MainActivity extends BaseActivity
         resetAvgMaxHashrate();
 
         updateUI();
+
+        toolbar.setTitle(getWorkerName(), true);
     }
 
     @Override
@@ -519,7 +536,7 @@ public class MainActivity extends BaseActivity
         super.onDestroy();
     }
 
-    public void onShowCores(View view) {
+    public void showCores() {
         sendInput("h");
     }
 
@@ -718,19 +735,19 @@ public class MainActivity extends BaseActivity
     public void updateUI() {
         loadSettings();
 
-        // Worker Name
-        //TextView tvWorkerName = findViewById(R.id.workername);
-        String sWorkerName = Config.read("workername");
-        /*if(!sWorkerName.equals(""))
-            tvWorkerName.setText(sWorkerName);*/
-
-        toolbar.setTitle(sWorkerName, true);
-
         updatePayoutWidgetStatus();
         refreshLogOutputView();
         updateCores();
         adjustMetricsLayout();
+    }
 
+    private String getWorkerName() {
+        String workerName = Config.read("workername");
+
+        if(workerName.isEmpty())
+            return "Your device";
+
+        return workerName;
     }
 
     private void adjustMetricsLayout() {
@@ -783,7 +800,9 @@ public class MainActivity extends BaseActivity
                 llMain.setVisibility(View.VISIBLE);
                 llLog.setVisibility(View.GONE);
 
-                toolbar.enableShareButton(true);
+                toolbar.setButtonOptions(Toolbar.BUTTON_OPTIONS_SHARE);
+                toolbar.setTitle(getWorkerName(), true);
+
                 updateStatsListener();
                 updateUI();
 
@@ -799,7 +818,9 @@ public class MainActivity extends BaseActivity
                 llMain.setVisibility(View.GONE);
                 llLog.setVisibility(View.VISIBLE);
 
-                toolbar.enableShareButton(false);
+                toolbar.setButtonOptions(Toolbar.BUTTON_OPTIONS_SHOW_CORES);
+                toolbar.setTitle(getResources().getString(R.string.mininglog), true);
+
                 updateStatsListener();
                 updateUI();
 
@@ -813,7 +834,9 @@ public class MainActivity extends BaseActivity
 
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment_stats, "fragment_stats").commit();
 
-                toolbar.enableShareButton(false);
+                toolbar.setButtonOptions(Toolbar.BUTTON_OPTIONS_STATS);
+                toolbar.setTitle(getResources().getString(R.string.stats), true);
+
                 llMain.setVisibility(View.VISIBLE);
                 llLog.setVisibility(View.GONE);
 
@@ -826,7 +849,9 @@ public class MainActivity extends BaseActivity
                 }
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, settings_fragment, "settings_fragment").commit();
 
-                toolbar.enableShareButton(false);
+                toolbar.setButtonOptions(Toolbar.BUTTON_OPTIONS_NONE);
+                toolbar.setTitle(getResources().getString(R.string.settings), true);
+
                 llMain.setVisibility(View.VISIBLE);
                 llLog.setVisibility(View.GONE);
 
@@ -839,7 +864,9 @@ public class MainActivity extends BaseActivity
                 }
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, about_fragment, "about_fragment").commit();
 
-                toolbar.enableShareButton(false);
+                toolbar.setButtonOptions(Toolbar.BUTTON_OPTIONS_NONE);
+                toolbar.setTitle(getResources().getString(R.string.about), true);
+
                 llMain.setVisibility(View.VISIBLE);
                 llLog.setVisibility(View.GONE);
 

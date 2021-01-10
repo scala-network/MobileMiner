@@ -46,18 +46,26 @@ public class WizardSettingsActivity extends BaseActivity {
 
         toolbar.setOnButtonListener(new Toolbar.OnButtonListener() {
             @Override
-            public void onButton(int type) {
+            public void onButtonMain(int type) {
                 switch (type) {
-                    case Toolbar.BUTTON_BACK:
+                    case Toolbar.BUTTON_MAIN_BACK:
                         startActivity(new Intent(WizardSettingsActivity.this, PoolActivity.class));
                         finish();
                         break;
                 }
             }
+
+            @Override
+            public void onButtonOptions(int type) {
+                switch (type) {
+                    // Do nothing
+                }
+            }
         });
 
         toolbar.setTitle("Settings");
-        toolbar.setButton(Toolbar.BUTTON_BACK);
+        toolbar.setButtonMain(Toolbar.BUTTON_MAIN_BACK);
+        toolbar.setButtonOptions(Toolbar.BUTTON_OPTIONS_NONE);
 
         sbCores = view.findViewById(R.id.seekbarcores);
         TextView tvCoresNb = view.findViewById(R.id.coresnb);

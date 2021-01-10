@@ -34,7 +34,8 @@ import io.scalaproject.androidminer.R;
 
 public class Toolbar extends androidx.appcompat.widget.Toolbar {
     public interface OnButtonListener {
-        void onButton(int type);
+        void onButtonMain(int type);
+        void onButtonOptions(int type);
     }
 
     OnButtonListener onButtonListener;
@@ -45,8 +46,8 @@ public class Toolbar extends androidx.appcompat.widget.Toolbar {
 
     TextView toolbarTitle;
     TextView toolbarTitleCenter;
-    ImageButton bMainLogo;
-    ImageButton bShare;
+    ImageButton bMainIcon;
+    ImageButton bOptionIcon;
 
     public Toolbar(Context context) {
         super(context);
@@ -80,43 +81,32 @@ public class Toolbar extends androidx.appcompat.widget.Toolbar {
     protected void onFinishInflate() {
         super.onFinishInflate();
 
-        /*toolbarImage = findViewById(R.id.toolbarImage);
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
-            // the vector image does not work well for androis < Nougat
-            toolbarImage.getLayoutParams().width = (int) getResources().getDimension(R.dimen.logo_width);
-            toolbarImage.setImageResource(R.drawable.ic_scala_logo_round);
-        }*/
-
         toolbarTitle = findViewById(R.id.toolbarTitle);
         toolbarTitleCenter = findViewById(R.id.toolbarTitleCenter);
 
-        bMainLogo = findViewById(R.id.bMainLogo);
-        bMainLogo.setOnClickListener(new View.OnClickListener() {
+        bMainIcon = findViewById(R.id.bMainLogo);
+        bMainIcon.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 if (onButtonListener != null) {
-                    onButtonListener.onButton(buttonType);
+                    onButtonListener.onButtonMain(mainButtonType);
                 }
             }
         });
 
-        bShare = findViewById(R.id.bShare);
-        bShare.setOnClickListener(new View.OnClickListener() {
+        bOptionIcon = findViewById(R.id.bShare);
+        bOptionIcon.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 if (onButtonListener != null) {
-                    onButtonListener.onButton(BUTTON_SHARE);
+                    onButtonListener.onButtonOptions(optionsButtonType);
                 }
             }
         });
 
-        bShare.setVisibility(View.GONE);
-    }
-
-    public void enableShareButton(boolean enabled) {
-        bShare.setVisibility(enabled ? View.VISIBLE : View.GONE);
+        bOptionIcon.setVisibility(View.GONE);
     }
 
     public void setTitle(String title) {
-        this.setTitle(title, false);
+        this.setTitle(title, true);
     }
 
     public void setTitle(String title, boolean centered) {
@@ -124,69 +114,76 @@ public class Toolbar extends androidx.appcompat.widget.Toolbar {
             toolbarTitle.setVisibility(View.VISIBLE);
             toolbarTitle.setText(title);
             toolbarTitleCenter.setVisibility(View.GONE);
-
-            /*if (title != null) {
-                //toolbarImage.setVisibility(View.INVISIBLE);
-                toolbarTitle.setVisibility(View.VISIBLE);
-                //setButton(BUTTON_NONE);
-            } else {
-                //toolbarImage.setVisibility(View.INVISIBLE);
-                toolbarTitle.setVisibility(View.INVISIBLE);
-            }*/
         } else {
             toolbarTitleCenter.setVisibility(View.VISIBLE);
             toolbarTitleCenter.setText(title);
             toolbarTitle.setVisibility(View.GONE);
-
-            /*if (title != null) {
-                //toolbarImage.setVisibility(View.INVISIBLE);
-                toolbarTitle.setVisibility(View.VISIBLE);
-                toolbarTitleCenter.setVisibility(View.GONE);
-                //setButton(BUTTON_NONE);
-            } else {
-                //toolbarImage.setVisibility(View.INVISIBLE);
-                toolbarTitle.setVisibility(View.INVISIBLE);
-            }*/
         }
     }
 
-    public final static int BUTTON_NONE = 0;
-    public final static int BUTTON_BACK = 1;
-    public final static int BUTTON_CLOSE = 2;
-    public final static int BUTTON_CREDITS = 3;
-    public final static int BUTTON_CANCEL = 4;
-    public final static int BUTTON_SHARE = 5;
+    public final static int BUTTON_MAIN_NONE = -1;
+    public final static int BUTTON_MAIN_LOGO = 0;
+    public final static int BUTTON_MAIN_BACK = 1;
 
-    int buttonType = BUTTON_CREDITS;
+    int mainButtonType = BUTTON_MAIN_LOGO;
 
-    public void setButton(int type) {
+    public void setButtonMain(int type) {
         switch (type) {
-            case BUTTON_BACK:
-                bMainLogo.setBackground(getResources().getDrawable(R.drawable.ic_arrow_back_white_24dp));
-                //bMainLogo.setText(null);
-                bMainLogo.setVisibility(View.VISIBLE);
+            case BUTTON_MAIN_NONE:
+                bMainIcon.setBackground(getResources().getDrawable(R.mipmap.ic_logo_colors));
+                bMainIcon.setVisibility(View.INVISIBLE);
                 break;
-            case BUTTON_CLOSE:
-                bMainLogo.setBackground(getResources().getDrawable(R.drawable.ic_close_white_24dp));
-                //bCredits.setText(R.string.label_close);
-                bMainLogo.setVisibility(View.VISIBLE);
+            case BUTTON_MAIN_LOGO:
+                bMainIcon.setBackground(getResources().getDrawable(R.mipmap.ic_logo_colors));
+                bMainIcon.setVisibility(View.VISIBLE);
                 break;
-            case BUTTON_CREDITS:
-                bMainLogo.setBackground(getResources().getDrawable(R.mipmap.ic_logo_colors));
-                //bCredits.setText(R.string.label_credits);
-                bMainLogo.setVisibility(View.VISIBLE);
+            case BUTTON_MAIN_BACK:
+                bMainIcon.setBackground(getResources().getDrawable(R.drawable.ic_arrow_back_white_24dp));
+                bMainIcon.setVisibility(View.VISIBLE);
                 break;
-            case BUTTON_CANCEL:
-                bMainLogo.setBackground(getResources().getDrawable(R.drawable.ic_close_white_24dp));
-                //bCredits.setText(R.string.label_cancel);
-                bMainLogo.setVisibility(View.VISIBLE);
-                break;
-            case BUTTON_NONE:
             default:
-                bMainLogo.setBackground(getResources().getDrawable(R.mipmap.ic_logo_colors));
-                //bCredits.setText(null);
-                bMainLogo.setVisibility(View.INVISIBLE);
+                bMainIcon.setBackground(getResources().getDrawable(R.mipmap.ic_logo_colors));
+                bMainIcon.setVisibility(View.INVISIBLE);
         }
-        buttonType = type;
+
+        mainButtonType = type;
+    }
+
+    public final static int BUTTON_OPTIONS_NONE = -1;
+    public final static int BUTTON_OPTIONS_STAR = 0;
+    public final static int BUTTON_OPTIONS_SHARE = 1;
+    public final static int BUTTON_OPTIONS_SHOW_CORES = 2;
+    public final static int BUTTON_OPTIONS_STATS = 3;
+
+    int optionsButtonType = BUTTON_OPTIONS_NONE;
+
+    public void setButtonOptions(int type) {
+        switch (type) {
+            case BUTTON_OPTIONS_NONE:
+                bOptionIcon.setImageDrawable(getResources().getDrawable(R.drawable.ic_share));
+                bOptionIcon.setVisibility(View.INVISIBLE);
+                break;
+            case BUTTON_OPTIONS_STAR:
+                bOptionIcon.setImageDrawable(getResources().getDrawable(R.drawable.ic_star));
+                bOptionIcon.setVisibility(View.VISIBLE);
+                break;
+            case BUTTON_OPTIONS_SHARE:
+                bOptionIcon.setImageDrawable(getResources().getDrawable(R.drawable.ic_share));
+                bOptionIcon.setVisibility(View.VISIBLE);
+                break;
+            case BUTTON_OPTIONS_SHOW_CORES:
+                bOptionIcon.setImageDrawable(getResources().getDrawable(R.drawable.ic_refresh));
+                bOptionIcon.setVisibility(View.VISIBLE);
+                break;
+            case BUTTON_OPTIONS_STATS:
+                bOptionIcon.setImageDrawable(getResources().getDrawable(R.drawable.ic_stats_online));
+                bOptionIcon.setVisibility(View.VISIBLE);
+                break;
+            default:
+                bOptionIcon.setImageDrawable(getResources().getDrawable(R.drawable.ic_share));
+                bOptionIcon.setVisibility(View.INVISIBLE);
+        }
+
+        optionsButtonType = type;
     }
 }

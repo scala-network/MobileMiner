@@ -58,18 +58,24 @@ public class WizardAddressActivity extends BaseActivity {
 
         toolbar.setOnButtonListener(new Toolbar.OnButtonListener() {
             @Override
-            public void onButton(int type) {
+            public void onButtonMain(int type) {
                 switch (type) {
-                    case Toolbar.BUTTON_BACK:
+                    case Toolbar.BUTTON_MAIN_BACK:
                         startActivity(new Intent(WizardAddressActivity.this, WizardHomeActivity.class));
                         finish();
                         break;
                 }
             }
+
+            @Override
+            public void onButtonOptions(int type) {
+                onMineScala();
+            }
         });
 
         toolbar.setTitle("Wallet Address");
-        toolbar.setButton(Toolbar.BUTTON_BACK);
+        toolbar.setButtonMain(Toolbar.BUTTON_MAIN_BACK);
+        toolbar.setButtonOptions(Toolbar.BUTTON_OPTIONS_STAR);
     }
 
     public void onPaste(View view) {
@@ -121,7 +127,6 @@ public class WizardAddressActivity extends BaseActivity {
     }
 
     public void onNext(View view) {
-
         String strAddress = tvAddress.getText().toString();
         View view2 = findViewById(android.R.id.content).getRootView();
 
@@ -156,7 +161,7 @@ public class WizardAddressActivity extends BaseActivity {
 
     }
 
-    public void onMineScala(View view) {
+    public void onMineScala() {
         final Dialog dialog = new Dialog(this);
         dialog.setContentView(R.layout.mine_scala);
         dialog.setCancelable(false);

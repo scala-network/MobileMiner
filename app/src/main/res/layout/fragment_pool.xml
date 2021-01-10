@@ -24,23 +24,13 @@
 		android:orientation="vertical">
 
 		<TextView
-			android:id="@+id/tvTitle"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:gravity="start"
-			android:text="@string/selectminingpool"
-			android:textColor="@color/txt_headline"
-			android:textStyle="bold"
-			android:textSize="20sp" />
-
-		<TextView
 			android:id="@+id/tvSwipe"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_marginBottom="8dp"
 			android:gravity="start"
 			android:text="Pull down to reload and refresh statistics"
-			android:layout_below="@+id/tvTitle"
+			android:textSize="16sp"
 			android:visibility="visible"/>
 
 		<androidx.swiperefreshlayout.widget.SwipeRefreshLayout
