@@ -271,8 +271,7 @@ public class SettingsFragment extends Fragment {
             }
         });
 
-        PoolItem poolItem = ProviderManager.getSelectedPool();
-        String poolSelected = Config.read("selected_pool");
+        PoolItem selectedPoolItem = ProviderManager.getSelectedPool();
 
         /*poolItem = ProviderManager.getPoolById(poolSelected);
         if (!Config.read("init").equals("1")) {
@@ -294,6 +293,8 @@ public class SettingsFragment extends Fragment {
         }
 
         spPool.setSelection(Integer.parseInt(poolSelected));*/
+
+        edPort.setText(selectedPoolItem.getPort());
 
         bSave.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -324,37 +325,7 @@ public class SettingsFragment extends Fragment {
                 Config.write("workername", workername);
                 edWorkerName.setText(workername);
 
-                /*String key = spPool.getSelectedItem().toString();
-                int selectedPosition = Config.DefaultPoolIndex;
-
-                PoolItem[] pools = ProviderManager.getPools();
-                for(int i = 0; i < pools.length; i++) {
-                    PoolItem pi = pools[i];
-                    if(pi.getKey().equals(key)) {
-                        selectedPosition = i;
-                        break;
-                    }
-                }
-
-                PoolItem pi = ProviderManager.getPoolById(selectedPosition);
-                String port = edPort.getText().toString().trim();
-                String pool = edPool.getText().toString().trim();
-
-                Log.i(LOG_TAG,"PoolType : " + pi.getPoolType());
-                 */ /*
-                if(pi.getPoolType() == 0) {
-                    Config.write("custom_pool", pool);
-                    Config.write("custom_port", port);
-                } else if(!port.isEmpty() && !pi.getPort().equals(port)) {
-                    Config.write("custom_pool", "");
-                    Config.write("custom_port", port);
-                } else {
-                    Config.write("custom_port", "");
-                    Config.write("custom_pool", "");
-                }
-
-                Log.i(LOG_TAG,"SelectedPool : " + selectedPosition);
-                Config.write("selected_pool", Integer.toString(selectedPosition));*/
+                Config.write("custom_port", edPort.getText().toString().trim());
                 Config.write("cores", Integer.toString(sbCores.getProgress()));
                 Config.write("threads", "1"); // Default value
                 Config.write("intensity", "1"); // Default value
@@ -399,38 +370,6 @@ public class SettingsFragment extends Fragment {
                 main.updateUI();
             }
         });
-
-        /*edPool.addTextChangedListener(new TextWatcher() {
-
-            @Override
-            public void afterTextChanged(Editable s) {
-            }
-
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                String poolAddress = edPool.getText().toString().trim();
-                PoolItem[] pools = ProviderManager.getPools();
-                int position  = spPool.getSelectedItemPosition();
-
-                if (s.length() > 0) {
-                    int poolSelected = 0;
-                    for (int i = 1; i < pools.length; i++) {
-                        PoolItem itemPool = pools[i];
-                        if (itemPool.getPool().equals(poolAddress)) {
-                            poolSelected = i;
-                            break;
-                        }
-                    }
-                    if(position != poolSelected){
-                        spPool.setSelection(poolSelected);
-                    }
-                }
-            }
-        });*/
 
         Button btnPasteAddress = view.findViewById(R.id.btnPasteAddress);
         btnPasteAddress.setOnClickListener(v -> edAddress.setText(Utils.pasteFromClipboard(MainActivity.getContextOfApplication())));
