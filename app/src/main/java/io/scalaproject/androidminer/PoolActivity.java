@@ -137,7 +137,7 @@ public class PoolActivity extends BaseActivity
         poolsAdapter = new PoolInfoAdapter(this, this, this);
         rvPools.setAdapter(poolsAdapter);
 
-        rvPools.post(() -> updateSelectedPoolLayout());
+        //rvPools.post(() -> updateSelectedPoolLayout());
 
         pullToRefresh = view.findViewById(R.id.pullToRefresh);
         pullToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -528,11 +528,11 @@ public class PoolActivity extends BaseActivity
 
         @Override
         protected void onProgressUpdate(PoolItem... values) {
-            if (!isCancelled())
+            /*if (!isCancelled())
                 if (values != null)
                     poolsAdapter.addPool(values[0]);
                 else
-                    poolsAdapter.setPools(null);
+                    poolsAdapter.setPools(null);*/
         }
 
         @Override

@@ -10,6 +10,8 @@ package io.scalaproject.androidminer.api;
 
 import android.graphics.Bitmap;
 
+import java.util.Comparator;
+
 import io.scalaproject.androidminer.Config;
 import io.scalaproject.androidminer.api.providers.*;
 
@@ -137,10 +139,6 @@ public class PoolItem {
         this.icon = icon;
     }
 
-    public boolean isRecommended() {
-        return getKey().toLowerCase().contains("official");
-    }
-
     public void setId(int id) {
         this.mId = id;
     }
@@ -255,4 +253,17 @@ public class PoolItem {
         this.mPoolUrl = anotherPool.getPoolUrl();
         this.mPort = anotherPool.getPort();
     }
+
+    static public Comparator<PoolItem> PoolComparator = new Comparator<PoolItem>() {
+        @Override
+        public int compare(PoolItem o1, PoolItem o2) {
+            if(o1.getKey().toLowerCase().contains("official"))
+                return -1;
+
+            if(o2.getKey().toLowerCase().contains("official"))
+                return 1;
+
+            return o1.getKey().compareToIgnoreCase(o2.getKey());
+        }
+    };
 }

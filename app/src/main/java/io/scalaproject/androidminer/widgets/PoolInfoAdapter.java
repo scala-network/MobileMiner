@@ -82,7 +82,7 @@ public class PoolInfoAdapter extends RecyclerView.Adapter<PoolInfoAdapter.ViewHo
     }
 
     public void dataSetChanged() {
-        //Collections.sort(poolItems, PoolItem.BestNodeComparator);
+        //Collections.sort(poolItems, PoolItem.PoolComparator);
         notifyDataSetChanged();
     }
 
@@ -98,6 +98,8 @@ public class PoolInfoAdapter extends RecyclerView.Adapter<PoolInfoAdapter.ViewHo
                     poolItems.add(pool);
             }
         }
+
+        Collections.sort(poolItems, PoolItem.PoolComparator);
 
         dataSetChanged();
     }

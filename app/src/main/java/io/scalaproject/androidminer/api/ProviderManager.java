@@ -11,6 +11,7 @@ import org.json.JSONObject;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 
 import io.scalaproject.androidminer.Config;
@@ -40,6 +41,8 @@ public final class ProviderManager {
     }
 
     static public PoolItem[] getPools() {
+        Collections.sort(mPools, PoolItem.PoolComparator);
+
         return mPools.toArray(new PoolItem[mPools.size()]);
     }
 
