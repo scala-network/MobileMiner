@@ -447,13 +447,22 @@ public class MiningService extends Service {
                     }
                 }
 
-                speed = Float.parseFloat(tmpSpeed.trim());
+                try {
+                    speed = Float.parseFloat(tmpSpeed.trim());
+                } catch (NumberFormatException e) {
+                    // Ignore
+                }
 
                 if (lineCompare.contains("max")) {
                     int i = lineCompare.indexOf("max ") + "max ".length();
                     int imax = lineCompare.indexOf(" ", i);
                     String tmpMax = lineCompare.substring(i, imax).trim();
-                    max = Float.parseFloat(tmpMax);
+
+                    try {
+                        max = Float.parseFloat(tmpMax);
+                    } catch (NumberFormatException e) {
+                        // Ignore
+                    }
                 }
             }
 
