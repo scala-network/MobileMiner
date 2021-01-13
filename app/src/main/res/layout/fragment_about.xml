@@ -14,16 +14,6 @@
         android:layout_marginBottom="5dp"
         android:orientation="vertical">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="15dp"
-            android:gravity="start"
-            android:text="@string/about"
-            android:textColor="@color/txt_headline"
-            android:textStyle="bold"
-            android:textSize="20sp" />
-
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -40,9 +30,10 @@
                     android:layout_marginBottom="5dp"
                     android:gravity="start"
                     android:text="@string/app_name"
-                    android:textColor="@color/txt_secondary"
+                    android:textColor="@color/txt_headline"
                     android:textStyle="bold"
-                    android:textSize="16sp" />
+                    android:textAllCaps="true"
+                    android:textSize="14sp" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -101,9 +92,10 @@
                     android:layout_marginBottom="5dp"
                     android:text="@string/credits"
                     android:layout_gravity="start"
-                    android:textSize="16sp"
-                    android:textColor="@color/txt_secondary"
+                    android:textSize="14sp"
+                    android:textColor="@color/txt_headline"
                     android:textStyle="bold"
+                    android:textAllCaps="true"
                     android:layout_marginTop="20sp"/>
 
                 <LinearLayout
@@ -278,8 +270,9 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:text="@string/donationadresses"
-                        android:textSize="16sp"
-                        android:textColor="@color/txt_secondary"
+                        android:textSize="14sp"
+                        android:textAllCaps="true"
+                        android:textColor="@color/txt_headline"
                         android:textStyle="bold"/>
 
                     <Button
@@ -351,82 +344,58 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="5dp"
-                    android:text="@string/followus"
+                    android:text="Community"
                     android:layout_gravity="start"
-                    android:textSize="16sp"
-                    android:textColor="@color/txt_secondary"
+                    android:textSize="14sp"
+                    android:textColor="@color/txt_headline"
                     android:textStyle="bold"
+                    android:textAllCaps="true"
                     android:layout_marginTop="20sp"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
                     android:orientation="horizontal">
 
-                    <Button
-                        android:id="@+id/btnGitHub"
-                        android:layout_width="45dp"
-                        android:layout_height="45dp"
-                        android:backgroundTint="@color/bg_lighter"
-                        android:insetLeft="2dp"
-                        android:insetRight="2dp"
-                        app:iconGravity="textStart"
-                        app:cornerRadius="5dp"
-                        app:iconPadding="0dp"
-                        app:icon="@drawable/ic_github"
-                        app:iconTint="@color/btn_icon_default"/>
+                    <ImageView
+                        android:id="@+id/ivDiscord"
+                        android:layout_width="42dp"
+                        android:layout_height="42dp"
+                        android:layout_marginStart="3dp"
+                        android:layout_marginEnd="6dp"
+                        app:srcCompat="@drawable/ic_discord1" />
 
-                    <Button
-                        android:id="@+id/btnDiscord"
-                        android:layout_width="45dp"
-                        android:layout_height="45dp"
-                        android:backgroundTint="@color/bg_lighter"
-                        android:insetLeft="2dp"
-                        android:insetRight="2dp"
-                        app:cornerRadius="5dp"
-                        app:icon="@drawable/ic_discord"
-                        app:iconGravity="textStart"
-                        app:iconPadding="0dp"
-                        app:iconTint="@color/btn_icon_default"/>
+                    <ImageView
+                        android:id="@+id/ivTelegram"
+                        android:layout_width="42dp"
+                        android:layout_height="42dp"
+                        android:layout_marginStart="3dp"
+                        android:layout_marginEnd="6dp"
+                        app:srcCompat="@drawable/ic_telegram1" />
 
-                    <Button
-                        android:id="@+id/btnMedium"
-                        android:layout_width="45dp"
-                        android:layout_height="45dp"
-                        android:backgroundTint="@color/bg_lighter"
-                        android:insetLeft="2dp"
-                        android:insetRight="2dp"
-                        app:iconGravity="textStart"
-                        app:cornerRadius="5dp"
-                        app:iconPadding="0dp"
-                        app:icon="@drawable/ic_medium"
-                        app:iconTint="@color/btn_icon_default"/>
+                    <ImageView
+                        android:id="@+id/ivMedium"
+                        android:layout_width="42dp"
+                        android:layout_height="42dp"
+                        android:layout_marginStart="3dp"
+                        android:layout_marginEnd="6dp"
+                        app:srcCompat="@drawable/ic_medium1" />
 
-                    <Button
-                        android:id="@+id/btnTwitter"
-                        android:layout_width="45dp"
-                        android:layout_height="45dp"
-                        android:backgroundTint="@color/bg_lighter"
-                        android:insetLeft="2dp"
-                        android:insetRight="2dp"
-                        app:iconGravity="textStart"
-                        app:cornerRadius="5dp"
-                        app:iconPadding="0dp"
-                        app:icon="@drawable/ic_twitter"
-                        app:iconTint="@color/btn_icon_default"/>
+                    <ImageView
+                        android:id="@+id/ivTwitter"
+                        android:layout_width="42dp"
+                        android:layout_height="42dp"
+                        android:layout_marginStart="3dp"
+                        android:layout_marginEnd="6dp"
+                        app:srcCompat="@drawable/ic_twitter1" />
 
-                    <Button
-                        android:id="@+id/btnTelegram"
-                        android:layout_width="45dp"
-                        android:layout_height="45dp"
-                        android:backgroundTint="@color/bg_lighter"
-                        android:insetLeft="2dp"
-                        android:insetRight="2dp"
-                        app:iconGravity="textStart"
-                        app:cornerRadius="5dp"
-                        app:iconPadding="0dp"
-                        app:icon="@drawable/ic_telegram"
-                        app:iconTint="@color/btn_icon_default"/>
+                    <ImageView
+                        android:id="@+id/ivReddit"
+                        android:layout_width="42dp"
+                        android:layout_height="42dp"
+                        android:layout_marginStart="3dp"
+                        app:srcCompat="@drawable/ic_reddit1" />
 
                 </LinearLayout>
 

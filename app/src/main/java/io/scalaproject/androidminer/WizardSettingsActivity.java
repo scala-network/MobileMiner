@@ -13,6 +13,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import io.scalaproject.androidminer.api.ProviderManager;
+import io.scalaproject.androidminer.widgets.Toolbar;
 
 public class WizardSettingsActivity extends BaseActivity {
     private SeekBar sbCores, sbCPUTemp, sbBatteryTemp, sbCooldown;
@@ -21,6 +22,8 @@ public class WizardSettingsActivity extends BaseActivity {
     private Integer nMaxCPUTemp = 65; // 55,60,65,70,75
     private Integer nMaxBatteryTemp = 40; // 30,35,40,45,50
     private Integer nCooldownTheshold = 15; // 10,15,20,25,30
+
+    private Toolbar toolbar;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -35,6 +38,34 @@ public class WizardSettingsActivity extends BaseActivity {
         setContentView(R.layout.fragment_wizard_settings);
 
         View view = findViewById(android.R.id.content).getRootView();
+
+        // Toolbar
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+        toolbar.setOnButtonListener(new Toolbar.OnButtonListener() {
+            @Override
+            public void onButtonMain(int type) {
+                switch (type) {
+                    case Toolbar.BUTTON_MAIN_BACK:
+                        startActivity(new Intent(WizardSettingsActivity.this, PoolActivity.class));
+                        finish();
+                        break;
+                }
+            }
+
+            @Override
+            public void onButtonOptions(int type) {
+                switch (type) {
+                    // Do nothing
+                }
+            }
+        });
+
+        toolbar.setTitle("Settings");
+        toolbar.setButtonMain(Toolbar.BUTTON_MAIN_BACK);
+        toolbar.setButtonOptions(Toolbar.BUTTON_OPTIONS_NONE);
 
         sbCores = view.findViewById(R.id.seekbarcores);
         TextView tvCoresNb = view.findViewById(R.id.coresnb);

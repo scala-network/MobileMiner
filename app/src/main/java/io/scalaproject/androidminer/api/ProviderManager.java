@@ -4,8 +4,6 @@
 
 package io.scalaproject.androidminer.api;
 
-import android.util.Log;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -13,16 +11,12 @@ import org.json.JSONObject;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 
 import io.scalaproject.androidminer.Config;
-import io.scalaproject.androidminer.R;
-import io.scalaproject.androidminer.Tools;
+import io.scalaproject.androidminer.Utils;
 import io.scalaproject.androidminer.network.Json;
-
-import static io.scalaproject.androidminer.Tools.getReadableHashRateString;
-import static io.scalaproject.androidminer.Tools.parseCurrency;
-import static io.scalaproject.androidminer.Tools.tryParseLong;
 
 public final class ProviderManager {
 
@@ -32,20 +26,43 @@ public final class ProviderManager {
         mPools.add(poolItem);
     }
 
-    static public void add(String key, String pool,String port, int poolType, String poolUrl, String poolIP) {
-        mPools.add(new PoolItem(key, pool, port, poolType, poolUrl, poolIP));
+    static public PoolItem add(String key, String pool,String port, int poolType, String poolUrl, String poolIP) {
+        PoolItem pi = new PoolItem(key, pool, port, poolType, poolUrl, poolIP);
+        mPools.add(pi);
+
+        return pi;
     }
 
-    static public void add(String key, String pool, String port, int poolType, String poolUrl, String poolIP, String poolApi) {
-        mPools.add(new PoolItem(key, pool, port, poolType, poolUrl, poolIP, poolApi, "",""));
+    static public PoolItem add(String key, String pool, String port, int poolType, String poolUrl, String poolIP, String poolApi) {
+        PoolItem pi = new PoolItem(key, pool, port, poolType, poolUrl, poolIP, poolApi, "","");
+        mPools.add(pi);
+
+        return pi;
     }
 
     static public PoolItem[] getPools() {
+        Collections.sort(mPools, PoolItem.PoolComparator);
+
         return mPools.toArray(new PoolItem[mPools.size()]);
     }
 
     static public PoolItem getPoolById(int idx) {
         return mPools.get(idx);
+    }
+
+    static public PoolItem getPoolByKey(String key) {
+        if (mPools.size() == 0) {
+            return null;
+        }
+
+        for(int i = 0; i < mPools.size(); i++) {
+            PoolItem pi = mPools.get(i);
+
+            if(pi.getKey().equals(key))
+                return pi;
+        }
+
+        return mPools.get(0);
     }
 
     static public PoolItem getPoolById(String idx) {
@@ -67,10 +84,10 @@ public final class ProviderManager {
 
         String sp = Config.read("selected_pool");
         if (sp.equals("")) {
-            return null;
+            return mPools.get(0);
         }
 
-        return getPoolById(sp);
+        return getPoolByKey(sp);
     }
 
     static public int getSelectedPoolIndex() {
@@ -131,12 +148,23 @@ public final class ProviderManager {
             JSONObject data = new JSONObject(jsonString);
             JSONArray pools = data.getJSONArray("pools");
 
-            for(int i=0; i< pools.length(); i++) {
+            for(int i = 0; i < pools.length(); i++) {
                 JSONObject pool = pools.getJSONObject(i);
+
+                PoolItem poolItem;
+
                 if(!pool.has("apiUrl")) {
-                    add(pool.getString("key"), pool.getString("pool"), pool.getString("port"), pool.getInt("poolType"), pool.getString("poolUrl"), pool.getString("poolIp"));
+                    poolItem = add(pool.getString("key"), pool.getString("pool"), pool.getString("port"), pool.getInt("poolType"), pool.getString("poolUrl"), pool.getString("poolIp"));
                 } else {
-                    add(pool.getString("key"), pool.getString("pool"), pool.getString("port"), pool.getInt("poolType"), pool.getString("poolUrl"), pool.getString("poolIp"), pool.getString("apiUrl"));
+                    poolItem = add(pool.getString("key"), pool.getString("pool"), pool.getString("port"), pool.getInt("poolType"), pool.getString("poolUrl"), pool.getString("poolIp"), pool.getString("apiUrl"));
+                }
+
+                // Icon
+                if(pool.has("icon")) {
+                    String iconURL = pool.getString("icon");
+                    if (!iconURL.isEmpty()) {
+                        poolItem.setIcon(Utils.getCroppedBitmap((Utils.getBitmapFromURL(iconURL))));
+                    }
                 }
             }
         } catch (JSONException e) {

@@ -2,8 +2,13 @@ package io.scalaproject.androidminer.widgets;
 
 import android.content.Context;
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.PopupMenu;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.graphics.Bitmap;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
@@ -28,23 +33,27 @@ import io.scalaproject.androidminer.Utils;
 import io.scalaproject.androidminer.api.PoolItem;
 
 public class PoolInfoAdapter extends RecyclerView.Adapter<PoolInfoAdapter.ViewHolder> {
-    /*public interface OnPoolSettingsListener {
-        void onSettingsPool(View view, PoolItem item);
-    }*/
+
+    public interface OnMenuPoolListener {
+        //void onInteraction(View view, PoolItem item);
+        boolean onContextInteraction(MenuItem item, PoolItem infoItem);
+    }
 
     public interface OnSelectPoolListener {
         void onSelectPool(View view, PoolItem item);
     }
 
     private final List<PoolItem> poolItems = new ArrayList<>();
-    //private final OnPoolSettingsListener onPoolSettingsListener;
+
+    private final OnMenuPoolListener onMenuPoolListener;
     private final OnSelectPoolListener onSelectPoolListener;
 
     private Context context;
 
-    public PoolInfoAdapter(Context context, OnSelectPoolListener onSelectPoolListener) {
+    public PoolInfoAdapter(Context context, OnSelectPoolListener onSelectPoolListener, OnMenuPoolListener onMenuPoolListener) {
         this.context = context;
         this.onSelectPoolListener = onSelectPoolListener;
+        this.onMenuPoolListener = onMenuPoolListener;
     }
 
     @Override
@@ -73,7 +82,7 @@ public class PoolInfoAdapter extends RecyclerView.Adapter<PoolInfoAdapter.ViewHo
     }
 
     public void dataSetChanged() {
-        //Collections.sort(poolItems, PoolItem.BestNodeComparator);
+        //Collections.sort(poolItems, PoolItem.PoolComparator);
         notifyDataSetChanged();
     }
 
@@ -90,6 +99,8 @@ public class PoolInfoAdapter extends RecyclerView.Adapter<PoolInfoAdapter.ViewHo
             }
         }
 
+        Collections.sort(poolItems, PoolItem.PoolComparator);
+
         dataSetChanged();
     }
 
@@ -103,9 +114,10 @@ public class PoolInfoAdapter extends RecyclerView.Adapter<PoolInfoAdapter.ViewHo
     class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView tvName;
         TextView tvMiners;
-        TextView tvRecommended;
         TextView tvHr;
         ImageView ivIcon;
+        ImageButton ibOptions;
+        boolean popupOpen = false;
 
         PoolItem poolItem;
 
@@ -113,9 +125,40 @@ public class PoolInfoAdapter extends RecyclerView.Adapter<PoolInfoAdapter.ViewHo
             super(itemView);
             tvName = itemView.findViewById(R.id.tvName);
             tvMiners = itemView.findViewById(R.id.tvMiners);
-            tvRecommended = itemView.findViewById(R.id.tvRecommended);
             tvHr = itemView.findViewById(R.id.tvHr);
             ivIcon = itemView.findViewById(R.id.ivIcon);
+
+            ibOptions = itemView.findViewById(R.id.ibOptions);
+            ibOptions.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (popupOpen) return;
+                    //creating a popup menu
+                    PopupMenu popup = new PopupMenu(context, ibOptions);
+                    //inflating menu from xml resource
+                    popup.inflate(R.menu.pool_context_menu);
+                    popupOpen = true;
+                    //adding click listener
+                    popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                        @Override
+                        public boolean onMenuItemClick(MenuItem item) {
+                            if (onMenuPoolListener != null) {
+                                return onMenuPoolListener.onContextInteraction(item, poolItem);
+                            }
+                            return false;
+                        }
+                    });
+                    //displaying the popup
+                    popup.show();
+                    popup.setOnDismissListener(new PopupMenu.OnDismissListener() {
+                        @Override
+                        public void onDismiss(PopupMenu menu) {
+                            popupOpen = false;
+                        }
+                    });
+
+                }
+            });
         }
 
         void bind(final int position) {
@@ -123,7 +166,7 @@ public class PoolInfoAdapter extends RecyclerView.Adapter<PoolInfoAdapter.ViewHo
 
             tvName.setText(poolItem.getKey());
 
-            //tvRecommended.setVisibility(poolItem.isRecommended() ? View.VISIBLE : View.GONE);
+            //ibOptions.setVisibility(poolItem.isUserDefined() ? View.VISIBLE : View.GONE);
 
             if(poolItem.isValid()) {
                 // Miners
@@ -146,6 +189,22 @@ public class PoolInfoAdapter extends RecyclerView.Adapter<PoolInfoAdapter.ViewHo
                 tvHr.setVisibility(View.GONE);
             }
 
+            Bitmap icon = poolItem.getIcon();
+            if(icon != null) {
+                int dim = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 34, itemView.getResources().getDisplayMetrics());
+                ivIcon.getLayoutParams().height = dim;
+                ivIcon.getLayoutParams().width = dim;
+
+                ivIcon.setImageBitmap(Utils.getCroppedBitmap(poolItem.getIcon()));
+            }
+            else {
+                int dim = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 36, itemView.getResources().getDisplayMetrics());
+                ivIcon.getLayoutParams().height = dim;
+                ivIcon.getLayoutParams().width = dim;
+
+                ivIcon.setImageBitmap(Utils.getCroppedBitmap(Utils.getBitmap(context, R.drawable.ic_pool_default)));
+            }
+
             itemView.setOnClickListener(this);
             itemView.setClickable(itemsClickable);
         }
@@ -160,35 +219,4 @@ public class PoolInfoAdapter extends RecyclerView.Adapter<PoolInfoAdapter.ViewHo
             }
         }
     }
-
-    /*static public int getPingIcon(NodeInfo nodeInfo) {
-        if (nodeInfo.isUnauthorized()) {
-            return R.drawable.ic_wifi_lock_24dp;
-        }
-
-        if (nodeInfo.isValid()) {
-            final double ping = nodeInfo.getResponseTime();
-            if (ping < NodeInfo.PING_GOOD) {
-                return R.drawable.ic_signal_wifi_4_bar_24dp;
-            } else if (ping < NodeInfo.PING_MEDIUM) {
-                return R.drawable.ic_signal_wifi_3_bar_24dp;
-            } else if (ping < NodeInfo.PING_BAD) {
-                return R.drawable.ic_signal_wifi_2_bar_24dp;
-            } else {
-                return R.drawable.ic_signal_wifi_1_bar_24dp;
-            }
-        } else {
-            return R.drawable.ic_signal_wifi_off_24dp;
-        }
-    }
-
-    static public String getResponseErrorText(Context ctx, int responseCode) {
-        if (responseCode == 0) {
-            return ctx.getResources().getString(R.string.node_general_error);
-        } else if (responseCode == HttpURLConnection.HTTP_UNAUTHORIZED) {
-            return ctx.getResources().getString(R.string.node_auth_error);
-        } else {
-            return ctx.getResources().getString(R.string.node_test_error, responseCode);
-        }
-    }*/
 }

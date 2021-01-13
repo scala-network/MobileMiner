@@ -15,16 +15,6 @@
         android:layout_marginBottom="90dp"
         android:orientation="vertical">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="15dp"
-            android:gravity="start"
-            android:text="@string/settings"
-            android:textColor="@color/txt_headline"
-            android:textStyle="bold"
-            android:textSize="20sp" />
-
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -45,8 +35,9 @@
                         android:layout_height="wrap_content"
                         android:gravity="start"
                         android:text="@string/walletaddress2"
-                        android:textColor="@color/txt_secondary"
-                        android:textSize="16sp"
+                        android:textColor="@color/txt_headline"
+                        android:textSize="14sp"
+                        android:textAllCaps="true"
                         android:textStyle="bold" />
 
                     <Space
@@ -136,95 +127,38 @@
                     android:layout_marginBottom="20dp"
                     android:gravity="start"
                     android:text="@string/pool"
-                    android:textColor="@color/txt_secondary"
-                    android:textSize="16sp"
+                    android:textColor="@color/txt_headline"
+                    android:textSize="14sp"
+                    android:textAllCaps="true"
                     android:textStyle="bold" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="42dp"
-                android:layout_marginStart="0.5dp"
-                android:background="@drawable/spinner_theme"
-                android:orientation="horizontal">
+                <io.scalaproject.androidminer.widgets.PoolView
+                    android:id="@+id/viewPool"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
 
-                    <Spinner
-                        android:id="@+id/spinnerPool"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/portIL"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    app:errorEnabled="false">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/port"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:hint="@string/mining_pool_port"
+                        android:inputType="number"
+                        android:maxLength="6"
+                        android:singleLine="true"
                         android:textColor="@color/txt_main"
-                        android:layout_weight="4"
-                        android:spinnerMode="dropdown"
-                        android:popupBackground="@color/input_bg_default"
-                        android:background="@android:color/transparent"
+                        android:textColorHint="@color/txt_inactive"
                         android:textSize="14sp" />
 
-                <ImageView
-                    android:id="@+id/imgSpinnerDown"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:layout_marginEnd="10dp"
-                    android:layout_gravity="center"
-                    android:clickable="true"
-                    app:srcCompat="@drawable/ic_down"
-                    android:focusable="true" />
-
-            </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="5dp"
-                    android:layout_weight="0"
-                    android:orientation="horizontal"
-                    android:baselineAligned="false">
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/poolurlIL"
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="3dp"
-                        android:layout_weight="1"
-                        app:errorEnabled="false"
-                        tools:ignore="NestedWeights">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/pool"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint="@string/mining_pool_address"
-                            android:inputType="textUri"
-                            android:singleLine="true"
-                            android:textColor="@color/txt_main"
-                            android:textColorHint="@color/txt_inactive"
-                            android:textSize="14sp" />
-
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/portIL"
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="3"
-                        app:errorEnabled="false">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/port"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:ems="10"
-                            android:hint="@string/mining_pool_port"
-                            android:inputType="number"
-                            android:maxLength="6"
-                            android:singleLine="true"
-                            android:textColor="@color/txt_main"
-                            android:textColorHint="@color/txt_inactive"
-                            android:textSize="14sp" />
-
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                </LinearLayout>
+                </com.google.android.material.textfield.TextInputLayout>
 
                 <TextView
                     android:layout_width="match_parent"
@@ -233,7 +167,7 @@
                     android:layout_marginBottom="5dp"
                     android:gravity="start"
                     android:text="@string/pooloptions"
-                    android:textColor="@color/txt_main"
+                    android:textColor="@color/txt_headline"
                     android:textSize="14sp"
                     android:textStyle="bold" />
 
@@ -309,8 +243,9 @@
                     android:layout_height="wrap_content"
                     android:gravity="start"
                     android:text="@string/hardwaresettings"
-                    android:textColor="@color/txt_secondary"
-                    android:textSize="16sp"
+                    android:textColor="@color/txt_headline"
+                    android:textSize="14sp"
+                    android:textAllCaps="true"
                     android:textStyle="bold" />
 
                 <Button
@@ -611,8 +546,9 @@
                     android:layout_marginBottom="15dp"
                     android:gravity="start"
                     android:text="@string/advanced"
-                    android:textColor="@color/txt_secondary"
-                    android:textSize="16sp"
+                    android:textColor="@color/txt_headline"
+                    android:textSize="14sp"
+                    android:textAllCaps="true"
                     android:textStyle="bold" />
 
                 <LinearLayout

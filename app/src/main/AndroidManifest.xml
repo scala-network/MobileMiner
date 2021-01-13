@@ -35,7 +35,7 @@
         </activity>
 
         <activity
-            android:name="io.scalaproject.androidminer.SplashActivity">
+            android:name=".SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
@@ -43,34 +43,46 @@
         </activity>
 
 	    <activity
-            android:name="io.scalaproject.androidminer.QrCodeScannerActivity"
-            android:parentActivityName="io.scalaproject.androidminer.MainActivity">
-        </activity>
+            android:name=".QrCodeScannerActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:label="QrCode"
+            android:launchMode="singleTask"
+            android:screenOrientation="behind" />
 
         <activity
-            android:name="io.scalaproject.androidminer.WizardHomeActivity"
-            android:parentActivityName="io.scalaproject.androidminer.MainActivity">
-        </activity>
+            android:name=".WizardHomeActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:label="Welcome"
+            android:launchMode="singleTask"
+            android:screenOrientation="behind" />
 
         <activity
-            android:name="io.scalaproject.androidminer.WizardAddressActivity"
-            android:parentActivityName="io.scalaproject.androidminer.MainActivity">
-        </activity>
+            android:name=".WizardAddressActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:label="Address"
+            android:launchMode="singleTask"
+            android:screenOrientation="behind" />
 
         <activity
-            android:name="io.scalaproject.androidminer.WizardPoolActivity"
-            android:parentActivityName="io.scalaproject.androidminer.MainActivity">
-        </activity>
+            android:name=".PoolActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:label="Pool"
+            android:launchMode="singleTask"
+            android:screenOrientation="behind" />
 
         <activity
-            android:name="io.scalaproject.androidminer.WizardSettingsActivity"
-            android:parentActivityName="io.scalaproject.androidminer.MainActivity">
-        </activity>
+            android:name=".WizardSettingsActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:label="Settings"
+            android:launchMode="singleTask"
+            android:screenOrientation="behind" />
 
         <activity
             android:name="io.scalaproject.androidminer.BaseActivity"
-            android:parentActivityName="io.scalaproject.androidminer.MainActivity">
-        </activity>
+            android:configChanges="orientation|keyboardHidden"
+            android:label="Base"
+            android:launchMode="singleTask"
+            android:screenOrientation="behind" />
 
         <service
             android:name="io.scalaproject.androidminer.MiningService"

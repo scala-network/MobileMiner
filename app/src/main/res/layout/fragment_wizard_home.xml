@@ -37,7 +37,6 @@
 				android:text="MINER"
 				android:gravity="center"
 				android:textSize="30sp"
-				android:textStyle="bold"
 				android:textColor="@color/txt_headline"/>
 
 		</LinearLayout>

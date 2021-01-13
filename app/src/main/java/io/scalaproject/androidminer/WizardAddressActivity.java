@@ -22,13 +22,15 @@ import android.widget.Toast;
 
 import androidx.core.content.ContextCompat;
 
-import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
 import io.scalaproject.androidminer.api.ProviderManager;
+import io.scalaproject.androidminer.widgets.Toolbar;
 
 public class WizardAddressActivity extends BaseActivity {
     private TextView tvAddress;
+    private Toolbar toolbar;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,7 +60,31 @@ public class WizardAddressActivity extends BaseActivity {
         View view2 = findViewById(android.R.id.content).getRootView();
         tvAddress = view2.findViewById(R.id.addressWizard);
 
+        // Toolbar
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
+        toolbar.setOnButtonListener(new Toolbar.OnButtonListener() {
+            @Override
+            public void onButtonMain(int type) {
+                switch (type) {
+                    case Toolbar.BUTTON_MAIN_BACK:
+                        startActivity(new Intent(WizardAddressActivity.this, WizardHomeActivity.class));
+                        finish();
+                        break;
+                }
+            }
+
+            @Override
+            public void onButtonOptions(int type) {
+                onMineScala();
+            }
+        });
+
+        toolbar.setTitle("Wallet Address");
+        toolbar.setButtonMain(Toolbar.BUTTON_MAIN_BACK);
+        toolbar.setButtonOptions(Toolbar.BUTTON_OPTIONS_STAR);
     }
 
     public void onPaste(View view) {
@@ -83,7 +109,6 @@ public class WizardAddressActivity extends BaseActivity {
     }
 
     private void startQrCodeActivity() {
-
         Context appContext = WizardAddressActivity.this;
 
         try {
@@ -111,7 +136,6 @@ public class WizardAddressActivity extends BaseActivity {
     }
 
     public void onNext(View view) {
-
         String strAddress = tvAddress.getText().toString();
         View view2 = findViewById(android.R.id.content).getRootView();
 
@@ -129,7 +153,9 @@ public class WizardAddressActivity extends BaseActivity {
 
         Config.write("address", strAddress);
 
-        startActivity(new Intent(WizardAddressActivity.this, WizardPoolActivity.class));
+        Intent intent = new Intent(WizardAddressActivity.this, PoolActivity.class);
+        intent.putExtra(PoolActivity.RequesterType, PoolActivity.REQUESTER_WIZARD);
+        startActivity(intent);
 
         finish();
     }
@@ -139,6 +165,7 @@ public class WizardAddressActivity extends BaseActivity {
             getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
         }
     }
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -146,7 +173,7 @@ public class WizardAddressActivity extends BaseActivity {
 
     }
 
-    public void onMineScala(View view) {
+    public void onMineScala() {
         final Dialog dialog = new Dialog(this);
         dialog.setContentView(R.layout.mine_scala);
         dialog.setCancelable(false);

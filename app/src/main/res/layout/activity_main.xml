@@ -7,11 +7,19 @@
     android:background="@color/bg_body"
     android:orientation="horizontal">
 
+    <io.scalaproject.androidminer.widgets.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@drawable/backgound_toolbar"
+        android:minHeight="?attr/actionBarSize" />
+
     <LinearLayout
         android:id="@+id/layout_main"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/main_navigation"
+        android:layout_below="@+id/toolbar"
         android:background="@color/bg_body"
         android:orientation="vertical"
         android:visibility="visible">
@@ -124,51 +132,6 @@
                     android:max="100"
                     android:progress="0"
                     android:progressDrawable="@drawable/progressbar_rounded_green"></ProgressBar>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    app:srcCompat="@mipmap/ic_logo_colors" />
-
-                <Space
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1" />
-
-                <TextView
-                    android:id="@+id/workername"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:text="@string/worker_name"
-                    android:textColor="@color/txt_headline"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
-
-                <Space
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1" />
-
-                <Button
-                    android:id="@+id/btnShare"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:layout_gravity="center_vertical"
-                    android:backgroundTint="@android:color/transparent"
-                    app:cornerRadius="5dp"
-                    app:icon="@drawable/ic_share"
-                    app:iconGravity="textStart"
-                    app:iconPadding="0dp"
-                    app:iconTint="@color/c_grey"
-                    tools:ignore="UnusedAttribute" />
 
             </LinearLayout>
 
@@ -776,39 +739,9 @@
         android:layout_marginTop="15dp"
         android:layout_marginRight="15dp"
         android:layout_marginBottom="70dp"
+        android:layout_below="@+id/toolbar"
         android:orientation="vertical"
         android:visibility="gone">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="15dp"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/log"
-                android:textColor="@color/txt_headline"
-                android:textSize="20sp"
-                android:textStyle="bold" />
-
-            <Space
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1" />
-
-            <ImageView
-                android:id="@+id/showCores"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_gravity="bottom"
-                android:clickable="true"
-                android:focusable="true"
-                android:onClick="onShowCores"
-                app:srcCompat="@drawable/ic_hrcores" />
-
-        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"

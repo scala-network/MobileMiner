@@ -47,20 +47,12 @@
         android:text="Scala Pool" />
 
     <TextView
-        android:id="@+id/tvMiners"
+        android:id="@+id/tvURL"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/txt_secondary"
         android:textSize="12sp"
-        android:text="# miners" />
-
-    <TextView
-        android:id="@+id/tvHr"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="# H/s"
-        android:textColor="@color/txt_secondary"
-        android:textSize="12sp" />
+        android:text="mine.scalaproject.io" />
 
     </LinearLayout>
 
@@ -70,6 +62,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
-        android:layout_centerInParent="true" />
+        android:layout_centerInParent="true"
+        android:src="@drawable/ic_arrow_right"/>
 
 </RelativeLayout>

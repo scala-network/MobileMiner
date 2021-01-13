@@ -5,17 +5,10 @@
 package io.scalaproject.androidminer.api;
 
 import android.os.AsyncTask;
-import android.view.View;
 
 import com.android.volley.toolbox.StringRequest;
 
-import org.intellij.lang.annotations.JdkConstants;
-
-import java.util.Timer;
-
 import io.scalaproject.androidminer.Config;
-import io.scalaproject.androidminer.WizardPoolActivity;
-import io.scalaproject.androidminer.widgets.PoolBannerWidget;
 import io.scalaproject.androidminer.widgets.PoolInfoAdapter;
 
 public abstract class ProviderAbstract extends AsyncTask<Void, Void, Void> {

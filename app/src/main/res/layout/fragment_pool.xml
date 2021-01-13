@@ -3,8 +3,15 @@
 	xmlns:app="http://schemas.android.com/apk/res-auto"
 	xmlns:tools="http://schemas.android.com/tools"
 	android:layout_width="match_parent"
-	android:layout_height="wrap_content"
+	android:layout_height="match_parent"
 	android:background="@color/bg_body">
+
+	<io.scalaproject.androidminer.widgets.Toolbar
+		android:id="@+id/toolbar"
+		android:layout_width="match_parent"
+		android:layout_height="?attr/actionBarSize"
+		android:background="@drawable/backgound_toolbar"
+		android:minHeight="?attr/actionBarSize" />
 
 	<LinearLayout
 		android:layout_width="match_parent"
@@ -13,17 +20,8 @@
 		android:layout_marginLeft="15dp"
 		android:layout_marginRight="15dp"
 		android:layout_marginBottom="90dp"
+		android:layout_below="@+id/toolbar"
 		android:orientation="vertical">
-
-		<TextView
-			android:id="@+id/tvTitle"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:gravity="start"
-			android:text="@string/selectminingpool"
-			android:textColor="@color/txt_headline"
-			android:textStyle="bold"
-			android:textSize="20sp" />
 
 		<TextView
 			android:id="@+id/tvSwipe"
@@ -32,7 +30,7 @@
 			android:layout_marginBottom="8dp"
 			android:gravity="start"
 			android:text="Pull down to reload and refresh statistics"
-			android:layout_below="@+id/tvTitle"
+			android:textSize="16sp"
 			android:visibility="visible"/>
 
 		<androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -62,10 +60,11 @@
 	<RelativeLayout
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:layout_alignParentBottom="true">
+		android:layout_alignParentBottom="true"
+		android:visibility="visible">
 
 		<Button
-			android:id="@+id/saveSettings"
+			android:id="@+id/bSaveSettings"
 			android:layout_width="match_parent"
 			android:layout_height="55dp"
 			android:layout_marginTop="15dp"
@@ -74,6 +73,7 @@
 			android:layout_marginBottom="15dp"
 			app:backgroundTint="@color/bg_blue"
 			android:text="@string/next"
+			android:onClick="onNext"
 			android:textSize="14sp"
 			android:textAllCaps="false"
 			android:textColor="@color/txt_button_filled"
@@ -81,5 +81,30 @@
 			tools:ignore="TooManyViews,UnusedAttribute" />
 
 	</RelativeLayout>
+
+	<FrameLayout
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignParentEnd="true"
+		android:layout_alignParentBottom="true"
+		android:layout_marginRight="16dp"
+		android:layout_marginBottom="15dp"
+		android:background="@drawable/gradient_oval"
+		android:elevation="6dp">
+
+		<com.google.android.material.floatingactionbutton.FloatingActionButton
+			android:id="@+id/fabAddPool"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_gravity="bottom|end"
+			android:backgroundTint="@android:color/transparent"
+			android:backgroundTintMode="src_in"
+			app:tint="@color/btn_icon_default"
+			android:src="@drawable/ic_add_white_24dp"
+			app:borderWidth="0dp"
+			app:elevation="0dp"
+			app:fabSize="normal"
+			app:pressedTranslationZ="0dp" />
+	</FrameLayout>
 
 </RelativeLayout>
