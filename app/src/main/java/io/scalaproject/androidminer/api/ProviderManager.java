@@ -131,19 +131,17 @@ public final class ProviderManager {
 
         String lastFetched = Config.read("RepositoryLastFetched");
         String jsonString = "";
-        if(!lastFetched.isEmpty()) {
-            SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
-            Date todayDate = Calendar.getInstance().getTime();
-            String todayString = formatter.format(todayDate);
+        long now = System.currentTimeMillis() / 1000L;
 
-            if(lastFetched.equals(todayString)){
-                jsonString = Config.read("RepositoryJson");
-            }
+        if(lastFetched != "" && Long.parseLong(lastFetched) < now){
+            jsonString = Config.read("RepositoryJson");
         }
 
-        if(jsonString.isEmpty()) {
+        if(jsonString == "") {
             String url = Config.githubAppJson;
             jsonString  = Json.fetch(url);
+            Config.write("RepositoryJson", jsonString);
+            Config.write("RepositoryLastFetched", String.valueOf(now + 3600));//Cached time is 1 hour for now
         }
 
         try {

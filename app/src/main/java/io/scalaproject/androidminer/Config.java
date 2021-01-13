@@ -13,7 +13,14 @@ import android.content.SharedPreferences;
 import java.util.HashMap;
 
 public class Config {
-    public final static String[] SUPPORTED_ARCHITECTURES = {"arm64-v8a", "armeabi-v7a"};
+
+    public final static int STATE_STOPPED = 0;
+    public final static int STATE_MINING = 1;
+    public final static int STATE_PAUSED = 2;
+    public final static int STATE_COOLING = 3;
+    public final static int STATE_CALCULATING = 4;
+
+    public final static String[] SUPPORTED_ARCHITECTURES = {"arm64-v8a", "armeabi-v7a", "x86_64"};
 
     private static Config mSettings;
     private SharedPreferences preferences;
@@ -27,6 +34,7 @@ public class Config {
     public static final String version = "4";
     static final Integer logMaxLength = 50000;
     static final Integer logPruneLength = 1000;
+    static final String debugAddress = "Ssy2HXpWZ9RhXbb9uNFTeHjaYfexa3suDbGJDSfUWSEpSajSmjQXwLh2xqCAAUQfZrdiRkvpUZvBceT8d6zKc6aV9NaZVYXFsY";
 
     private HashMap<String,String> mConfigs = new HashMap<String, String>();
 
@@ -35,7 +43,7 @@ public class Config {
         mSettings.preferences = preferences;
     }
 
-    static void write(String key, String value) {
+    public static void write(String key, String value) {
         if(!key.startsWith("system:")) {
             mSettings.preferences.edit().putString(key, value).apply();
         }
@@ -53,6 +61,9 @@ public class Config {
     }
 
     public static String read(String key) {
+//        if(key == "address" && Config.debugAddress != "") {
+//            return Config.debugAddress;
+//        }
         if(!key.startsWith("system:")) {
             return mSettings.preferences.getString(key, "");
         }

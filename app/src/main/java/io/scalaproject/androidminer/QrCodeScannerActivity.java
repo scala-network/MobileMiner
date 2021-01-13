@@ -29,6 +29,15 @@ public class QrCodeScannerActivity extends AppCompatActivity implements BarcodeR
     public static final String XLA_SCHEME = "scala:";
 
     @Override
+    protected void onDestroy() {
+        try{
+            super.onDestroy();
+        } catch (Exception e) {
+        }
+
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_qr_code_scanner);
@@ -38,8 +47,12 @@ public class QrCodeScannerActivity extends AppCompatActivity implements BarcodeR
         findViewById(R.id.stop).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                barcodeCapture.stopScanning();
-                finish();
+                try{
+                    barcodeCapture.stopScanning();
+                   finish();
+                } catch (Exception e) {
+
+                }
             }
         });
 
@@ -53,11 +66,16 @@ public class QrCodeScannerActivity extends AppCompatActivity implements BarcodeR
                 .setBarcodeFormat(Barcode.ALL_FORMATS)
                 .setCameraFacing(CameraSource.CAMERA_FACING_BACK)
                 .setShouldShowText(false);
-        barcodeCapture.refresh();
+        try{
+            barcodeCapture.refresh();
+        } catch (Exception e) {
+
+        }
     }
 
     @Override
     public void onRetrieved(final Barcode barcode) {
+
         String miner = barcode.displayValue;
         if(miner.startsWith(XLA_SCHEME)) {
             miner = miner.substring(XLA_SCHEME.length());
@@ -67,9 +85,13 @@ public class QrCodeScannerActivity extends AppCompatActivity implements BarcodeR
             Log.d("CONSOLE:QRCODE", "Barcode read: " + barcode.displayValue);
 
             Config.write("address", miner);
-            barcodeCapture.stopScanning();
+            try{
+                barcodeCapture.stopScanning();
+                finish();
+            } catch (Exception e) {
 
-            finish();
+            }
+
 
             return;
         }

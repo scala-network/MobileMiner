@@ -10,13 +10,14 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 
+
 public class SplashActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         SharedPreferences preferences = getSharedPreferences(getPackageName() + "_preferences", MODE_PRIVATE);
         Config.initialize(preferences);
 
-        // Config.clear(); //Uncomment to debug splashactivity
+//        Config.clear(); //Uncomment to debug splashactivity
 
         String configversion = Config.read("config_version");
         if(!configversion.equals(Config.version)) {
@@ -25,12 +26,6 @@ public class SplashActivity extends Activity {
         }
 
         super.onCreate(savedInstanceState);
-        if ((getIntent().getFlags() & Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT) != 0) {
-            // Activity was brought to front and not created,
-            // Thus finishing this will get us to the last viewed activity
-            finish();
-            return;
-        }
 
         setContentView(R.layout.splashscreen);
 

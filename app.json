@@ -10,6 +10,14 @@
       "icon" : "https://share.scalaproject.io/qhV2a/256x256.png"
     },
     {
+      "key" : "PoolDeMineria - Scala",
+      "pool" : "scala.pooldemineria.com",
+      "port" : "3333",
+      "poolType"  :  3,
+      "poolUrl" : "https://pooldemineria.com",
+      "poolIp" : "168.119.229.63"
+    },
+    {
       "key" : "GNTL",
       "pool" : "xla.pool.gntl.co.uk",
       "port" : "40002",
