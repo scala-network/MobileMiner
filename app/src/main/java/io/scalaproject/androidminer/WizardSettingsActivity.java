@@ -49,7 +49,8 @@ public class WizardSettingsActivity extends BaseActivity {
             public void onButtonMain(int type) {
                 switch (type) {
                     case Toolbar.BUTTON_MAIN_BACK:
-                        startActivity(new Intent(WizardSettingsActivity.this, PoolActivity.class));
+                        //onBackPressed();
+                        //startActivity(new Intent(WizardSettingsActivity.this, PoolActivity.class));
                         finish();
                         break;
                 }
@@ -247,7 +248,11 @@ public class WizardSettingsActivity extends BaseActivity {
 
         ProviderManager.generate();
 
-        startActivity(new Intent(WizardSettingsActivity.this, MainActivity.class));
-        finish();
+        Intent intent = new Intent(WizardSettingsActivity.this, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|
+                Intent.FLAG_ACTIVITY_CLEAR_TASK|
+                Intent.FLAG_ACTIVITY_NEW_TASK);
+
+        startActivity(intent);
     }
 }

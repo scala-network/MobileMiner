@@ -40,6 +40,7 @@ import org.json.JSONObject;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 import io.scalaproject.androidminer.api.PoolItem;
@@ -87,7 +88,7 @@ public class PoolActivity extends BaseActivity
 
         // If activity is created from Home Wizard
         Intent intent = getIntent();
-        Integer requesterType = intent.getIntExtra(PoolActivity.RequesterType, PoolActivity.REQUESTER_NONE);
+        int requesterType = intent.getIntExtra(PoolActivity.RequesterType, PoolActivity.REQUESTER_NONE);
 
         bSaveSettings = findViewById(R.id.bSaveSettings);
         bSaveSettings.setVisibility(requesterType == PoolActivity.REQUESTER_WIZARD ? View.VISIBLE : View.GONE);
@@ -95,24 +96,24 @@ public class PoolActivity extends BaseActivity
         // Toolbar
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(false);
 
         toolbar.setOnButtonListener(new Toolbar.OnButtonListener() {
             @Override
             public void onButtonMain(int type) {
                 switch (type) {
                     case Toolbar.BUTTON_MAIN_BACK:
-                        if(requesterType == PoolActivity.REQUESTER_WIZARD) {
-                            startActivity(new Intent(PoolActivity.this, WizardAddressActivity.class));
-                            finish();
+                        onBackPressed();
+
+                        /*if(requesterType == PoolActivity.REQUESTER_WIZARD) {
+                            onBackPressed();
+                            //startActivity(new Intent(PoolActivity.this, WizardAddressActivity.class));
+                            //finish();
                             break;
                         } else if (requesterType == PoolActivity.REQUESTER_SETTINGS) {
-                            Config.write("selected_pool", selectedPool.getKey());
-
                             onBackPressed();
-
                             break;
-                        }
+                        }*/
                 }
             }
 
@@ -165,6 +166,13 @@ public class PoolActivity extends BaseActivity
                 diag.show();
             }
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        Config.write("selected_pool", selectedPool.getKey());
+
+        super.onBackPressed();
     }
 
     private void updateSelectedPoolLayout() {
@@ -467,7 +475,7 @@ public class PoolActivity extends BaseActivity
         Config.write("selected_pool", selectedPool.getKey());
 
         startActivity(new Intent(PoolActivity.this, WizardSettingsActivity.class));
-        finish();
+        //finish();
     }
 
     static public void parseVolleyError(VolleyError error) {
@@ -481,6 +489,10 @@ public class PoolActivity extends BaseActivity
             message = "VolleyError: " + jsonMessage.getString("message");
         } catch (JSONException e) {
             message = "JSONException: " + e.getMessage();
+        } catch (NullPointerException e) {
+            message = "NullPointerException: " + e.getMessage();
+        } catch (Exception e) {
+            message = "Exception: " + e.getMessage();
         } finally {
             Log.i("parseVolleyError:", message);
         }

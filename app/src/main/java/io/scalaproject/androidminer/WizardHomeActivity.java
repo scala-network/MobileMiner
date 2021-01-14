@@ -63,22 +63,12 @@ public class WizardHomeActivity extends BaseActivity {
 
     public void onEnterAddress(View view) {
         startActivity(new Intent(WizardHomeActivity.this, WizardAddressActivity.class));
-        finish();
 
         Config.write("hide_setup_wizard", "1");
     }
 
     public void onCreateWallet(View view) {
-        Uri uri = Uri.parse(getResources().getString(R.string.scala_vault_play_store));
-        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-        startActivity(intent);
-    }
-
-    public void onSkip(View view) {
-        startActivity(new Intent(WizardHomeActivity.this, MainActivity.class));
-        finish();
-
-        Config.write("hide_setup_wizard", "1");
+        startActivity(new Intent(WizardHomeActivity.this, WizardVaultActivity.class));
     }
 
     private void showDisclaimer() {

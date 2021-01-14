@@ -50,12 +50,6 @@ public class WizardAddressActivity extends BaseActivity {
 
         ProviderManager.generate();
 
-        if ((getIntent().getFlags() & Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT) != 0) {
-            // Activity was brought to front and not created,
-            // Thus finishing this will get us to the last viewed activity
-            finish();
-            return;
-        }
         setContentView(R.layout.fragment_wizard_address);
         View view2 = findViewById(android.R.id.content).getRootView();
         tvAddress = view2.findViewById(R.id.addressWizard);
@@ -70,7 +64,8 @@ public class WizardAddressActivity extends BaseActivity {
             public void onButtonMain(int type) {
                 switch (type) {
                     case Toolbar.BUTTON_MAIN_BACK:
-                        startActivity(new Intent(WizardAddressActivity.this, WizardHomeActivity.class));
+                        //onBackPressed();
+                        //startActivity(new Intent(WizardAddressActivity.this, WizardHomeActivity.class));
                         finish();
                         break;
                 }
@@ -114,8 +109,6 @@ public class WizardAddressActivity extends BaseActivity {
         try {
             Intent intent = new Intent(appContext, QrCodeScannerActivity.class);
             startActivity(intent);
-
-
         } catch (Exception e) {
             Toast.makeText(appContext, e.getMessage(), Toast.LENGTH_SHORT).show();
         }
@@ -157,7 +150,7 @@ public class WizardAddressActivity extends BaseActivity {
         intent.putExtra(PoolActivity.RequesterType, PoolActivity.REQUESTER_WIZARD);
         startActivity(intent);
 
-        finish();
+        //finish();
     }
 
     private void requestFocus(View view) {

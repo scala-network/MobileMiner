@@ -2,6 +2,7 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:drawable="@color/bg_lighter" />
     <item
-        android:height="?attr/actionBarSize"
-        android:drawable="@drawable/texture_cash" />
+        android:drawable="@drawable/texture_cash"
+        android:tileMode="repeat" />
+
 </layer-list>
