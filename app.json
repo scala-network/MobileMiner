@@ -10,7 +10,7 @@
       "icon" : "https://share.scalaproject.io/qhV2a/256x256.png"
     },
     {
-      "key" : "PoolDeMineria - Scala",
+      "key" : "PoolDeMineria",
       "pool" : "scala.pooldemineria.com",
       "port" : "3333",
       "poolType"  :  3,
@@ -23,8 +23,7 @@
       "port" : "40002",
       "poolType"  :  1,
       "poolUrl" : "https://xla.pool.gntl.co.uk",
-      "poolIp" : "83.151.238.34",
-      "icon" : ""
+      "poolIp" : "83.151.238.34"
     },
     {
       "key" : "LuckyPool",
@@ -32,8 +31,7 @@
       "port" : "6677",
       "poolType"  :  2,
       "poolUrl" : "https://scala.luckypool.io",
-      "poolIp" : "51.89.96.162",
-      "icon" : ""
+      "poolIp" : "51.89.96.162"
     },
     {
       "key" : "HeroMiners",
@@ -41,8 +39,7 @@
       "port" : "10130",
       "poolType"  :  2,
       "poolUrl" : "https://scala.herominers.com",
-      "poolIp" : "138.201.217.40",
-      "icon" : ""
+      "poolIp" : "138.201.217.40"
     }
   ]
 }
