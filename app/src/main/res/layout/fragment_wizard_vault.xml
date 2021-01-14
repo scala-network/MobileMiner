@@ -15,7 +15,7 @@
 		android:layout_alignParentTop="true"
 		android:layout_alignParentEnd="true"
 		android:onClick="onCloseVault"
-		android:src="@drawable/ic_close"/>
+		android:src="@drawable/ic_close_white_24dp"/>
 
 	<LinearLayout
 		android:orientation="vertical"
