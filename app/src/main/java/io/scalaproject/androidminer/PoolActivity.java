@@ -481,12 +481,16 @@ public class PoolActivity extends BaseActivity
     static public void parseVolleyError(VolleyError error) {
         String message = "";
         try {
-            String responseBody = new String(error.networkResponse.data, StandardCharsets.UTF_8);
-            JSONObject data = new JSONObject(responseBody);
-            JSONArray errors = data.getJSONArray("errors");
-            JSONObject jsonMessage = errors.getJSONObject(0);
+            if (error.networkResponse != null) {
+                String responseBody = new String(error.networkResponse.data, StandardCharsets.UTF_8);
+                JSONObject data = new JSONObject(responseBody);
+                JSONArray errors = data.getJSONArray("errors");
+                JSONObject jsonMessage = errors.getJSONObject(0);
 
-            message = "VolleyError: " + jsonMessage.getString("message");
+                message = "VolleyError: " + jsonMessage.getString("message");
+            } else {
+                message = error.getMessage();
+            }
         } catch (JSONException e) {
             message = "JSONException: " + e.getMessage();
         } catch (NullPointerException e) {
