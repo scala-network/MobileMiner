@@ -10,7 +10,7 @@
       "icon" : "https://share.scalaproject.io/qhV2a/256x256.png"
     },
     {
-      "key" : "PoolDeMineria - Scala",
+      "key" : "PoolDeMineria",
       "pool" : "scala.pooldemineria.com",
       "port" : "3333",
       "poolType"  :  3,
