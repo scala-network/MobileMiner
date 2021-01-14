@@ -24,6 +24,7 @@
       "poolType"  :  1,
       "poolUrl" : "https://xla.pool.gntl.co.uk",
       "poolIp" : "83.151.238.34"
+      "icon" : "https://pool.gntl.co.uk/images/GNTLMiningPools.png"
     },
     {
       "key" : "LuckyPool",
