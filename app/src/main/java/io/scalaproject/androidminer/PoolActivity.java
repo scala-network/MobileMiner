@@ -9,17 +9,20 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
@@ -40,6 +43,7 @@ import org.json.JSONObject;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
@@ -57,10 +61,11 @@ public class PoolActivity extends BaseActivity
     private SwipeRefreshLayout pullToRefresh;
     private RecyclerView rvPools;
     private View fabAddPool;
-    private Button bSaveSettings;
+    private LinearLayout llPoolsParent;
+    private RelativeLayout rlSaveSettings;
 
     private Set<PoolItem> allPools = new HashSet<>();
-    //private Set<PoolItem> userdefinedPools = new HashSet<>();
+    private Set<PoolItem> userdefinedPools = new HashSet<>();
 
     private PoolInfoAdapter poolsAdapter;
 
@@ -90,8 +95,12 @@ public class PoolActivity extends BaseActivity
         Intent intent = getIntent();
         int requesterType = intent.getIntExtra(PoolActivity.RequesterType, PoolActivity.REQUESTER_NONE);
 
-        bSaveSettings = findViewById(R.id.bSaveSettings);
-        bSaveSettings.setVisibility(requesterType == PoolActivity.REQUESTER_WIZARD ? View.VISIBLE : View.GONE);
+        /*llPoolsParent = findViewById(R.id.llPoolsParent);
+        int marginBottom = requesterType == PoolActivity.REQUESTER_WIZARD ? Utils.getDimPixels(llPoolsParent, 90) : Utils.getDimPixels(llPoolsParent, 15);
+        ((LinearLayout.LayoutParams) llPoolsParent.getLayoutParams()).setMargins(0, 0, 0, marginBottom);*/
+
+        rlSaveSettings = findViewById(R.id.rlSaveSettings);
+        rlSaveSettings.setVisibility(requesterType == PoolActivity.REQUESTER_WIZARD ? View.VISIBLE : View.GONE);
 
         // Toolbar
         toolbar = findViewById(R.id.toolbar);
@@ -172,7 +181,42 @@ public class PoolActivity extends BaseActivity
     public void onBackPressed() {
         Config.write("selected_pool", selectedPool.getKey());
 
+        saveUserDefinedPools();
+
         super.onBackPressed();
+    }
+
+    private void loadUserdefinedPools() {
+        userdefinedPools.clear();
+
+        Map<String, ?> pools = getSharedPreferences(Config.POOLS_USERDEFINED_KEY, Context.MODE_PRIVATE).getAll();
+        for (Map.Entry<String, ?> poolEntry : pools.entrySet()) {
+            if (poolEntry != null) { // just in case, ignore possible future errors
+                PoolItem pi = PoolItem.fromString((String) poolEntry.getValue());
+                if (pi != null) {
+                    userdefinedPools.add(pi);
+                }
+            }
+        }
+    }
+
+    private void saveUserDefinedPools() {
+        if(userdefinedPools.isEmpty())
+            return;
+
+        SharedPreferences.Editor editor = getSharedPreferences(Config.POOLS_USERDEFINED_KEY, Context.MODE_PRIVATE).edit();
+        editor.clear();
+
+        int i = 1;
+        for (PoolItem pi : userdefinedPools) {
+            if(pi.isUserDefined()) { // just in case!
+                String poolString = pi.toString();
+                editor.putString(Integer.toString(i), poolString);
+                i++;
+            }
+        }
+
+        editor.apply();
     }
 
     private void updateSelectedPoolLayout() {
@@ -247,7 +291,6 @@ public class PoolActivity extends BaseActivity
                 if(!poolItem.isUserDefined()) {
 
                 } else {
-
                 }
                 break;
             default:
@@ -320,17 +363,22 @@ public class PoolActivity extends BaseActivity
             if (applyChanges()) {
                 closeDialog();
 
-                if (newPool)
+                if (newPool) {
+                    allPools.add(poolEdit);
+                    userdefinedPools.add(poolEdit); // just used when saving
                     poolsAdapter.addPool(poolEdit);
+                    saveUserDefinedPools();
+                }
 
                 poolsAdapter.dataSetChanged();
 
-                refresh();
+                //refresh();
             }
         }
 
         private void closeDialog() {
-            if (editDialog == null) throw new IllegalStateException();
+            if (editDialog == null)
+                return;
 
             Utils.hideKeyboard(getParent());
 
@@ -437,7 +485,7 @@ public class PoolActivity extends BaseActivity
                 }
             });
 
-            refresh();
+            //refresh();
         }
 
         public void pickImage() {
@@ -516,16 +564,7 @@ public class PoolActivity extends BaseActivity
 
         @Override
         protected Boolean doInBackground(Void... params) {
-            Set<PoolItem> seedList = new HashSet<>();
-            seedList.addAll(allPools);
             allPools.clear();
-
-            /*Dispatcher d = new Dispatcher(new Dispatcher.Listener() {
-                @Override
-                public void onGet(PoolItem info) {
-                    publishProgress(info);
-                }
-            });*/
 
             PoolItem[] pools = ProviderManager.getPools();
             for(int i = 0; i < pools.length; i++) {
@@ -539,16 +578,10 @@ public class PoolActivity extends BaseActivity
                 allPools.add(poolItem);
             }
 
-            return true;
-        }
+            loadUserdefinedPools();
+            allPools.addAll(userdefinedPools);
 
-        @Override
-        protected void onProgressUpdate(PoolItem... values) {
-            /*if (!isCancelled())
-                if (values != null)
-                    poolsAdapter.addPool(values[0]);
-                else
-                    poolsAdapter.setPools(null);*/
+            return true;
         }
 
         @Override

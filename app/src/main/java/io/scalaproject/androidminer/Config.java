@@ -22,6 +22,8 @@ public class Config {
 
     public final static String[] SUPPORTED_ARCHITECTURES = {"arm64-v8a", "armeabi-v7a", "x86_64"};
 
+    public final static String POOLS_USERDEFINED_KEY = "userdefined_pools";
+
     private static Config mSettings;
     private SharedPreferences preferences;
 

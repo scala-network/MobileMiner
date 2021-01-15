@@ -14,6 +14,7 @@
 		android:minHeight="?attr/actionBarSize" />
 
 	<LinearLayout
+		android:id="@+id/llPoolsParent"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:layout_marginTop="15dp"
@@ -58,6 +59,7 @@
 	</LinearLayout>
 
 	<RelativeLayout
+		android:id="@+id/rlSaveSettings"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:layout_alignParentBottom="true"

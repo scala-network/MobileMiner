@@ -9,10 +9,14 @@
 package io.scalaproject.androidminer.api;
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
 
+import java.io.ByteArrayOutputStream;
 import java.util.Comparator;
 
 import io.scalaproject.androidminer.Config;
+import io.scalaproject.androidminer.Utils;
 import io.scalaproject.androidminer.api.providers.*;
 
 public class PoolItem {
@@ -43,7 +47,6 @@ public class PoolItem {
     public float getHr() { return mHr; }
 
     public PoolItem() {
-
     }
 
     public PoolItem(PoolItem poolItem) {
@@ -131,6 +134,54 @@ public class PoolItem {
         }
     }
 
+    public PoolItem(String poolString) {
+        if ((poolString == null) || poolString.isEmpty())
+            throw new IllegalArgumentException("contact is empty");
+
+        String a[] = poolString.split(":");
+        if (a.length == 3) {
+            this.mKey = a[0];
+            this.mPoolUrl = a[1];
+
+            String av[] = a[2].split("@");
+            this.mPort = av[0];
+
+            if(av.length == 2) { // there is an icon
+                byte[] b = Base64.decode(av[1], Base64.DEFAULT);
+                this.icon = Utils.getCroppedBitmap(BitmapFactory.decodeByteArray(b, 0, b.length));
+            }
+        } else {
+            throw new IllegalArgumentException("Invalid pool string format");
+        }
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        if (!mKey.isEmpty() && !mPoolUrl.isEmpty() && !mPort.isEmpty()) {
+            sb.append(mKey).append(":").append(mPoolUrl).append(":").append(mPort);
+        }
+
+        if(icon != null) {
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            icon.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+
+            byte[] compressImage = baos.toByteArray();
+            String sEncodedImage = Base64.encodeToString(compressImage, Base64.DEFAULT);
+            sb.append("@").append(sEncodedImage);
+        }
+
+        return sb.toString();
+    }
+
+    static public PoolItem fromString(String poolString) {
+        try {
+            return new PoolItem(poolString);
+        } catch (IllegalArgumentException ex) {
+            //Timber.w(ex);
+            return null;
+        }
+    }
 
     public Bitmap getIcon() {
         return this.icon;

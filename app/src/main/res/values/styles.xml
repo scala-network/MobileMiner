@@ -1,15 +1,19 @@
 <resources>
+    <style name="TextAppearance.Widget.Event.Toolbar.Title" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
+        <!-- Text styling can be done here-->
+    </style>
+
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.MaterialComponents">
         <item name="windowNoTitle">true</item>
         <item name="windowActionBar">false</item>
 
-        <item name="colorPrimary">@color/bg_lighter</item>
-        <item name="colorPrimaryDark">@color/c_inactive</item>
-        <item name="colorAccent">@color/bg_lighter</item>
-        <item name="colorControlNormal">@color/c_grey</item>
-        <item name="colorControlActivated">@color/c_blue</item>
-        <item name="colorControlHighlight">@color/c_blue</item>
+        <item name="colorPrimaryDark">@color/txt_main</item>
+        <item name="colorPrimary">@color/txt_main</item>
+        <item name="colorAccent">@color/txt_main</item>
+
+        <item name="android:textColorPrimary">@color/txt_main</item>
+        <item name="android:textColorSecondary">@color/btn_icon_default</item>
 
         <item name="actionMenuTextColor">@color/txt_main</item>
 
@@ -19,6 +23,9 @@
         <item name="textAppearanceLargePopupMenu">@style/PopupMenuTextAppearanceLarge</item>
         <item name="textAppearanceSmallPopupMenu">@style/PopupMenuTextAppearanceSmall</item>
 
+        <item name="android:colorControlActivated">@color/bg_blue</item>
+
+        <item name="android:alertDialogTheme">@style/MaterialAlertDialogCustom</item>
     </style>
 
     <style name="ActionBarMenuTheme" parent="Theme.AppCompat.Light">
