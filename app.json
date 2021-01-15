@@ -15,7 +15,8 @@
       "port" : "3333",
       "poolType"  :  3,
       "poolUrl" : "https://pooldemineria.com",
-      "poolIp" : "168.119.229.63"
+      "poolIp" : "168.119.229.63",
+      "icon" : "https://share.scalaproject.io/D9jLY/pooldemineria-logo.jpg"
     },
     {
       "key" : "GNTL",
@@ -23,7 +24,8 @@
       "port" : "40002",
       "poolType"  :  1,
       "poolUrl" : "https://xla.pool.gntl.co.uk",
-      "poolIp" : "83.151.238.34"
+      "poolIp" : "83.151.238.34",
+      "icon" : "https://pool.gntl.co.uk/images/GNTLMiningPools.png"
     },
     {
       "key" : "LuckyPool",
