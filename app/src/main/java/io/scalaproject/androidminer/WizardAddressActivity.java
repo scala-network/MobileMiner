@@ -48,7 +48,7 @@ public class WizardAddressActivity extends BaseActivity {
             StrictMode.setThreadPolicy(policy);
         }
 
-        ProviderManager.generate();
+        //ProviderManager.loadPools(getApplicationContext());
 
         setContentView(R.layout.fragment_wizard_address);
         View view2 = findViewById(android.R.id.content).getRootView();

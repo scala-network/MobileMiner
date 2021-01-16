@@ -487,7 +487,8 @@ public class MainActivity extends BaseActivity
         StrictMode.ThreadPolicy policy = new
                 StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
-        ProviderManager.generate();
+
+        ProviderManager.loadPools(getApplicationContext());
 
         payoutListener = new IProviderListener() {
             public void onStatsChange(ProviderData d) {

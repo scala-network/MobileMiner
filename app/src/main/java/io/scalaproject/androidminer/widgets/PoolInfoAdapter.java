@@ -43,17 +43,23 @@ public class PoolInfoAdapter extends RecyclerView.Adapter<PoolInfoAdapter.ViewHo
         void onSelectPool(View view, PoolItem item);
     }
 
+    public interface OnUpdateViewListener {
+        void onUpdateView();
+    }
+
     private final List<PoolItem> poolItems = new ArrayList<>();
 
     private final OnMenuPoolListener onMenuPoolListener;
     private final OnSelectPoolListener onSelectPoolListener;
+    private final OnUpdateViewListener onUpdateViewListener;
 
     private Context context;
 
-    public PoolInfoAdapter(Context context, OnSelectPoolListener onSelectPoolListener, OnMenuPoolListener onMenuPoolListener) {
+    public PoolInfoAdapter(Context context, OnSelectPoolListener onSelectPoolListener, OnMenuPoolListener onMenuPoolListener, OnUpdateViewListener onUpdateViewListener) {
         this.context = context;
         this.onSelectPoolListener = onSelectPoolListener;
         this.onMenuPoolListener = onMenuPoolListener;
+        this.onUpdateViewListener = onUpdateViewListener;
     }
 
     @Override
@@ -84,6 +90,8 @@ public class PoolInfoAdapter extends RecyclerView.Adapter<PoolInfoAdapter.ViewHo
     public void dataSetChanged() {
         //Collections.sort(poolItems, PoolItem.PoolComparator);
         notifyDataSetChanged();
+
+        //onUpdateViewListener.onUpdateView();
     }
 
     public List<PoolItem> getPools() {
@@ -94,8 +102,7 @@ public class PoolInfoAdapter extends RecyclerView.Adapter<PoolInfoAdapter.ViewHo
         poolItems.clear();
         if (data != null) {
             for (PoolItem pool : data) {
-                if (!poolItems.contains(pool))
-                    poolItems.add(pool);
+                poolItems.add(pool);
             }
         }
 
@@ -108,7 +115,7 @@ public class PoolInfoAdapter extends RecyclerView.Adapter<PoolInfoAdapter.ViewHo
 
     public void allowClick(boolean clickable) {
         itemsClickable = clickable;
-        notifyDataSetChanged();
+        //notifyDataSetChanged();
     }
 
     class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {

@@ -4,6 +4,8 @@
 
 package io.scalaproject.androidminer.api;
 
+import android.content.Context;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -13,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
+import java.util.Map;
 
 import io.scalaproject.androidminer.Config;
 import io.scalaproject.androidminer.Utils;
@@ -21,6 +24,8 @@ import io.scalaproject.androidminer.network.Json;
 public final class ProviderManager {
 
     static private ArrayList<PoolItem> mPools = new ArrayList<PoolItem>();
+
+    //static private ArrayList<PoolItem> mUserDefinedPools = new ArrayList<PoolItem>();
 
     static public void add(PoolItem poolItem) {
         mPools.add(poolItem);
@@ -40,9 +45,24 @@ public final class ProviderManager {
         return pi;
     }
 
-    static public PoolItem[] getPools() {
+    static public void loadPools(Context context) {
+        loadDefaultPools();
+
+        // WTF with this??
+        loadUserdefinedPools(context);
+
+        //Collections.sort(mPools, PoolItem.PoolComparator);
+    }
+
+    static public PoolItem[] getPools(Context context) {
+        loadPools(context);
+
         Collections.sort(mPools, PoolItem.PoolComparator);
 
+        return mPools.toArray(new PoolItem[mPools.size()]);
+    }
+
+    static public PoolItem[] getAllPools() {
         return mPools.toArray(new PoolItem[mPools.size()]);
     }
 
@@ -119,10 +139,10 @@ public final class ProviderManager {
 
     static final public ProviderRequest request = new ProviderRequest();
 
-    static public void generate() {
+    static public void loadDefaultPools() {
         request.stop();
         request.mPoolItem = null;
-        //mPools.clear();
+        mPools.clear();
 
         if(!mPools.isEmpty())
             return;
@@ -133,11 +153,11 @@ public final class ProviderManager {
         String jsonString = "";
         long now = System.currentTimeMillis() / 1000L;
 
-        if(lastFetched != "" && Long.parseLong(lastFetched) < now){
+        if(!lastFetched.isEmpty() && Long.parseLong(lastFetched) < now){
             jsonString = Config.read("RepositoryJson");
         }
 
-        if(jsonString == "") {
+        if(jsonString.isEmpty()) {
             String url = Config.githubAppJson;
             jsonString  = Json.fetch(url);
             Config.write("RepositoryJson", jsonString);
@@ -169,6 +189,21 @@ public final class ProviderManager {
             }
         } catch (JSONException e) {
             e.printStackTrace();
+        }
+    }
+
+    static public void loadUserdefinedPools(Context context) {
+        //mUserDefinedPools.clear();
+
+        Map<String, ?> pools = context.getSharedPreferences(Config.POOLS_USERDEFINED_KEY, Context.MODE_PRIVATE).getAll();
+        for (Map.Entry<String, ?> poolEntry : pools.entrySet()) {
+            if (poolEntry != null) { // just in case, ignore possible future errors
+                PoolItem pi = PoolItem.fromString((String) poolEntry.getValue());
+                if (pi != null) {
+                    pi.setUserDefined(true);
+                    add(pi);
+                }
+            }
         }
     }
 }

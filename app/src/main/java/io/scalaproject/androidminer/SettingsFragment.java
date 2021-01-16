@@ -65,7 +65,7 @@ public class SettingsFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        ProviderManager.generate();
+        ProviderManager.getPools(getContext());
 
         Button bSave;
         EditText edPort, edMiningGoal;

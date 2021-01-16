@@ -246,7 +246,7 @@ public class WizardSettingsActivity extends BaseActivity {
 
         Config.write("init", "1");
 
-        ProviderManager.generate();
+        //ProviderManager.loadPools(getApplicationContext());
 
         Intent intent = new Intent(WizardSettingsActivity.this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|

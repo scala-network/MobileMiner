@@ -53,7 +53,7 @@ import io.scalaproject.androidminer.widgets.PoolInfoAdapter;
 import io.scalaproject.androidminer.widgets.Toolbar;
 
 public class PoolActivity extends BaseActivity
-        implements PoolInfoAdapter.OnSelectPoolListener, PoolInfoAdapter.OnMenuPoolListener, View.OnClickListener {
+        implements PoolInfoAdapter.OnSelectPoolListener, PoolInfoAdapter.OnMenuPoolListener, PoolInfoAdapter.OnUpdateViewListener, View.OnClickListener {
     private static final String LOG_TAG = "WizardPoolActivity";
 
     private Toolbar toolbar;
@@ -95,9 +95,11 @@ public class PoolActivity extends BaseActivity
         Intent intent = getIntent();
         int requesterType = intent.getIntExtra(PoolActivity.RequesterType, PoolActivity.REQUESTER_NONE);
 
-        /*llPoolsParent = findViewById(R.id.llPoolsParent);
+        llPoolsParent = findViewById(R.id.llPoolsParent);
         int marginBottom = requesterType == PoolActivity.REQUESTER_WIZARD ? Utils.getDimPixels(llPoolsParent, 90) : Utils.getDimPixels(llPoolsParent, 15);
-        ((LinearLayout.LayoutParams) llPoolsParent.getLayoutParams()).setMargins(0, 0, 0, marginBottom);*/
+        int marginDefault = Utils.getDimPixels(llPoolsParent, 15);
+        // Must use parent layout
+        ((RelativeLayout.LayoutParams) llPoolsParent.getLayoutParams()).setMargins(marginDefault, marginDefault, marginDefault, marginBottom);
 
         rlSaveSettings = findViewById(R.id.rlSaveSettings);
         rlSaveSettings.setVisibility(requesterType == PoolActivity.REQUESTER_WIZARD ? View.VISIBLE : View.GONE);
@@ -144,10 +146,13 @@ public class PoolActivity extends BaseActivity
         fabAddPool.setVisibility(requesterType == PoolActivity.REQUESTER_WIZARD ? View.GONE : View.VISIBLE);
 
         rvPools = view.findViewById(R.id.rvPools);
-        poolsAdapter = new PoolInfoAdapter(this, this, this);
+        poolsAdapter = new PoolInfoAdapter(this, this, this, this);
         rvPools.setAdapter(poolsAdapter);
 
-        //rvPools.post(() -> updateSelectedPoolLayout());
+        /*allPools = new HashSet<>(Arrays.asList(ProviderManager.getPools(getApplicationContext())));
+        poolsAdapter.setPools(allPools);
+
+        rvPools.post(() -> updateSelectedPoolLayout());*/
 
         pullToRefresh = view.findViewById(R.id.pullToRefresh);
         pullToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -158,8 +163,6 @@ public class PoolActivity extends BaseActivity
         });
 
         Utils.hideKeyboard(this);
-
-        allPools = new HashSet<>(Arrays.asList(ProviderManager.getPools()));
 
         refresh();
     }
@@ -184,20 +187,6 @@ public class PoolActivity extends BaseActivity
         saveUserDefinedPools();
 
         super.onBackPressed();
-    }
-
-    private void loadUserdefinedPools() {
-        userdefinedPools.clear();
-
-        Map<String, ?> pools = getSharedPreferences(Config.POOLS_USERDEFINED_KEY, Context.MODE_PRIVATE).getAll();
-        for (Map.Entry<String, ?> poolEntry : pools.entrySet()) {
-            if (poolEntry != null) { // just in case, ignore possible future errors
-                PoolItem pi = PoolItem.fromString((String) poolEntry.getValue());
-                if (pi != null) {
-                    userdefinedPools.add(pi);
-                }
-            }
-        }
     }
 
     private void saveUserDefinedPools() {
@@ -226,7 +215,7 @@ public class PoolActivity extends BaseActivity
 
         String selectedPoolName = Config.read("selected_pool");
 
-        PoolItem[] allPools = ProviderManager.getPools();
+        PoolItem[] allPools = ProviderManager.getAllPools();
 
         if(selectedPoolName.isEmpty()) {
             selectedPoolName = allPools[0].getKey();
@@ -238,6 +227,7 @@ public class PoolActivity extends BaseActivity
                 Boolean bSelected = selectedPoolName.equals(poolItem.getKey());
                 View itemView = rvPools.getChildAt(i);
                 //View itemView = rvPools.getLayoutManager().findViewByPosition(i);
+                //View itemView = rvPools.findViewHolderForAdapterPosition(i).itemView;
                 setItemPoolLayout(itemView, bSelected);
 
                 if(bSelected) {
@@ -277,6 +267,11 @@ public class PoolActivity extends BaseActivity
         setItemPoolLayout(selectedPoolView, true);
 
         newPool = false;
+    }
+
+    @Override
+    public void onUpdateView() {
+        rvPools.post(() -> updateSelectedPoolLayout());
     }
 
     @Override
@@ -364,7 +359,7 @@ public class PoolActivity extends BaseActivity
                 closeDialog();
 
                 if (newPool) {
-                    allPools.add(poolEdit);
+                    //allPools.add(poolEdit);
                     userdefinedPools.add(poolEdit); // just used when saving
                     poolsAdapter.addPool(poolEdit);
                     saveUserDefinedPools();
@@ -372,7 +367,7 @@ public class PoolActivity extends BaseActivity
 
                 poolsAdapter.dataSetChanged();
 
-                //refresh();
+                //rvPools.post(() -> updateSelectedPoolLayout());
             }
         }
 
@@ -566,20 +561,18 @@ public class PoolActivity extends BaseActivity
         protected Boolean doInBackground(Void... params) {
             allPools.clear();
 
-            PoolItem[] pools = ProviderManager.getPools();
+            PoolItem[] pools = ProviderManager.getPools(getApplicationContext());
             for(int i = 0; i < pools.length; i++) {
                 PoolItem poolItem = pools[i];
 
-                if(poolItem.getApiUrl() != null) {
-                    StringRequest stringRequest = poolItem.getInterface().getStringRequest(poolsAdapter);
-                    mPoolQueue.add(stringRequest);
-                }
+                StringRequest stringRequest = poolItem.getInterface().getStringRequest(poolsAdapter);
+                mPoolQueue.add(stringRequest);
 
                 allPools.add(poolItem);
             }
 
-            loadUserdefinedPools();
-            allPools.addAll(userdefinedPools);
+            /*loadUserdefinedPools();
+            allPools.addAll(userdefinedPools);*/
 
             return true;
         }
