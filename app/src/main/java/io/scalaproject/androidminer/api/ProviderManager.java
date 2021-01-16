@@ -49,7 +49,7 @@ public final class ProviderManager {
         loadDefaultPools();
 
         // WTF with this??
-        loadUserdefinedPools(context);
+        //loadUserdefinedPools(context);
 
         //Collections.sort(mPools, PoolItem.PoolComparator);
     }
@@ -147,7 +147,8 @@ public final class ProviderManager {
         if(!mPools.isEmpty())
             return;
 
-        //add("custom", "custom", "3333", 0, "", "");
+        // This line breaks the selection!!! WHY??
+        add("custom", "custom", "3333", 0, "", "");
 
         String lastFetched = Config.read("RepositoryLastFetched");
         String jsonString = "";
