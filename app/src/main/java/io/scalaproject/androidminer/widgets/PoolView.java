@@ -2,7 +2,6 @@ package io.scalaproject.androidminer.widgets;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.media.Image;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -100,27 +99,5 @@ public class PoolView extends LinearLayout {
 
             ivIcon.setImageBitmap(Utils.getCroppedBitmap(Utils.getBitmap(getContext(), R.drawable.ic_pool_default)));
         }
-    }
-
-    public void refresh() {
-        /*icon = findViewById(R.id.icon);
-
-        if(mPoolItem != null) {
-            poolName = mPoolItem.getKey();
-            recommendPool = mPoolItem.getKey().toLowerCase().contains("official");
-        }
-
-        tvPoolName = findViewById(R.id.poolName);
-        tvPoolName.setText(poolName);
-
-        tvMinersScala = findViewById(R.id.minersScala);
-        tvMinersScala.setText(minersScala);
-
-        tvHrScala = findViewById(R.id.hrScala);
-        tvHrScala.setText(hrScala);
-
-        tvRecommendPool = findViewById(R.id.recommendPool);
-        tvRecommendPool.setVisibility(recommendPool ? View.VISIBLE : View.INVISIBLE);
-*/
     }
 }

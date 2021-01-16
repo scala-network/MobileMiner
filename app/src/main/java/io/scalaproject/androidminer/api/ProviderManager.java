@@ -5,17 +5,16 @@
 package io.scalaproject.androidminer.api;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collections;
-import java.util.Date;
 import java.util.Map;
+import java.util.Set;
 
 import io.scalaproject.androidminer.Config;
 import io.scalaproject.androidminer.Utils;
@@ -24,8 +23,6 @@ import io.scalaproject.androidminer.network.Json;
 public final class ProviderManager {
 
     static private ArrayList<PoolItem> mPools = new ArrayList<PoolItem>();
-
-    //static private ArrayList<PoolItem> mUserDefinedPools = new ArrayList<PoolItem>();
 
     static public void add(PoolItem poolItem) {
         mPools.add(poolItem);
@@ -48,10 +45,23 @@ public final class ProviderManager {
     static public void loadPools(Context context) {
         loadDefaultPools();
 
-        // WTF with this??
-        //loadUserdefinedPools(context);
+        loadUserdefinedPools(context);
 
-        //Collections.sort(mPools, PoolItem.PoolComparator);
+        // Selected pool
+        String sp = Config.read("selected_pool").trim();
+        for(int i = 0; i < mPools.size(); i++) {
+            PoolItem pi = mPools.get(i);
+
+            if(sp.isEmpty() && i == 0) {
+                pi.setIsSelected(true);
+            } else {
+                if(pi.getKey().equals(sp)) {
+                    pi.setIsSelected(true);
+                } else {
+                    pi.setIsSelected(false);
+                }
+            }
+        }
     }
 
     static public PoolItem[] getPools(Context context) {
@@ -102,12 +112,20 @@ public final class ProviderManager {
             return request.mPoolItem;
         }
 
-        String sp = Config.read("selected_pool");
+        for(int i = 0; i < mPools.size(); i++) {
+            PoolItem pi = mPools.get(i);
+
+            if(pi.isSelected())
+                return pi;
+        }
+
+        return null;
+        /*String sp = Config.read("selected_pool");
         if (sp.equals("")) {
             return mPools.get(0);
         }
 
-        return getPoolByKey(sp);
+        return getPoolByKey(sp);*/
     }
 
     static public int getSelectedPoolIndex() {
@@ -146,9 +164,6 @@ public final class ProviderManager {
 
         if(!mPools.isEmpty())
             return;
-
-        // This line breaks the selection!!! WHY??
-        add("custom", "custom", "3333", 0, "", "");
 
         String lastFetched = Config.read("RepositoryLastFetched");
         String jsonString = "";
@@ -194,8 +209,6 @@ public final class ProviderManager {
     }
 
     static public void loadUserdefinedPools(Context context) {
-        //mUserDefinedPools.clear();
-
         Map<String, ?> pools = context.getSharedPreferences(Config.POOLS_USERDEFINED_KEY, Context.MODE_PRIVATE).getAll();
         for (Map.Entry<String, ?> poolEntry : pools.entrySet()) {
             if (poolEntry != null) { // just in case, ignore possible future errors
@@ -206,5 +219,21 @@ public final class ProviderManager {
                 }
             }
         }
+    }
+
+    static public void saveUserDefinedPools(Context context) {
+        SharedPreferences.Editor editor = context.getSharedPreferences(Config.POOLS_USERDEFINED_KEY, Context.MODE_PRIVATE).edit();
+        editor.clear();
+
+        for(int i = 0; i < mPools.size(); i++) {
+            PoolItem pi = mPools.get(i);
+
+            if(pi.isUserDefined()) { // just in case!
+                String poolString = pi.toString();
+                editor.putString(Integer.toString(i), poolString);
+            }
+        }
+
+        editor.apply();
     }
 }

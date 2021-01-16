@@ -34,6 +34,10 @@ public class PoolItem {
         mIsUserDefined = isUserDefined;
     }
 
+    private boolean isSelected = false;
+    public void setIsSelected(boolean selected) { isSelected = selected; }
+    public boolean isSelected() { return isSelected; }
+
     private boolean isValid = false;
     public void setIsValid(boolean valid) { isValid = valid; }
     public boolean isValid() { return isValid; }
@@ -138,12 +142,12 @@ public class PoolItem {
         if ((poolString == null) || poolString.isEmpty())
             throw new IllegalArgumentException("contact is empty");
 
-        String a[] = poolString.split(":");
+        String[] a = poolString.split(":");
         if (a.length == 3) {
             this.mKey = a[0];
             this.mPoolUrl = a[1];
 
-            String av[] = a[2].split("@");
+            String[] av = a[2].split("@");
             this.mPort = av[0];
 
             if(av.length == 2) { // there is an icon
@@ -178,7 +182,6 @@ public class PoolItem {
         try {
             return new PoolItem(poolString);
         } catch (IllegalArgumentException ex) {
-            //Timber.w(ex);
             return null;
         }
     }

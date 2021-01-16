@@ -18,16 +18,11 @@ import android.widget.TextView;
 
 import io.scalaproject.androidminer.R;
 
-import java.net.HttpURLConnection;
 import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
-import java.util.TimeZone;
 
 import io.scalaproject.androidminer.Utils;
 import io.scalaproject.androidminer.api.PoolItem;
@@ -35,7 +30,6 @@ import io.scalaproject.androidminer.api.PoolItem;
 public class PoolInfoAdapter extends RecyclerView.Adapter<PoolInfoAdapter.ViewHolder> {
 
     public interface OnMenuPoolListener {
-        //void onInteraction(View view, PoolItem item);
         boolean onContextInteraction(MenuItem item, PoolItem infoItem);
     }
 
@@ -43,23 +37,17 @@ public class PoolInfoAdapter extends RecyclerView.Adapter<PoolInfoAdapter.ViewHo
         void onSelectPool(View view, PoolItem item);
     }
 
-    public interface OnUpdateViewListener {
-        void onUpdateView();
-    }
-
     private final List<PoolItem> poolItems = new ArrayList<>();
 
     private final OnMenuPoolListener onMenuPoolListener;
     private final OnSelectPoolListener onSelectPoolListener;
-    private final OnUpdateViewListener onUpdateViewListener;
 
     private Context context;
 
-    public PoolInfoAdapter(Context context, OnSelectPoolListener onSelectPoolListener, OnMenuPoolListener onMenuPoolListener, OnUpdateViewListener onUpdateViewListener) {
+    public PoolInfoAdapter(Context context, OnSelectPoolListener onSelectPoolListener, OnMenuPoolListener onMenuPoolListener) {
         this.context = context;
         this.onSelectPoolListener = onSelectPoolListener;
         this.onMenuPoolListener = onMenuPoolListener;
-        this.onUpdateViewListener = onUpdateViewListener;
     }
 
     @Override
@@ -88,10 +76,7 @@ public class PoolInfoAdapter extends RecyclerView.Adapter<PoolInfoAdapter.ViewHo
     }
 
     public void dataSetChanged() {
-        //Collections.sort(poolItems, PoolItem.PoolComparator);
         notifyDataSetChanged();
-
-        //onUpdateViewListener.onUpdateView();
     }
 
     public List<PoolItem> getPools() {
@@ -115,7 +100,6 @@ public class PoolInfoAdapter extends RecyclerView.Adapter<PoolInfoAdapter.ViewHo
 
     public void allowClick(boolean clickable) {
         itemsClickable = clickable;
-        //notifyDataSetChanged();
     }
 
     class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -171,10 +155,10 @@ public class PoolInfoAdapter extends RecyclerView.Adapter<PoolInfoAdapter.ViewHo
         void bind(final int position) {
             poolItem = poolItems.get(position);
 
+            // Name
             tvName.setText(poolItem.getKey());
 
-            //ibOptions.setVisibility(poolItem.isUserDefined() ? View.VISIBLE : View.GONE);
-
+            // Stats
             if(poolItem.isValid()) {
                 // Miners
                 tvMiners.setVisibility(View.VISIBLE);
@@ -196,6 +180,7 @@ public class PoolInfoAdapter extends RecyclerView.Adapter<PoolInfoAdapter.ViewHo
                 tvHr.setVisibility(View.GONE);
             }
 
+            // Icon
             Bitmap icon = poolItem.getIcon();
             if(icon != null) {
                 int dim = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 34, itemView.getResources().getDisplayMetrics());
@@ -212,6 +197,16 @@ public class PoolInfoAdapter extends RecyclerView.Adapter<PoolInfoAdapter.ViewHo
                 ivIcon.setImageBitmap(Utils.getCroppedBitmap(Utils.getBitmap(context, R.drawable.ic_pool_default)));
             }
 
+            // Selected view layout
+            RelativeLayout rlItemNode = (RelativeLayout) itemView;
+            int bottom = rlItemNode.getPaddingBottom();
+            int top = rlItemNode.getPaddingTop();
+            int right = rlItemNode.getPaddingRight();
+            int left = rlItemNode.getPaddingLeft();
+            rlItemNode.setBackgroundResource(poolItem.isSelected() ? R.drawable.corner_radius_lighter_border_blue : R.drawable.corner_radius_lighter);
+            rlItemNode.setPadding(left, top, right, bottom);
+
+            // Options
             itemView.setOnClickListener(this);
             itemView.setClickable(itemsClickable);
         }

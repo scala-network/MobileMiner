@@ -6,25 +6,20 @@ package io.scalaproject.androidminer;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -41,9 +36,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
@@ -53,8 +46,8 @@ import io.scalaproject.androidminer.widgets.PoolInfoAdapter;
 import io.scalaproject.androidminer.widgets.Toolbar;
 
 public class PoolActivity extends BaseActivity
-        implements PoolInfoAdapter.OnSelectPoolListener, PoolInfoAdapter.OnMenuPoolListener, PoolInfoAdapter.OnUpdateViewListener, View.OnClickListener {
-    private static final String LOG_TAG = "WizardPoolActivity";
+        implements PoolInfoAdapter.OnSelectPoolListener, PoolInfoAdapter.OnMenuPoolListener, View.OnClickListener {
+    private static final String LOG_TAG = "PoolActivity";
 
     private Toolbar toolbar;
 
@@ -69,7 +62,6 @@ public class PoolActivity extends BaseActivity
 
     private PoolInfoAdapter poolsAdapter;
 
-    private View selectedPoolView = null;
     private PoolItem selectedPool = null;
 
     RequestQueue mPoolQueue = null;
@@ -98,7 +90,7 @@ public class PoolActivity extends BaseActivity
         llPoolsParent = findViewById(R.id.llPoolsParent);
         int marginBottom = requesterType == PoolActivity.REQUESTER_WIZARD ? Utils.getDimPixels(llPoolsParent, 90) : Utils.getDimPixels(llPoolsParent, 15);
         int marginDefault = Utils.getDimPixels(llPoolsParent, 15);
-        // Must use parent layout
+        // Must use parent layout for some reason
         ((RelativeLayout.LayoutParams) llPoolsParent.getLayoutParams()).setMargins(marginDefault, marginDefault, marginDefault, marginBottom);
 
         rlSaveSettings = findViewById(R.id.rlSaveSettings);
@@ -115,16 +107,6 @@ public class PoolActivity extends BaseActivity
                 switch (type) {
                     case Toolbar.BUTTON_MAIN_BACK:
                         onBackPressed();
-
-                        /*if(requesterType == PoolActivity.REQUESTER_WIZARD) {
-                            onBackPressed();
-                            //startActivity(new Intent(PoolActivity.this, WizardAddressActivity.class));
-                            //finish();
-                            break;
-                        } else if (requesterType == PoolActivity.REQUESTER_SETTINGS) {
-                            onBackPressed();
-                            break;
-                        }*/
                 }
             }
 
@@ -146,13 +128,8 @@ public class PoolActivity extends BaseActivity
         fabAddPool.setVisibility(requesterType == PoolActivity.REQUESTER_WIZARD ? View.GONE : View.VISIBLE);
 
         rvPools = view.findViewById(R.id.rvPools);
-        poolsAdapter = new PoolInfoAdapter(this, this, this, this);
+        poolsAdapter = new PoolInfoAdapter(this, this, this);
         rvPools.setAdapter(poolsAdapter);
-
-        /*allPools = new HashSet<>(Arrays.asList(ProviderManager.getPools(getApplicationContext())));
-        poolsAdapter.setPools(allPools);
-
-        rvPools.post(() -> updateSelectedPoolLayout());*/
 
         pullToRefresh = view.findViewById(R.id.pullToRefresh);
         pullToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -184,28 +161,9 @@ public class PoolActivity extends BaseActivity
     public void onBackPressed() {
         Config.write("selected_pool", selectedPool.getKey());
 
-        saveUserDefinedPools();
+        ProviderManager.saveUserDefinedPools(getApplicationContext());
 
         super.onBackPressed();
-    }
-
-    private void saveUserDefinedPools() {
-        if(userdefinedPools.isEmpty())
-            return;
-
-        SharedPreferences.Editor editor = getSharedPreferences(Config.POOLS_USERDEFINED_KEY, Context.MODE_PRIVATE).edit();
-        editor.clear();
-
-        int i = 1;
-        for (PoolItem pi : userdefinedPools) {
-            if(pi.isUserDefined()) { // just in case!
-                String poolString = pi.toString();
-                editor.putString(Integer.toString(i), poolString);
-                i++;
-            }
-        }
-
-        editor.apply();
     }
 
     private void updateSelectedPoolLayout() {
@@ -224,29 +182,12 @@ public class PoolActivity extends BaseActivity
         if(!selectedPoolName.isEmpty()) {
             for (int i = 0; i < allPools.length; i++ ) {
                 PoolItem poolItem = allPools[i];
-                Boolean bSelected = selectedPoolName.equals(poolItem.getKey());
-                View itemView = rvPools.getChildAt(i);
-                //View itemView = rvPools.getLayoutManager().findViewByPosition(i);
-                //View itemView = rvPools.findViewHolderForAdapterPosition(i).itemView;
-                setItemPoolLayout(itemView, bSelected);
 
-                if(bSelected) {
-                    selectedPoolView = itemView;
+                if(selectedPoolName.equals(poolItem.getKey())) {
+                    //selectedPoolView = rvPools.getChildAt(i);
                     selectedPool = poolItem;
                 }
             }
-        }
-    }
-
-    private void setItemPoolLayout(View itemView, Boolean selected) {
-        if(itemView != null) {
-            RelativeLayout rlItemNode = (RelativeLayout) itemView;
-            int bottom = rlItemNode.getPaddingBottom();
-            int top = rlItemNode.getPaddingTop();
-            int right = rlItemNode.getPaddingRight();
-            int left = rlItemNode.getPaddingLeft();
-            rlItemNode.setBackgroundResource(selected ? R.drawable.corner_radius_lighter_border_blue : R.drawable.corner_radius_lighter);
-            rlItemNode.setPadding(left, top, right, bottom);
         }
     }
 
@@ -261,17 +202,13 @@ public class PoolActivity extends BaseActivity
 
     @Override
     public void onSelectPool(final View view, final PoolItem poolItem) {
-        setItemPoolLayout(selectedPoolView, false);
-        selectedPoolView = view;
+        selectedPool.setIsSelected(false);
+        poolItem.setIsSelected(true);
         selectedPool = poolItem;
-        setItemPoolLayout(selectedPoolView, true);
 
         newPool = false;
-    }
 
-    @Override
-    public void onUpdateView() {
-        rvPools.post(() -> updateSelectedPoolLayout());
+        poolsAdapter.dataSetChanged();
     }
 
     @Override
@@ -362,12 +299,12 @@ public class PoolActivity extends BaseActivity
                     //allPools.add(poolEdit);
                     userdefinedPools.add(poolEdit); // just used when saving
                     poolsAdapter.addPool(poolEdit);
-                    saveUserDefinedPools();
+                    ProviderManager.add(poolEdit);
+
+                    ProviderManager.saveUserDefinedPools(getApplicationContext());
                 }
 
                 poolsAdapter.dataSetChanged();
-
-                //rvPools.post(() -> updateSelectedPoolLayout());
             }
         }
 
@@ -553,8 +490,8 @@ public class PoolActivity extends BaseActivity
             poolsAdapter.setPools(null);
             poolsAdapter.allowClick(false);
 
-            setItemPoolLayout(selectedPoolView, false);
-            selectedPoolView = null;
+            //selectedPoolView = null;
+            selectedPool = ProviderManager.getSelectedPool();
         }
 
         @Override
@@ -571,9 +508,6 @@ public class PoolActivity extends BaseActivity
                 allPools.add(poolItem);
             }
 
-            /*loadUserdefinedPools();
-            allPools.addAll(userdefinedPools);*/
-
             return true;
         }
 
@@ -589,7 +523,6 @@ public class PoolActivity extends BaseActivity
 
         private void complete() {
             asyncLoadPools = null;
-            //if (!isAdded()) return;
 
             pullToRefresh.setRefreshing(false);
 
