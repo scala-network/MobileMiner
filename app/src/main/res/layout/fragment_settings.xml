@@ -244,6 +244,7 @@
                     android:gravity="start"
                     android:text="@string/hardwaresettings"
                     android:textColor="@color/txt_headline"
+                    android:layout_gravity="center"
                     android:textSize="14sp"
                     android:textAllCaps="true"
                     android:textStyle="bold" />
