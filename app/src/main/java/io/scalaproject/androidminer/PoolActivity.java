@@ -571,7 +571,7 @@ public class PoolActivity extends BaseActivity
             poolsAdapter.setPools(allPools);
             poolsAdapter.allowClick(true);
 
-            //rvPools.post(() -> updateSelectedPoolLayout());
+            rvPools.post(() -> updateSelectedPoolLayout());
         }
     }
 }
