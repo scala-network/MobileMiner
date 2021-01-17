@@ -14,7 +14,6 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Map;
-import java.util.Set;
 
 import io.scalaproject.androidminer.Config;
 import io.scalaproject.androidminer.Utils;
@@ -26,6 +25,11 @@ public final class ProviderManager {
 
     static public void add(PoolItem poolItem) {
         mPools.add(poolItem);
+    }
+
+    static public void delete(PoolItem poolItem) {
+        if(mPools.contains(poolItem))
+            mPools.remove(poolItem);
     }
 
     static public PoolItem add(String key, String pool,String port, int poolType, String poolUrl, String poolIP) {
@@ -48,19 +52,22 @@ public final class ProviderManager {
         loadUserdefinedPools(context);
 
         // Selected pool
-        String sp = Config.read("selected_pool").trim();
+        boolean selectedFound = false;
+        String sp = Config.read(Config.CONFIG_SELECTED_POOL).trim();
         for(int i = 0; i < mPools.size(); i++) {
             PoolItem pi = mPools.get(i);
 
-            if(sp.isEmpty() && i == 0) {
+            if(pi.getKey().equals(sp)) {
+                selectedFound = true;
                 pi.setIsSelected(true);
             } else {
-                if(pi.getKey().equals(sp)) {
-                    pi.setIsSelected(true);
-                } else {
-                    pi.setIsSelected(false);
-                }
+                pi.setIsSelected(false);
             }
+        }
+
+        if(!selectedFound) {
+            Config.write(Config.CONFIG_SELECTED_POOL, mPools.get(0).getKey().trim());
+            mPools.get(0).setIsSelected(true);
         }
     }
 
@@ -76,35 +83,6 @@ public final class ProviderManager {
         return mPools.toArray(new PoolItem[mPools.size()]);
     }
 
-    static public PoolItem getPoolById(int idx) {
-        return mPools.get(idx);
-    }
-
-    static public PoolItem getPoolByKey(String key) {
-        if (mPools.size() == 0) {
-            return null;
-        }
-
-        for(int i = 0; i < mPools.size(); i++) {
-            PoolItem pi = mPools.get(i);
-
-            if(pi.getKey().equals(key))
-                return pi;
-        }
-
-        return mPools.get(0);
-    }
-
-    static public PoolItem getPoolById(String idx) {
-        int index = Integer.parseInt(idx);
-
-        if (idx.equals("") || mPools.size() < index || mPools.size() == 0) {
-            return null;
-        }
-
-        return mPools.get(index);
-    }
-
     static final public ProviderData data = new ProviderData();
 
     static public PoolItem getSelectedPool() {
@@ -112,31 +90,17 @@ public final class ProviderManager {
             return request.mPoolItem;
         }
 
+        PoolItem pi;
         for(int i = 0; i < mPools.size(); i++) {
-            PoolItem pi = mPools.get(i);
+            pi = mPools.get(i);
 
             if(pi.isSelected())
                 return pi;
         }
 
-        return null;
-        /*String sp = Config.read("selected_pool");
-        if (sp.equals("")) {
-            return mPools.get(0);
-        }
-
-        return getPoolByKey(sp);*/
-    }
-
-    static public int getSelectedPoolIndex() {
-        String sp = Config.read("selected_pool");
-        if (sp.equals("")) {
-            return 0;
-        }
-
-        int index = Integer.parseInt(sp);
-
-        return index;
+        pi = mPools.get(0);
+        pi.setIsSelected(true);
+        return pi;
     }
 
     static public void afterSave() {
@@ -209,7 +173,7 @@ public final class ProviderManager {
     }
 
     static public void loadUserdefinedPools(Context context) {
-        Map<String, ?> pools = context.getSharedPreferences(Config.POOLS_USERDEFINED_KEY, Context.MODE_PRIVATE).getAll();
+        Map<String, ?> pools = context.getSharedPreferences(Config.CONFIG_USERDEFINED_POOLS, Context.MODE_PRIVATE).getAll();
         for (Map.Entry<String, ?> poolEntry : pools.entrySet()) {
             if (poolEntry != null) { // just in case, ignore possible future errors
                 PoolItem pi = PoolItem.fromString((String) poolEntry.getValue());
@@ -222,7 +186,7 @@ public final class ProviderManager {
     }
 
     static public void saveUserDefinedPools(Context context) {
-        SharedPreferences.Editor editor = context.getSharedPreferences(Config.POOLS_USERDEFINED_KEY, Context.MODE_PRIVATE).edit();
+        SharedPreferences.Editor editor = context.getSharedPreferences(Config.CONFIG_USERDEFINED_POOLS, Context.MODE_PRIVATE).edit();
         editor.clear();
 
         for(int i = 0; i < mPools.size(); i++) {

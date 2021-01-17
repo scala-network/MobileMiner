@@ -75,6 +75,14 @@ public class PoolInfoAdapter extends RecyclerView.Adapter<PoolInfoAdapter.ViewHo
         dataSetChanged(); // in case the poolitem has changed
     }
 
+    public void deletePool(PoolItem pool) {
+        if (poolItems.contains(pool)) {
+            poolItems.remove(pool);
+        }
+
+        dataSetChanged(); // in case the poolitem has changed
+    }
+
     public void dataSetChanged() {
         notifyDataSetChanged();
     }

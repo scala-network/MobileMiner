@@ -36,6 +36,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.nio.charset.StandardCharsets;
+import java.security.Provider;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -159,7 +160,7 @@ public class PoolActivity extends BaseActivity
 
     @Override
     public void onBackPressed() {
-        Config.write("selected_pool", selectedPool.getKey());
+        Config.write(Config.CONFIG_SELECTED_POOL, selectedPool.getKey().trim());
 
         ProviderManager.saveUserDefinedPools(getApplicationContext());
 
@@ -171,7 +172,7 @@ public class PoolActivity extends BaseActivity
         if(rvPools.getLayoutManager().getItemCount() <= 0)
             return;
 
-        String selectedPoolName = Config.read("selected_pool");
+        String selectedPoolName = Config.read(Config.CONFIG_SELECTED_POOL);
 
         PoolItem[] allPools = ProviderManager.getAllPools();
 
@@ -219,16 +220,57 @@ public class PoolActivity extends BaseActivity
                 if (diag != null) {
                     diag.show();
                 }
-            case R.id.action_delete_pool:
-                if(!poolItem.isUserDefined()) {
 
-                } else {
-                }
+                break;
+            case R.id.action_delete_pool:
+                onDeletePool(poolItem);
+
                 break;
             default:
                 return super.onContextItemSelected(item);
         }
+
         return true;
+    }
+
+    public void onDeletePool(final PoolItem poolItem) {
+        DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int action) {
+                switch (action) {
+                    case DialogInterface.BUTTON_POSITIVE:
+                        if(poolItem.isUserDefined()) {
+                            userdefinedPools.remove(poolItem); // just used when saving
+                            poolsAdapter.deletePool(poolItem);
+                            ProviderManager.delete(poolItem);
+
+                            ProviderManager.saveUserDefinedPools(getApplicationContext());
+
+                            refresh();
+                        }
+
+                        break;
+                    case DialogInterface.BUTTON_NEGATIVE:
+                        // do nothing
+                        break;
+                }
+            }
+        };
+
+        if(!poolItem.isUserDefined()) {
+            MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this, R.style.MaterialAlertDialogCustom);
+            builder.setMessage("Default pools cannot be deleted.")
+                    .setTitle(poolItem.getKey())
+                    .setPositiveButton(getString(R.string.ok), dialogClickListener)
+                    .show();
+        } else {
+            MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this, R.style.MaterialAlertDialogCustom);
+            builder.setMessage("Do you really want to delete this pool?")
+                    .setTitle(poolItem.getKey())
+                    .setPositiveButton(getString(R.string.yes), dialogClickListener)
+                    .setNegativeButton(getString(R.string.no), dialogClickListener)
+                    .show();
+        }
     }
 
     private PoolItem poolEdit = null;
@@ -452,7 +494,7 @@ public class PoolActivity extends BaseActivity
     }
 
     public void onNext(View view) {
-        Config.write("selected_pool", selectedPool.getKey());
+        Config.write(Config.CONFIG_SELECTED_POOL, selectedPool.getKey().trim());
 
         startActivity(new Intent(PoolActivity.this, WizardSettingsActivity.class));
         //finish();
@@ -529,7 +571,7 @@ public class PoolActivity extends BaseActivity
             poolsAdapter.setPools(allPools);
             poolsAdapter.allowClick(true);
 
-            rvPools.post(() -> updateSelectedPoolLayout());
+            //rvPools.post(() -> updateSelectedPoolLayout());
         }
     }
 }
