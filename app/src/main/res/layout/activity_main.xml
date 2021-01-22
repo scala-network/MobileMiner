@@ -975,16 +975,17 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:paddingTop="10dp"
                     android:paddingStart="10dp"
                     android:paddingEnd="10dp"
+                    android:paddingBottom="10dp"
                     android:background="@drawable/corner_radius_lighter"
                     android:orientation="vertical">
 
                     <com.github.mikephil.charting.charts.LineChart
                         android:id="@+id/chart_hashrate"
                         android:layout_width="match_parent"
-                        android:layout_height="250dp"
-                        android:layout_marginTop="15dp" />
+                        android:layout_height="250dp" />
 
                 </LinearLayout>
 
@@ -999,11 +1000,23 @@
                         android:textSize="16sp"
                         android:textStyle="bold" />
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="70dp"
+                    android:paddingTop="10dp"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
+                    android:paddingBottom="10dp"
+                    android:background="@drawable/corner_radius_lighter"
+                    android:orientation="vertical">
+
                     <com.github.mikephil.charting.charts.BarChart
                         android:id="@+id/chart_temprature"
                         android:layout_width="match_parent"
-                        android:layout_marginTop="15dp"
                         android:layout_height="250dp" />
+
+                </LinearLayout>
 
                 </LinearLayout>
 

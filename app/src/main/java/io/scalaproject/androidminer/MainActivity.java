@@ -111,6 +111,9 @@ import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.LimitLine;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
@@ -166,11 +169,14 @@ public class MainActivity extends BaseActivity
     private boolean bForceMiningOnPause = false;
 
     // Graphics
+    private LineChart chartHashrate;
+    private BarChart chartTemperature;
+
     ArrayList<Entry> lValuesHr = new ArrayList<>();
     int xHr = 0;
 
-    ArrayList<Entry> lValuesTempBattery = new ArrayList<>();
-    ArrayList<Entry> lValuesTempCPU = new ArrayList<>();
+    ArrayList<BarEntry> lValuesTempBattery = new ArrayList<>();
+    ArrayList<BarEntry> lValuesTempCPU = new ArrayList<>();
     int xTemp = 0;
 
     // Settings
@@ -211,9 +217,6 @@ public class MainActivity extends BaseActivity
     }
 
     private Button btnStart;
-
-    private LineChart chartHashrate;
-    private BarChart chartTemperature;
 
     private static int m_nLastCurrentState = Config.STATE_STOPPED;
     private static int m_nCurrentState = Config.STATE_STOPPED;
@@ -567,7 +570,9 @@ public class MainActivity extends BaseActivity
         updateUI();
 
         chartHashrate = findViewById(R.id.chart_hashrate);
+        chartTemperature = findViewById(R.id.chart_temprature);
         initChartHashrate();
+        initChartTemperature();
 
         toolbar.setTitle(getWorkerName(), true);
     }
@@ -632,12 +637,66 @@ public class MainActivity extends BaseActivity
         chartHashrate.setDragDecelerationFrictionCoef(0.9f);
     }
 
-    private void resetChartHashrate() {
-        LineData data = chartHashrate.getData();
-        if(data != null && data.getDataSetCount() > 0) {
-            data.clearValues();
-            data.notifyDataChanged();
+    private void initChartTemperature() {
+        chartTemperature.getDescription().setEnabled(false);
+        chartTemperature.setTouchEnabled(true);
+        chartTemperature.setDragEnabled(true);
+        chartTemperature.setScaleEnabled(true);
+        chartTemperature.setDrawGridBackground(false);
+        chartTemperature.setHighlightPerDragEnabled(true);
+        chartTemperature.setPinchZoom(true);
+        chartTemperature.animateX(1500);
+        chartTemperature.getAxisRight().setEnabled(false);
+        //chartTemperature.setVisibleXRangeMaximum(10);
+
+        XAxis xAxis = chartTemperature.getXAxis();
+        xAxis.setEnabled(false);
+
+        Legend l = chartTemperature.getLegend();
+        l.setEnabled(false);
+
+        LimitLine ll1 = new LimitLine(nMaxBatteryTemp, "Battery");
+        ll1.setLineWidth(1f);
+        ll1.enableDashedLine(10f, 10f, 0f);
+        ll1.setLabelPosition(LimitLine.LimitLabelPosition.RIGHT_TOP);
+        ll1.setLineColor(getResources().getColor(R.color.c_red));
+
+        LimitLine ll2 = new LimitLine(nMaxCPUTemp, "CPU");
+        ll2.setLineWidth(1f);
+        ll2.enableDashedLine(10f, 10f, 0f);
+        ll2.setLabelPosition(LimitLine.LimitLabelPosition.RIGHT_TOP);
+        ll2.setTextSize(0f);
+        ll2.setLineColor(getResources().getColor(R.color.c_red));
+
+        YAxis leftAxis = chartTemperature.getAxisLeft();
+        leftAxis.setTextColor(getResources().getColor(R.color.txt_secondary));
+        leftAxis.setAxisMaximum(100f);
+        leftAxis.setAxisMinimum(0f);
+        leftAxis.setDrawZeroLine(false);
+        leftAxis.setDrawAxisLine(true);
+        leftAxis.setDrawGridLines(true);
+        leftAxis.setGranularityEnabled(false);
+
+        leftAxis.removeAllLimitLines(); // reset all limit lines to avoid overlapping lines
+        leftAxis.addLimitLine(ll1);
+        leftAxis.addLimitLine(ll2);
+
+        //chartTemperature.setDragDecelerationFrictionCoef(0.9f);
+    }
+
+    private void resetCharts() {
+        LineData dataH = chartHashrate.getData();
+        if(dataH != null && dataH.getDataSetCount() > 0) {
+            dataH.clearValues();
+            dataH.notifyDataChanged();
             chartHashrate.notifyDataSetChanged();
+        }
+
+        BarData dataT = chartTemperature.getData();
+        if(dataT != null && dataT.getDataSetCount() > 0) {
+            dataT.clearValues();
+            dataT.notifyDataChanged();
+            chartTemperature.notifyDataSetChanged();
         }
     }
 
@@ -650,7 +709,6 @@ public class MainActivity extends BaseActivity
         if (data != null && data.getDataSetCount() > 0) {
             set1 = (LineDataSet) data.getDataSetByIndex(0);
             set1.setValues(lValuesHr);
-            data = chartHashrate.getData();
             data.notifyDataChanged();
             chartHashrate.notifyDataSetChanged();
         } else {
@@ -687,6 +745,56 @@ public class MainActivity extends BaseActivity
         chartHashrate.setVisibleXRangeMaximum(10);
         chartHashrate.moveViewToX(data.getEntryCount());
         chartHashrate.invalidate();
+    }
+
+    private void addTemperaturesValue(float cpu, float battery) {
+        lValuesTempCPU.add(new BarEntry(xTemp, cpu));
+        lValuesTempBattery.add(new BarEntry(xTemp, battery));
+        xTemp++;
+
+        BarDataSet set1, set2;
+        BarData data = chartTemperature.getData();
+        if (data != null && data.getDataSetCount() > 0) {
+            set1 = (BarDataSet) data.getDataSetByIndex(0);
+            set2 = (BarDataSet) data.getDataSetByIndex(1);
+            set1.setValues(lValuesTempCPU);
+            set2.setValues(lValuesTempBattery);
+            data.notifyDataChanged();
+            chartTemperature.notifyDataSetChanged();
+        } else {
+            // create 4 DataSets
+            set1 = new BarDataSet(lValuesTempCPU, "CPU");
+            set1.setColor(Color.rgb(104, 241, 175));
+            set1.setAxisDependency(YAxis.AxisDependency.LEFT);
+
+            set2 = new BarDataSet(lValuesTempBattery, "Battery");
+            set2.setColor(Color.rgb(164, 228, 251));
+            set2.setAxisDependency(YAxis.AxisDependency.LEFT);
+
+            data = new BarData(set1, set2);
+            //data.setValueFormatter(new LargeValueFormatter());
+            //data.setValueTypeface(tfLight);
+
+            chartTemperature.setData(data);
+        }
+
+        float groupSpace = 0.06f;
+        float barSpace = 0.02f; // x2 dataset
+        float barWidth = 0.45f; // x2 dataset
+        // (0.45 + 0.02) * 2 + 0.06 = 1.00 -> interval per "group"
+
+        // specify the width each bar should have
+        data.setBarWidth(barWidth);
+
+        // restrict the x-axis range
+        //chartTemperature.getXAxis().setAxisMinimum(0);
+
+        // barData.getGroupWith(...) is a helper that calculates the width each group needs based on the provided parameters
+        //chartTemperature.getXAxis().setAxisMaximum(0 + chartTemperature.getBarData().getGroupWidth(groupSpace, barSpace) * 2);
+        chartTemperature.groupBars(0, groupSpace, barSpace);
+        chartTemperature.invalidate();
+
+        data.setHighlightEnabled(false);
     }
 
     public void showCores() {
@@ -1874,6 +1982,8 @@ public class MainActivity extends BaseActivity
         float cpuTemp = Tools.getCurrentCPUTemperature();
 
         updateTemperaturesText(cpuTemp);
+
+        addTemperaturesValue(cpuTemp, batteryTemp);
 
         if(bDisableTemperatureControl)
             return;

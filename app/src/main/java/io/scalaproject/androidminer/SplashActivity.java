@@ -17,15 +17,19 @@ public class SplashActivity extends Activity {
         SharedPreferences preferences = getSharedPreferences(getPackageName() + "_preferences", MODE_PRIVATE);
         Config.initialize(preferences);
 
-//        Config.clear(); //Uncomment to debug splashactivity
-
-        String configversion = Config.read("config_version");
+        /*String configversion = Config.read(Config.CONFIG_KEY_CONFIG_VERSION);
         if(!configversion.equals(Config.version)) {
             Config.clear();
-            Config.write("config_version", Config.version);
-        }
+            Config.write(Config.CONFIG_KEY_CONFIG_VERSION, Config.version);
+        }*/
 
         super.onCreate(savedInstanceState);
+        if ((getIntent().getFlags() & Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT) != 0) {
+            // Activity was brought to front and not created,
+            // Thus finishing this will get us to the last viewed activity
+            finish();
+            return;
+        }
 
         setContentView(R.layout.splashscreen);
 
@@ -33,8 +37,6 @@ public class SplashActivity extends Activity {
         new Handler().postDelayed(new Runnable() {
             public void run() {
                 String hide_setup_wizard = Config.read("hide_setup_wizard");
-
-                //startActivity(new Intent(SplashActivity.this, WizardHomeActivity.class));
 
                 if (hide_setup_wizard.equals("")) {
                     startActivity(new Intent(SplashActivity.this, WizardHomeActivity.class));
