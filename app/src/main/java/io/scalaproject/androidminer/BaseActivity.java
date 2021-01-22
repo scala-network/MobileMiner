@@ -5,12 +5,18 @@
 package io.scalaproject.androidminer;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
+
 import android.widget.Toast;
 
 import static io.scalaproject.androidminer.MainActivity.contextOfApplication;
 
 public abstract class BaseActivity extends AppCompatActivity {
     private static int sessionDepth = 0;
+
+    static {
+        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
+    }
 
     @Override
     protected void onStart() {

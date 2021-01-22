@@ -41,6 +41,7 @@ import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.PorterDuff;
 import android.graphics.Rect;
@@ -85,6 +86,8 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -102,11 +105,25 @@ import com.github.anastr.speedviewlib.SpeedView;
 import com.github.anastr.speedviewlib.TubeSpeedometer;
 import com.github.anastr.speedviewlib.components.Section;
 import com.github.anastr.speedviewlib.components.indicators.LineIndicator;
+import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.components.LimitLine;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.security.ProviderInstaller;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import javax.net.ssl.SSLContext;
 
 import io.scalaproject.androidminer.api.IProviderListener;
 import io.scalaproject.androidminer.api.PoolItem;
@@ -124,7 +141,7 @@ public class MainActivity extends BaseActivity
 
     private Toolbar toolbar;
 
-    private TextView tvHashrate, tvStatus, tvNbCores, tvCPUTemperature, tvBatteryTemperature, tvAcceptedShares, tvDifficulty, tvConnection, tvLog, tvStatusProgess;
+    private TextView tvHashrate, tvStatus, tvNbCores, tvCPUTemperature, tvBatteryTemperature, tvAcceptedShares, tvDifficulty, tvConnection, tvLog, tvLog2, tvStatusProgess;
     private TubeSpeedometer meterCores, meterHashrate, meterHashrate_avg, meterHashrate_max;
     private SeekBar sbCores = null;
 
@@ -147,6 +164,14 @@ public class MainActivity extends BaseActivity
     private boolean bIsRestartEvent = false;
     private boolean bIsRestartDialogShown = false;
     private boolean bForceMiningOnPause = false;
+
+    // Graphics
+    ArrayList<Entry> lValuesHr = new ArrayList<>();
+    int xHr = 0;
+
+    ArrayList<Entry> lValuesTempBattery = new ArrayList<>();
+    ArrayList<Entry> lValuesTempCPU = new ArrayList<>();
+    int xTemp = 0;
 
     // Settings
     private boolean bDisableTemperatureControl = false;
@@ -187,6 +212,8 @@ public class MainActivity extends BaseActivity
 
     private Button btnStart;
 
+    private LineChart chartHashrate;
+    private BarChart chartTemperature;
 
     private static int m_nLastCurrentState = Config.STATE_STOPPED;
     private static int m_nCurrentState = Config.STATE_STOPPED;
@@ -218,6 +245,17 @@ public class MainActivity extends BaseActivity
             // Thus finishing this will get us to the last viewed activity
             finish();
             return;
+        }
+
+        try {
+            ProviderInstaller.installIfNeeded(getApplicationContext());
+            SSLContext sslContext;
+            sslContext = SSLContext.getInstance("TLSv1.2");
+            sslContext.init(null, null, null);
+            sslContext.createSSLEngine();
+        } catch (GooglePlayServicesRepairableException | GooglePlayServicesNotAvailableException
+                | NoSuchAlgorithmException | KeyManagementException e) {
+            e.printStackTrace();
         }
 
         PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
@@ -324,6 +362,9 @@ public class MainActivity extends BaseActivity
         // Log
         tvLog = findViewById(R.id.output);
         tvLog.setMovementMethod(new ScrollingMovementMethod());
+
+        tvLog2 = findViewById(R.id.output2);
+        tvLog2.setMovementMethod(new ScrollingMovementMethod());
 
         // CPU Cores
 
@@ -525,12 +566,127 @@ public class MainActivity extends BaseActivity
 
         updateUI();
 
+        chartHashrate = findViewById(R.id.chart_hashrate);
+        initChartHashrate();
+
         toolbar.setTitle(getWorkerName(), true);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+    }
+
+    private void initChartHashrate() {
+        chartHashrate.getDescription().setEnabled(false);
+        chartHashrate.setTouchEnabled(true);
+        chartHashrate.setDragEnabled(true);
+        chartHashrate.setScaleEnabled(true);
+        chartHashrate.setDrawGridBackground(false);
+        chartHashrate.setHighlightPerDragEnabled(true);
+        chartHashrate.setPinchZoom(true);
+        chartHashrate.animateX(1500);
+        chartHashrate.getAxisRight().setEnabled(false);
+        chartHashrate.setVisibleXRangeMaximum(10);
+
+        XAxis xAxis = chartHashrate.getXAxis();
+        xAxis.setEnabled(false);
+
+        Legend l = chartHashrate.getLegend();
+        l.setEnabled(false);
+
+        /*XAxis xAxis = chart.getXAxis();
+        //xAxis.setTypeface(tfLight);
+        xAxis.setDrawLabels(false);
+        xAxis.setTextSize(11f);
+        xAxis.setTextColor(Color.WHITE);
+        xAxis.setDrawGridLines(false);
+        xAxis.setDrawAxisLine(false);*/
+
+        LimitLine ll1 = new LimitLine(150f);
+        ll1.setLineWidth(1f);
+        ll1.enableDashedLine(10f, 10f, 0f);
+        ll1.setLabelPosition(LimitLine.LimitLabelPosition.RIGHT_TOP);
+        ll1.setLineColor(getResources().getColor(R.color.txt_main));
+
+        LimitLine ll2 = new LimitLine(70f);
+        ll2.setLineWidth(1f);
+        ll2.enableDashedLine(10f, 10f, 0f);
+        ll2.setLabelPosition(LimitLine.LimitLabelPosition.RIGHT_TOP);
+        ll2.setTextSize(0f);
+        ll2.setLineColor(getResources().getColor(R.color.txt_main));
+
+        YAxis leftAxis = chartHashrate.getAxisLeft();
+        leftAxis.setTextColor(getResources().getColor(R.color.txt_secondary));
+        /*leftAxis.setAxisMaximum(200f);
+        leftAxis.setAxisMinimum(0f);*/
+        leftAxis.setDrawZeroLine(false);
+        leftAxis.setDrawAxisLine(true);
+        leftAxis.setDrawGridLines(true);
+        leftAxis.setGranularityEnabled(false);
+
+        leftAxis.removeAllLimitLines(); // reset all limit lines to avoid overlapping lines
+        leftAxis.addLimitLine(ll1);
+        leftAxis.addLimitLine(ll2);
+
+        chartHashrate.setDragDecelerationFrictionCoef(0.9f);
+    }
+
+    private void resetChartHashrate() {
+        LineData data = chartHashrate.getData();
+        if(data != null && data.getDataSetCount() > 0) {
+            data.clearValues();
+            data.notifyDataChanged();
+            chartHashrate.notifyDataSetChanged();
+        }
+    }
+
+    private void addHashrateValue(float hr) {
+        lValuesHr.add(new Entry(xHr, hr));
+        xHr++;
+
+        LineDataSet set1;
+        LineData data = chartHashrate.getData();
+        if (data != null && data.getDataSetCount() > 0) {
+            set1 = (LineDataSet) data.getDataSetByIndex(0);
+            set1.setValues(lValuesHr);
+            data = chartHashrate.getData();
+            data.notifyDataChanged();
+            chartHashrate.notifyDataSetChanged();
+        } else {
+            // Set Min/Max YAxis
+            YAxis leftAxis = chartHashrate.getAxisLeft();
+            leftAxis.setAxisMaximum(hr * 1.2f);
+            leftAxis.setAxisMinimum(hr * 0.8f);
+
+            // create a dataset and give it a type
+            set1 = new LineDataSet(lValuesHr, "Hashrate");
+
+            set1.setLabel("");
+            set1.setAxisDependency(YAxis.AxisDependency.LEFT);
+            set1.setColor(getResources().getColor(R.color.bg_green));
+            set1.setCircleColor(Color.WHITE);
+            set1.setLineWidth(2f);
+            set1.setCircleRadius(3f);
+            set1.setFillAlpha(65);
+            set1.setFillColor(getResources().getColor(R.color.bg_green));
+            set1.setHighLightColor(Color.rgb(244, 117, 117));
+            set1.setDrawCircleHole(false);
+
+            // create a data object with the data sets
+            data = new LineData(set1);
+            data.setDrawValues(false);
+
+            // set data
+            chartHashrate.setData(data);
+        }
+
+        data.setHighlightEnabled(false);
+
+        chartHashrate.setMaxVisibleValueCount(10);
+        chartHashrate.setVisibleXRangeMaximum(10);
+        chartHashrate.moveViewToX(data.getEntryCount());
+        chartHashrate.invalidate();
     }
 
     public void showCores() {
@@ -587,7 +743,7 @@ public class MainActivity extends BaseActivity
             // Payout
             String sBalance = d.miner.balance;
             sBalance = sBalance.replace("XLA", "").trim();
-            TextView tvBalance = findViewById(R.id.balance);
+            TextView tvBalance = findViewById(R.id.balance_payout);
             tvBalance.setText(sBalance);
 
             float fMinPayout;
@@ -621,7 +777,7 @@ public class MainActivity extends BaseActivity
 
             tvPayoutWidgetTitle.setVisibility(View.VISIBLE);
 
-            TextView tvBalance = findViewById(R.id.balance);
+            TextView tvBalance = findViewById(R.id.balance_payout);
             tvBalance.setVisibility(View.VISIBLE);
 
             TextView tvXLAUnit = findViewById(R.id.xlaunit);
@@ -640,7 +796,7 @@ public class MainActivity extends BaseActivity
 
                 tvPayoutWidgetTitle.setVisibility(View.INVISIBLE);
 
-                TextView tvBalance = findViewById(R.id.balance);
+                TextView tvBalance = findViewById(R.id.balance_payout);
                 tvBalance.setVisibility(View.INVISIBLE);
 
                 TextView tvXLAUnit = findViewById(R.id.xlaunit);
@@ -680,7 +836,6 @@ public class MainActivity extends BaseActivity
         llPayoutWidget.setVisibility(View.GONE);
         payoutEnabled = false;
 
-        /*
         if(doesPoolSupportAPI()) {
             if(llPayoutWidget.getVisibility() != View.VISIBLE)
                 llPayoutWidget.setVisibility(View.VISIBLE);
@@ -716,7 +871,7 @@ public class MainActivity extends BaseActivity
             enablePayoutWidget(false, "Loading...");
         }
 
-        payoutEnabled = true;*/
+        payoutEnabled = true;
     }
 
     private boolean isValidConfig() {
@@ -1242,6 +1397,8 @@ public class MainActivity extends BaseActivity
             meterTicks.setTextColor(getResources().getColor(R.color.txt_main));
 
             meterHashrate.setMaxSpeed(hrMax);
+            meterHashrate.setWithTremble(!(hrMax < 15));
+
             meterHashrate_avg.setMaxSpeed(hrMax);
             meterHashrate_max.setMaxSpeed(hrMax);
         }
@@ -1279,12 +1436,14 @@ public class MainActivity extends BaseActivity
                 @Override
                 public void run() {
                     updateHashrateMeter(fSpeed, fMax);
+                    addHashrateValue(fSpeed);
                 }
             }, 2000);
         }
         else {
             updateHashrateTicks(fMax);
             updateHashrateMeter(fSpeed, fMax);
+            addHashrateValue(fSpeed);
         }
     }
 
@@ -1376,6 +1535,13 @@ public class MainActivity extends BaseActivity
         boolean speed = false;
         if (text.contains("speed")) {
             text = text.replace("speed ", "");
+            text = text.replace("H/s ", "");
+            speed = true;
+        }
+
+        // For some reason some devices display "miner" instead of "speed"
+        if (text.contains("miner")) {
+            text = text.replace("miner ", "");
             text = text.replace("H/s ", "");
             speed = true;
         }
@@ -1520,7 +1686,7 @@ public class MainActivity extends BaseActivity
         if(text.contains(formatText)) {
             int i = text.indexOf(formatText);
             int imax = text.length();
-            textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_red)), i, imax, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_orange)), i, imax, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             textSpan.setSpan(new StyleSpan(android.graphics.Typeface.NORMAL), i, imax, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
             return textSpan;
         }
@@ -1529,7 +1695,7 @@ public class MainActivity extends BaseActivity
         if(text.contains(formatText)) {
             int i = text.indexOf(formatText);
             int imax = text.length();
-            textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_red)), i, imax, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_orange)), i, imax, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             textSpan.setSpan(new StyleSpan(android.graphics.Typeface.NORMAL), i, imax, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
             return textSpan;
         }
@@ -1538,7 +1704,7 @@ public class MainActivity extends BaseActivity
         if(text.contains(formatText)) {
             int i = text.indexOf(formatText);
             int imax = text.length();
-            textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_red)), i, imax, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_orange)), i, imax, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             textSpan.setSpan(new StyleSpan(android.graphics.Typeface.NORMAL), i, imax, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
             return textSpan;
         }
@@ -1563,6 +1729,14 @@ public class MainActivity extends BaseActivity
                 tvLog.scrollTo(0, Math.max(scrollAmount, 0));
             }
         }
+
+        if(tvLog2 != null){
+            final Layout layout = tvLog2.getLayout();
+            if(layout != null) {
+                final int scrollAmount = layout.getHeight() - tvLog2.getHeight() + tvLog2.getPaddingBottom();
+                tvLog2.scrollTo(0, Math.max(scrollAmount, 0));
+            }
+        }
     }
 
     private void appendLogOutputText(String line) {
@@ -1571,6 +1745,7 @@ public class MainActivity extends BaseActivity
             if (tvLog.getText().length() > Config.logMaxLength ){
                 String outputLog = binder.getService().getOutput();
                 tvLog.setText(formatLogOutputText(outputLog));
+                tvLog2.setText(formatLogOutputText(outputLog));
                 refresh = true;
             }
         }
@@ -1578,6 +1753,7 @@ public class MainActivity extends BaseActivity
         if(!line.equals("")) {
             String outputLog = line + System.getProperty("line.separator");
             tvLog.append(formatLogOutputText(outputLog));
+            tvLog2.append(formatLogOutputText(outputLog));
             refresh = true;
         }
 
@@ -1622,6 +1798,7 @@ public class MainActivity extends BaseActivity
                             if (state) {
                                 if (clearMinerLog) {
                                     tvLog.setText("");
+                                    tvLog2.setText("");
                                     tvAcceptedShares.setText("0");
                                     tvAcceptedShares.setTextColor(getResources().getColor(R.color.txt_inactive));
 
@@ -1953,10 +2130,11 @@ public class MainActivity extends BaseActivity
 
         notificationBuilder.setContentTitle(getResources().getString(R.string.devicemining));
         notificationBuilder.setContentIntent(pendingIntentOpen);
-        notificationBuilder.addAction(android.R.drawable.ic_menu_view,"Open", pendingIntentOpen);
-        notificationBuilder.addAction(android.R.drawable.ic_lock_power_off,"Stop", pendingIntentStop);
-        notificationBuilder.setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher_round));
-        notificationBuilder.setSmallIcon(R.drawable.ic_notification);
+        //notificationBuilder.addAction(android.R.drawable.ic_menu_view,"Open", pendingIntentOpen);
+        //notificationBuilder.addAction(android.R.drawable.ic_lock_power_off,"Stop", pendingIntentStop);
+        //notificationBuilder.setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher_round));
+        //notificationBuilder.setSmallIcon(R.drawable.ic_notification);
+        notificationBuilder.setSmallIcon(android.R.drawable.star_on);
         notificationBuilder.setOngoing(true);
         notificationBuilder.setOnlyAlertOnce(true);
         notificationBuilder.build();
@@ -1980,7 +2158,7 @@ public class MainActivity extends BaseActivity
 
         String status = m_nCurrentState == Config.STATE_MINING ? "Hashrate: " + tvHashrate.getText().toString() + " H/s" : tvStatus.getText().toString();
 
-        notificationBuilder.setSmallIcon(R.drawable.ic_launcher_round);
+        //notificationBuilder.setSmallIcon(R.drawable.ic_launcher_round);
         notificationBuilder.setContentText(status);
         notificationManager.notify(1, notificationBuilder.build());
     }
@@ -2017,7 +2195,7 @@ public class MainActivity extends BaseActivity
         Uri uri = Uri.fromFile(imagePath);
         Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
         sharingIntent.setType("image/*");
-        String shareBody = "Take a look at my Scala Mobile Miner stats!";
+        String shareBody = "Take a look at my #Scala Mobile Miner stats! I'm currently mining with my #Android device. #MobileMining $XLA @ScalaQQ";
         sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "My Scala Mobile Miner Stats");
         sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
         sharingIntent.putExtra(Intent.EXTRA_STREAM, uri);

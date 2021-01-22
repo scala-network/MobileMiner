@@ -6,6 +6,7 @@ package io.scalaproject.androidminer.api;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -65,7 +66,7 @@ public final class ProviderManager {
             }
         }
 
-        if(!selectedFound) {
+        if(!selectedFound && !mPools.isEmpty()) {
             Config.write(Config.CONFIG_SELECTED_POOL, mPools.get(0).getKey().trim());
             mPools.get(0).setIsSelected(true);
         }
@@ -98,9 +99,13 @@ public final class ProviderManager {
                 return pi;
         }
 
-        pi = mPools.get(0);
-        pi.setIsSelected(true);
-        return pi;
+        if(!mPools.isEmpty()) {
+            pi = mPools.get(0);
+            pi.setIsSelected(true);
+            return pi;
+        }
+
+        return null;
     }
 
     static public void afterSave() {
@@ -163,7 +168,9 @@ public final class ProviderManager {
                 if(pool.has("icon")) {
                     String iconURL = pool.getString("icon");
                     if (!iconURL.isEmpty()) {
-                        poolItem.setIcon(Utils.getCroppedBitmap((Utils.getBitmapFromURL(iconURL))));
+                        Bitmap icon = Utils.getBitmapFromURL(iconURL);
+                        if(icon != null)
+                            poolItem.setIcon(Utils.getCroppedBitmap(icon));
                     }
                 }
             }

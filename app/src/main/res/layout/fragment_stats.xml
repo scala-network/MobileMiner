@@ -26,33 +26,12 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/hashrate"
-                    android:gravity="start"
-                    android:textColor="@color/txt_secondary"
-                    android:layout_marginBottom="5dp"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
-
-                <ProgressBar
-                    android:id="@+id/progress_device"
-                    style="?android:attr/progressBarStyleHorizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="5dp"
-                    android:layout_marginTop="7dp"
-                    android:layout_marginBottom="3dp"
-                    android:max="100"
-                    android:progress="0"
-                    android:progressDrawable="@drawable/progressbar_rounded_yellow">
-                </ProgressBar>
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
                     android:text="@string/network"
                     android:gravity="start"
-                    android:textColor="@color/txt_secondary"
+                    android:textColor="@color/txt_headline"
                     android:layout_marginBottom="5dp"
-                    android:textSize="16sp"
+                    android:textAllCaps="true"
+                    android:textSize="14sp"
                     android:textStyle="bold" />
 
                 <LinearLayout
@@ -219,9 +198,10 @@
                     android:layout_height="wrap_content"
                     android:text="@string/pool"
                     android:gravity="start"
-                    android:textColor="@color/txt_secondary"
-                    android:textStyle="bold"
-                    android:textSize="16sp" />
+                    android:textColor="@color/txt_headline"
+                    android:textAllCaps="true"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
 
                 <Space
                     android:layout_width="0dp"
@@ -379,9 +359,10 @@
                         android:layout_height="wrap_content"
                         android:text="@string/address"
                         android:gravity="start"
-                        android:textColor="@color/txt_secondary"
-                        android:textStyle="bold"
-                        android:textSize="16sp" />
+                        android:textColor="@color/txt_headline"
+                        android:textAllCaps="true"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
 
                     <Space
                         android:layout_width="0dp"
@@ -513,8 +494,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/balance"
-                        android:textColor="@color/txt_main"
-                        android:textSize="16sp"
+                        android:textColor="@color/txt_headline"
+                        android:textAllCaps="false"
+                        android:textSize="14sp"
                         android:textStyle="bold" />
 
                     <Space

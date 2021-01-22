@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <style name="TextAppearance.Widget.Event.Toolbar.Title" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
         <!-- Text styling can be done here-->
     </style>
@@ -23,7 +23,7 @@
         <item name="textAppearanceLargePopupMenu">@style/PopupMenuTextAppearanceLarge</item>
         <item name="textAppearanceSmallPopupMenu">@style/PopupMenuTextAppearanceSmall</item>
 
-        <item name="android:colorControlActivated">@color/bg_blue</item>
+        <item name="android:colorControlActivated" tools:targetApi="lollipop">@color/bg_blue</item>
 
         <item name="android:alertDialogTheme">@style/MaterialAlertDialogCustom</item>
     </style>

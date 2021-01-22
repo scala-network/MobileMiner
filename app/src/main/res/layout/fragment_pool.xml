@@ -102,7 +102,7 @@
 			android:backgroundTint="@android:color/transparent"
 			android:backgroundTintMode="src_in"
 			app:tint="@color/btn_icon_default"
-			android:src="@drawable/ic_add_white_24dp"
+			app:srcCompat="@drawable/ic_add_white_24dp"
 			app:borderWidth="0dp"
 			app:elevation="0dp"
 			app:fabSize="normal"

@@ -437,9 +437,10 @@ public class MiningService extends Service {
                     connection = Integer.parseInt(lineCompare.substring(i, imax).trim());;
                 }
 
-            } else if (lineCompare.contains("speed")) {
+            } // For some reason some devices display "miner" instead of "speed"
+            else if (lineCompare.contains("speed")) {
                 String[] split = TextUtils.split(line, " ");
-                String tmpSpeed = split[4];
+                String tmpSpeed = lineCompare.contains("miner") ? split[9] : split[4];
                 if (tmpSpeed.equals("n/a")) {
                     tmpSpeed = split[5];
                     if (tmpSpeed.equals("n/a")) {

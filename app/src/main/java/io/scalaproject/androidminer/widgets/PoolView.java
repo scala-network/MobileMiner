@@ -81,6 +81,9 @@ public class PoolView extends LinearLayout {
 
         PoolItem poolItem = ProviderManager.getSelectedPool();
 
+        if(poolItem == null)
+            return;
+
         tvPoolName.setText(poolItem.getKey());
         tvPoolURL.setText(poolItem.getPool());
 

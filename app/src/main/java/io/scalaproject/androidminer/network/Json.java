@@ -31,7 +31,6 @@ public class Json {
 
         StringBuilder data = new StringBuilder();
         try {
-
             URL urlFetch = new URL(url);
             HttpURLConnection httpURLConnection = (HttpURLConnection) urlFetch.openConnection();
             InputStream inputStream = httpURLConnection.getInputStream();

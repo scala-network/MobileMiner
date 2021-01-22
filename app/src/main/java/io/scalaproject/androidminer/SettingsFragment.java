@@ -294,7 +294,8 @@ public class SettingsFragment extends Fragment {
 
         spPool.setSelection(Integer.parseInt(poolSelected));*/
 
-        edPort.setText(selectedPoolItem.getPort());
+        if(selectedPoolItem != null)
+            edPort.setText(selectedPoolItem.getPort());
 
         bSave.setOnClickListener(new View.OnClickListener() {
             @Override
