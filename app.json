@@ -6,8 +6,7 @@
       "port" : "3333",
       "poolType"  :  3,
       "poolUrl" : "https://pool.scalaproject.io",
-      "poolIp" : "95.111.237.231",
-      "icon" : "https://share.scalaproject.io/qhV2a/256x256.png"
+      "poolIp" : "95.111.237.231"
     },
     {
       "key" : "PoolDeMineria",
@@ -15,8 +14,7 @@
       "port" : "3333",
       "poolType"  :  3,
       "poolUrl" : "https://pooldemineria.com",
-      "poolIp" : "168.119.229.63",
-      "icon" : "https://share.scalaproject.io/D9jLY/pooldemineria-logo.jpg"
+      "poolIp" : "168.119.229.63"
     },
     {
       "key" : "GNTL",
@@ -24,8 +22,7 @@
       "port" : "40002",
       "poolType"  :  1,
       "poolUrl" : "https://xla.pool.gntl.co.uk",
-      "poolIp" : "83.151.238.34",
-      "icon" : "https://pool.gntl.co.uk/images/GNTLMiningPools.png"
+      "poolIp" : "83.151.238.34"
     },
     {
       "key" : "LuckyPool",
