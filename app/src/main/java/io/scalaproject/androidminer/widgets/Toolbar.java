@@ -121,9 +121,12 @@ public class Toolbar extends androidx.appcompat.widget.Toolbar {
         }
     }
 
+    public String getTitle() { return toolbarTitle.getText().toString(); }
+
     public final static int BUTTON_MAIN_NONE = -1;
     public final static int BUTTON_MAIN_LOGO = 0;
     public final static int BUTTON_MAIN_BACK = 1;
+    public final static int BUTTON_MAIN_CLOSE = 2;
 
     int mainButtonType = BUTTON_MAIN_LOGO;
 
@@ -139,6 +142,10 @@ public class Toolbar extends androidx.appcompat.widget.Toolbar {
                 break;
             case BUTTON_MAIN_BACK:
                 bMainIcon.setBackground(getResources().getDrawable(R.drawable.ic_arrow_back_white_24dp));
+                bMainIcon.setVisibility(View.VISIBLE);
+                break;
+            case BUTTON_MAIN_CLOSE:
+                bMainIcon.setBackground(getResources().getDrawable(R.drawable.ic_close_white_24dp));
                 bMainIcon.setVisibility(View.VISIBLE);
                 break;
             default:

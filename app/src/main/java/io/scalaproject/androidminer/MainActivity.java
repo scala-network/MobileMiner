@@ -225,7 +225,11 @@ public class MainActivity extends BaseActivity
     private NotificationManager notificationManager = null;
     private NotificationCompat.Builder notificationBuilder = null;
 
+    BottomNavigationView navigationView = null;
+
     private File imagePath = null;
+
+    private boolean isFromLogView = false;
 
     public static boolean isDeviceMiningBackground() {
         return (m_nCurrentState == Config.STATE_CALCULATING || m_nCurrentState == Config.STATE_MINING || m_nCurrentState == Config.STATE_COOLING);
@@ -280,6 +284,10 @@ public class MainActivity extends BaseActivity
 
         setContentView(R.layout.activity_main);
 
+        navigationView = findViewById(R.id.main_navigation);
+        navigationView.getMenu().getItem(0).setChecked(true);
+        navigationView.setOnNavigationItemSelectedListener(this);
+
         // Toolbar
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -288,7 +296,15 @@ public class MainActivity extends BaseActivity
         toolbar.setOnButtonListener(new Toolbar.OnButtonListener() {
             @Override
             public void onButtonMain(int type) {
-                // Main button does nothing in main view
+                switch (type) {
+                    case Toolbar.BUTTON_MAIN_CLOSE: {
+                        backHomeMenu();
+                        break;
+                    }
+                    default: {
+                        // Do nothing
+                    }
+                }
             }
 
             @Override
@@ -326,10 +342,6 @@ public class MainActivity extends BaseActivity
         toolbar.setButtonMain(Toolbar.BUTTON_MAIN_LOGO);
         toolbar.setButtonOptions(Toolbar.BUTTON_OPTIONS_SHARE);
 
-        BottomNavigationView navigationView = findViewById(R.id.main_navigation);
-        navigationView.getMenu().getItem(0).setChecked(true);
-        navigationView.setOnNavigationItemSelectedListener(this);
-
         // Open Settings the first time the app is launched
         String minersaddress =  Config.read("address");
 
@@ -351,7 +363,16 @@ public class MainActivity extends BaseActivity
         llHashrate = findViewById(R.id.layout_hashrate);
         llStatus = findViewById(R.id.layout_status);
 
-        // Controls
+        LinearLayout llViewLog = findViewById(R.id.llViewLog);
+        llViewLog.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDetailedLog();
+                navigationView.setVisibility(View.GONE);
+            }
+        });
+
+            // Controls
 
         payoutEnabled = true;
         pbPayout = findViewById(R.id.progresspayout);
@@ -582,6 +603,14 @@ public class MainActivity extends BaseActivity
         super.onDestroy();
     }
 
+    private void backHomeMenu() {
+        isFromLogView = false;
+
+        showMenuHome();
+        navigationView.setVisibility(View.VISIBLE);
+        toolbar.setButtonMain(Toolbar.BUTTON_MAIN_LOGO);
+    }
+
     private void initChartHashrate() {
         chartHashrate.getDescription().setEnabled(false);
         chartHashrate.setTouchEnabled(true);
@@ -599,14 +628,6 @@ public class MainActivity extends BaseActivity
 
         Legend l = chartHashrate.getLegend();
         l.setEnabled(false);
-
-        /*XAxis xAxis = chart.getXAxis();
-        //xAxis.setTypeface(tfLight);
-        xAxis.setDrawLabels(false);
-        xAxis.setTextSize(11f);
-        xAxis.setTextColor(Color.WHITE);
-        xAxis.setDrawGridLines(false);
-        xAxis.setDrawAxisLine(false);*/
 
         LimitLine ll1 = new LimitLine(150f);
         ll1.setLineWidth(1f);
@@ -644,33 +665,36 @@ public class MainActivity extends BaseActivity
         chartTemperature.setScaleEnabled(true);
         chartTemperature.setDrawGridBackground(false);
         chartTemperature.setHighlightPerDragEnabled(true);
-        chartTemperature.setPinchZoom(true);
+        chartTemperature.setPinchZoom(false);
         chartTemperature.animateX(1500);
         chartTemperature.getAxisRight().setEnabled(false);
         //chartTemperature.setVisibleXRangeMaximum(10);
+        chartTemperature.setAutoScaleMinMaxEnabled(true);
 
         XAxis xAxis = chartTemperature.getXAxis();
         xAxis.setEnabled(false);
 
         Legend l = chartTemperature.getLegend();
-        l.setEnabled(false);
+        l.setEnabled(true);
+        l.setTextColor(getResources().getColor(R.color.txt_main));
 
         LimitLine ll1 = new LimitLine(nMaxBatteryTemp, "Battery");
         ll1.setLineWidth(1f);
         ll1.enableDashedLine(10f, 10f, 0f);
         ll1.setLabelPosition(LimitLine.LimitLabelPosition.RIGHT_TOP);
         ll1.setLineColor(getResources().getColor(R.color.c_red));
+        ll1.setTextColor(getResources().getColor(R.color.txt_main));
 
         LimitLine ll2 = new LimitLine(nMaxCPUTemp, "CPU");
         ll2.setLineWidth(1f);
         ll2.enableDashedLine(10f, 10f, 0f);
         ll2.setLabelPosition(LimitLine.LimitLabelPosition.RIGHT_TOP);
-        ll2.setTextSize(0f);
         ll2.setLineColor(getResources().getColor(R.color.c_red));
+        ll2.setTextColor(getResources().getColor(R.color.txt_main));
 
         YAxis leftAxis = chartTemperature.getAxisLeft();
         leftAxis.setTextColor(getResources().getColor(R.color.txt_secondary));
-        leftAxis.setAxisMaximum(100f);
+        leftAxis.setAxisMaximum(80f);
         leftAxis.setAxisMinimum(0f);
         leftAxis.setDrawZeroLine(false);
         leftAxis.setDrawAxisLine(true);
@@ -714,8 +738,11 @@ public class MainActivity extends BaseActivity
         } else {
             // Set Min/Max YAxis
             YAxis leftAxis = chartHashrate.getAxisLeft();
-            leftAxis.setAxisMaximum(hr * 1.2f);
-            leftAxis.setAxisMinimum(hr * 0.8f);
+
+            //float hrMax = getMaxHr(hr);
+
+            leftAxis.setAxisMaximum(hr * 1.25f);
+            leftAxis.setAxisMinimum(hr * 0.75f);
 
             // create a dataset and give it a type
             set1 = new LineDataSet(lValuesHr, "Hashrate");
@@ -739,6 +766,12 @@ public class MainActivity extends BaseActivity
             chartHashrate.setData(data);
         }
 
+        // Set new maximum if needed
+        YAxis leftAxis = chartHashrate.getAxisLeft();
+        if(hr > leftAxis.getAxisMaximum() * 0.9) {
+            leftAxis.setAxisMaximum(hr * 1.25f);
+        }
+
         data.setHighlightEnabled(false);
 
         chartHashrate.setMaxVisibleValueCount(10);
@@ -748,6 +781,9 @@ public class MainActivity extends BaseActivity
     }
 
     private void addTemperaturesValue(float cpu, float battery) {
+        if(bDisableTemperatureControl || !isDeviceMining())
+            return;
+
         lValuesTempCPU.add(new BarEntry(xTemp, cpu));
         lValuesTempBattery.add(new BarEntry(xTemp, battery));
         xTemp++;
@@ -764,11 +800,11 @@ public class MainActivity extends BaseActivity
         } else {
             // create 4 DataSets
             set1 = new BarDataSet(lValuesTempCPU, "CPU");
-            set1.setColor(Color.rgb(104, 241, 175));
+            set1.setColor(getResources().getColor(R.color.c_blue));
             set1.setAxisDependency(YAxis.AxisDependency.LEFT);
 
             set2 = new BarDataSet(lValuesTempBattery, "Battery");
-            set2.setColor(Color.rgb(164, 228, 251));
+            set2.setColor(getResources().getColor(R.color.c_grey));
             set2.setAxisDependency(YAxis.AxisDependency.LEFT);
 
             data = new BarData(set1, set2);
@@ -785,16 +821,21 @@ public class MainActivity extends BaseActivity
 
         // specify the width each bar should have
         data.setBarWidth(barWidth);
+        data.setDrawValues(false);
+        data.setHighlightEnabled(false);
 
         // restrict the x-axis range
         //chartTemperature.getXAxis().setAxisMinimum(0);
 
         // barData.getGroupWith(...) is a helper that calculates the width each group needs based on the provided parameters
-        //chartTemperature.getXAxis().setAxisMaximum(0 + chartTemperature.getBarData().getGroupWidth(groupSpace, barSpace) * 2);
+        chartTemperature.getXAxis().setAxisMaximum(0 + chartTemperature.getBarData().getGroupWidth(groupSpace, barSpace) * set1.getEntryCount());
         chartTemperature.groupBars(0, groupSpace, barSpace);
-        chartTemperature.invalidate();
 
-        data.setHighlightEnabled(false);
+        chartTemperature.setMaxVisibleValueCount(20);
+        chartTemperature.setVisibleXRangeMaximum(20);
+        chartTemperature.moveViewToX(data.getEntryCount());
+
+        chartTemperature.invalidate();
     }
 
     public void showCores() {
@@ -1051,39 +1092,11 @@ public class MainActivity extends BaseActivity
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_home: { //Main view
-                for (Fragment fragment : getSupportFragmentManager().getFragments()) {
-                    if (fragment != null) {
-                        getSupportFragmentManager().beginTransaction().remove(fragment).commit();
-                    }
-                }
-
-                llMain.setVisibility(View.VISIBLE);
-                llLog.setVisibility(View.GONE);
-
-                toolbar.setButtonOptions(Toolbar.BUTTON_OPTIONS_SHARE);
-                toolbar.setTitle(getWorkerName(), true);
-
-                updateStatsListener();
-                updateUI();
-
+                showMenuHome();
                 break;
             }
             case R.id.menu_log: {
-                for (Fragment fragment : getSupportFragmentManager().getFragments()) {
-                    if (fragment != null) {
-                        getSupportFragmentManager().beginTransaction().remove(fragment).commit();
-                    }
-                }
-
-                llMain.setVisibility(View.GONE);
-                llLog.setVisibility(View.VISIBLE);
-
-                toolbar.setButtonOptions(Toolbar.BUTTON_OPTIONS_SHOW_CORES);
-                toolbar.setTitle(getResources().getString(R.string.mininglog), true);
-
-                updateStatsListener();
-                updateUI();
-
+                showDetailedLog();
                 break;
             }
             case R.id.menu_stats: {
@@ -1139,6 +1152,43 @@ public class MainActivity extends BaseActivity
         return true;
     }
 
+    private void showMenuHome() {
+        for (Fragment fragment : getSupportFragmentManager().getFragments()) {
+            if (fragment != null) {
+                getSupportFragmentManager().beginTransaction().remove(fragment).commit();
+            }
+        }
+
+        llMain.setVisibility(View.VISIBLE);
+        llLog.setVisibility(View.GONE);
+
+        toolbar.setButtonOptions(Toolbar.BUTTON_OPTIONS_SHARE);
+        toolbar.setTitle(getWorkerName(), true);
+
+        updateStatsListener();
+        updateUI();
+    }
+
+    private void showDetailedLog() {
+        isFromLogView = true;
+
+        for (Fragment fragment : getSupportFragmentManager().getFragments()) {
+            if (fragment != null) {
+                getSupportFragmentManager().beginTransaction().remove(fragment).commit();
+            }
+        }
+
+        llMain.setVisibility(View.GONE);
+        llLog.setVisibility(View.VISIBLE);
+
+        toolbar.setButtonMain(Toolbar.BUTTON_MAIN_CLOSE);
+        toolbar.setButtonOptions(Toolbar.BUTTON_OPTIONS_SHOW_CORES);
+        toolbar.setTitle(getResources().getString(R.string.mininglog), true);
+
+        updateStatsListener();
+        updateUI();
+    }
+
     public void updateStatsListener() {
         ProviderManager.afterSave();
         ProviderManager.request.setListener(payoutListener).start();
@@ -1151,7 +1201,11 @@ public class MainActivity extends BaseActivity
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
+        if(isFromLogView) {
+            backHomeMenu();
+        } else {
+            super.onBackPressed();
+        }
     }
 
     public void loadSettings() {
@@ -1413,6 +1467,8 @@ public class MainActivity extends BaseActivity
                 v.setKeepScreenOn(true);
             }
 
+            //resetCharts();
+
             enableSliderCores(false);
         }
         else {
@@ -1492,13 +1548,14 @@ public class MainActivity extends BaseActivity
         meterHashrate_max.setMaxSpeed(500);
     }
 
-    private void updateHashrateTicks(float fMax) {
+    private float getMaxHr(float fMaxHr) {
+        return nNbMaxCores * fMaxHr / nCores * 1.1f;
+    }
+
+    private void updateHashrateTicks(float fMaxHr) {
         SpeedView meterTicks = findViewById(R.id.meter_hashrate_ticks);
-        if(meterTicks.getTickNumber() == 0 && fMax > 0) {
-            float hrMax = nNbMaxCores * fMax / nCores;
-            if(!nCores.equals(nNbMaxCores)) {
-                hrMax = hrMax * 1.05f;
-            }
+        if(meterTicks.getTickNumber() == 0 && fMaxHr > 0) {
+            float hrMax = getMaxHr(fMaxHr);
 
             meterTicks.setMaxSpeed(hrMax);
             meterTicks.setTickNumber(10);
@@ -1983,10 +2040,10 @@ public class MainActivity extends BaseActivity
 
         updateTemperaturesText(cpuTemp);
 
-        addTemperaturesValue(cpuTemp, batteryTemp);
-
         if(bDisableTemperatureControl)
             return;
+
+        addTemperaturesValue(cpuTemp, batteryTemp);
 
         // Check if temperatures are now safe to resume mining
         if(isDeviceCooling()) {
@@ -2268,7 +2325,7 @@ public class MainActivity extends BaseActivity
 
         String status = m_nCurrentState == Config.STATE_MINING ? "Hashrate: " + tvHashrate.getText().toString() + " H/s" : tvStatus.getText().toString();
 
-        //notificationBuilder.setSmallIcon(R.drawable.ic_launcher_round);
+        notificationBuilder.setSmallIcon(R.drawable.ic_launcher_round);
         notificationBuilder.setContentText(status);
         notificationManager.notify(1, notificationBuilder.build());
     }

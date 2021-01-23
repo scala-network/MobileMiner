@@ -11,6 +11,7 @@
             android:enabled="true"
             android:title="@string/log"
             android:icon="@drawable/ic_log4"
+            android:visible="false"
             app:showAsAction="ifRoom" />
 
         <item android:id="@+id/menu_stats"
