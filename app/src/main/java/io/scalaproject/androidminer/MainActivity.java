@@ -1124,7 +1124,7 @@ public class MainActivity extends BaseActivity
                 llMain.setVisibility(View.VISIBLE);
                 llLog.setVisibility(View.GONE);
 
-                pullToRefreshHr.setEnabled(false);
+                pullToRefreshHr.setEnabled(true);
 
                 break;
             }

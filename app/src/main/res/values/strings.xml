@@ -51,7 +51,7 @@
     <string name="notavailablecustompool">Statistics are not available for custom pools</string>
     <string name="address">Address</string>
     <string name="balance">Balance</string>
-    <string name="paid">Paid</string>
+    <string name="paid">Total Paid</string>
     <string name="total">Total:</string>
     <string name="na">n/a</string>
     <string name="options">Options</string>
