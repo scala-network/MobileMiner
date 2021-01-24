@@ -1203,7 +1203,7 @@ public class MainActivity extends BaseActivity
         toolbar.setButtonMain(Toolbar.BUTTON_MAIN_CLOSE);
         toolbar.setButtonOptions(Toolbar.BUTTON_OPTIONS_SHOW_CORES);
         toolbar.setTitle(getResources().getString(R.string.mininglog), true);
-        
+
         pullToRefreshHr.setEnabled(true);
 
         updateStatsListener();

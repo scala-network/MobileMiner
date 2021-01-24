@@ -18,14 +18,21 @@
         android:id="@+id/pullToRefreshHr"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="55dp"
         android:layout_below="@+id/toolbar">
+
+        <LinearLayout
+            android:id="@+id/layout_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/bg_body"
+            android:orientation="vertical"
+            android:visibility="visible">
 
             <LinearLayout
                 android:id="@+id/layout_main"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_above="@id/main_navigation"
+                android:layout_marginBottom="55dp"
                 android:background="@color/bg_body"
                 android:orientation="vertical"
                 android:visibility="visible">
@@ -1087,42 +1094,43 @@
 
             </LinearLayout>
 
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-
-    <LinearLayout
-        android:id="@+id/layout_mining_log"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginLeft="15dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginRight="15dp"
-        android:layout_marginBottom="15dp"
-        android:layout_below="@+id/toolbar"
-        android:orientation="vertical"
-        android:visibility="gone">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:background="@drawable/corner_radius_black"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/output"
+            <LinearLayout
+                android:id="@+id/layout_mining_log"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:paddingStart="15dp"
-                android:paddingTop="5pt"
-                android:paddingEnd="15dp"
-                android:paddingBottom="5pt"
-                android:scrollbars="vertical"
-                android:textColor="@color/txt_main"
-                android:textSize="12sp" />
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginBottom="15dp"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/corner_radius_black"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/output"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:paddingStart="15dp"
+                        android:paddingTop="5pt"
+                        android:paddingEnd="15dp"
+                        android:paddingBottom="5pt"
+                        android:scrollbars="vertical"
+                        android:textColor="@color/txt_main"
+                        android:textSize="12sp" />
+
+                </LinearLayout>
+
+            </LinearLayout>
 
         </LinearLayout>
 
-    </LinearLayout>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/main_navigation"
