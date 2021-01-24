@@ -80,6 +80,7 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.fragment.app.Fragment;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -147,6 +148,7 @@ public class MainActivity extends BaseActivity
     private TextView tvHashrate, tvStatus, tvNbCores, tvCPUTemperature, tvBatteryTemperature, tvAcceptedShares, tvDifficulty, tvConnection, tvLog, tvLog2, tvStatusProgess;
     private TubeSpeedometer meterCores, meterHashrate, meterHashrate_avg, meterHashrate_max;
     private SeekBar sbCores = null;
+    private SwipeRefreshLayout pullToRefreshHr;
 
     private LinearLayout llMain, llLog, llHashrate, llStatus;
 
@@ -356,6 +358,14 @@ public class MainActivity extends BaseActivity
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new SettingsFragment(),"settings_fragment").commit();
             }
         }
+
+        pullToRefreshHr = findViewById(R.id.pullToRefreshHr);
+        pullToRefreshHr.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                showCores();
+            }
+        });
 
         // Layouts
         llMain = findViewById(R.id.layout_main);
@@ -840,6 +850,7 @@ public class MainActivity extends BaseActivity
 
     public void showCores() {
         sendInput("h");
+        pullToRefreshHr.setRefreshing(false);
     }
 
     public void startTimerTemperatures() {
@@ -1113,6 +1124,8 @@ public class MainActivity extends BaseActivity
                 llMain.setVisibility(View.VISIBLE);
                 llLog.setVisibility(View.GONE);
 
+                pullToRefreshHr.setEnabled(false);
+
                 break;
             }
             case R.id.menu_settings: {
@@ -1128,6 +1141,8 @@ public class MainActivity extends BaseActivity
                 llMain.setVisibility(View.VISIBLE);
                 llLog.setVisibility(View.GONE);
 
+                pullToRefreshHr.setEnabled(false);
+
                 break;
             }
             case R.id.menu_help: {
@@ -1142,6 +1157,8 @@ public class MainActivity extends BaseActivity
 
                 llMain.setVisibility(View.VISIBLE);
                 llLog.setVisibility(View.GONE);
+
+                pullToRefreshHr.setEnabled(false);
 
                 break;
             }
@@ -1165,6 +1182,8 @@ public class MainActivity extends BaseActivity
         toolbar.setButtonOptions(Toolbar.BUTTON_OPTIONS_SHARE);
         toolbar.setTitle(getWorkerName(), true);
 
+        pullToRefreshHr.setEnabled(true);
+
         updateStatsListener();
         updateUI();
     }
@@ -1184,6 +1203,8 @@ public class MainActivity extends BaseActivity
         toolbar.setButtonMain(Toolbar.BUTTON_MAIN_CLOSE);
         toolbar.setButtonOptions(Toolbar.BUTTON_OPTIONS_SHOW_CORES);
         toolbar.setTitle(getResources().getString(R.string.mininglog), true);
+        
+        pullToRefreshHr.setEnabled(true);
 
         updateStatsListener();
         updateUI();
