@@ -363,7 +363,13 @@ public class MainActivity extends BaseActivity
         pullToRefreshHr.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                showCores();
+                if(navigationView.getMenu().findItem(R.id.menu_home).isChecked()) {
+                    showCores();
+                } else if (navigationView.getMenu().findItem(R.id.menu_stats).isChecked()){
+                    ProviderManager.request.execute();
+                }
+
+                pullToRefreshHr.setRefreshing(false);
             }
         });
 
@@ -850,7 +856,6 @@ public class MainActivity extends BaseActivity
 
     public void showCores() {
         sendInput("h");
-        pullToRefreshHr.setRefreshing(false);
     }
 
     public void startTimerTemperatures() {

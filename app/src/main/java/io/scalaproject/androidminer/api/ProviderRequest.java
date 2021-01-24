@@ -19,6 +19,7 @@ public class ProviderRequest{
         if(mListener == listener) {
             return this;
         }
+
         mListener = listener;
 
         PoolItem pi = ProviderManager.getSelectedPool();
@@ -29,7 +30,7 @@ public class ProviderRequest{
         return this;
     }
 
-    public class ProviderTask extends TimerTask{
+    public class ProviderTask extends TimerTask {
 
         private ProviderAbstract mProvider;
 
@@ -54,6 +55,11 @@ public class ProviderRequest{
             timer = null;
             current = null;
         }
+    }
+
+    public void execute() {
+        start();
+        repeat();
     }
 
     public void start() {
