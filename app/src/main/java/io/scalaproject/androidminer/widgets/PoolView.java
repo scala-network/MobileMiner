@@ -30,7 +30,7 @@ public class PoolView extends LinearLayout {
     ImageView ivIcon;
     TextView tvPoolName;
     TextView tvPoolURL;
-    ImageButton ibOptions;
+    ImageView ivOptions;
 
     Context mContext = null;
 
@@ -70,8 +70,8 @@ public class PoolView extends LinearLayout {
         tvPoolName = findViewById(R.id.tvName);
         tvPoolURL = findViewById(R.id.tvURL);
 
-        ibOptions = findViewById(R.id.ibOptions);
-        ibOptions.setOnClickListener(new View.OnClickListener() {
+        ivOptions = findViewById(R.id.ibOptions);
+        ivOptions.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 if (onButtonListener != null) {
                     onButtonListener.onButton();

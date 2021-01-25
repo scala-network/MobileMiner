@@ -57,13 +57,14 @@
 
     </LinearLayout>
 
-    <ImageButton
+    <ImageView
         android:id="@+id/ibOptions"
-        style="?android:attr/actionOverflowButtonStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="5dp"
         android:layout_alignParentEnd="true"
         android:layout_centerInParent="true"
+        android:background="@android:color/transparent"
         app:srcCompat="@drawable/ic_arrow_right"/>
 
 </RelativeLayout>

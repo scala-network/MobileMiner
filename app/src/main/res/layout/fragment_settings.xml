@@ -104,7 +104,6 @@
                         android:id="@+id/btnPasteAddress"
                         android:layout_width="fill_parent"
                         android:layout_height="50dp"
-                        android:layout_marginEnd="5dp"
                         android:layout_weight="1"
                         android:backgroundTint="@color/bg_lighter"
                         android:text="@string/paste"
