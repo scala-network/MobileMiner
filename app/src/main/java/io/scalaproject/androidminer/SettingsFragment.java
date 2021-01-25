@@ -352,7 +352,8 @@ public class SettingsFragment extends Fragment {
                 assert main != null;
                 main.stopMining();
                 main.loadSettings();
-                main.setTitle(getResources().getString(R.string.home));
+
+                /*main.setTitle(getResources().getString(R.string.home));
 
                 if (getFragmentManager() != null) {
                     for (Fragment fragment : getFragmentManager().getFragments()) {
@@ -364,7 +365,7 @@ public class SettingsFragment extends Fragment {
                 }
 
                 BottomNavigationView nav = main.findViewById(R.id.main_navigation);
-                nav.getMenu().getItem(0).setChecked(true);
+                nav.getMenu().getItem(0).setChecked(true);*/
 
                 main.updateStartButton();
                 main.updateStatsListener();

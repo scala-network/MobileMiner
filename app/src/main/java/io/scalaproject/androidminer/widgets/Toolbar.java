@@ -161,6 +161,7 @@ public class Toolbar extends androidx.appcompat.widget.Toolbar {
     public final static int BUTTON_OPTIONS_SHARE = 1;
     public final static int BUTTON_OPTIONS_SHOW_CORES = 2;
     public final static int BUTTON_OPTIONS_STATS = 3;
+    public final static int BUTTON_OPTIONS_COPY = 4;
 
     int optionsButtonType = BUTTON_OPTIONS_NONE;
 
@@ -184,6 +185,10 @@ public class Toolbar extends androidx.appcompat.widget.Toolbar {
                 break;
             case BUTTON_OPTIONS_STATS:
                 bOptionIcon.setImageDrawable(getResources().getDrawable(R.drawable.ic_stats_online));
+                bOptionIcon.setVisibility(View.VISIBLE);
+                break;
+            case BUTTON_OPTIONS_COPY:
+                bOptionIcon.setImageDrawable(getResources().getDrawable(R.drawable.ic_copy));
                 bOptionIcon.setVisibility(View.VISIBLE);
                 break;
             default:

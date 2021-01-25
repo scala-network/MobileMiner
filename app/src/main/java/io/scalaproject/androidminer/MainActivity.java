@@ -79,6 +79,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
+import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
@@ -149,6 +150,7 @@ public class MainActivity extends BaseActivity
     private TubeSpeedometer meterCores, meterHashrate, meterHashrate_avg, meterHashrate_max;
     private SeekBar sbCores = null;
     private SwipeRefreshLayout pullToRefreshHr;
+    private NestedScrollView svLog;
 
     private LinearLayout llMain, llLog, llHashrate, llStatus;
 
@@ -333,6 +335,11 @@ public class MainActivity extends BaseActivity
 
                         break;
                     }
+                    case Toolbar.BUTTON_OPTIONS_COPY: {
+                        Utils.copyToClipboard("Mining Log", tvLog.getText().toString());
+                        Toast.makeText(contextOfApplication, "Mining Log copied.", Toast.LENGTH_SHORT).show();
+                        break;
+                    }
                     default: {
                         // Do nothing
                     }
@@ -401,7 +408,7 @@ public class MainActivity extends BaseActivity
 
         // Log
         tvLog = findViewById(R.id.output);
-        tvLog.setMovementMethod(new ScrollingMovementMethod());
+        svLog = findViewById(R.id.svLog);
 
         tvLog2 = findViewById(R.id.output2);
         tvLog2.setMovementMethod(new ScrollingMovementMethod());
@@ -1206,7 +1213,7 @@ public class MainActivity extends BaseActivity
         llLog.setVisibility(View.VISIBLE);
 
         toolbar.setButtonMain(Toolbar.BUTTON_MAIN_CLOSE);
-        toolbar.setButtonOptions(Toolbar.BUTTON_OPTIONS_SHOW_CORES);
+        toolbar.setButtonOptions(Toolbar.BUTTON_OPTIONS_COPY);
         toolbar.setTitle(getResources().getString(R.string.mininglog), true);
 
         pullToRefreshHr.setEnabled(true);
@@ -1913,12 +1920,13 @@ public class MainActivity extends BaseActivity
     }
 
     private void refreshLogOutputView() {
-        if(tvLog != null){
-            final Layout layout = tvLog.getLayout();
-            if(layout != null) {
-                final int scrollAmount = layout.getHeight() - tvLog.getHeight() + tvLog.getPaddingBottom();
-                tvLog.scrollTo(0, Math.max(scrollAmount, 0));
-            }
+        if(svLog != null){
+            svLog.post(new Runnable() {
+                @Override
+                public void run() {
+                    svLog.fullScroll(View.FOCUS_DOWN);
+                }
+            });
         }
 
         if(tvLog2 != null){
