@@ -611,12 +611,12 @@ public class MainActivity extends BaseActivity
         updateStartButton();
         resetAvgMaxHashrate();
 
-        updateUI();
-
         chartHashrate = findViewById(R.id.chart_hashrate);
         chartTemperature = findViewById(R.id.chart_temprature);
         initChartHashrate();
         initChartTemperature();
+
+        updateUI();
 
         toolbar.setTitle(getWorkerName(), true);
     }
@@ -701,20 +701,6 @@ public class MainActivity extends BaseActivity
         l.setEnabled(true);
         l.setTextColor(getResources().getColor(R.color.txt_main));
 
-        LimitLine ll1 = new LimitLine(nMaxBatteryTemp, "Battery");
-        ll1.setLineWidth(1f);
-        ll1.enableDashedLine(10f, 10f, 0f);
-        ll1.setLabelPosition(LimitLine.LimitLabelPosition.RIGHT_TOP);
-        ll1.setLineColor(getResources().getColor(R.color.c_red));
-        ll1.setTextColor(getResources().getColor(R.color.txt_main));
-
-        LimitLine ll2 = new LimitLine(nMaxCPUTemp, "CPU");
-        ll2.setLineWidth(1f);
-        ll2.enableDashedLine(10f, 10f, 0f);
-        ll2.setLabelPosition(LimitLine.LimitLabelPosition.RIGHT_TOP);
-        ll2.setLineColor(getResources().getColor(R.color.c_red));
-        ll2.setTextColor(getResources().getColor(R.color.txt_main));
-
         YAxis leftAxis = chartTemperature.getAxisLeft();
         leftAxis.setTextColor(getResources().getColor(R.color.txt_secondary));
         leftAxis.setAxisMaximum(80f);
@@ -724,26 +710,31 @@ public class MainActivity extends BaseActivity
         leftAxis.setDrawGridLines(true);
         leftAxis.setGranularityEnabled(false);
 
-        leftAxis.removeAllLimitLines(); // reset all limit lines to avoid overlapping lines
-        leftAxis.addLimitLine(ll1);
-        leftAxis.addLimitLine(ll2);
-
-        //chartTemperature.setDragDecelerationFrictionCoef(0.9f);
+        setTemperaturesChartLimits();
     }
 
     private void resetCharts() {
         LineData dataH = chartHashrate.getData();
         if(dataH != null && dataH.getDataSetCount() > 0) {
+            lValuesHr.clear();
+
             dataH.clearValues();
             dataH.notifyDataChanged();
             chartHashrate.notifyDataSetChanged();
+
+            chartHashrate.clear();
         }
 
         BarData dataT = chartTemperature.getData();
         if(dataT != null && dataT.getDataSetCount() > 0) {
+            lValuesTempBattery.clear();
+            lValuesTempCPU.clear();
+
             dataT.clearValues();
             dataT.notifyDataChanged();
             chartTemperature.notifyDataSetChanged();
+
+            chartTemperature.clear();
         }
     }
 
@@ -753,6 +744,8 @@ public class MainActivity extends BaseActivity
 
         LineDataSet set1;
         LineData data = chartHashrate.getData();
+        YAxis leftAxis = chartHashrate.getAxisLeft();
+
         if (data != null && data.getDataSetCount() > 0) {
             set1 = (LineDataSet) data.getDataSetByIndex(0);
             set1.setValues(lValuesHr);
@@ -760,9 +753,6 @@ public class MainActivity extends BaseActivity
             chartHashrate.notifyDataSetChanged();
         } else {
             // Set Min/Max YAxis
-            YAxis leftAxis = chartHashrate.getAxisLeft();
-
-            //float hrMax = getMaxHr(hr);
 
             leftAxis.setAxisMaximum(hr * 1.25f);
             leftAxis.setAxisMinimum(hr * 0.75f);
@@ -789,10 +779,13 @@ public class MainActivity extends BaseActivity
             chartHashrate.setData(data);
         }
 
-        // Set new maximum if needed
-        YAxis leftAxis = chartHashrate.getAxisLeft();
+        // Update maximum/minimum hashrate if needed
         if(hr > leftAxis.getAxisMaximum() * 0.9) {
             leftAxis.setAxisMaximum(hr * 1.25f);
+        }
+
+        if(hr < leftAxis.getAxisMinimum() * 1.1) {
+            leftAxis.setAxisMinimum(hr * 0.75f);
         }
 
         data.setHighlightEnabled(false);
@@ -803,8 +796,33 @@ public class MainActivity extends BaseActivity
         chartHashrate.invalidate();
     }
 
+    private void setTemperaturesChartLimits() {
+        YAxis leftAxis = chartTemperature.getAxisLeft();
+
+        leftAxis.removeAllLimitLines(); // reset all limit lines to avoid overlapping lines
+
+        if(!bDisableTemperatureControl) {
+            LimitLine ll1 = new LimitLine(nMaxBatteryTemp, "Battery");
+            ll1.setLineWidth(1f);
+            ll1.enableDashedLine(10f, 10f, 0f);
+            ll1.setLabelPosition(LimitLine.LimitLabelPosition.RIGHT_TOP);
+            ll1.setLineColor(getResources().getColor(R.color.c_red));
+            ll1.setTextColor(getResources().getColor(R.color.txt_main));
+
+            LimitLine ll2 = new LimitLine(nMaxCPUTemp, "CPU");
+            ll2.setLineWidth(1f);
+            ll2.enableDashedLine(10f, 10f, 0f);
+            ll2.setLabelPosition(LimitLine.LimitLabelPosition.RIGHT_TOP);
+            ll2.setLineColor(getResources().getColor(R.color.c_red));
+            ll2.setTextColor(getResources().getColor(R.color.txt_main));
+
+            leftAxis.addLimitLine(ll1);
+            leftAxis.addLimitLine(ll2);
+        }
+    }
+
     private void addTemperaturesValue(float cpu, float battery) {
-        if(bDisableTemperatureControl || !isDeviceMining())
+        if(!isDeviceMining())
             return;
 
         lValuesTempCPU.add(new BarEntry(xTemp, cpu));
@@ -1062,7 +1080,7 @@ public class MainActivity extends BaseActivity
         updatePayoutWidgetStatus();
         refreshLogOutputView();
         updateCores();
-        adjustMetricsLayout();
+        setTemperaturesChartLimits();
     }
 
     private String getWorkerName() {
@@ -1072,27 +1090,6 @@ public class MainActivity extends BaseActivity
             return "Your device";
 
         return workerName;
-    }
-
-    private void adjustMetricsLayout() {
-        Display display = getWindowManager().getDefaultDisplay();
-        Point size = new Point();
-        display.getSize(size);
-        int height = size.y;
-
-        ImageView imgAcceptedShare = findViewById(R.id.imgacceptedshare);
-        ImageView imgDifficulty = findViewById(R.id.imgdifficulty);
-        ImageView imgConnection = findViewById(R.id.imgconnection);
-
-        if(height < 2000) {
-            imgAcceptedShare.setVisibility(View.GONE);
-            imgDifficulty.setVisibility(View.GONE);
-            imgConnection.setVisibility(View.GONE);
-        } else {
-            imgAcceptedShare.setVisibility(View.VISIBLE);
-            imgDifficulty.setVisibility(View.VISIBLE);
-            imgConnection.setVisibility(View.VISIBLE);
-        }
     }
 
     public void updateStartButton() {
@@ -1286,6 +1283,8 @@ public class MainActivity extends BaseActivity
         String username = address + Config.read("usernameparameters");
 
         resetOptions();
+
+        resetCharts();
 
         loadSettings();
 
@@ -1499,8 +1498,6 @@ public class MainActivity extends BaseActivity
                 View v = findViewById(R.id.main_navigation);
                 v.setKeepScreenOn(true);
             }
-
-            //resetCharts();
 
             enableSliderCores(false);
         }
@@ -2074,10 +2071,10 @@ public class MainActivity extends BaseActivity
 
         updateTemperaturesText(cpuTemp);
 
+        addTemperaturesValue(cpuTemp, batteryTemp);
+
         if(bDisableTemperatureControl)
             return;
-
-        addTemperaturesValue(cpuTemp, batteryTemp);
 
         // Check if temperatures are now safe to resume mining
         if(isDeviceCooling()) {
