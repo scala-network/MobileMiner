@@ -45,7 +45,7 @@
         android:layout_width="24dp"
         android:layout_height="24dp"
         android:layout_marginEnd="16dp"
-        android:backgroundTint="@android:color/transparent"
+        app:backgroundTint="@android:color/transparent"
         app:iconTint="@color/c_grey"
         app:srcCompat="@drawable/ic_share" />
 

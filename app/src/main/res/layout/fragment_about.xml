@@ -23,67 +23,106 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/aboutTitle"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="5dp"
-                    android:gravity="start"
-                    android:text="@string/app_name"
+                    android:padding="10dp"
+                    android:background="@drawable/corner_radius_lighter"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="64dp"
+                        android:layout_height="64dp"
+                        android:layout_marginStart="7.5dp"
+                        android:layout_gravity="center"
+                        app:tint="@color/c_white"
+                        app:srcCompat="@drawable/ic_notification" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="10dp"
+                        android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/aboutTitle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:gravity="start"
+                        android:text="@string/app_name"
+                        android:textColor="@color/txt_headline"
+                        android:textStyle="bold"
+                        android:textAllCaps="true"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:gravity="start"
+                        android:text="@string/aboutapplication"
+                        android:textColor="@color/txt_main"
+                        android:textSize="14sp"/>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="5dp"
+                            android:gravity="start"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/build"
+                                android:textColor="@color/txt_main"
+                                android:textSize="14sp"/>
+
+                            <TextView
+                                android:id="@+id/build"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="3dp"
+                                android:gravity="start"
+                                android:text=""
+                                android:textColor="@color/txt_main"
+                                android:textSize="14sp"/>
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:text="Support"
+                    android:layout_gravity="start"
+                    android:textSize="14sp"
                     android:textColor="@color/txt_headline"
                     android:textStyle="bold"
                     android:textAllCaps="true"
-                    android:textSize="14sp" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dp"
-                    android:gravity="start"
-                    android:text="@string/aboutapplication"
-                    android:textColor="@color/txt_main"
-                    android:textSize="14sp"/>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp"
-                android:gravity="start"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/build"
-                    android:textColor="@color/c_grey"
-                    android:textSize="14sp"/>
-
-                <TextView
-                    android:id="@+id/build"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="3dp"
-                    android:gravity="start"
-                    android:text=""
-                    android:textColor="@color/c_grey"
-                    android:textSize="14sp"/>
-
-            </LinearLayout>
+                    android:layout_marginTop="15dp"/>
 
                 <Button
                     android:id="@+id/btnDebugInfo"
-                    android:layout_width="140dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="45dp"
-                    android:backgroundTint="@color/bg_lighter"
+                    app:backgroundTint="@color/bg_blue"
                     android:insetLeft="2dp"
                     android:insetRight="2dp"
-                    android:text="@string/debuginfo"
+                    android:text="Get support"
                     android:textSize="14sp"
                     android:textColor="@color/txt_button_filled"
                     android:textAllCaps="false"
                     app:cornerRadius="5dp"
-                    app:iconPadding="0dp"
-                    app:icon="@drawable/ic_copy"
+                    app:iconPadding="10dp"
+                    app:icon="@drawable/ic_support"
                     app:iconTint="@color/btn_icon_default"/>
 
                 <TextView
@@ -96,7 +135,7 @@
                     android:textColor="@color/txt_headline"
                     android:textStyle="bold"
                     android:textAllCaps="true"
-                    android:layout_marginTop="20sp"/>
+                    android:layout_marginTop="15dp"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -261,7 +300,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginTop="15dp"
                     android:layout_marginBottom="5dp"
                     android:orientation="horizontal">
 
@@ -279,7 +318,7 @@
                         android:id="@+id/btnDonationsHelp"
                         android:layout_width="24dp"
                         android:layout_height="24dp"
-                        android:backgroundTint="@android:color/transparent"
+                        app:backgroundTint="@android:color/transparent"
                         app:cornerRadius="5dp"
                         app:icon="@drawable/ic_help"
                         app:iconGravity="textStart"
@@ -297,7 +336,7 @@
                         android:id="@+id/btnDonateBTC"
                         android:layout_width="100dp"
                         android:layout_height="45dp"
-                        android:backgroundTint="@color/bg_lighter"
+                        app:backgroundTint="@color/bg_lighter"
                         android:insetLeft="2dp"
                         android:insetRight="2dp"
                         android:text="@string/btc"
@@ -312,7 +351,7 @@
                         android:id="@+id/btnDonateETH"
                         android:layout_width="100dp"
                         android:layout_height="45dp"
-                        android:backgroundTint="@color/bg_lighter"
+                        app:backgroundTint="@color/bg_lighter"
                         android:insetLeft="2dp"
                         android:insetRight="2dp"
                         android:text="@string/eth"
@@ -327,7 +366,7 @@
                         android:id="@+id/btnDonateXLA"
                         android:layout_width="100dp"
                         android:layout_height="45dp"
-                        android:backgroundTint="@color/bg_lighter"
+                        app:backgroundTint="@color/bg_lighter"
                         android:insetLeft="2dp"
                         android:insetRight="2dp"
                         android:text="@string/xla"
@@ -350,7 +389,7 @@
                     android:textColor="@color/txt_headline"
                     android:textStyle="bold"
                     android:textAllCaps="true"
-                    android:layout_marginTop="20sp"/>
+                    android:layout_marginTop="15dp"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"

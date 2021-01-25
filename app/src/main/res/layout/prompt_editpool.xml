@@ -96,7 +96,7 @@
                     android:layout_height="55dp"
                     android:layout_marginTop="4dp"
                     android:layout_gravity="start"
-                    android:backgroundTint="@color/btn_bg_default"
+                    app:backgroundTint="@color/btn_bg_default"
                     android:insetLeft="2dp"
                     android:insetRight="2dp"
                     android:text="Upload"
