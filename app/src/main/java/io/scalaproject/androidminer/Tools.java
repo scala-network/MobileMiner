@@ -20,7 +20,7 @@
 //
 // Please see the included LICENSE file for more information.
 //
-// Copyright (c) 2020, Scala
+// Copyright (c) 2021, Scala
 //
 // Please see the included LICENSE file for more information.
 
@@ -28,14 +28,11 @@ package io.scalaproject.androidminer;
 
 import android.content.Context;
 import android.os.Build;
-import android.os.StrictMode;
 import android.text.TextUtils;
 import android.util.Log;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;

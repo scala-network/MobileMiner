@@ -1,8 +1,9 @@
-// Copyright (c) 2020, Scala
+// Copyright (c) 2021, Scala
 //
 // Please see the included LICENSE file for more information.
 
 package io.scalaproject.androidminer;
+
 import android.app.Activity;
 import android.content.ClipData;
 import android.content.ClipboardManager;

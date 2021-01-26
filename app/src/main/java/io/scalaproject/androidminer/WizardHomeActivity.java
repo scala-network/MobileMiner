@@ -1,4 +1,4 @@
-// Copyright (c) 2020, Scala
+// Copyright (c) 2021, Scala
 //
 // Please see the included LICENSE file for more information.
 
@@ -7,7 +7,6 @@ package io.scalaproject.androidminer;
 import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.Spanned;

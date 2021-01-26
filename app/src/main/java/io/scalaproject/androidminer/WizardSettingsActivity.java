@@ -1,4 +1,4 @@
-// Copyright (c) 2020, Scala
+// Copyright (c) 2021, Scala
 //
 // Please see the included LICENSE file for more information.
 
@@ -12,7 +12,6 @@ import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import io.scalaproject.androidminer.api.ProviderManager;
 import io.scalaproject.androidminer.widgets.Toolbar;
 
 public class WizardSettingsActivity extends BaseActivity {

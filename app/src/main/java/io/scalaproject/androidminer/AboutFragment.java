@@ -2,7 +2,7 @@
 //
 // Please see the included LICENSE file for more information.
 //
-// Copyright (c) 2020, Scala
+// Copyright (c) 2021, Scala
 //
 // Please see the included LICENSE file for more information.
 
@@ -22,12 +22,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Locale;
-import java.util.Map;
 
 public class AboutFragment extends Fragment {
     @Nullable

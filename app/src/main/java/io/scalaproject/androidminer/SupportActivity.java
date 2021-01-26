@@ -1,4 +1,4 @@
-// Copyright (c) 2020, Scala
+// Copyright (c) 2021, Scala
 //
 // Please see the included LICENSE file for more information.
 
@@ -7,7 +7,6 @@ package io.scalaproject.androidminer;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.text.method.MovementMethod;
 import android.text.method.ScrollingMovementMethod;
 import android.view.View;
 import android.widget.Button;
@@ -15,14 +14,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
-import io.scalaproject.androidminer.api.ProviderManager;
 import io.scalaproject.androidminer.widgets.Toolbar;
 
 public class SupportActivity extends BaseActivity {

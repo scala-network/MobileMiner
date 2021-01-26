@@ -1,22 +1,13 @@
-// Copyright (c) 2020, Scala
+// Copyright (c) 2021, Scala
 //
 // Please see the included LICENSE file for more information.
 
 package io.scalaproject.androidminer;
 
-import android.app.Dialog;
 import android.content.Intent;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
-import android.text.SpannableString;
-import android.text.Spanned;
-import android.text.TextPaint;
-import android.text.method.LinkMovementMethod;
-import android.text.style.ClickableSpan;
 import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
 
 public class WizardVaultActivity extends BaseActivity {
     @Override
