@@ -1022,15 +1022,19 @@ public class MainActivity extends BaseActivity
     private void updatePayoutWidgetStatus() {
         LinearLayout llPayoutWidget = findViewById(R.id.layout_payout);
         llPayoutWidget.setVisibility(View.GONE);
+
+        TextView tvPayout = findViewById(R.id.payout);
+        tvPayout.setVisibility(View.GONE);
+
         payoutEnabled = false;
 
         if(doesPoolSupportAPI()) {
-            if(llPayoutWidget.getVisibility() != View.VISIBLE)
-                llPayoutWidget.setVisibility(View.VISIBLE);
+            tvPayout.setVisibility(View.VISIBLE);
+            llPayoutWidget.setVisibility(View.VISIBLE);
         }
         else {
-            if(llPayoutWidget.getVisibility() != View.GONE)
-                llPayoutWidget.setVisibility(View.GONE);
+            tvPayout.setVisibility(View.GONE);
+            llPayoutWidget.setVisibility(View.GONE);
 
             return;
         }
