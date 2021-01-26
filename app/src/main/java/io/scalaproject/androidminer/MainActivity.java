@@ -35,6 +35,7 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
@@ -123,6 +124,7 @@ import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.security.ProviderInstaller;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -645,6 +647,8 @@ public class MainActivity extends BaseActivity
         chartHashrate.animateX(1500);
         chartHashrate.getAxisRight().setEnabled(false);
         chartHashrate.setVisibleXRangeMaximum(10);
+        chartHashrate.setNoDataText("No chart data.");
+        chartHashrate.setNoDataTextColor(getResources().getColor(R.color.txt_inactive));
 
         XAxis xAxis = chartHashrate.getXAxis();
         xAxis.setEnabled(false);
@@ -693,6 +697,8 @@ public class MainActivity extends BaseActivity
         chartTemperature.getAxisRight().setEnabled(false);
         //chartTemperature.setVisibleXRangeMaximum(10);
         chartTemperature.setAutoScaleMinMaxEnabled(true);
+        chartTemperature.setNoDataText("No chart data.");
+        chartTemperature.setNoDataTextColor(getResources().getColor(R.color.txt_inactive));
 
         XAxis xAxis = chartTemperature.getXAxis();
         xAxis.setEnabled(false);
@@ -958,14 +964,14 @@ public class MainActivity extends BaseActivity
     }
 
     public void enablePayoutWidget(boolean enable, String text) {
-        TextView tvPayoutWidgetTitle = findViewById(R.id.payoutgoal);
+        //TextView tvPayoutWidgetTitle = findViewById(R.id.payoutgoal);
         TextView tvMessage = findViewById(R.id.payoutmessage);
 
         if (enable) {
-            if(tvPayoutWidgetTitle.getVisibility() == View.VISIBLE)
+            /*if(tvPayoutWidgetTitle.getVisibility() == View.VISIBLE)
                 return;
 
-            tvPayoutWidgetTitle.setVisibility(View.VISIBLE);
+            tvPayoutWidgetTitle.setVisibility(View.VISIBLE);*/
 
             TextView tvBalance = findViewById(R.id.balance_payout);
             tvBalance.setVisibility(View.VISIBLE);
@@ -982,22 +988,19 @@ public class MainActivity extends BaseActivity
             tvMessage.setVisibility(View.GONE);
         }
         else {
-            if(tvPayoutWidgetTitle.getVisibility() != View.INVISIBLE) {
+            //tvPayoutWidgetTitle.setVisibility(View.INVISIBLE);
 
-                tvPayoutWidgetTitle.setVisibility(View.INVISIBLE);
+            TextView tvBalance = findViewById(R.id.balance_payout);
+            tvBalance.setVisibility(View.INVISIBLE);
 
-                TextView tvBalance = findViewById(R.id.balance_payout);
-                tvBalance.setVisibility(View.INVISIBLE);
+            TextView tvXLAUnit = findViewById(R.id.xlaunit);
+            tvXLAUnit.setVisibility(View.INVISIBLE);
 
-                TextView tvXLAUnit = findViewById(R.id.xlaunit);
-                tvXLAUnit.setVisibility(View.INVISIBLE);
+            TextView tvPercentage = findViewById(R.id.percentage);
+            tvPercentage.setVisibility(View.INVISIBLE);
 
-                TextView tvPercentage = findViewById(R.id.percentage);
-                tvPercentage.setVisibility(View.INVISIBLE);
-
-                TextView tvPercentageUnit = findViewById(R.id.percentageunit);
-                tvPercentageUnit.setVisibility(View.INVISIBLE);
-            }
+            TextView tvPercentageUnit = findViewById(R.id.percentageunit);
+            tvPercentageUnit.setVisibility(View.INVISIBLE);
 
             pbPayout.setProgress(0);
             pbPayout.setMax(100);
@@ -1307,37 +1310,30 @@ public class MainActivity extends BaseActivity
     }
 
     private void askToForceMining() {
-        final Dialog dialog = new Dialog(MainActivity.this);
-        dialog.setContentView(R.layout.force_mining);
-        dialog.setCancelable(false);
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(contextOfApplication, R.style.MaterialAlertDialogCustom);
+        builder.setTitle(getString(R.string.confirmstartmining))
+                .setMessage(getString(R.string.deviceonbattery))
+                .setCancelable(true)
+                .setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        bForceMiningOnPause = true;
 
-        Button btnYes = dialog.findViewById(R.id.btnStopMiningYes);
-        btnYes.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                bForceMiningOnPause = true;
-
-                if(isDevicePaused()) {
-                    clearMinerLog = false;
-                    resumeMiner();
-                }
-                else
-                    startMining();
-
-                dialog.dismiss();
-            }
-        });
-
-        Button btnNo = dialog.findViewById(R.id.btnStopMiningNo);
-        btnNo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                bForceMiningOnPause = false;
-                dialog.dismiss();
-            }
-        });
-
-        dialog.show();
+                        if(isDevicePaused()) {
+                            clearMinerLog = false;
+                            resumeMiner();
+                        }
+                        else
+                            startMining();
+                    }
+                })
+                .setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        bForceMiningOnPause = false;
+                    }
+                })
+                .show();
     }
 
     private void resetOptions() {
@@ -1917,7 +1913,10 @@ public class MainActivity extends BaseActivity
     }
 
     private void refreshLogOutputView() {
-        if(svLog != null){
+        LinearLayout llNoActivity = findViewById(R.id.llNoActivity);
+        llNoActivity.setVisibility(tvLog.getText().toString().isEmpty() ? View.VISIBLE : View.GONE);
+
+        if(svLog != null) {
             svLog.post(new Runnable() {
                 @Override
                 public void run() {
@@ -1926,7 +1925,10 @@ public class MainActivity extends BaseActivity
             });
         }
 
-        if(tvLog2 != null){
+        if(tvLog2 != null) {
+            TextView tvNoActivity = findViewById(R.id.tvNoActivity);
+            tvNoActivity.setVisibility(tvLog2.getText().toString().isEmpty() ? View.VISIBLE : View.GONE);
+
             final Layout layout = tvLog2.getLayout();
             if(layout != null) {
                 final int scrollAmount = layout.getHeight() - tvLog2.getHeight() + tvLog2.getPaddingBottom();
@@ -1936,13 +1938,11 @@ public class MainActivity extends BaseActivity
     }
 
     private void appendLogOutputText(String line) {
-        boolean refresh = false;
-        if(binder != null){
+        if(binder != null) {
             if (tvLog.getText().length() > Config.logMaxLength ){
                 String outputLog = binder.getService().getOutput();
                 tvLog.setText(formatLogOutputText(outputLog));
                 tvLog2.setText(formatLogOutputText(outputLog));
-                refresh = true;
             }
         }
 
@@ -1950,12 +1950,9 @@ public class MainActivity extends BaseActivity
             String outputLog = line + System.getProperty("line.separator");
             tvLog.append(formatLogOutputText(outputLog));
             tvLog2.append(formatLogOutputText(outputLog));
-            refresh = true;
         }
 
-        if(refresh) {
-            refreshLogOutputView();
-        }
+        refreshLogOutputView();
     }
 
     private ServiceConnection serverConnection = new ServiceConnection() {

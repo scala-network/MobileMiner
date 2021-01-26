@@ -7,6 +7,7 @@ package io.scalaproject.androidminer;
 import android.Manifest;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
@@ -22,6 +23,7 @@ import android.widget.Toast;
 
 import androidx.core.content.ContextCompat;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputLayout;
 
 import io.scalaproject.androidminer.api.ProviderManager;
@@ -167,30 +169,19 @@ public class WizardAddressActivity extends BaseActivity {
     }
 
     public void onMineScala() {
-        final Dialog dialog = new Dialog(this);
-        dialog.setContentView(R.layout.mine_scala);
-        dialog.setCancelable(false);
-
-        Button btnYes = dialog.findViewById(R.id.btnYes);
-        btnYes.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                View view2 = findViewById(android.R.id.content).getRootView();
-                TextView tvAddress = view2.findViewById(R.id.addressWizard);
-                tvAddress.setText(Utils.SCALA_XLA_ADDRESS);
-
-                dialog.dismiss();
-            }
-        });
-
-        Button btnNo = dialog.findViewById(R.id.btnNo);
-        btnNo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
-
-        dialog.show();
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(WizardAddressActivity.this, R.style.MaterialAlertDialogCustom);
+        builder.setTitle(getString(R.string.supporttheproject))
+                .setMessage(getString(R.string.minetoscala))
+                .setCancelable(true)
+                .setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        View view2 = findViewById(android.R.id.content).getRootView();
+                        TextView tvAddress = view2.findViewById(R.id.addressWizard);
+                        tvAddress.setText(Utils.SCALA_XLA_ADDRESS);
+                    }
+                })
+                .setNegativeButton(getString(R.string.no), null)
+                .show();
     }
 }

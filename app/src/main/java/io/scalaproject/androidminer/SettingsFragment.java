@@ -10,6 +10,7 @@ package io.scalaproject.androidminer;
 
 import android.Manifest;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
@@ -39,6 +40,7 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputLayout;
 
 import io.scalaproject.androidminer.api.PoolItem;
@@ -398,28 +400,18 @@ public class SettingsFragment extends Fragment {
         btnMineScala.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final Dialog dialog = new Dialog(getContext());
-                dialog.setContentView(R.layout.mine_scala);
-                dialog.setCancelable(false);
-
-                Button btnYes = dialog.findViewById(R.id.btnYes);
-                btnYes.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        edAddress.setText(Utils.SCALA_XLA_ADDRESS);
-                        dialog.dismiss();
-                    }
-                });
-
-                Button btnNo = dialog.findViewById(R.id.btnNo);
-                btnNo.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        dialog.dismiss();
-                    }
-                });
-
-                dialog.show();
+                MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getContext(), R.style.MaterialAlertDialogCustom);
+                builder.setTitle(getString(R.string.supporttheproject))
+                        .setMessage(getString(R.string.minetoscala))
+                        .setCancelable(true)
+                        .setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                edAddress.setText(Utils.SCALA_XLA_ADDRESS);
+                            }
+                        })
+                        .setNegativeButton(getString(R.string.no), null)
+                        .show();
             }
         });
 
