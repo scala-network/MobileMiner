@@ -507,54 +507,49 @@ public class MainActivity extends BaseActivity
                     if(bIsRestartDialogShown)
                         return;
 
-                    final Dialog dialog = new Dialog(MainActivity.this);
-                    dialog.setContentView(R.layout.stop_mining);
-                    dialog.setCancelable(false);
-
-                    Button btnYes = dialog.findViewById(R.id.btnStopMiningYes);
-                    btnYes.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            nCores = sbCores.getProgress();
-                            Config.write("cores", Integer.toString(nCores));
-
-                            bIsRestartEvent = true;
-
-                            MainActivity.this.stopMining(); // Stop mining
-
-                            // Start miner with small delay
-                            new Handler().postDelayed(new Runnable() {
+                    MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(contextOfApplication, R.style.MaterialAlertDialogCustom);
+                    builder.setTitle(getString(R.string.stopmining))
+                            .setMessage(getString(R.string.newparametersapplied))
+                            .setCancelable(true)
+                            .setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
                                 @Override
-                                public void run() {
-                                    MainActivity.this.startMining(); // Start mining
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    nCores = sbCores.getProgress();
+                                    Config.write("cores", Integer.toString(nCores));
+
+                                    bIsRestartEvent = true;
+
+                                    MainActivity.this.stopMining(); // Stop mining
+
+                                    // Start miner with small delay
+                                    new Handler().postDelayed(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            MainActivity.this.startMining(); // Start mining
+                                        }
+                                    }, 1000);
+
+                                    updateCores();
+
+                                    bIsRestartDialogShown = false;
                                 }
-                            }, 1000);
+                            })
+                            .setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    runOnUiThread(new Runnable() {
+                                        public void run() {
+                                            bIgnoreCPUCoresEvent = true;
+                                            sbCores.setProgress(nCores);
+                                            bIgnoreCPUCoresEvent = false;
+                                        }
+                                    });
 
-                            updateCores();
-
-                            dialog.dismiss();
-                            bIsRestartDialogShown = false;
-                        }
-                    });
-
-                    Button btnNo = dialog.findViewById(R.id.btnStopMiningNo);
-                    btnNo.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            runOnUiThread(new Runnable() {
-                                public void run() {
-                                    bIgnoreCPUCoresEvent = true;
-                                    sbCores.setProgress(nCores);
-                                    bIgnoreCPUCoresEvent = false;
+                                    bIsRestartDialogShown = false;
                                 }
-                            });
+                            })
+                            .show();
 
-                            dialog.dismiss();
-                            bIsRestartDialogShown = false;
-                        }
-                    });
-
-                    dialog.show();
                     bIsRestartDialogShown = true;
                 }
                 else {

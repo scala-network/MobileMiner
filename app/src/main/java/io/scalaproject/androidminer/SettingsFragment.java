@@ -17,6 +17,7 @@ import android.os.Build;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.Html;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -264,9 +265,18 @@ public class SettingsFragment extends Fragment {
             public void onClick(View v) {
                 boolean checked = ((Switch)v).isChecked();
                 if (checked) {
-                    // inflate the layout of the popup window
-                    View popupView = inflater.inflate(R.layout.warning_amayc, null);
-                    Utils.showPopup(v, inflater, popupView);
+                    MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getActivity(), R.style.MaterialAlertDialogCustom);
+                    builder.setTitle("Warning")
+                            .setMessage(Html.fromHtml(getString(R.string.temp_control_warning)))
+                            .setCancelable(false)
+                            .setPositiveButton(getString(R.string.yes), null)
+                            .setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    swDisableTempControl.setChecked(false);
+                                }
+                            })
+                            .show();
                 }
 
                 enableAmaycControl(!checked);

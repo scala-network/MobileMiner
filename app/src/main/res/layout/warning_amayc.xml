@@ -16,8 +16,8 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="5dip"
             android:gravity="start"
-            android:text="@string/warning"
-            android:textColor="@color/c_yellow"
+            android:text="Temperature Control"
+            android:textColor="@color/txt_headline"
             android:textStyle="bold"
             android:textSize="14sp" />
 
@@ -28,16 +28,7 @@
             android:layout_marginBottom="10dip"
             android:textColor="@color/txt_main"
             android:textSize="12sp"
-            android:text="@string/temp_control_warning" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:textColor="@color/txt_main"
-            android:textSize="12sp"
-            android:textStyle="bold"
-            android:text="@string/temp_control_ownrisks" />
+            android:text="@string/temp_control_warning_helper" />
 
     </LinearLayout>
 
