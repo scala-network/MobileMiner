@@ -820,7 +820,6 @@
                                         android:id="@+id/xlaunit"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:layout_marginEnd="5dp"
                                         android:gravity="start"
                                         android:text="@string/xla"
                                         android:textColor="@color/txt_main"
@@ -886,11 +885,21 @@
                                         android:textSize="12sp" />
 
                                     <TextView
+                                        android:id="@+id/tvPayoutGoal"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_marginStart="5dp"
+                                        android:layout_marginEnd="3dp"
                                         android:gravity="center"
                                         android:text="-"
+                                        android:textColor="@color/txt_main"
+                                        android:textSize="12sp" />
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:gravity="start"
+                                        android:text="@string/xla"
                                         android:textColor="@color/txt_main"
                                         android:textSize="12sp" />
 
@@ -899,6 +908,7 @@
                                         android:layout_height="14dp"
                                         android:layout_marginStart="5dp"
                                         android:layout_gravity="center"
+                                        android:onClick="onEditPayoutGoal"
                                         android:tint="@color/btn_icon_default"
                                         app:srcCompat="@drawable/ic_edit" />
 

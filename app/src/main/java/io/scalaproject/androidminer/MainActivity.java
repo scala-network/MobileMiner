@@ -64,9 +64,11 @@ import android.text.style.ForegroundColorSpan;
 import android.text.style.StyleSpan;
 import android.util.Log;
 import android.view.Display;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -168,6 +170,7 @@ public class MainActivity extends BaseActivity
 
     private MiningService.MiningServiceBinder binder;
     private boolean bPayoutDataReceived = false;
+    private float fMinPoolPayout = -1.0f;
 
     private boolean bIgnoreCPUCoresEvent = false;
     private boolean bIsRestartEvent = false;
@@ -375,7 +378,7 @@ public class MainActivity extends BaseActivity
                 if(navigationView.getMenu().findItem(R.id.menu_home).isChecked()) {
                     showCores();
                 } else if (navigationView.getMenu().findItem(R.id.menu_stats).isChecked()){
-                    ProviderManager.request.execute();
+                    updateStatsListener();
                 }
 
                 pullToRefreshHr.setRefreshing(false);
@@ -921,6 +924,45 @@ public class MainActivity extends BaseActivity
         }
     }
 
+    public void onEditPayoutGoal(View view) {
+        MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this, R.style.MaterialAlertDialogCustom);
+        LayoutInflater li = LayoutInflater.from(alertDialogBuilder.getContext());
+        View promptsView = li.inflate(R.layout.prompt_edit_payout_goal, null);
+        alertDialogBuilder.setView(promptsView);
+
+        EditText edMiningGoal = promptsView.findViewById(R.id.mininggoal);
+
+        if (!Config.read("mininggoal").isEmpty()) {
+            edMiningGoal.setText(Config.read("mininggoal"));
+        } else {
+            edMiningGoal.setText(String.valueOf(Math.round(fMinPoolPayout)));
+        }
+
+        // set dialog message
+        alertDialogBuilder
+                .setTitle("Payout Goal")
+                .setCancelable(false)
+                .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        String mininggoal = edMiningGoal.getText().toString().trim();
+                        if(!mininggoal.isEmpty()) {
+                            Config.write("mininggoal", mininggoal);
+                        }
+
+                        Utils.hideKeyboardFrom(contextOfApplication, promptsView);
+                        updateStatsListener();
+                    }
+                })
+                .setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        Utils.hideKeyboardFrom(contextOfApplication, promptsView);
+                    }
+                });
+
+
+        alertDialogBuilder.show();
+    }
+
     private void updatePayoutWidget(ProviderData d) {
         if(d.isNew) {
             enablePayoutWidget(false, "");
@@ -938,10 +980,14 @@ public class MainActivity extends BaseActivity
             tvBalance.setText(sBalance);
 
             float fMinPayout;
-            if(Config.read("mininggoal").equals(""))
+            if(Config.read("mininggoal").equals("")) {
                 fMinPayout = Utils.convertStringToFloat(d.pool.minPayout);
+            }
             else
                 fMinPayout = Utils.convertStringToFloat(Config.read("mininggoal").trim());
+
+            TextView tvPayoutGoal = findViewById(R.id.tvPayoutGoal);
+            tvPayoutGoal.setText(String.valueOf(Math.round(fMinPayout)));
 
             float fBalance = Utils.convertStringToFloat(sBalance);
             if (fBalance > 0 && fMinPayout > 0) {

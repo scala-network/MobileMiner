@@ -162,6 +162,11 @@ public final class Utils {
         return bitmap;
     }
 
+    static public void hideKeyboardFrom(Context context, View view) {
+        InputMethodManager imm = (InputMethodManager) context.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
+
     static public void hideKeyboard(Activity act) {
         if (act == null) return;
         if (act.getCurrentFocus() == null) {
