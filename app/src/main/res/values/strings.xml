@@ -102,7 +102,7 @@
     <string name="donationadresseth_copied">ETH Donation Address copied.</string>
     <string name="donationadressxla_copied">XLA Donation Address copied.</string>
     <string name="statictempcontrol">Switched to static temperature control.</string>
-    <string name="debuginfo">Debug Info</string>
+    <string name="debuginfo">Copy Debug Info</string>
     <string name="debuginfo_copied">Debug Information copied.</string>
     <string name="pooloptions">Optional</string>
     <string name="usernameparametershint">Username parameters</string>

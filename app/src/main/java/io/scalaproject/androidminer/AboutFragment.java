@@ -132,28 +132,7 @@ public class AboutFragment extends Fragment {
             }
         });
 
-        StringBuilder cpuinfo = new StringBuilder(Config.read("CPUINFO").trim());
-        if(cpuinfo.length() == 0) {
-            try {
-                Map<String, String> m = Tools.getCPUInfo();
-
-                cpuinfo = new StringBuilder("ABI: " + Tools.getABI() + "\n");
-                for (Map.Entry<String, String> pair : m.entrySet()) {
-                    cpuinfo.append(pair.getKey()).append(": ").append(pair.getValue()).append("\n");
-                }
-            } catch (Exception e) {
-                cpuinfo = new StringBuilder();
-            }
-
-            Config.write("CPUINFO", cpuinfo.toString().trim());
-        }
-
-        // Convert build time to readable date
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(BuildConfig.BUILD_TIME);
-        String build_time = DateFormat.getDateInstance(DateFormat.LONG).format(calendar.getTime());
-
-        tvBuild.setText(BuildConfig.VERSION_NAME + " (" + build_time + ")");
+        tvBuild.setText(BuildConfig.VERSION_NAME + " (" + Utils.getBuildTime() + ")");
 
         tvScala.setText(Html.fromHtml(getString(R.string.ScalaLink)));
         tvScala.setMovementMethod(LinkMovementMethod.getInstance());
@@ -170,21 +149,12 @@ public class AboutFragment extends Fragment {
         tvFontAwesome.setText(Html.fromHtml(getString(R.string.FontAwesomeLink)));
         tvFontAwesome.setMovementMethod(LinkMovementMethod.getInstance());
 
-        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy hh:mm a", Locale.ENGLISH);
-        String build_time_debug = formatter.format(calendar.getTime());
-
-        String sDebugInfo = "Version Code: " + BuildConfig.VERSION_CODE + "\n" +
-                "Version Name: " + BuildConfig.VERSION_NAME + "\n" +
-                "Build Time: " + build_time_debug + "\n\n" +
-                "Device Name: " + Tools.getDeviceName() + "\n" +
-                "CPU Info: " + cpuinfo;
-
-        Button btnDebugInfo = view.findViewById(R.id.btnDebugInfo);
-        btnDebugInfo.setOnClickListener(new View.OnClickListener() {
+        Button btnGetSupport = view.findViewById(R.id.btnGetSupport);
+        btnGetSupport.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Utils.copyToClipboard("Scala Miner Debug Info", sDebugInfo);
-                Toast.makeText(getContext(), getResources().getString(R.string.debuginfo_copied), Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getActivity(), SupportActivity.class);
+                startActivity(intent);
             }
         });
 

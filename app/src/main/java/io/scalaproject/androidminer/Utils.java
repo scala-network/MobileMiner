@@ -246,4 +246,11 @@ public final class Utils {
     static public int getDimPixels(View v, int dp) {
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, v.getResources().getDisplayMetrics());
     }
+
+    static public String getBuildTime() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(BuildConfig.BUILD_TIME);
+        String build_time = DateFormat.getDateInstance(DateFormat.LONG).format(calendar.getTime());
+        return build_time;
+    }
 }

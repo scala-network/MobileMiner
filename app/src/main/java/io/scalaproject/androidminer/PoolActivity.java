@@ -106,7 +106,7 @@ public class PoolActivity extends BaseActivity
             @Override
             public void onButtonMain(int type) {
                 switch (type) {
-                    case Toolbar.BUTTON_MAIN_BACK:
+                    case Toolbar.BUTTON_MAIN_CLOSE:
                         onBackPressed();
                 }
             }
@@ -118,7 +118,7 @@ public class PoolActivity extends BaseActivity
         });
 
         toolbar.setTitle("Mining Pool");
-        toolbar.setButtonMain(Toolbar.BUTTON_MAIN_BACK);
+        toolbar.setButtonMain(Toolbar.BUTTON_MAIN_CLOSE);
         toolbar.setButtonOptions(Toolbar.BUTTON_OPTIONS_NONE);
 
         mPoolQueue = Volley.newRequestQueue(this);
