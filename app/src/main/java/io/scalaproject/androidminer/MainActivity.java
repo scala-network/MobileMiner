@@ -2091,16 +2091,42 @@ public class MainActivity extends BaseActivity
     private void updateTemperaturesText(float cpuTemp) {
         if (cpuTemp > 0.0) {
             tvCPUTemperature.setText(String.format(Locale.getDefault(), "%.0f", cpuTemp));
+
+            if(!bDisableTemperatureControl) {
+                if(cpuTemp <= nMaxCPUTemp * 0.9) {
+                    tvCPUTemperature.setTextColor(getResources().getColor(R.color.c_green));
+                } else if (cpuTemp > nMaxCPUTemp * 0.9 && cpuTemp < nMaxCPUTemp) {
+                    tvCPUTemperature.setTextColor(getResources().getColor(R.color.c_orange));
+                } else {
+                    tvCPUTemperature.setTextColor(getResources().getColor(R.color.c_red));
+                }
+            } else {
+                tvCPUTemperature.setTextColor(getResources().getColor(R.color.txt_main));
+            }
         }
         else {
-            tvCPUTemperature.setText("n/a");
+            tvCPUTemperature.setText("-");
+            tvCPUTemperature.setTextColor(getResources().getColor(R.color.txt_inactive));
         }
 
         if (batteryTemp > 0.0) {
             tvBatteryTemperature.setText(String.format(Locale.getDefault(), "%.0f", batteryTemp));
+
+            if(!bDisableTemperatureControl) {
+                if(batteryTemp <= nMaxBatteryTemp * 0.9) {
+                    tvBatteryTemperature.setTextColor(getResources().getColor(R.color.c_green));
+                } else if (batteryTemp > nMaxBatteryTemp * 0.9 && batteryTemp < nMaxBatteryTemp) {
+                    tvBatteryTemperature.setTextColor(getResources().getColor(R.color.c_orange));
+                } else {
+                    tvBatteryTemperature.setTextColor(getResources().getColor(R.color.c_red));
+                }
+            } else {
+                tvBatteryTemperature.setTextColor(getResources().getColor(R.color.txt_main));
+            }
         }
         else {
-            tvBatteryTemperature.setText("n/a");
+            tvBatteryTemperature.setText("-");
+            tvBatteryTemperature.setTextColor(getResources().getColor(R.color.txt_inactive));
         }
     }
 

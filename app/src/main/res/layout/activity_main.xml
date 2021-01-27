@@ -501,7 +501,6 @@
                                             android:padding="5dp">
 
                                             <ImageView
-                                                android:id="@+id/imgacceptedshare"
                                                 android:layout_width="24dp"
                                                 android:layout_height="24dp"
                                                 android:layout_gravity="center"
@@ -539,7 +538,6 @@
                                             android:padding="5dp">
 
                                             <ImageView
-                                                android:id="@+id/imgconnection3"
                                                 android:layout_width="24dp"
                                                 android:layout_height="24dp"
                                                 android:layout_gravity="center"
@@ -558,7 +556,7 @@
                                                     android:layout_width="wrap_content"
                                                     android:layout_height="wrap_content"
                                                     android:text="-"
-                                                    android:textColor="@color/txt_main"
+                                                    android:textColor="@color/txt_inactive"
                                                     android:textSize="18sp"
                                                     android:textStyle="normal" />
 
@@ -591,7 +589,6 @@
                                             android:padding="5dp">
 
                                             <ImageView
-                                                android:id="@+id/imgconnection"
                                                 android:layout_width="24dp"
                                                 android:layout_height="24dp"
                                                 android:layout_gravity="center"
@@ -610,7 +607,7 @@
                                                     android:layout_width="wrap_content"
                                                     android:layout_height="wrap_content"
                                                     android:text="-"
-                                                    android:textColor="@color/txt_main"
+                                                    android:textColor="@color/txt_inactive"
                                                     android:textSize="18sp"
                                                     android:textStyle="normal" />
 
@@ -836,7 +833,7 @@
                                         android:layout_height="wrap_content"
                                         android:gravity="start"
                                         android:text="-"
-                                        android:textColor="@color/bg_green"
+                                        android:textColor="@color/c_green"
                                         android:textSize="12sp" />
 
                                     <TextView
