@@ -127,6 +127,7 @@
                                 android:textColor="@color/c_white" />
 
                             <TextView
+                                android:id="@+id/paid_unit"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="@string/xla"

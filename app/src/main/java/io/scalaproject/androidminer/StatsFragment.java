@@ -123,6 +123,10 @@ public class StatsFragment extends Fragment {
             String sPaid = d.miner.paid.replace("XLA", "").trim();
             TextView tvPaid = view.findViewById(R.id.paid);
             tvPaid.setText(sPaid);
+            tvPaid.setTextSize(sPaid.length() > 8 ? 12 : 14);
+
+            TextView tvPaidUnit = view.findViewById(R.id.paid_unit);
+            tvPaidUnit.setTextSize(sPaid.length() > 8 ? 12 : 14);
         }
     }
 
