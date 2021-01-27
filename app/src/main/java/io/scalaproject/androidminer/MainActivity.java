@@ -1503,6 +1503,8 @@ public class MainActivity extends BaseActivity
     }
 
     private void setMinerStatus(Integer status) {
+        pbStatus.setScaleY(1f);
+
         if(status == Config.STATE_STOPPED) {
             llStatus.setVisibility(View.GONE);
             llHashrate.setVisibility(View.VISIBLE);
@@ -1558,7 +1560,10 @@ public class MainActivity extends BaseActivity
                 tvStatus.setText(getResources().getString(R.string.cooling));
                 stopTimerStatusHashrate();
 
+                tvStatusProgess.setVisibility(View.INVISIBLE);
                 pbStatus.setIndeterminate(true);
+                pbStatus.setScaleY(3f);
+                pbStatus.setProgress(0);
             } else if (status == Config.STATE_CALCULATING) {
                 tvStatus.setText(getResources().getString(R.string.processing));
                 tvStatusProgess.setVisibility(View.VISIBLE);
@@ -2154,6 +2159,8 @@ public class MainActivity extends BaseActivity
 
     private void updateTemperatures() {
         float cpuTemp = Tools.getCurrentCPUTemperature();
+        int nCPUTemp = Math.round(cpuTemp);
+        int nBatteryTemp = Math.round(batteryTemp);
 
         updateTemperaturesText(cpuTemp);
 
@@ -2164,7 +2171,7 @@ public class MainActivity extends BaseActivity
 
         // Check if temperatures are now safe to resume mining
         if(isDeviceCooling()) {
-            if (cpuTemp <= nSafeCPUTemp && batteryTemp <= nSafeBatteryTemp) {
+            if (nCPUTemp <= nSafeCPUTemp && nBatteryTemp <= nSafeBatteryTemp) {
                 enableCooling(false);
             }
 
@@ -2175,7 +2182,7 @@ public class MainActivity extends BaseActivity
             return;
 
         // Check if current temperatures exceed maximum temperatures
-        if (cpuTemp >= nMaxCPUTemp || batteryTemp >= nMaxBatteryTemp) {
+        if (nCPUTemp >= nMaxCPUTemp || nBatteryTemp >= nMaxBatteryTemp) {
             enableCooling(true);
 
             return;
@@ -2184,14 +2191,12 @@ public class MainActivity extends BaseActivity
         if(bDisableAmayc)
             return;
 
-        int nCPU = Math.round(cpuTemp);
-        if(nCPU != 0) {
-            listCPUTemp.add(Integer.toString(nCPU));
+        if(nCPUTemp != 0) {
+            listCPUTemp.add(Integer.toString(nCPUTemp));
         }
 
-        int nBatt = Math.round(batteryTemp);
-        if(nBatt != 0) {
-            listBatteryTemp.add(Integer.toString(nBatt));
+        if(nBatteryTemp != 0) {
+            listBatteryTemp.add(Integer.toString(nBatteryTemp));
         }
 
         // Send temperatures to AMAYC engine (asynchronously)
@@ -2398,8 +2403,7 @@ public class MainActivity extends BaseActivity
     }
 
     private void showNotification() {
-        if(notificationManager == null)
-            createNotificationManager();
+        createNotificationManager();
 
         NotificationsReceiver.activity = this;
 
@@ -2411,16 +2415,17 @@ public class MainActivity extends BaseActivity
         // Stop intent
         Intent stopIntent = new Intent(this, NotificationsReceiver.class);
         stopIntent.setAction(STOP_ACTION);
-        PendingIntent pendingIntentStop = PendingIntent.getBroadcast(contextOfApplication, 1, stopIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingIntentStop = PendingIntent.getBroadcast(contextOfApplication, 2, stopIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         notificationBuilder.setContentTitle(getResources().getString(R.string.devicemining));
         notificationBuilder.setContentIntent(pendingIntentOpen);
-        notificationBuilder.addAction(android.R.drawable.ic_menu_view,"Open", pendingIntentOpen);
-        notificationBuilder.addAction(android.R.drawable.ic_lock_power_off,"Stop", pendingIntentStop);
+        notificationBuilder.addAction(R.drawable.ic_open_app2,"Open", pendingIntentOpen);
+        notificationBuilder.addAction(R.drawable.ic_stop,"Stop", pendingIntentStop);
         notificationBuilder.setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher_round));
         notificationBuilder.setSmallIcon(R.mipmap.ic_notification);
         notificationBuilder.setOngoing(true);
         notificationBuilder.setOnlyAlertOnce(true);
+        notificationBuilder.build();
 
         notificationManager.notify(1, notificationBuilder.build());
     }

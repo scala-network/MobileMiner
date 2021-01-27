@@ -326,7 +326,7 @@
                                         android:id="@+id/progress_status"
                                         style="?android:attr/progressBarStyleHorizontal"
                                         android:layout_width="150dp"
-                                        android:layout_height="3dp"
+                                        android:layout_height="4dp"
                                         android:layout_marginTop="5dp"
                                         android:layout_marginBottom="3dp"
                                         android:indeterminate="false"
