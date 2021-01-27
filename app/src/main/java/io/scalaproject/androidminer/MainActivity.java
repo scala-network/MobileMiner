@@ -62,6 +62,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.LinearInterpolator;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -2060,7 +2063,13 @@ public class MainActivity extends BaseActivity
                     public void onStatusChange(String status, float speed, float max, Integer accepted, Integer difficuly, Integer connection) {
                         runOnUiThread(() -> {
                             appendLogOutputText(status);
-                            tvAcceptedShares.setText(Integer.toString(accepted));
+
+                            String sAccepted = Integer.toString(accepted);
+                            if(!tvAcceptedShares.getText().equals(sAccepted)) {
+                                tvAcceptedShares.setText(sAccepted);
+                                tvAcceptedShares.startAnimation(getBlinkAnimation());
+                            }
+
                             tvDifficulty.setText(NumberFormat.getNumberInstance(Locale.getDefault()).format(difficuly));
                             tvConnection.setText(Integer.toString(connection));
 
@@ -2088,14 +2097,25 @@ public class MainActivity extends BaseActivity
         }
     };
 
+    public Animation getBlinkAnimation() {
+        Animation animation = new AlphaAnimation(1, 0);         // Change alpha from fully visible to invisible
+        animation.setDuration(800);                             // duration - half a second
+        animation.setInterpolator(new LinearInterpolator());    // do not alter animation rate
+        animation.setRepeatCount(1);                            // Repeat animation infinitely
+        animation.setRepeatMode(Animation.REVERSE);             // Reverse animation at the end so the button will fade back in
+
+        return animation;
+    }
+
     private void updateTemperaturesText(float cpuTemp) {
         if (cpuTemp > 0.0) {
-            tvCPUTemperature.setText(String.format(Locale.getDefault(), "%.0f", cpuTemp));
+            int nCPUTemp = Math.round(cpuTemp);
+            tvCPUTemperature.setText(Integer.toString(nCPUTemp));
 
             if(!bDisableTemperatureControl) {
-                if(cpuTemp <= nMaxCPUTemp * 0.9) {
+                if(nCPUTemp <= nMaxCPUTemp * 0.9) {
                     tvCPUTemperature.setTextColor(getResources().getColor(R.color.c_green));
-                } else if (cpuTemp > nMaxCPUTemp * 0.9 && cpuTemp < nMaxCPUTemp) {
+                } else if (nCPUTemp > nMaxCPUTemp * 0.9 && nCPUTemp < nMaxCPUTemp) {
                     tvCPUTemperature.setTextColor(getResources().getColor(R.color.c_orange));
                 } else {
                     tvCPUTemperature.setTextColor(getResources().getColor(R.color.c_red));
@@ -2110,12 +2130,13 @@ public class MainActivity extends BaseActivity
         }
 
         if (batteryTemp > 0.0) {
-            tvBatteryTemperature.setText(String.format(Locale.getDefault(), "%.0f", batteryTemp));
+            int nBatteryTemp = Math.round(batteryTemp);
+            tvBatteryTemperature.setText(Integer.toString(nBatteryTemp));
 
             if(!bDisableTemperatureControl) {
-                if(batteryTemp <= nMaxBatteryTemp * 0.9) {
+                if(nBatteryTemp <= nMaxBatteryTemp * 0.9) {
                     tvBatteryTemperature.setTextColor(getResources().getColor(R.color.c_green));
-                } else if (batteryTemp > nMaxBatteryTemp * 0.9 && batteryTemp < nMaxBatteryTemp) {
+                } else if (nBatteryTemp > nMaxBatteryTemp * 0.9 && nBatteryTemp < nMaxBatteryTemp) {
                     tvBatteryTemperature.setTextColor(getResources().getColor(R.color.c_orange));
                 } else {
                     tvBatteryTemperature.setTextColor(getResources().getColor(R.color.c_red));

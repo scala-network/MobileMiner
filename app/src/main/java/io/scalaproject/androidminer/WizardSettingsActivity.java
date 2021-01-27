@@ -18,7 +18,7 @@ public class WizardSettingsActivity extends BaseActivity {
     private SeekBar sbCores, sbCPUTemp, sbBatteryTemp, sbCooldown;
     private TextView tvCPUMaxTemp, tvBatteryMaxTemp, tvCooldown;
 
-    private Integer nMaxCPUTemp = 65; // 55,60,65,70,75
+    private Integer nMaxCPUTemp = 70; // 60,65,70,75,80
     private Integer nMaxBatteryTemp = 40; // 30,35,40,45,50
     private Integer nCooldownTheshold = 15; // 10,15,20,25,30
 
