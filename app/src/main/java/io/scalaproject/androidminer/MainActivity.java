@@ -40,6 +40,7 @@ import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.Rect;
@@ -2381,9 +2382,10 @@ public class MainActivity extends BaseActivity
     public static final String STOP_ACTION = "STOP_ACTION";
 
     private void createNotificationManager() {
-        String CHANNEL_ID = "MINING_STATUS";
+        String CHANNEL_ID = "";
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
         {
+            CHANNEL_ID = "MINING_STATUS";
             NotificationChannel notificationChannel = new NotificationChannel(CHANNEL_ID, getResources().getString(R.string.miningstatus), NotificationManager.IMPORTANCE_LOW);
             notificationManager = getSystemService(NotificationManager.class);
             assert notificationManager != null;
@@ -2413,14 +2415,12 @@ public class MainActivity extends BaseActivity
 
         notificationBuilder.setContentTitle(getResources().getString(R.string.devicemining));
         notificationBuilder.setContentIntent(pendingIntentOpen);
-        //notificationBuilder.addAction(android.R.drawable.ic_menu_view,"Open", pendingIntentOpen);
-        //notificationBuilder.addAction(android.R.drawable.ic_lock_power_off,"Stop", pendingIntentStop);
-        //notificationBuilder.setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher_round));
-        //notificationBuilder.setSmallIcon(R.drawable.ic_notification);
-        notificationBuilder.setSmallIcon(android.R.drawable.star_on);
+        notificationBuilder.addAction(android.R.drawable.ic_menu_view,"Open", pendingIntentOpen);
+        notificationBuilder.addAction(android.R.drawable.ic_lock_power_off,"Stop", pendingIntentStop);
+        notificationBuilder.setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher_round));
+        notificationBuilder.setSmallIcon(R.mipmap.ic_notification);
         notificationBuilder.setOngoing(true);
         notificationBuilder.setOnlyAlertOnce(true);
-        notificationBuilder.build();
 
         notificationManager.notify(1, notificationBuilder.build());
     }
@@ -2441,7 +2441,7 @@ public class MainActivity extends BaseActivity
 
         String status = m_nCurrentState == Config.STATE_MINING ? "Hashrate: " + tvHashrate.getText().toString() + " H/s" : tvStatus.getText().toString();
 
-        notificationBuilder.setSmallIcon(R.drawable.ic_launcher_round);
+        notificationBuilder.setSmallIcon(R.mipmap.ic_notification);
         notificationBuilder.setContentText(status);
         notificationManager.notify(1, notificationBuilder.build());
     }
