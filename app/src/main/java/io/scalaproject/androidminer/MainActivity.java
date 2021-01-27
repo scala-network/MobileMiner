@@ -704,7 +704,7 @@ public class MainActivity extends BaseActivity
 
         YAxis leftAxis = chartTemperature.getAxisLeft();
         leftAxis.setTextColor(getResources().getColor(R.color.txt_secondary));
-        leftAxis.setAxisMaximum(80f);
+        leftAxis.setAxisMaximum(90f);
         leftAxis.setAxisMinimum(0f);
         leftAxis.setDrawZeroLine(false);
         leftAxis.setDrawAxisLine(true);
@@ -2097,11 +2097,11 @@ public class MainActivity extends BaseActivity
         }
     };
 
-    public Animation getBlinkAnimation() {
+    private Animation getBlinkAnimation() {
         Animation animation = new AlphaAnimation(1, 0);         // Change alpha from fully visible to invisible
-        animation.setDuration(800);                             // duration - half a second
+        animation.setDuration(800);
         animation.setInterpolator(new LinearInterpolator());    // do not alter animation rate
-        animation.setRepeatCount(1);                            // Repeat animation infinitely
+        animation.setRepeatCount(1);
         animation.setRepeatMode(Animation.REVERSE);             // Reverse animation at the end so the button will fade back in
 
         return animation;
