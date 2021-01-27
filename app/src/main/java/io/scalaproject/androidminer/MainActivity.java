@@ -1504,6 +1504,7 @@ public class MainActivity extends BaseActivity
             llHashrate.setVisibility(View.VISIBLE);
 
             tvHashrate.setText("0");
+            tvHashrate.setTextSize(55);
             tvHashrate.setTextColor(getResources().getColor(R.color.txt_inactive));
 
             View v = findViewById(R.id.main_navigation);
@@ -1681,6 +1682,7 @@ public class MainActivity extends BaseActivity
         meterHashrate.speedTo(Math.round(fSpeed));
 
         tvHashrate.setText(String.format(Locale.getDefault(), "%.1f", fSpeed));
+        tvHashrate.setTextSize(fSpeed > 999f ? 44: 55);
         setMinerStatus(Config.STATE_MINING);
 
         if(fSpeed <= 0.0f) {
