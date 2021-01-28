@@ -43,7 +43,7 @@
                         app:srcCompat="@drawable/ic_balance" />
 
                     <LinearLayout
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_marginStart="10dp"
@@ -51,7 +51,7 @@
                         android:orientation="vertical">
 
                         <LinearLayout
-                            android:layout_width="match_parent"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal">
 
@@ -113,7 +113,7 @@
                         android:orientation="vertical">
 
                         <LinearLayout
-                            android:layout_width="match_parent"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal">
 
@@ -122,8 +122,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginEnd="5dp"
-                                android:gravity="end"
-                                android:text="-"
+                                android:text="411.11"
                                 android:textSize="14sp"
                                 android:textColor="@color/c_white" />
 
@@ -148,18 +147,22 @@
 
                     </LinearLayout>
 
-                    <Space
+                    <RelativeLayout
                         android:layout_width="0dp"
-                        android:layout_height="0dp"
-                        android:layout_weight="1"/>
-
-                    <ImageView
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:layout_marginEnd="3dp"
+                        android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        app:tint="@color/c_white"
-                        app:srcCompat="@drawable/ic_arrow_right" />
+                        android:gravity="end"
+                        android:layout_weight="1">
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_marginEnd="3dp"
+                            android:layout_gravity="center"
+                            app:tint="@color/c_white"
+                            app:srcCompat="@drawable/ic_arrow_right" />
+
+                    </RelativeLayout>
 
                 </LinearLayout>
 

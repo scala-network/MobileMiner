@@ -5,6 +5,7 @@
 package io.scalaproject.androidminer;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 
@@ -19,7 +20,7 @@ import io.scalaproject.androidminer.api.ProviderData;
 import io.scalaproject.androidminer.widgets.PaymentInfoAdapter;
 import io.scalaproject.androidminer.widgets.Toolbar;
 
-public class PaymentsActivity extends BaseActivity {
+public class PaymentsActivity extends BaseActivity implements PaymentInfoAdapter.OnShowPaymentListener {
     private static final String LOG_TAG = "PaymentsActivity";
 
     private Toolbar toolbar;
@@ -66,7 +67,7 @@ public class PaymentsActivity extends BaseActivity {
         View view = findViewById(android.R.id.content).getRootView();
 
         rvPayments = view.findViewById(R.id.rvPayments);
-        paymentsAdapter = new PaymentInfoAdapter(this);
+        paymentsAdapter = new PaymentInfoAdapter(this, this);
         rvPayments.setAdapter(paymentsAdapter);
 
         // Set payments data
@@ -76,7 +77,7 @@ public class PaymentsActivity extends BaseActivity {
 
             PaymentItem pi = new PaymentItem();
             pi.mAmount = String.valueOf(payment.amount);
-            pi.mTimestamp = payment.timestamp;
+            pi.mTimestamp = Utils.getDate(Long.parseLong(payment.timestamp));
             pi.mFee = String.valueOf(payment.fee);
             pi.mHash = payment.hash;
 
@@ -86,6 +87,13 @@ public class PaymentsActivity extends BaseActivity {
         paymentsAdapter.setPayments(allPayments);
 
         Utils.hideKeyboard(this);
+    }
+
+    @Override
+    public void onShowPayment(final View view, final PaymentItem paymentItem) {
+        String paymentURL = "https://explorer.scalaproject.io/tx?tx_info=" + paymentItem.mHash;
+        Uri uri = Uri.parse(paymentURL);
+        startActivity(new Intent(Intent.ACTION_VIEW, uri));
     }
 
     @Override

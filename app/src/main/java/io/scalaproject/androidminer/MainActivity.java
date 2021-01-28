@@ -333,8 +333,7 @@ public class MainActivity extends BaseActivity
                         PoolItem pm = ProviderManager.getSelectedPool();
                         String statsUrlWallet = pm.getStatsURL() + "?wallet=" + Config.read("address");
                         Uri uri = Uri.parse(statsUrlWallet);
-                        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                        startActivity(intent);
+                        startActivity(new Intent(Intent.ACTION_VIEW, uri));
 
                         break;
                     }

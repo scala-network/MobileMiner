@@ -23,6 +23,7 @@ import androidx.fragment.app.Fragment;
 
 import com.github.mikephil.charting.charts.LineChart;
 
+import io.scalaproject.androidminer.api.PaymentItem;
 import io.scalaproject.androidminer.api.ProviderData;
 import io.scalaproject.androidminer.api.PoolItem;
 import io.scalaproject.androidminer.api.IProviderListener;

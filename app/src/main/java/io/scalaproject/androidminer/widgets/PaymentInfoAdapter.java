@@ -6,23 +6,16 @@ package io.scalaproject.androidminer.widgets;
 
 import android.content.Context;
 import androidx.annotation.NonNull;
-import androidx.appcompat.widget.PopupMenu;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.graphics.Bitmap;
-import android.util.TypedValue;
+import android.text.Html;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import io.scalaproject.androidminer.R;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -30,16 +23,22 @@ import java.util.List;
 
 import io.scalaproject.androidminer.Utils;
 import io.scalaproject.androidminer.api.PaymentItem;
-import io.scalaproject.androidminer.api.PoolItem;
 
 public class PaymentInfoAdapter extends RecyclerView.Adapter<PaymentInfoAdapter.ViewHolder> {
+
+    public interface OnShowPaymentListener {
+        void onShowPayment(View view, PaymentItem item);
+    }
+
+    private final PaymentInfoAdapter.OnShowPaymentListener onShowPaymentListener;
 
     private final List<PaymentItem> paymentItems = new ArrayList<>();
 
     private Context context;
 
-    public PaymentInfoAdapter(Context context) {
+    public PaymentInfoAdapter(Context context, PaymentInfoAdapter.OnShowPaymentListener onShowPaymentListener) {
         this.context = context;
+        this.onShowPaymentListener = onShowPaymentListener;
     }
 
     @Override
@@ -64,10 +63,6 @@ public class PaymentInfoAdapter extends RecyclerView.Adapter<PaymentInfoAdapter.
         notifyDataSetChanged();
     }
 
-    public List<PaymentItem> getPayments() {
-        return paymentItems;
-    }
-
     public void setPayments(Collection<PaymentItem> data) {
         paymentItems.clear();
         if (data != null) {
@@ -76,18 +71,13 @@ public class PaymentInfoAdapter extends RecyclerView.Adapter<PaymentInfoAdapter.
             }
         }
 
-        //Collections.sort(paymentItems, PoolItem.PoolComparator);
+        Collections.sort(paymentItems, PaymentItem.PaymentComparator);
+        Collections.reverse(paymentItems);
 
         dataSetChanged();
     }
 
-    private boolean itemsClickable = true;
-
-    public void allowClick(boolean clickable) {
-        itemsClickable = clickable;
-    }
-
-    class ViewHolder extends RecyclerView.ViewHolder {
+    class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView tvAmount;
         TextView tvFee;
         TextView tvHash;
@@ -106,14 +96,32 @@ public class PaymentInfoAdapter extends RecyclerView.Adapter<PaymentInfoAdapter.
         void bind(final int position) {
             paymentItem = paymentItems.get(position);
 
-            tvAmount.setText(paymentItem.mAmount);
+            tvAmount.setText("+ " + paymentItem.mAmount);
             tvFee.setText(paymentItem.mFee);
+
             tvHash.setText(Utils.getPrettyTx(paymentItem.mHash));
-            tvTimestamp.setText(paymentItem.mTimestamp);
+            /*tvHash.setText(Html.fromHtml("<u>" + Utils.getPrettyTx(paymentItem.mHash) + "</u>"));
+            tvHash.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (onShowPaymentListener != null) {
+                        onShowPaymentListener.onShowPayment(v, paymentItem);
+                    }
+                }
+            });*/
+
+            tvTimestamp.setText(Utils.formatTimestamp(paymentItem.mTimestamp));
 
             // Options
-            //itemView.setOnClickListener(this);
-            itemView.setClickable(itemsClickable);
+            itemView.setOnClickListener(this);
+            itemView.setClickable(true);
+        }
+
+        @Override
+        public void onClick(View view) {
+            if (onShowPaymentListener != null) {
+                onShowPaymentListener.onShowPayment(view, paymentItem);
+            }
         }
     }
 }

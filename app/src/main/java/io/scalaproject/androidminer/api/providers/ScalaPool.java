@@ -18,7 +18,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.ocpsoft.prettytime.PrettyTime;
 
-import java.util.ArrayList;
 import java.util.Date;
 
 import io.scalaproject.androidminer.Utils;
@@ -148,8 +147,10 @@ public class ScalaPool extends ProviderAbstract {
                         payment.fee = (Float.parseFloat(p[2]) / 100.0f);
                     }
 
-                    String strDateTime = pTime.format(new Date(joPaymentsAddressStats.optLong(i++) * 1000));
-                    payment.timestamp = strDateTime;
+                    // Timestamp is always 1 position after the payment data in the array
+                    i = i + 1;
+
+                    payment.timestamp = joPaymentsAddressStats.getString(i);
 
                     mBlockData.miner.payments.add(payment);
                 }

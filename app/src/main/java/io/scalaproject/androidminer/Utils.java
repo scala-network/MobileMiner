@@ -39,6 +39,7 @@ import java.net.HttpURLConnection;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.regex.*;
@@ -257,5 +258,16 @@ public final class Utils {
 
     static public String getPrettyTx(String text) {
         return text.substring(0, 7) + "..." + text.substring(text.length() - 7);
+    }
+
+    static public String formatTimestamp(Date d) {
+        SimpleDateFormat sdf = new SimpleDateFormat("MMM dd, yyyy");
+        return sdf.format(d);
+    }
+
+    static public Date getDate(long time) {
+        Calendar c = Calendar.getInstance();
+        c.setTimeInMillis(time * 1000L);
+        return c.getTime();
     }
 }
