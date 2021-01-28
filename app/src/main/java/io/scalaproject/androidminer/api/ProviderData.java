@@ -19,7 +19,6 @@ public final class ProviderData {
 
     public static class Pool {
         public String lastBlockHeight = "";
-        public String difficulty = "";
         public String lastRewardAmount = "";
         public String lastBlockTime = "";
         public String hashrate = "";

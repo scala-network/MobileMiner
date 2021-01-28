@@ -105,6 +105,7 @@ public final class NodejsPool extends ProviderAbstract {
             mBlockData.network.difficulty = joNetworkStats.optString("difficulty");
             mBlockData.network.lastBlockTime = pTime.format(new Date(joNetworkStats.optLong("ts") * 1000));
             mBlockData.network.lastRewardAmount =  parseCurrency(joNetworkStats.optString("value", "0"), denominationUnit, denominationUnit, "XLA");
+            mBlockData.network.hashrate = String.valueOf(joNetworkStats.optLong("difficulty") / 120L / 1000000L);
         } catch (JSONException e) {
             Log.i(LOG_TAG, "NETWORK\n" + e.toString());
             e.printStackTrace();
@@ -117,7 +118,6 @@ public final class NodejsPool extends ProviderAbstract {
             JSONObject joPoolStats = new JSONObject(dataStatsPool).getJSONObject("pool_statistics");
 
             mBlockData.pool.lastBlockHeight = joPoolStats.optString("lastBlockFound");
-            //mBlockData.pool.difficulty = getReadableHashRateString(joPoolStats.optLong("totalDiff"));
             mBlockData.pool.lastBlockTime = pTime.format(new Date(joPoolStats.optLong("lastBlockFoundTime") * 1000));
             //mBlockData.pool.lastRewardAmount = parseCurrency(joPoolStats.optString("reward", "0"), mBlockData.coin.units, denominationUnit, mBlockData.coin.symbol);
             mBlockData.pool.hashrate = String.valueOf(tryParseLong(joPoolStats.optString("hashRate"),0L) / 1000L);

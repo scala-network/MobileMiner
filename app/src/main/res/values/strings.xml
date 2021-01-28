@@ -43,8 +43,8 @@
     <string name="checkstatsonline">View statistics online</string>
     <string name="lastshare">Last Share</string>
     <string name="sharesubmitted">Submitted Shares</string>
-    <string name="blockheight">Block Height</string>
-    <string name="blockreward">Block Reward</string>
+    <string name="blockheight">Blockchain Height</string>
+    <string name="blockreward">Last Reward</string>
     <string name="totalhashrate">Total Hashrate</string>
     <string name="emptyaddress">Wallet address is empty.</string>
     <string name="startminingstats">Start mining to view statisticss</string>
@@ -190,4 +190,5 @@
     <string name="avg">AVG</string>
     <string name="resume">Resume</string>
     <string name="no_activity">No activity.</string>
+    <string name="mh_s">MH/s</string>
 </resources>

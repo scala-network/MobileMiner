@@ -28,6 +28,7 @@ import io.scalaproject.androidminer.api.ProviderData;
 import io.scalaproject.androidminer.network.Json;
 import io.scalaproject.androidminer.widgets.PoolInfoAdapter;
 
+import static io.scalaproject.androidminer.Tools.getReadableDifficultyString;
 import static io.scalaproject.androidminer.Tools.getReadableHashRateString;
 import static io.scalaproject.androidminer.Tools.parseCurrency;
 import static io.scalaproject.androidminer.Tools.tryParseLong;
@@ -88,17 +89,17 @@ public class ScalaPool extends ProviderAbstract {
             mBlockData.coin.symbol = joStatsConfig.optString("symbol").toUpperCase();
             mBlockData.coin.denominationUnit = tryParseLong(joStatsConfig.optString("denominationUnit"), 1L);
 
-            mBlockData.pool.difficulty = getReadableHashRateString(joStatsPoolStats.optLong("totalDiff"));
             mBlockData.pool.lastBlockTime = pTime.format(new Date(joStatsPoolStats.optLong("lastblock_timestamp") * 1000));
             mBlockData.pool.lastRewardAmount = parseCurrency(joStatsPoolStats.optString("lastblock_lastReward", "0"), mBlockData.coin.units, mBlockData.coin.denominationUnit, mBlockData.coin.symbol);
-            mBlockData.pool.hashrate = String.valueOf(tryParseLong(joStatsPool.optString("hashrate"),0L) / 1000L);
+            mBlockData.pool.hashrate = getReadableHashRateString(joStatsPool.optLong("hashrate"));
             mBlockData.pool.blocks = joStatsPoolStats.optString("blocksFound", "0");
             mBlockData.pool.minPayout = parseCurrency(joStatsConfig.optString("minPaymentThreshold", "0"), mBlockData.coin.units, mBlockData.coin.denominationUnit, mBlockData.coin.symbol);
 
             mBlockData.network.lastBlockHeight = joStatsLastBlock.optString("height");
-            mBlockData.network.difficulty = getReadableHashRateString(joStatsNetwork.optLong("difficulty"));
+            mBlockData.network.difficulty = getReadableDifficultyString(joStatsNetwork.optLong("difficulty"));
             mBlockData.network.lastBlockTime = pTime.format(new Date(joStatsLastBlock.optLong("timestamp") * 1000));
             mBlockData.network.lastRewardAmount = parseCurrency(joStatsPoolStats.optString("lastblock_lastMinerReward", "0"), mBlockData.coin.units, mBlockData.coin.denominationUnit, mBlockData.coin.symbol);
+            mBlockData.network.hashrate = getReadableHashRateString(joStatsNetwork.optLong("difficulty") / 120L);
         } catch (JSONException e) {
             Log.i(LOG_TAG, "NETWORK\n" + e.toString());
             e.printStackTrace();

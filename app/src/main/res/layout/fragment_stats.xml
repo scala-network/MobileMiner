@@ -190,7 +190,6 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:visibility="gone"
                     android:orientation="horizontal">
 
                     <TextView
@@ -217,9 +216,10 @@
                         android:textStyle="bold" />
 
                     <TextView
+                        android:id="@+id/hashratenetwork_unit"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/kh_s"
+                        android:text="@string/mh_s"
                         android:textColor="@color/c_grey"
                         android:textSize="14sp"
                         android:textStyle="bold"/>
@@ -412,41 +412,13 @@
                         android:textStyle="bold" />
 
                     <TextView
+                        android:id="@+id/hashratepool_unit"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/kh_s"
                         android:textColor="@color/txt_main"
                         android:textSize="14sp"
                         android:textStyle="bold"/>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:visibility="visible">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/difficulty"
-                        android:textColor="@color/txt_main"
-                        android:textSize="14sp" />
-
-                    <Space
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"/>
-
-                    <TextView
-                        android:id="@+id/difficultypool"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="end"
-                        android:text="@string/na"
-                        android:textSize="14sp"
-                        android:textColor="@color/txt_main" />
 
                 </LinearLayout>
 
@@ -488,7 +460,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/sharesubmitted"
+                        android:text="Blocks Found"
                         android:textColor="@color/txt_main"
                         android:textSize="14sp" />
 
@@ -580,6 +552,7 @@
                         android:textStyle="bold" />
 
                     <TextView
+                        android:id="@+id/hashrateminer_unit"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/h_s"

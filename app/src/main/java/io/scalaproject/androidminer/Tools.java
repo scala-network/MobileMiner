@@ -395,12 +395,29 @@ public class Tools {
         }
     }
 
+    static public String getReadableDifficultyString(long difficulty) {
+        BigDecimal bn = new BigDecimal(difficulty);
+        BigDecimal bnThousand = new BigDecimal(1000);
+
+        int i = 0;
+        String[] byteUnits = {"", "k", "M", "G", "T", "P"};
+
+        while (bn.compareTo(bnThousand) > 0) {
+            bn = bn.divide(bnThousand);
+            i++;
+        }
+
+        DecimalFormat decimalFormat = new DecimalFormat("0.##");
+
+        return decimalFormat.format(bn) + ' ' + byteUnits[i];
+    }
+
     static public String getReadableHashRateString(long hashrate) {
         BigDecimal bn = new BigDecimal(hashrate);
         BigDecimal bnThousand = new BigDecimal(1000);
 
         int i = 0;
-        String[] byteUnits = {"H", "KH", "MH", "GH", "TH", "PH"};
+        String[] byteUnits = {"H/s", "kH/s", "MH/s", "GH/s", "TH/s", "PH/s"};
 
         while (bn.compareTo(bnThousand) > 0) {
             bn = bn.divide(bnThousand);

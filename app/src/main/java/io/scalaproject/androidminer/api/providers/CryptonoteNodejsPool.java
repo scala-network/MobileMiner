@@ -86,7 +86,6 @@ public class CryptonoteNodejsPool extends ProviderAbstract {
             mBlockData.coin.denominationUnit = tryParseLong(joStatsConfig.optString("denominationUnit"), 1L);
 
             //mBlockData.pool.lastBlockHeight = joStatsPool.optString("height");
-            mBlockData.pool.difficulty = getReadableHashRateString(joStatsPool.optLong("totalDiff"));
             mBlockData.pool.lastBlockTime = pTime.format(new Date(joStatsPool.optLong("lastBlockFound")));
             //mBlockData.pool.lastRewardAmount = parseCurrency(joStatsLastBlock.optString("reward", "0"), mBlockData.coin.units, mBlockData.coin.denominationUnit, mBlockData.coin.symbol);
             mBlockData.pool.hashrate = String.valueOf(tryParseLong(joStatsPool.optString("hashrate"),0L) / 1000L);
@@ -97,6 +96,7 @@ public class CryptonoteNodejsPool extends ProviderAbstract {
             mBlockData.network.difficulty = getReadableHashRateString(joStatsNetwork.optLong("difficulty"));
             mBlockData.network.lastBlockTime = pTime.format(new Date(joStatsNetwork.optLong("timestamp") * 1000));
             mBlockData.network.lastRewardAmount = parseCurrency(joStatsNetwork.optString("reward", "0"), mBlockData.coin.units, mBlockData.coin.denominationUnit, mBlockData.coin.symbol);
+            mBlockData.network.hashrate = String.valueOf(joStatsNetwork.optLong("difficulty") / 120L / 1000000L);
         } catch (JSONException e) {
             Log.i(LOG_TAG, "NETWORK\n" + e.toString());
             e.printStackTrace();

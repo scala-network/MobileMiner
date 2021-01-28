@@ -78,8 +78,12 @@ public class StatsFragment extends Fragment {
 
         // Network
 
+        String[] n = d.network.hashrate.split(" ");
         TextView tvNetworkHashrate = view.findViewById(R.id.hashratenetwork);
-        tvNetworkHashrate.setText(d.network.hashrate.isEmpty() ? "n/a" : d.network.hashrate);
+        tvNetworkHashrate.setText(n.length > 0 ? n[0] : "n/a");
+
+        TextView tvNetworkHashrateUnit = view.findViewById(R.id.hashratenetwork_unit);
+        tvNetworkHashrateUnit.setText(n.length > 1 ? n[1] : "MH/s");
 
         TextView tvNetworkDifficulty = view.findViewById(R.id.difficultynetwork);
         tvNetworkDifficulty.setText(d.network.difficulty.isEmpty() ? "n/a" : d.network.difficulty);
@@ -98,11 +102,12 @@ public class StatsFragment extends Fragment {
         TextView tvPoolURL = view.findViewById(R.id.poolurl);
         tvPoolURL.setText(pm.getPool() == null ? "" : pm.getPool());
 
+        String[] p = d.pool.hashrate.split(" ");
         TextView tvPoolHashrate = view.findViewById(R.id.hashratepool);
-        tvPoolHashrate.setText(d.pool.hashrate.isEmpty() ? "n/a" : d.pool.hashrate);
+        tvPoolHashrate.setText(p.length > 0 ? p[0] : "n/a");
 
-        TextView tvPoolDifficulty = view.findViewById(R.id.difficultypool);
-        tvPoolDifficulty.setText(d.pool.difficulty.isEmpty() ? "n/a" : d.pool.difficulty);
+        TextView tvPoolHashrateUnit = view.findViewById(R.id.hashratepool_unit);
+        tvPoolHashrateUnit.setText(p.length > 1 ? p[1] : "kH/s");
 
         TextView tvPoolBlocks = view.findViewById(R.id.lastblockpool);
         tvPoolBlocks.setText(d.pool.lastBlockTime.isEmpty() ? "n/a" : d.pool.lastBlockTime);
@@ -120,9 +125,12 @@ public class StatsFragment extends Fragment {
 
         String sHashrate = d.miner.hashrate;
         if(sHashrate != null) {
-            sHashrate = sHashrate.replace("H", "").trim();
+            String[] a = sHashrate.split(" ");
             TextView tvAddressHashrate = view.findViewById(R.id.hashrateminer);
-            tvAddressHashrate.setText(sHashrate);
+            tvAddressHashrate.setText(a.length > 0 ? a[0] : "n/a");
+
+            TextView tvAddressHashrateUnit = view.findViewById(R.id.hashrateminer_unit);
+            tvAddressHashrateUnit.setText(a.length > 1 ? a[1] : "H/s");
 
             TextView tvAddressLastShare = view.findViewById(R.id.lastshareminer);
             tvAddressLastShare.setText(d.miner.lastShare.isEmpty() ? "n/a" : d.miner.lastShare);
