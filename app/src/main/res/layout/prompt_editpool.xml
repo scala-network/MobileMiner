@@ -61,6 +61,7 @@
                 android:hint="Port"
                 android:imeOptions="actionNext"
                 android:layout_weight="1"
+                android:inputType="number"
                 android:textAlignment="textStart" />
         </com.google.android.material.textfield.TextInputLayout>
 
