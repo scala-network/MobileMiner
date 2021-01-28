@@ -23,11 +23,6 @@ import io.scalaproject.androidminer.widgets.Toolbar;
 public class PaymentsActivity extends BaseActivity implements PaymentInfoAdapter.OnShowPaymentListener {
     private static final String LOG_TAG = "PaymentsActivity";
 
-    private Toolbar toolbar;
-    private RecyclerView rvPayments;
-
-    private PaymentInfoAdapter paymentsAdapter;
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,7 +36,7 @@ public class PaymentsActivity extends BaseActivity implements PaymentInfoAdapter
         setContentView(R.layout.fragment_payments);
 
         // Toolbar
-        toolbar = findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(false);
 
@@ -66,8 +61,8 @@ public class PaymentsActivity extends BaseActivity implements PaymentInfoAdapter
 
         View view = findViewById(android.R.id.content).getRootView();
 
-        rvPayments = view.findViewById(R.id.rvPayments);
-        paymentsAdapter = new PaymentInfoAdapter(this, this);
+        RecyclerView rvPayments = view.findViewById(R.id.rvPayments);
+        PaymentInfoAdapter paymentsAdapter = new PaymentInfoAdapter(this, this);
         rvPayments.setAdapter(paymentsAdapter);
 
         // Set payments data

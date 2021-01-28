@@ -237,8 +237,7 @@ public final class Utils {
             connection.setDoInput(true);
             connection.connect();
             InputStream input = connection.getInputStream();
-            Bitmap myBitmap = BitmapFactory.decodeStream(input);
-            return myBitmap;
+            return BitmapFactory.decodeStream(input);
         } catch (IOException e) {
             e.printStackTrace();
             return null;
@@ -252,8 +251,7 @@ public final class Utils {
     static public String getBuildTime() {
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(BuildConfig.BUILD_TIME);
-        String build_time = DateFormat.getDateInstance(DateFormat.LONG).format(calendar.getTime());
-        return build_time;
+        return DateFormat.getDateInstance(DateFormat.LONG).format(calendar.getTime());
     }
 
     static public String getPrettyTx(String text) {
