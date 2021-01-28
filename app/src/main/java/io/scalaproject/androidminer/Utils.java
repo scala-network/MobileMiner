@@ -254,4 +254,8 @@ public final class Utils {
         String build_time = DateFormat.getDateInstance(DateFormat.LONG).format(calendar.getTime());
         return build_time;
     }
+
+    static public String getPrettyTx(String text) {
+        return text.substring(0, 7) + "..." + text.substring(text.length() - 7);
+    }
 }

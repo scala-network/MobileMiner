@@ -8,10 +8,12 @@
 
 package io.scalaproject.androidminer;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,6 +31,8 @@ import io.scalaproject.androidminer.api.ProviderManager;
 public class StatsFragment extends Fragment {
     protected IProviderListener statsListener;
 
+    public static ProviderData poolData = null;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -45,6 +49,13 @@ public class StatsFragment extends Fragment {
             }
         };
 
+        LinearLayout llPayments = view.findViewById(R.id.llPayments);
+        llPayments.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                onShowPayments(v);
+            }
+        });
+
         ProviderManager.request.setListener(statsListener).start();
         ProviderManager.afterSave();
         updateFields(ProviderManager.data, view);
@@ -53,6 +64,8 @@ public class StatsFragment extends Fragment {
     }
 
     private void updateFields(ProviderData d, View view) {
+        poolData = d;
+
         if(view == null || view.getContext() == null)
             return;
 
@@ -123,11 +136,15 @@ public class StatsFragment extends Fragment {
             String sPaid = d.miner.paid.replace("XLA", "").trim();
             TextView tvPaid = view.findViewById(R.id.paid);
             tvPaid.setText(sPaid);
-            tvPaid.setTextSize(sPaid.length() > 8 ? 12 : 14);
+            tvPaid.setTextSize(sPaid.length() > 6 ? 12 : 14);
 
             TextView tvPaidUnit = view.findViewById(R.id.paid_unit);
-            tvPaidUnit.setTextSize(sPaid.length() > 8 ? 12 : 14);
+            tvPaidUnit.setTextSize(sPaid.length() > 6 ? 12 : 14);
         }
+    }
+
+    public void onShowPayments(View view) {
+        startActivity(new Intent(getActivity(), PaymentsActivity.class));
     }
 
     public boolean checkValidState() {

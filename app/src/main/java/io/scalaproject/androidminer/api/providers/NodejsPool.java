@@ -160,7 +160,7 @@ public final class NodejsPool extends ProviderAbstract {
             for (int i = 0; i < n; ++i) {
                 ProviderData.Payment payment = new ProviderData.Payment();
                 payment.amount = parseCurrencyFloat(joMinerPayments.getJSONObject(i).optString("amount", "0"), denominationUnit, denominationUnit);
-                payment.timestamp = new Date(joMinerPayments.getJSONObject(i).optLong("ts") * 1000);
+                payment.timestamp = pTime.format(new Date(joMinerPayments.getJSONObject(i).optLong("ts") * 1000));
                 mBlockData.miner.payments.add(payment);
             }
 

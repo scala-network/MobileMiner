@@ -13,10 +13,12 @@ import android.util.Log;
 import com.android.volley.Request;
 import com.android.volley.toolbox.StringRequest;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.ocpsoft.prettytime.PrettyTime;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 import io.scalaproject.androidminer.Utils;
@@ -130,6 +132,29 @@ public class ScalaPool extends ProviderAbstract {
             mBlockData.miner.paid = paid;
             mBlockData.miner.lastShare = lastShare;
             mBlockData.miner.blocks = blocks;
+
+            // Payments
+            mBlockData.miner.payments.clear();
+
+            JSONArray joPaymentsAddressStats = joStatsAddress.optJSONArray("payments");
+            if (joPaymentsAddressStats != null) {
+                for (int i = 0 ; i < joPaymentsAddressStats.length(); i++) {
+                    ProviderData.Payment payment = new ProviderData.Payment();
+                    String strPayment = joPaymentsAddressStats.getString(i);
+                    String[] p = strPayment.split(":");
+                    if(p.length == 4) {
+                        payment.hash = p[0];
+                        payment.amount = (Float.parseFloat(p[1]) / 100.0f);
+                        payment.fee = (Float.parseFloat(p[2]) / 100.0f);
+                    }
+
+                    String strDateTime = pTime.format(new Date(joPaymentsAddressStats.optLong(i++) * 1000));
+                    payment.timestamp = strDateTime;
+
+                    mBlockData.miner.payments.add(payment);
+                }
+            }
+
         } catch (JSONException e) {
             Log.i(LOG_TAG, "ADDRESS\n" + e.toString());
             e.printStackTrace();

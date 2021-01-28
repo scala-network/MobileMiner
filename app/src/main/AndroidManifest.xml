@@ -94,6 +94,13 @@
             android:screenOrientation="behind" />
 
         <activity
+            android:name=".PaymentsActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:label="Payments"
+            android:launchMode="singleTask"
+            android:screenOrientation="behind" />
+
+        <activity
             android:name=".BaseActivity"
             android:configChanges="orientation|keyboardHidden"
             android:label="Base"

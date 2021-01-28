@@ -88,6 +88,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/llPayments"
                     android:layout_width="match_parent"
                     android:layout_height="70dp"
                     android:layout_weight="1"
@@ -104,7 +105,7 @@
                         app:srcCompat="@drawable/ic_wallet" />
 
                     <LinearLayout
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_marginStart="10dp"
@@ -146,6 +147,19 @@
                             android:textStyle="bold"/>
 
                     </LinearLayout>
+
+                    <Space
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"/>
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_marginEnd="3dp"
+                        android:layout_gravity="center"
+                        app:tint="@color/c_white"
+                        app:srcCompat="@drawable/ic_arrow_right" />
 
                 </LinearLayout>
 

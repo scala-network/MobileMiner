@@ -13,7 +13,9 @@ import android.graphics.BitmapFactory;
 import android.util.Base64;
 
 import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.List;
 
 import io.scalaproject.androidminer.Config;
 import io.scalaproject.androidminer.Utils;
@@ -38,6 +40,7 @@ public class PoolItem {
     public void setIsSelected(boolean selected) { isSelected = selected; }
     public boolean isSelected() { return isSelected; }
 
+    // API Data
     private boolean isValid = false;
     public void setIsValid(boolean valid) { isValid = valid; }
     public boolean isValid() { return isValid; }

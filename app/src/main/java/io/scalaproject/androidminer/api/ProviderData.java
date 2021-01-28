@@ -46,7 +46,9 @@ public final class ProviderData {
 
     public static class Payment {
         public float amount;
-        public Date timestamp;
+        public float fee;
+        public String hash;
+        public String timestamp;
     }
 
     final public Network network = new Network();

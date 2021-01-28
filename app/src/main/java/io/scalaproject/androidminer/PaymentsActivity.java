@@ -1,0 +1,95 @@
+// Copyright (c) 2021, Scala
+//
+// Please see the included LICENSE file for more information.
+
+package io.scalaproject.androidminer;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+
+import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
+
+import io.scalaproject.androidminer.api.PaymentItem;
+import io.scalaproject.androidminer.api.ProviderData;
+import io.scalaproject.androidminer.widgets.PaymentInfoAdapter;
+import io.scalaproject.androidminer.widgets.Toolbar;
+
+public class PaymentsActivity extends BaseActivity {
+    private static final String LOG_TAG = "PaymentsActivity";
+
+    private Toolbar toolbar;
+    private RecyclerView rvPayments;
+
+    private PaymentInfoAdapter paymentsAdapter;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if ((getIntent().getFlags() & Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT) != 0) {
+            // Activity was brought to front and not created,
+            // Thus finishing this will get us to the last viewed activity
+            finish();
+            return;
+        }
+
+        setContentView(R.layout.fragment_payments);
+
+        // Toolbar
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(false);
+
+        toolbar.setOnButtonListener(new Toolbar.OnButtonListener() {
+            @Override
+            public void onButtonMain(int type) {
+                switch (type) {
+                    case Toolbar.BUTTON_MAIN_CLOSE:
+                        onBackPressed();
+                }
+            }
+
+            @Override
+            public void onButtonOptions(int type) {
+                // Does nothing in this view
+            }
+        });
+
+        toolbar.setTitle("Payments");
+        toolbar.setButtonMain(Toolbar.BUTTON_MAIN_CLOSE);
+        toolbar.setButtonOptions(Toolbar.BUTTON_OPTIONS_NONE);
+
+        View view = findViewById(android.R.id.content).getRootView();
+
+        rvPayments = view.findViewById(R.id.rvPayments);
+        paymentsAdapter = new PaymentInfoAdapter(this);
+        rvPayments.setAdapter(paymentsAdapter);
+
+        // Set payments data
+        Set<PaymentItem> allPayments = new HashSet<>();
+        for (int i = 0 ; i < StatsFragment.poolData.miner.payments.size(); i++) {
+            ProviderData.Payment payment = StatsFragment.poolData.miner.payments.get(i);
+
+            PaymentItem pi = new PaymentItem();
+            pi.mAmount = String.valueOf(payment.amount);
+            pi.mTimestamp = payment.timestamp;
+            pi.mFee = String.valueOf(payment.fee);
+            pi.mHash = payment.hash;
+
+            allPayments.add(pi);
+        }
+
+        paymentsAdapter.setPayments(allPayments);
+
+        Utils.hideKeyboard(this);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
+}
