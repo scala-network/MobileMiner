@@ -2,7 +2,7 @@
 // This Library is built by Anas Altair
 // GitHub: https://github.com/anastr/SpeedView
 //
-// Copyright (c) 2021, Scala
+// Copyright (c) 2021 Scala
 //
 // Please see the included LICENSE file for more information.
 

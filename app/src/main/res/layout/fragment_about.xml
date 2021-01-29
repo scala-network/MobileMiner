@@ -262,375 +262,6 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dp"
-                    android:text="@string/credits"
-                    android:layout_gravity="start"
-                    android:textSize="14sp"
-                    android:textColor="@color/txt_headline"
-                    android:textStyle="bold"
-                    android:textAllCaps="true"
-                    android:layout_marginTop="15dp"
-                    android:visibility="gone"/>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="start|center"
-                    android:orientation="horizontal"
-                    android:visibility="gone">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="start"
-                        android:text="@string/made_with"
-                        android:textColor="@color/txt_main"
-                        android:textSize="14sp"/>
-
-                    <ImageView
-                        android:layout_width="16dp"
-                        android:layout_height="16dp"
-                        android:layout_marginStart="3dp"
-                        android:layout_marginEnd="3dp"
-                        app:srcCompat="@drawable/ic_heart" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="start"
-                        android:text="@string/by"
-                        android:textColor="@color/txt_main"
-                        android:textSize="14sp"/>
-
-                    <TextView
-                        android:id="@+id/ScalaURL"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="3dp"
-                        android:gravity="start"
-                        android:text=""
-                        android:textColor="@color/c_blue"
-                        android:textColorLink="@color/c_blue"
-                        android:textSize="14sp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="start"
-                        android:text="."
-                        android:textColor="@color/txt_main"
-                        android:textSize="14sp"/>
-
-                </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="start|center"
-                android:orientation="horizontal"
-                android:visibility="gone">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="start"
-                    android:text="@string/forked_from"
-                    android:textColor="@color/txt_main"
-                    android:textSize="14sp"/>
-
-                <TextView
-                    android:id="@+id/Mine2getherURL"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="3dp"
-                    android:gravity="start"
-                    android:text=""
-                    android:textColor="@color/c_blue"
-                    android:textColorLink="@color/c_blue"
-                    android:textSize="14sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="3dp"
-                    android:layout_marginEnd="3dp"
-                    android:gravity="start"
-                    android:text="@string/and"
-                    android:textColor="@color/txt_main"
-                    android:textSize="14sp"/>
-
-                <TextView
-                    android:id="@+id/MoneroMinerURL"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="start"
-                    android:text=""
-                    android:textColor="@color/c_blue"
-                    android:textColorLink="@color/c_blue"
-                    android:textSize="14sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="start"
-                    android:text="."
-                    android:textColor="@color/txt_main"
-                    android:textSize="14sp"/>
-
-            </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="start|center"
-                    android:orientation="horizontal"
-                    android:visibility="gone">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="3dp"
-                        android:gravity="start"
-                        android:text="@string/icons_by"
-                        android:textColor="@color/txt_main"
-                        android:textSize="14sp"/>
-
-                    <TextView
-                        android:id="@+id/MaterialDesignURL"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="start"
-                        android:text=""
-                        android:textColor="@color/c_blue"
-                        android:textColorLink="@color/c_blue"
-                        android:textSize="14sp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="3dp"
-                        android:layout_marginEnd="3dp"
-                        android:gravity="start"
-                        android:text="@string/and"
-                        android:textColor="@color/txt_main"
-                        android:textSize="14sp"/>
-
-                    <TextView
-                        android:id="@+id/FontAwesomeURL"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="start"
-                        android:text=""
-                        android:textColor="@color/c_blue"
-                        android:textColorLink="@color/c_blue"
-                        android:textSize="14sp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="start"
-                        android:text="."
-                        android:textColor="@color/txt_main"
-                        android:textSize="14sp"/>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
-                    android:layout_marginBottom="5dp"
-                    android:orientation="horizontal"
-                    android:visibility="gone">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:text="@string/donationadresses"
-                        android:textSize="14sp"
-                        android:textAllCaps="true"
-                        android:textColor="@color/txt_headline"
-                        android:textStyle="bold"/>
-
-                    <Button
-                        android:id="@+id/btnDonationsHelp"
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        app:backgroundTint="@android:color/transparent"
-                        app:cornerRadius="5dp"
-                        app:icon="@drawable/ic_help"
-                        app:iconGravity="textStart"
-                        app:iconPadding="0dp"
-                        app:iconTint="@color/c_grey" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/llDonationsBTC"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:layout_weight="0"
-                    android:orientation="horizontal"
-                    android:visibility="gone">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Bitcoin (BTC)"
-                        android:textColor="@color/txt_main"
-                        android:textSize="14sp"
-                        android:checked="false"
-                        app:buttonTint="@color/txt_main" />
-
-                </LinearLayout>
-
-                <View
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="5dp"
-                    android:layout_width="fill_parent"
-                    android:layout_height="0.7dp"
-                    android:background="@color/txt_main"
-                    android:visibility="gone"/>
-
-                <LinearLayout
-                    android:id="@+id/llDonationsETH"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:layout_weight="0"
-                    android:orientation="horizontal"
-                    android:visibility="gone">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Ethereum (ETH)"
-                        android:textColor="@color/txt_main"
-                        android:textSize="14sp"
-                        android:checked="false" />
-
-                </LinearLayout>
-
-                <View
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="5dp"
-                    android:layout_width="fill_parent"
-                    android:layout_height="0.7dp"
-                    android:background="@color/txt_main"
-                    android:visibility="gone"/>
-
-                <LinearLayout
-                    android:id="@+id/llDonationsLTC"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:layout_weight="0"
-                    android:orientation="horizontal"
-                    android:visibility="gone">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Litecoin (LTC)"
-                        android:textColor="@color/txt_main"
-                        android:textSize="14sp"
-                        android:checked="false" />
-
-                </LinearLayout>
-
-                <View
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="5dp"
-                    android:layout_width="fill_parent"
-                    android:layout_height="0.7dp"
-                    android:background="@color/txt_main"
-                    android:visibility="gone"/>
-
-                <LinearLayout
-                    android:id="@+id/llDonationsXLA"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:layout_weight="0"
-                    android:orientation="horizontal"
-                    android:visibility="gone">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Scala (XLA)"
-                        android:textColor="@color/txt_main"
-                        android:textSize="14sp"
-                        android:checked="false" />
-
-                </LinearLayout>
-
-                <View
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="5dp"
-                    android:layout_width="fill_parent"
-                    android:layout_height="0.7dp"
-                    android:background="@color/txt_main"
-                    android:visibility="gone"/>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:visibility="gone">
-
-                    <Button
-                        android:id="@+id/btnDonateBTC"
-                        android:layout_width="100dp"
-                        android:layout_height="45dp"
-                        app:backgroundTint="@color/bg_lighter"
-                        android:insetLeft="2dp"
-                        android:insetRight="2dp"
-                        android:text="@string/btc"
-                        android:textSize="14sp"
-                        android:textColor="@color/txt_button_filled"
-                        app:cornerRadius="5dp"
-                        app:iconPadding="0dp"
-                        app:icon="@drawable/ic_copy"
-                        app:iconTint="@color/btn_icon_default"/>
-
-                    <Button
-                        android:id="@+id/btnDonateETH"
-                        android:layout_width="100dp"
-                        android:layout_height="45dp"
-                        app:backgroundTint="@color/bg_lighter"
-                        android:insetLeft="2dp"
-                        android:insetRight="2dp"
-                        android:text="@string/eth"
-                        android:textSize="14sp"
-                        android:textColor="@color/txt_button_filled"
-                        app:cornerRadius="5dp"
-                        app:iconPadding="0dp"
-                        app:icon="@drawable/ic_copy"
-                        app:iconTint="@color/btn_icon_default"/>
-
-                    <Button
-                        android:id="@+id/btnDonateXLA"
-                        android:layout_width="100dp"
-                        android:layout_height="45dp"
-                        app:backgroundTint="@color/bg_lighter"
-                        android:insetLeft="2dp"
-                        android:insetRight="2dp"
-                        android:text="@string/xla"
-                        android:textSize="14sp"
-                        android:textColor="@color/txt_button_filled"
-                        app:cornerRadius="5dp"
-                        app:iconPadding="0dp"
-                        app:icon="@drawable/ic_copy"
-                        app:iconTint="@color/btn_icon_default"/>
-
-                </LinearLayout>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
                     android:text="Community"
                     android:layout_gravity="start"
@@ -688,36 +319,37 @@
 
                 </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="25dp"
-                android:orientation="horizontal"
-                android:gravity="center">
-
-                <TextView
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="POWERED BY"
-                    android:layout_gravity="center"
-                    android:textSize="18sp"
-                    android:textColor="@color/txt_main"
-                    android:textStyle="normal"
-                    android:textAllCaps="true"/>
+                    android:layout_marginTop="25dp"
+                    android:orientation="horizontal"
+                    android:gravity="center">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="4dp"
-                    android:text="SCALA"
-                    android:gravity="center"
-                    android:layout_gravity="center"
-                    android:textSize="18sp"
-                    android:textColor="@color/c_blue"
-                    android:textStyle="bold"
-                    android:textAllCaps="true"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/powered_by"
+                        android:layout_gravity="center"
+                        android:textSize="18sp"
+                        android:textColor="@color/txt_main"
+                        android:textStyle="normal"
+                        android:textAllCaps="true"/>
 
-            </LinearLayout>
+                    <TextView
+                        android:id="@+id/tvScala"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:text="@string/scala"
+                        android:gravity="center"
+                        android:layout_gravity="center"
+                        android:textSize="18sp"
+                        android:textColor="@color/c_blue"
+                        android:textStyle="bold"
+                        android:textAllCaps="true"/>
+
+                </LinearLayout>
 
             </LinearLayout>
 

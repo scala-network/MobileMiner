@@ -2,7 +2,7 @@
 //
 // Please see the included LICENSE file for more information.
 //
-// Copyright (c) 2021, Scala
+// Copyright (c) 2021 Scala
 //
 // Please see the included LICENSE file for more information.
 
@@ -18,11 +18,12 @@ import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import io.scalaproject.androidminer.dialogs.CreditsFragment;
+import io.scalaproject.androidminer.dialogs.DonationsFragment;
 
 public class AboutFragment extends Fragment {
     @Nullable
@@ -30,15 +31,17 @@ public class AboutFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_about, container, false);
 
-        TextView tvBuild, tvScala, tvMine2gether, tvMonerominer, tvMaterialDesign, tvFontAwesome;
+        TextView tvBuild = view.findViewById(R.id.build);
+        tvBuild.setText(BuildConfig.VERSION_NAME + " (" + Utils.getBuildTime() + ")");
 
-        tvBuild = view.findViewById(R.id.build);
-
-        tvScala = view.findViewById(R.id.ScalaURL);
-        tvMine2gether = view.findViewById(R.id.Mine2getherURL);
-        tvMonerominer = view.findViewById(R.id.MoneroMinerURL);
-        tvMaterialDesign = view.findViewById(R.id.MaterialDesignURL);
-        tvFontAwesome = view.findViewById(R.id.FontAwesomeURL);
+        TextView tvScala = view.findViewById(R.id.tvScala);
+        tvScala.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Uri uri = Uri.parse(getString(R.string.ScalaLinkClean));
+                startActivity(new Intent(Intent.ACTION_VIEW, uri));
+            }
+        });
 
         LinearLayout llGetSupport = view.findViewById(R.id.llSupport);
         llGetSupport.setOnClickListener(new View.OnClickListener() {
@@ -46,6 +49,30 @@ public class AboutFragment extends Fragment {
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), SupportActivity.class);
                 startActivity(intent);
+            }
+        });
+
+        LinearLayout llCredits = view.findViewById(R.id.llCredits);
+        llCredits.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onShowCredits();
+            }
+        });
+
+        LinearLayout llShare = view.findViewById(R.id.llShare);
+        llShare.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onShareApp();
+            }
+        });
+
+        LinearLayout llDonations = view.findViewById(R.id.llDonations);
+        llDonations.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onShowDonations();
             }
         });
 
@@ -99,70 +126,24 @@ public class AboutFragment extends Fragment {
             }
         });
 
-        Button btnDonationAddressesHelp = view.findViewById(R.id.btnDonationsHelp);
-        btnDonationAddressesHelp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // inflate the layout of the popup window
-                View popupView = inflater.inflate(R.layout.helper_donation_addresses, null);
-                Utils.showPopup(v, inflater, popupView);
-            }
-        });
-
-        LinearLayout llDonateBTC = view.findViewById(R.id.llDonationsBTC);
-        llDonateBTC.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Utils.copyToClipboard("Scala BTC Donation Address", Utils.SCALA_BTC_ADDRESS);
-                Toast.makeText(getContext(), getResources().getString(R.string.donationadressbtc_copied), Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        LinearLayout llDonateETH = view.findViewById(R.id.llDonationsETH);
-        llDonateETH.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Utils.copyToClipboard("Scala ETH Donation Address", Utils.SCALA_ETH_ADDRESS);
-                Toast.makeText(getContext(), getResources().getString(R.string.donationadresseth_copied), Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        LinearLayout llDonateLTC = view.findViewById(R.id.llDonationsLTC);
-        llDonateLTC.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Utils.copyToClipboard("Scala LTC Donation Address", Utils.SCALA_LTC_ADDRESS);
-                Toast.makeText(getContext(), getResources().getString(R.string.donationadressltc_copied), Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        LinearLayout llDonateXLA = view.findViewById(R.id.llDonationsXLA);
-        llDonateXLA.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Utils.copyToClipboard("Scala XLA Donation Address", Utils.SCALA_XLA_ADDRESS);
-                Toast.makeText(getContext(), getResources().getString(R.string.donationadressxla_copied), Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        tvBuild.setText(BuildConfig.VERSION_NAME + " (" + Utils.getBuildTime() + ")");
-
-        tvScala.setText(Html.fromHtml(getString(R.string.ScalaLink)));
-        tvScala.setMovementMethod(LinkMovementMethod.getInstance());
-
-        tvMine2gether.setText(Html.fromHtml(getString(R.string.Mine2getherLink)));
-        tvMine2gether.setMovementMethod(LinkMovementMethod.getInstance());
-
-        tvMonerominer.setText(Html.fromHtml(getString(R.string.MoneroMinerLink)));
-        tvMonerominer.setMovementMethod(LinkMovementMethod.getInstance());
-
-        tvMaterialDesign.setText(Html.fromHtml(getString(R.string.MaterialDesignLink)));
-        tvMaterialDesign.setMovementMethod(LinkMovementMethod.getInstance());
-
-        tvFontAwesome.setText(Html.fromHtml(getString(R.string.FontAwesomeLink)));
-        tvFontAwesome.setMovementMethod(LinkMovementMethod.getInstance());
-
-
         return view;
+    }
+
+    private void onShowCredits() {
+        CreditsFragment.display(getActivity().getSupportFragmentManager());
+    }
+
+    private void onShowDonations() {
+        DonationsFragment.display(getActivity().getSupportFragmentManager());
+    }
+
+    private void onShareApp() {
+        Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+        sharingIntent.setType("text/plain");
+        String shareBody = "Take a look at my #Scala Mobile Miner stats! I'm currently mining with my #Android device. #MobileMining $XLA @ScalaQQ";
+        sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "My Scala Mobile Miner Stats");
+        sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
+
+        startActivity(Intent.createChooser(sharingIntent, "Share via"));
     }
 }

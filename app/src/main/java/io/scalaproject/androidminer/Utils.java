@@ -1,4 +1,4 @@
-// Copyright (c) 2021, Scala
+// Copyright (c) 2021 Scala
 //
 // Please see the included LICENSE file for more information.
 
@@ -51,18 +51,18 @@ import static android.content.ClipDescription.MIMETYPE_TEXT_PLAIN;
 public final class Utils {
     static public Integer INCREMENT = 5;
     static public Integer MIN_CPU_TEMP = 60;
-    static public  Integer MIN_BATTERY_TEMP = 30;
-    static public  Integer MIN_COOLDOWN = 10;
+    static public Integer MIN_BATTERY_TEMP = 30;
+    static public Integer MIN_COOLDOWN = 10;
 
-    static String SCALA_BTC_ADDRESS = "1XTLY5LqdBXRW6hcHtnuMU7c68mAyW6qm";
-    static String SCALA_ETH_ADDRESS = "0x133a15dF7177823Dd407ca87A190bbE4585a379e";
-    static String SCALA_XLA_ADDRESS = "SvkFLjR4DST5bAG8SSHWfta4MsCzRrDEPNx72cTetqcoPfkwi7cFA2sYGG2Tf51rQ9EMSPHVuzxeoS4Y7ieicg5A1M24A8TTW";
-    static String SCALA_LTC_ADDRESS = "LeLK5hopvfArVyKtkZBzF3B5wj6rGrNUGk";
+    static public String SCALA_BTC_ADDRESS = "1XTLY5LqdBXRW6hcHtnuMU7c68mAyW6qm";
+    static public String SCALA_ETH_ADDRESS = "0x133a15dF7177823Dd407ca87A190bbE4585a379e";
+    static public String SCALA_XLA_ADDRESS = "SvkFLjR4DST5bAG8SSHWfta4MsCzRrDEPNx72cTetqcoPfkwi7cFA2sYGG2Tf51rQ9EMSPHVuzxeoS4Y7ieicg5A1M24A8TTW";
+    static public String SCALA_LTC_ADDRESS = "LeLK5hopvfArVyKtkZBzF3B5wj6rGrNUGk";
 
-    static String ADDRESS_REGEX_MAIN = "^S+([1-9A-HJ-NP-Za-km-z]{96})$";
-    static String ADDRESS_REGEX_SUB = "^Ss+([1-9A-HJ-NP-Za-km-z]{96})$";
+    static public String ADDRESS_REGEX_MAIN = "^S+([1-9A-HJ-NP-Za-km-z]{96})$";
+    static public String ADDRESS_REGEX_SUB = "^Ss+([1-9A-HJ-NP-Za-km-z]{96})$";
 
-    static boolean verifyAddress(String input) {
+    static public boolean verifyAddress(String input) {
         Pattern p = Pattern.compile(Utils.ADDRESS_REGEX_MAIN);
         Matcher m = p.matcher(input.trim());
         if(m.matches()) {
@@ -74,7 +74,7 @@ public final class Utils {
         return m.matches();
     }
 
-    public static float convertStringToFloat(String sNumber) {
+    static public float convertStringToFloat(String sNumber) {
         float total = (float) -1;
         try
         {
@@ -96,14 +96,14 @@ public final class Utils {
         return total;
     }
 
-    static String getDateTime() {
+    static public String getDateTime() {
         Calendar date = Calendar.getInstance(Locale.getDefault());
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
 
         return dateFormat.format(date.getTime());
     }
 
-    static void showPopup(View view, LayoutInflater inflater, View popupView) {
+    static public void showPopup(View view, LayoutInflater inflater, View popupView) {
         // create the popup window
         int width = LinearLayout.LayoutParams.WRAP_CONTENT;
         int height = LinearLayout.LayoutParams.WRAP_CONTENT;
@@ -124,13 +124,13 @@ public final class Utils {
         });
     }
 
-    static void copyToClipboard(String label, String text) {
+    static public void copyToClipboard(String label, String text) {
         ClipboardManager clipboard = (ClipboardManager) MainActivity.getContextOfApplication().getSystemService(Context.CLIPBOARD_SERVICE);
         ClipData clip = ClipData.newPlainText(label, text);
         clipboard.setPrimaryClip(clip);
     }
 
-    static String pasteFromClipboard(Context appContext) {
+    static public String pasteFromClipboard(Context appContext) {
         ClipboardManager clipboard = (ClipboardManager) appContext.getSystemService(Context.CLIPBOARD_SERVICE);
 
         String pasteData = "";
@@ -149,7 +149,7 @@ public final class Utils {
         return pasteData;
     }
 
-    static Bitmap getBitmapFromVectorDrawable(Context context, int drawableId) {
+    static public Bitmap getBitmapFromVectorDrawable(Context context, int drawableId) {
         Drawable drawable = ContextCompat.getDrawable(context, drawableId);
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
             drawable = (DrawableCompat.wrap(drawable)).mutate();
@@ -180,7 +180,7 @@ public final class Utils {
         }
     }
 
-    static private Bitmap getBitmap(VectorDrawable vectorDrawable) {
+    static public Bitmap getBitmap(VectorDrawable vectorDrawable) {
         Bitmap bitmap = Bitmap.createBitmap(vectorDrawable.getIntrinsicWidth(),
                 vectorDrawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(bitmap);
@@ -189,7 +189,7 @@ public final class Utils {
         return bitmap;
     }
 
-    static private Bitmap getBitmap(VectorDrawableCompat vectorDrawable) {
+    static public Bitmap getBitmap(VectorDrawableCompat vectorDrawable) {
         Bitmap bitmap = Bitmap.createBitmap(vectorDrawable.getIntrinsicWidth(),
                 vectorDrawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(bitmap);

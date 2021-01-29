@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/bg_body">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginBottom="15dp"
+        android:paddingBottom="10dp"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:src="@mipmap/ic_launcher" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="7dp"
+            android:text="Credits"
+            android:textSize="14sp"
+            android:textColor="@color/txt_headline"
+            android:textStyle="bold"
+            android:textAllCaps="true"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="7dp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:visibility="visible">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/made_with"
+                    android:textColor="@color/txt_main"
+                    android:textSize="14sp"/>
+
+                <ImageView
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:layout_marginStart="3dp"
+                    android:layout_marginEnd="3dp"
+                    app:srcCompat="@drawable/ic_heart" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    android:text="@string/by"
+                    android:textColor="@color/txt_main"
+                    android:textSize="14sp"/>
+
+                <TextView
+                    android:id="@+id/ScalaURL"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="3dp"
+                    android:gravity="start"
+                    android:text=""
+                    android:textColor="@color/c_blue"
+                    android:textColorLink="@color/c_blue"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    android:text="."
+                    android:textColor="@color/txt_main"
+                    android:textSize="14sp"/>
+
+            </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="3dp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:visibility="visible">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Forked from:"
+                android:textColor="@color/txt_main"
+                android:textSize="14sp"/>
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/Mine2getherURL"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Mine2gether"
+            android:textColor="@color/c_blue"
+            android:textColorLink="@color/c_blue"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/MoneroMinerURL"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="MoneroMiner"
+            android:textColor="@color/c_blue"
+            android:textColorLink="@color/c_blue"
+            android:textSize="14sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:visibility="visible">
+
+</LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="7dp"
+            android:layout_marginBottom="3dp"
+            android:gravity="start"
+            android:text="Icons by:"
+            android:textColor="@color/txt_main"
+            android:textSize="14sp"/>
+
+        <TextView
+            android:id="@+id/MaterialDesignURL"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Material Design"
+            android:textColor="@color/c_blue"
+            android:textColorLink="@color/c_blue"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/FontAwesomeURL"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Font Awesome"
+            android:textColor="@color/c_blue"
+            android:textColorLink="@color/c_blue"
+            android:textSize="14sp" />
+
+    </LinearLayout>
+
+</RelativeLayout>
