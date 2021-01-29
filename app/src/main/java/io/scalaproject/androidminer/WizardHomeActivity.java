@@ -67,7 +67,7 @@ public class WizardHomeActivity extends BaseActivity {
     }
 
     public void onCreateWallet(View view) {
-        startActivity(new Intent(WizardHomeActivity.this, WizardVaultActivity.class));
+        startActivity(new Intent(WizardHomeActivity.this, VaultActivity.class));
     }
 
     private void showDisclaimer() {

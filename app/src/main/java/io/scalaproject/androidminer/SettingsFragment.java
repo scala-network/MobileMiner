@@ -73,6 +73,14 @@ public class SettingsFragment extends Fragment {
         Context appContext = MainActivity.getContextOfApplication();
         bSave = view.findViewById(R.id.saveSettings);
 
+        TextView tvNoWallet = view.findViewById(R.id.tvNoWallet);
+        tvNoWallet.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getActivity(), VaultActivity.class));
+            }
+        });
+
         tilAddress = view.findViewById(R.id.addressIL);
         edAddress = view.findViewById(R.id.address);
 

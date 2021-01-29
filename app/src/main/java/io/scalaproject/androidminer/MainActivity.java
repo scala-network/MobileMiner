@@ -932,7 +932,8 @@ public class MainActivity extends BaseActivity
         if (!Config.read("mininggoal").isEmpty()) {
             edMiningGoal.setText(Config.read("mininggoal"));
         } else {
-            edMiningGoal.setText(String.valueOf(Math.round(fMinPoolPayout)));
+            TextView tvPayoutGoal = findViewById(R.id.tvPayoutGoal);
+            edMiningGoal.setText(tvPayoutGoal.getText());
         }
 
         // set dialog message

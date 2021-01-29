@@ -59,7 +59,7 @@
             android:screenOrientation="behind" />
 
         <activity
-            android:name=".WizardVaultActivity"
+            android:name=".VaultActivity"
             android:configChanges="orientation|keyboardHidden"
             android:label="Vault"
             android:launchMode="singleTask"

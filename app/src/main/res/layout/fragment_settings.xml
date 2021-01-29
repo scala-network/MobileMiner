@@ -27,7 +27,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="15dp"
+                    android:layout_marginBottom="0dp"
                     android:orientation="horizontal">
 
                     <TextView
@@ -59,6 +59,15 @@
                         tools:ignore="UnusedAttribute" />
 
                 </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tvNoWallet"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="15dp"
+                    android:text="No wallet address? Click here to create one."
+                    android:textColor="@color/txt_secondary"
+                    android:textSize="14sp" />
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/addressIL"
