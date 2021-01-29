@@ -100,6 +100,7 @@
     <string name="donationadresses">Donations</string>
     <string name="donationadressbtc_copied">BTC Donation Address copied.</string>
     <string name="donationadresseth_copied">ETH Donation Address copied.</string>
+    <string name="donationadressltc_copied">LTC Donation Address copied.</string>
     <string name="donationadressxla_copied">XLA Donation Address copied.</string>
     <string name="statictempcontrol">Switched to static temperature control.</string>
     <string name="debuginfo">Copy Debug Info</string>

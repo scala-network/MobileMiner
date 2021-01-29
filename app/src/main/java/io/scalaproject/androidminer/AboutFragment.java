@@ -20,6 +20,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,6 +39,15 @@ public class AboutFragment extends Fragment {
         tvMonerominer = view.findViewById(R.id.MoneroMinerURL);
         tvMaterialDesign = view.findViewById(R.id.MaterialDesignURL);
         tvFontAwesome = view.findViewById(R.id.FontAwesomeURL);
+
+        LinearLayout llGetSupport = view.findViewById(R.id.llSupport);
+        llGetSupport.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), SupportActivity.class);
+                startActivity(intent);
+            }
+        });
 
         ImageView ivDiscord = view.findViewById(R.id.ivDiscord);
         ivDiscord.setOnClickListener(new View.OnClickListener() {
@@ -99,8 +109,8 @@ public class AboutFragment extends Fragment {
             }
         });
 
-        Button btnDonateBTC = view.findViewById(R.id.btnDonateBTC);
-        btnDonateBTC.setOnClickListener(new View.OnClickListener() {
+        LinearLayout llDonateBTC = view.findViewById(R.id.llDonationsBTC);
+        llDonateBTC.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Utils.copyToClipboard("Scala BTC Donation Address", Utils.SCALA_BTC_ADDRESS);
@@ -108,8 +118,8 @@ public class AboutFragment extends Fragment {
             }
         });
 
-        Button btnDonateETH = view.findViewById(R.id.btnDonateETH);
-        btnDonateETH.setOnClickListener(new View.OnClickListener() {
+        LinearLayout llDonateETH = view.findViewById(R.id.llDonationsETH);
+        llDonateETH.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Utils.copyToClipboard("Scala ETH Donation Address", Utils.SCALA_ETH_ADDRESS);
@@ -117,8 +127,17 @@ public class AboutFragment extends Fragment {
             }
         });
 
-        Button btnDonateXLA = view.findViewById(R.id.btnDonateXLA);
-        btnDonateXLA.setOnClickListener(new View.OnClickListener() {
+        LinearLayout llDonateLTC = view.findViewById(R.id.llDonationsLTC);
+        llDonateLTC.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Utils.copyToClipboard("Scala LTC Donation Address", Utils.SCALA_LTC_ADDRESS);
+                Toast.makeText(getContext(), getResources().getString(R.string.donationadressltc_copied), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        LinearLayout llDonateXLA = view.findViewById(R.id.llDonationsXLA);
+        llDonateXLA.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Utils.copyToClipboard("Scala XLA Donation Address", Utils.SCALA_XLA_ADDRESS);
@@ -143,14 +162,6 @@ public class AboutFragment extends Fragment {
         tvFontAwesome.setText(Html.fromHtml(getString(R.string.FontAwesomeLink)));
         tvFontAwesome.setMovementMethod(LinkMovementMethod.getInstance());
 
-        Button btnGetSupport = view.findViewById(R.id.btnGetSupport);
-        btnGetSupport.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), SupportActivity.class);
-                startActivity(intent);
-            }
-        });
 
         return view;
     }

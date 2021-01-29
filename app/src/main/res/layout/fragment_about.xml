@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/bg_body">
 
     <LinearLayout
@@ -100,29 +101,163 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="5dp"
-                    android:text="Support"
+                    android:text="About"
                     android:layout_gravity="start"
                     android:textSize="14sp"
                     android:textColor="@color/txt_headline"
                     android:textStyle="bold"
                     android:textAllCaps="true"
-                    android:layout_marginTop="15dp"/>
+                    android:layout_marginTop="25dp"/>
 
-                <Button
-                    android:id="@+id/btnGetSupport"
-                    android:layout_width="wrap_content"
-                    android:layout_height="45dp"
-                    app:backgroundTint="@color/bg_blue"
-                    android:insetLeft="2dp"
-                    android:insetRight="2dp"
-                    android:text="Get support"
-                    android:textSize="14sp"
-                    android:textColor="@color/txt_button_filled"
-                    android:textAllCaps="false"
-                    app:cornerRadius="5dp"
-                    app:iconPadding="10dp"
-                    app:icon="@drawable/ic_support"
-                    app:iconTint="@color/btn_icon_default"/>
+                <LinearLayout
+                    android:id="@+id/llSupport"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:layout_weight="0"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Support"
+                        android:layout_gravity="center"
+                        android:textColor="@color/txt_main"
+                        android:textSize="14sp" />
+
+                    <Space
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        tools:ignore="NestedWeights" />
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        app:srcCompat="@drawable/ic_arrow_right" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_width="fill_parent"
+                    android:layout_height="0.7dp"
+                    android:background="@color/txt_inactive"/>
+
+                <LinearLayout
+                    android:id="@+id/llCredits"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:layout_weight="0"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/credits"
+                        android:textColor="@color/txt_main"
+                        android:layout_gravity="center"
+                        android:textSize="14sp" />
+
+                    <Space
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        tools:ignore="NestedWeights" />
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        app:srcCompat="@drawable/ic_arrow_right" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_width="fill_parent"
+                    android:layout_height="0.7dp"
+                    android:background="@color/txt_inactive"/>
+
+                <LinearLayout
+                    android:id="@+id/llShare"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:layout_weight="0"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Share this app"
+                        android:textColor="@color/txt_main"
+                        android:textSize="14sp"
+                        android:layout_gravity="center"/>
+
+                    <Space
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        tools:ignore="NestedWeights" />
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        app:srcCompat="@drawable/ic_arrow_right" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_width="fill_parent"
+                    android:layout_height="0.7dp"
+                    android:background="@color/txt_inactive"
+                    android:visibility="visible"/>
+
+                <LinearLayout
+                    android:id="@+id/llDonations"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:layout_weight="0"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Donations"
+                        android:textColor="@color/txt_main"
+                        android:textSize="14sp"
+                        android:layout_gravity="center" />
+
+                    <Space
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        tools:ignore="NestedWeights" />
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        app:srcCompat="@drawable/ic_arrow_right" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_width="fill_parent"
+                    android:layout_height="0.7dp"
+                    android:background="@color/txt_inactive"
+                    android:visibility="visible"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -134,13 +269,15 @@
                     android:textColor="@color/txt_headline"
                     android:textStyle="bold"
                     android:textAllCaps="true"
-                    android:layout_marginTop="15dp"/>
+                    android:layout_marginTop="15dp"
+                    android:visibility="gone"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="start|center"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:visibility="gone">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -190,7 +327,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="start|center"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:visibility="gone">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -245,7 +383,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="start|center"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:visibility="gone">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -301,7 +440,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
                     android:layout_marginBottom="5dp"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:visibility="gone">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -327,9 +467,119 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/llDonationsBTC"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:layout_marginTop="5dp"
+                    android:layout_weight="0"
+                    android:orientation="horizontal"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Bitcoin (BTC)"
+                        android:textColor="@color/txt_main"
+                        android:textSize="14sp"
+                        android:checked="false"
+                        app:buttonTint="@color/txt_main" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_width="fill_parent"
+                    android:layout_height="0.7dp"
+                    android:background="@color/txt_main"
+                    android:visibility="gone"/>
+
+                <LinearLayout
+                    android:id="@+id/llDonationsETH"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_weight="0"
+                    android:orientation="horizontal"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Ethereum (ETH)"
+                        android:textColor="@color/txt_main"
+                        android:textSize="14sp"
+                        android:checked="false" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_width="fill_parent"
+                    android:layout_height="0.7dp"
+                    android:background="@color/txt_main"
+                    android:visibility="gone"/>
+
+                <LinearLayout
+                    android:id="@+id/llDonationsLTC"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_weight="0"
+                    android:orientation="horizontal"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Litecoin (LTC)"
+                        android:textColor="@color/txt_main"
+                        android:textSize="14sp"
+                        android:checked="false" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_width="fill_parent"
+                    android:layout_height="0.7dp"
+                    android:background="@color/txt_main"
+                    android:visibility="gone"/>
+
+                <LinearLayout
+                    android:id="@+id/llDonationsXLA"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_weight="0"
+                    android:orientation="horizontal"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Scala (XLA)"
+                        android:textColor="@color/txt_main"
+                        android:textSize="14sp"
+                        android:checked="false" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_width="fill_parent"
+                    android:layout_height="0.7dp"
+                    android:background="@color/txt_main"
+                    android:visibility="gone"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:visibility="gone">
 
                     <Button
                         android:id="@+id/btnDonateBTC"
@@ -381,27 +631,28 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dp"
+                    android:layout_marginBottom="10dp"
                     android:text="Community"
                     android:layout_gravity="start"
                     android:textSize="14sp"
                     android:textColor="@color/txt_headline"
                     android:textStyle="bold"
                     android:textAllCaps="true"
-                    android:layout_marginTop="15dp"/>
+                    android:layout_marginTop="25dp"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="6dp"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:gravity="center">
 
                     <ImageView
                         android:id="@+id/ivDiscord"
                         android:layout_width="42dp"
                         android:layout_height="42dp"
                         android:layout_marginStart="3dp"
-                        android:layout_marginEnd="6dp"
+                        android:layout_marginEnd="15dp"
                         app:srcCompat="@drawable/ic_discord1" />
 
                     <ImageView
@@ -409,7 +660,7 @@
                         android:layout_width="42dp"
                         android:layout_height="42dp"
                         android:layout_marginStart="3dp"
-                        android:layout_marginEnd="6dp"
+                        android:layout_marginEnd="15dp"
                         app:srcCompat="@drawable/ic_telegram1" />
 
                     <ImageView
@@ -417,7 +668,7 @@
                         android:layout_width="42dp"
                         android:layout_height="42dp"
                         android:layout_marginStart="3dp"
-                        android:layout_marginEnd="6dp"
+                        android:layout_marginEnd="15dp"
                         app:srcCompat="@drawable/ic_medium1" />
 
                     <ImageView
@@ -425,7 +676,7 @@
                         android:layout_width="42dp"
                         android:layout_height="42dp"
                         android:layout_marginStart="3dp"
-                        android:layout_marginEnd="6dp"
+                        android:layout_marginEnd="15dp"
                         app:srcCompat="@drawable/ic_twitter1" />
 
                     <ImageView
@@ -436,6 +687,37 @@
                         app:srcCompat="@drawable/ic_reddit1" />
 
                 </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25dp"
+                android:orientation="horizontal"
+                android:gravity="center">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="POWERED BY"
+                    android:layout_gravity="center"
+                    android:textSize="18sp"
+                    android:textColor="@color/txt_main"
+                    android:textStyle="normal"
+                    android:textAllCaps="true"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:text="SCALA"
+                    android:gravity="center"
+                    android:layout_gravity="center"
+                    android:textSize="18sp"
+                    android:textColor="@color/c_blue"
+                    android:textStyle="bold"
+                    android:textAllCaps="true"/>
+
+            </LinearLayout>
 
             </LinearLayout>
 
