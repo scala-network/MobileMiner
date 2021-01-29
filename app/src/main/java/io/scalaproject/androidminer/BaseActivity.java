@@ -13,7 +13,7 @@ import android.widget.Toast;
 
 import static io.scalaproject.androidminer.MainActivity.contextOfApplication;
 
-public abstract class BaseActivity extends AppCompatActivity {
+public abstract class BaseActivity extends AppCompatActivity implements Thread.UncaughtExceptionHandler {
     io.scalaproject.androidminer.dialogs.ProgressDialog progressDialog = null;
 
     private class SimpleProgressDialog extends io.scalaproject.androidminer.dialogs.ProgressDialog {
@@ -34,6 +34,12 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     static {
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
+    }
+
+    @Override
+    public void uncaughtException(Thread thread, Throwable ex) {
+        MainActivity.hideNotifications();
+        ex.printStackTrace();
     }
 
     public void showProgressDialog(int msgId) {

@@ -229,7 +229,7 @@ public class MainActivity extends BaseActivity
     private static int m_nCurrentState = Config.STATE_STOPPED;
     public int getCurrentState() { return m_nCurrentState; }
 
-    private NotificationManager notificationManager = null;
+    private static NotificationManager notificationManager = null;
     private NotificationCompat.Builder notificationBuilder = null;
 
     BottomNavigationView navigationView = null;
@@ -2431,7 +2431,7 @@ public class MainActivity extends BaseActivity
         notificationManager.notify(1, notificationBuilder.build());
     }
 
-    private void hideNotifications() {
+    public static void hideNotifications() {
         if(notificationManager != null)
             notificationManager.cancelAll();
     }
