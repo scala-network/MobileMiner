@@ -1,5 +1,3 @@
-package io.scalaproject.androidminer.dialogs;
-
 /*
  * Copyright (C) 2007 The Android Open Source Project
  * Copyright (C) 2018 m2049r
@@ -22,16 +20,16 @@ package io.scalaproject.androidminer.dialogs;
  *
  * Please see the included LICENSE file for more information.*/
 
+package io.scalaproject.androidminer.dialogs;
+
 import android.app.AlertDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import io.scalaproject.androidminer.BuildConfig;
 import io.scalaproject.androidminer.R;
 
 import java.util.Locale;
