@@ -531,7 +531,8 @@ public class PoolActivity extends BaseActivity
             poolsAdapter.setPools(null);
             poolsAdapter.allowClick(false);
 
-            //selectedPoolView = null;
+            showProgressDialog(R.string.loading_pools);
+
             selectedPool = ProviderManager.getSelectedPool();
         }
 
@@ -571,6 +572,8 @@ public class PoolActivity extends BaseActivity
             poolsAdapter.allowClick(true);
 
             rvPools.post(() -> updateSelectedPoolLayout());
+
+            dismissProgressDialog();
         }
     }
 }
