@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.LinearLayout;
 
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -80,6 +81,9 @@ public class PaymentsActivity extends BaseActivity implements PaymentInfoAdapter
         }
 
         paymentsAdapter.setPayments(allPayments);
+
+        LinearLayout llNoPayments = view.findViewById(R.id.llNoPayments);
+        llNoPayments.setVisibility(allPayments.isEmpty() ? View.VISIBLE : View.GONE);
 
         Utils.hideKeyboard(this);
     }

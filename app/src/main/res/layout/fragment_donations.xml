@@ -31,6 +31,15 @@
             android:textStyle="bold"
             android:textAllCaps="true"/>
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="7dp"
+            android:text="@string/donation_addresses_help"
+            android:textSize="14sp"
+            android:gravity="center"
+            android:textColor="@color/txt_main"/>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

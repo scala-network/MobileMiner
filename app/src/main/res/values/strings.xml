@@ -153,7 +153,7 @@
     <string name="temp_control_warning_helper">This application implements two layers of protection for your device.\n\nThe first one is the As-Much-As-You-Can (AMAYC) machine learning algorithm that can predict when your device will overheat and pause the miner until the device\'s temperature has normalized.\n\nThe second one is a static temperature monitoring that will automatically pause the miner if your device reaches one of the maximum temperatures defined in the settings.</string>
     <string name="temp_control_ownrisks">Turning this feature off might cause damage to your device. Do it at your own risk!</string>
     <string name="shares_help">Your mining reward is based on the amount of shares that contributed to the resolution of a block.</string>
-    <string name="donation_addresses_help">If you would like to help build this project, you can send BTC, ETH or XLA to the project\'s wallet.\n\nDonations support the contributors and help the team pay for the project expenses. Thanks for your support!</string>
+    <string name="donation_addresses_help">If you would like to help build this project, you can send BTC, ETH, LTC or XLA to the project\'s wallet. Thanks for your support!</string>
     <string name="pool_options_help">These parameters are optional, you can leave them blank if you don\'t know what they represent.\n\nTo add a static difficulty or a paymentID, specify it in the \'Username parameters\' field. For example, enter \'+500\' to configure a static difficulty of 500.\n\nMake sure you respect the selected pool configuration. The value of this field will be appended as is to the wallet address.</string>
     <string name="hardware_settings_help">Your device will start cooling when the CPU or battery reach the specified temperatures.\n\nThe cooldown threshold defines the temperature at which the application will resume the mining process.</string>
 
@@ -196,4 +196,5 @@
     <string name="ltc">LTC</string>
     <string name="powered_by">POWERED BY</string>
     <string name="scala">Scala</string>
+    <string name="no_payments">No payments.</string>
 </resources>

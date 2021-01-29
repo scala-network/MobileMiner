@@ -78,7 +78,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="@string/build"
-                                android:textColor="@color/txt_main"
+                                android:textColor="@color/txt_headline"
                                 android:textSize="14sp"/>
 
                             <TextView
@@ -88,7 +88,7 @@
                                 android:layout_marginStart="3dp"
                                 android:gravity="start"
                                 android:text=""
-                                android:textColor="@color/txt_main"
+                                android:textColor="@color/txt_headline"
                                 android:textSize="14sp"/>
 
                         </LinearLayout>
@@ -140,7 +140,7 @@
                 </LinearLayout>
 
                 <View
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="5dp"
                     android:layout_marginBottom="5dp"
                     android:layout_width="fill_parent"
                     android:layout_height="0.7dp"
@@ -177,7 +177,7 @@
                 </LinearLayout>
 
                 <View
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="5dp"
                     android:layout_marginBottom="5dp"
                     android:layout_width="fill_parent"
                     android:layout_height="0.7dp"
@@ -214,7 +214,7 @@
                 </LinearLayout>
 
                 <View
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="5dp"
                     android:layout_marginBottom="5dp"
                     android:layout_width="fill_parent"
                     android:layout_height="0.7dp"
@@ -252,7 +252,7 @@
                 </LinearLayout>
 
                 <View
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="5dp"
                     android:layout_marginBottom="5dp"
                     android:layout_width="fill_parent"
                     android:layout_height="0.7dp"
