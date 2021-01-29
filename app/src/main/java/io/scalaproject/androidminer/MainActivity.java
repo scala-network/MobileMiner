@@ -1638,6 +1638,7 @@ public class MainActivity extends BaseActivity
 
             meterHashrate.setMaxSpeed(hrMax);
             meterHashrate.setWithTremble(!(hrMax < 15));
+            //meterHashrate.setTrembleDegree(0.1f);
 
             meterHashrate_avg.setMaxSpeed(hrMax);
             meterHashrate_max.setMaxSpeed(hrMax);
@@ -2419,8 +2420,8 @@ public class MainActivity extends BaseActivity
 
         notificationBuilder.setContentTitle(getResources().getString(R.string.devicemining));
         notificationBuilder.setContentIntent(pendingIntentOpen);
-        notificationBuilder.addAction(R.drawable.ic_open_app2,"Open", pendingIntentOpen);
-        notificationBuilder.addAction(R.drawable.ic_stop,"Stop", pendingIntentStop);
+        notificationBuilder.addAction(R.mipmap.ic_open_app,"Open", pendingIntentOpen);
+        notificationBuilder.addAction(R.mipmap.ic_stop_miner,"Stop", pendingIntentStop);
         notificationBuilder.setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher_round));
         notificationBuilder.setSmallIcon(R.mipmap.ic_notification);
         notificationBuilder.setOngoing(true);
