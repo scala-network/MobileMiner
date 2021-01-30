@@ -20,7 +20,7 @@ public class VaultActivity extends BaseActivity {
             return;
         }
 
-        setContentView(R.layout.fragment_wizard_vault);
+        setContentView(R.layout.fragment_vault);
     }
 
     public void onCloseVault(View view) {
