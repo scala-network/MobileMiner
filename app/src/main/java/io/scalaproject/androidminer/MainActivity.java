@@ -320,7 +320,7 @@ public class MainActivity extends BaseActivity
                     case Toolbar.BUTTON_OPTIONS_SHARE: {
                         Bitmap bitmap = takeScreenshot();
                         saveBitmap(bitmap);
-                        shareIt();
+                        onShareHashrate();
 
                         break;
                     }
@@ -2480,12 +2480,12 @@ public class MainActivity extends BaseActivity
         }
     }
 
-    private void shareIt() {
+    private void onShareHashrate() {
         Uri uri = Uri.fromFile(imagePath);
         Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
         sharingIntent.setType("image/*");
-        String shareBody = "Take a look at my #Scala Mobile Miner stats! I'm currently mining with my #Android device. #MobileMining $XLA @ScalaQQ";
-        sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "My Scala Mobile Miner Stats");
+        String shareBody = "Take a look at my Scala Mobile Miner stats! I'm currently mining on my Android device. Download the app to start mining on your phone: http://mobileminer.scalaproject.io/";
+        sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Scala Mobile Miner");
         sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
         sharingIntent.putExtra(Intent.EXTRA_STREAM, uri);
 

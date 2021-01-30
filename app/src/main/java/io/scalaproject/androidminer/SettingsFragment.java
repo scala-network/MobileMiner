@@ -85,12 +85,18 @@ public class SettingsFragment extends Fragment {
         edAddress = view.findViewById(R.id.address);
 
         pvSelectedPool = view.findViewById(R.id.viewPool);
-        pvSelectedPool.setOnButtonListener(new PoolView.OnButtonListener() {
+        /*pvSelectedPool.setOnButtonListener(new PoolView.OnButtonListener() {
             @Override
             public void onButton() {
-                Intent intent = new Intent(getActivity(), PoolActivity.class);
-                intent.putExtra(PoolActivity.RequesterType, PoolActivity.REQUESTER_SETTINGS);
-                startActivity(intent);
+                onOpenPools();
+            }
+        });*/
+
+        pvSelectedPool.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v) {
+                onOpenPools();
             }
         });
 
@@ -445,6 +451,12 @@ public class SettingsFragment extends Fragment {
         });
 
         return view;
+    }
+
+    private void onOpenPools() {
+        Intent intent = new Intent(getActivity(), PoolActivity.class);
+        intent.putExtra(PoolActivity.RequesterType, PoolActivity.REQUESTER_SETTINGS);
+        startActivity(intent);
     }
 
     private Integer getCPUTemp() {
