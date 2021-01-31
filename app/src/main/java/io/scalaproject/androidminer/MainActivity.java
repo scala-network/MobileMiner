@@ -208,9 +208,10 @@ public class MainActivity extends BaseActivity
     // Temperature Control
     private Timer timerTemperatures = null;
     private TimerTask timerTaskTemperatures = null;
-    private List<String> listCPUTemp = new ArrayList<>();
-    private List<String> listBatteryTemp = new ArrayList<>();
+    private final List<String> listCPUTemp = new ArrayList<>();
+    private final List<String> listBatteryTemp = new ArrayList<>();
     private boolean isCharging = false;
+    private final int MAX_CHART_VALUES = 250;
 
     public static Context contextOfApplication;
 
@@ -651,33 +652,37 @@ public class MainActivity extends BaseActivity
         Legend l = chartHashrate.getLegend();
         l.setEnabled(false);
 
-        LimitLine ll1 = new LimitLine(150f);
-        ll1.setLineWidth(1f);
-        ll1.enableDashedLine(10f, 10f, 0f);
-        ll1.setLabelPosition(LimitLine.LimitLabelPosition.RIGHT_TOP);
-        ll1.setLineColor(getResources().getColor(R.color.txt_main));
-
-        LimitLine ll2 = new LimitLine(70f);
-        ll2.setLineWidth(1f);
-        ll2.enableDashedLine(10f, 10f, 0f);
-        ll2.setLabelPosition(LimitLine.LimitLabelPosition.RIGHT_TOP);
-        ll2.setTextSize(0f);
-        ll2.setLineColor(getResources().getColor(R.color.txt_main));
-
         YAxis leftAxis = chartHashrate.getAxisLeft();
         leftAxis.setTextColor(getResources().getColor(R.color.txt_secondary));
-        /*leftAxis.setAxisMaximum(200f);
-        leftAxis.setAxisMinimum(0f);*/
         leftAxis.setDrawZeroLine(false);
         leftAxis.setDrawAxisLine(true);
         leftAxis.setDrawGridLines(true);
         leftAxis.setGranularityEnabled(false);
 
+        chartHashrate.setDragDecelerationFrictionCoef(0.9f);
+    }
+
+    private void setHashrateChartLimits() {
+        float avgHr = meterHashrate_avg.getSpeed();
+
+        LimitLine ll1 = new LimitLine(avgHr);
+        ll1.setLineWidth(1f);
+        ll1.enableDashedLine(10f, 10f, 0f);
+        ll1.setLabelPosition(LimitLine.LimitLabelPosition.RIGHT_TOP);
+        ll1.setLineColor(getResources().getColor(R.color.txt_main));
+
+        float maxHr = meterHashrate_max.getSpeed();
+        LimitLine ll2 = new LimitLine(maxHr);
+        ll2.setLineWidth(1f);
+        ll2.enableDashedLine(10f, 10f, 0f);
+        ll2.setLabelPosition(LimitLine.LimitLabelPosition.RIGHT_TOP);
+        ll2.setTextSize(0f);
+        ll2.setLineColor(getResources().getColor(R.color.c_orange));
+
+        YAxis leftAxis = chartHashrate.getAxisLeft();
         leftAxis.removeAllLimitLines(); // reset all limit lines to avoid overlapping lines
         leftAxis.addLimitLine(ll1);
         leftAxis.addLimitLine(ll2);
-
-        chartHashrate.setDragDecelerationFrictionCoef(0.9f);
     }
 
     private void initChartTemperature() {
@@ -743,6 +748,10 @@ public class MainActivity extends BaseActivity
         lValuesHr.add(new Entry(xHr, hr));
         xHr++;
 
+        // Only keep 100 last values to avoid overflow
+        if(lValuesHr.size() > MAX_CHART_VALUES)
+            lValuesHr.remove(0);
+
         LineDataSet set1;
         LineData data = chartHashrate.getData();
         YAxis leftAxis = chartHashrate.getAxisLeft();
@@ -789,6 +798,11 @@ public class MainActivity extends BaseActivity
             leftAxis.setAxisMinimum(hr * 0.75f);
         }
 
+        // Limit lines are too close to each other - it doesn't look good
+        //setHashrateChartLimits();
+
+        chartHashrate.fitScreen();
+
         data.setHighlightEnabled(false);
 
         chartHashrate.setMaxVisibleValueCount(10);
@@ -829,6 +843,13 @@ public class MainActivity extends BaseActivity
         lValuesTempCPU.add(new BarEntry(xTemp, cpu));
         lValuesTempBattery.add(new BarEntry(xTemp, battery));
         xTemp++;
+
+        // Only keep 100 last values to avoid overflow
+        if(lValuesTempCPU.size() > MAX_CHART_VALUES)
+            lValuesTempCPU.remove(0);
+
+        if(lValuesTempBattery.size() > MAX_CHART_VALUES)
+            lValuesTempBattery.remove(0);
 
         BarDataSet set1, set2;
         BarData data = chartTemperature.getData();
@@ -873,6 +894,8 @@ public class MainActivity extends BaseActivity
         chartTemperature.getXAxis().setAxisMaximum(0 + chartTemperature.getBarData().getGroupWidth(groupSpace, barSpace) * set1.getEntryCount());
         chartTemperature.groupBars(0, groupSpace, barSpace);
 
+        chartTemperature.fitScreen();
+
         chartTemperature.setMaxVisibleValueCount(20);
         chartTemperature.setVisibleXRangeMaximum(20);
         chartTemperature.moveViewToX(data.getEntryCount());
@@ -904,7 +927,7 @@ public class MainActivity extends BaseActivity
         timerTemperatures.scheduleAtFixedRate(timerTaskTemperatures, 0, 10000);
     }
 
-    public void stoptTimerTemperatures() {
+    public void stopTimerTemperatures() {
         if(timerTemperatures != null) {
             timerTemperatures.cancel();
             timerTemperatures = null;

@@ -8,16 +8,18 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.os.Handler;
 import android.widget.Toast;
 
+import org.jetbrains.annotations.NotNull;
+
 import static io.scalaproject.androidminer.MainActivity.contextOfApplication;
 
-public abstract class BaseActivity extends AppCompatActivity implements Thread.UncaughtExceptionHandler {
+public abstract class BaseActivity extends AppCompatActivity {
     io.scalaproject.androidminer.dialogs.ProgressDialog progressDialog = null;
 
     private class SimpleProgressDialog extends io.scalaproject.androidminer.dialogs.ProgressDialog {
-
         SimpleProgressDialog(Context context, int msgId) {
             super(context);
             setCancelable(false);
@@ -37,9 +39,22 @@ public abstract class BaseActivity extends AppCompatActivity implements Thread.U
     }
 
     @Override
-    public void uncaughtException(Thread thread, Throwable ex) {
-        MainActivity.hideNotifications();
-        ex.printStackTrace();
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        final Thread.UncaughtExceptionHandler oldHandler = Thread.getDefaultUncaughtExceptionHandler();
+
+        Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
+            @Override
+            public void uncaughtException(@NotNull Thread paramThread, @NotNull Throwable paramThrowable) {
+                MainActivity.hideNotifications();
+
+                if (oldHandler != null)
+                    oldHandler.uncaughtException(paramThread, paramThrowable); // Delegates to Android's error handling
+                else
+                    System.exit(2); // Prevents the service/app from freezing
+            }
+        });
     }
 
     public void showProgressDialog(int msgId) {
