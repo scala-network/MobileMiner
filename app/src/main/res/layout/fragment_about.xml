@@ -282,7 +282,6 @@
                         android:id="@+id/ivDiscord"
                         android:layout_width="42dp"
                         android:layout_height="42dp"
-                        android:layout_marginStart="3dp"
                         android:layout_marginEnd="15dp"
                         app:srcCompat="@drawable/ic_discord1" />
 
@@ -290,7 +289,6 @@
                         android:id="@+id/ivTelegram"
                         android:layout_width="42dp"
                         android:layout_height="42dp"
-                        android:layout_marginStart="3dp"
                         android:layout_marginEnd="15dp"
                         app:srcCompat="@drawable/ic_telegram1" />
 
@@ -298,7 +296,6 @@
                         android:id="@+id/ivMedium"
                         android:layout_width="42dp"
                         android:layout_height="42dp"
-                        android:layout_marginStart="3dp"
                         android:layout_marginEnd="15dp"
                         app:srcCompat="@drawable/ic_medium1" />
 
@@ -306,7 +303,6 @@
                         android:id="@+id/ivTwitter"
                         android:layout_width="42dp"
                         android:layout_height="42dp"
-                        android:layout_marginStart="3dp"
                         android:layout_marginEnd="15dp"
                         app:srcCompat="@drawable/ic_twitter1" />
 
@@ -314,7 +310,6 @@
                         android:id="@+id/ivReddit"
                         android:layout_width="42dp"
                         android:layout_height="42dp"
-                        android:layout_marginStart="3dp"
                         app:srcCompat="@drawable/ic_reddit1" />
 
                 </LinearLayout>

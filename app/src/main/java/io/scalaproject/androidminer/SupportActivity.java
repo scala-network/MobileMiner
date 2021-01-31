@@ -93,6 +93,16 @@ public class SupportActivity extends BaseActivity {
             }
         });
 
+        ImageView ivEmail = findViewById(R.id.ivEmail);
+        ivEmail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Uri uri = Uri.parse(getResources().getString(R.string.emailLink));
+                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                startActivity(intent);
+            }
+        });
+
         // Set debug info
         StringBuilder cpuinfo = new StringBuilder(Config.read("CPUINFO").trim());
         if(cpuinfo.length() == 0) {

@@ -115,24 +115,28 @@
 				android:id="@+id/ivDiscord"
 				android:layout_width="42dp"
 				android:layout_height="42dp"
-				android:layout_marginStart="3dp"
-				android:layout_marginEnd="6dp"
+				android:layout_marginEnd="15dp"
 				app:srcCompat="@drawable/ic_discord1" />
 
 			<ImageView
 				android:id="@+id/ivTelegram"
 				android:layout_width="42dp"
 				android:layout_height="42dp"
-				android:layout_marginStart="3dp"
-				android:layout_marginEnd="6dp"
+				android:layout_marginEnd="15dp"
 				app:srcCompat="@drawable/ic_telegram1" />
 
 			<ImageView
 				android:id="@+id/ivReddit"
 				android:layout_width="42dp"
 				android:layout_height="42dp"
-				android:layout_marginStart="3dp"
+				android:layout_marginEnd="15dp"
 				app:srcCompat="@drawable/ic_reddit1" />
+
+			<ImageView
+				android:id="@+id/ivEmail"
+				android:layout_width="42dp"
+				android:layout_height="42dp"
+				app:srcCompat="@drawable/ic_email_blue" />
 
 		</LinearLayout>
 
