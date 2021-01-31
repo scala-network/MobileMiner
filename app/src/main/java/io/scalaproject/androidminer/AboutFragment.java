@@ -140,10 +140,10 @@ public class AboutFragment extends Fragment {
     private void onShareApp() {
         Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
         sharingIntent.setType("text/plain");
-        String shareBody = "Did you know you can mine cryptocurrencies on any Android device? Download the app to start mining on your phone: http://mobileminer.scalaproject.io/";
-        sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Scala Mobile Miner");
+        String shareBody = getResources().getString(R.string.app_share);
+        sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, getResources().getString(R.string.share_title));
         sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
 
-        startActivity(Intent.createChooser(sharingIntent, "Share via"));
+        startActivity(Intent.createChooser(sharingIntent, getResources().getString(R.string.share_via)));
     }
 }

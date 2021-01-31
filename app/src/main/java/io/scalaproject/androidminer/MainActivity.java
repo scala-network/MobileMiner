@@ -2462,14 +2462,19 @@ public class MainActivity extends BaseActivity
         StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
         StrictMode.setVmPolicy(builder.build());
 
-        imagePath = new File(Environment.getExternalStorageDirectory() + "/scala_scrnshot.png"); ////File imagePath
+        imagePath = new File(contextOfApplication.getExternalFilesDir(Environment.DIRECTORY_PICTURES), "scala_miner_screenshot.png");
         FileOutputStream fos;
+
         try {
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
             }
 
-            fos = new FileOutputStream(imagePath);
+            if (imagePath.exists()) {
+                imagePath.delete();
+            }
+
+            fos = new FileOutputStream(imagePath, false);
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);
             fos.flush();
             fos.close();
@@ -2484,12 +2489,12 @@ public class MainActivity extends BaseActivity
         Uri uri = Uri.fromFile(imagePath);
         Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
         sharingIntent.setType("image/*");
-        String shareBody = "Take a look at my Scala Mobile Miner stats! I'm currently mining on my Android device. Download the app to start mining on your phone: http://mobileminer.scalaproject.io/";
-        sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Scala Mobile Miner");
+        String shareBody = getResources().getString(R.string.hashrate_share);
+        sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, getResources().getString(R.string.share_title));
         sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
         sharingIntent.putExtra(Intent.EXTRA_STREAM, uri);
 
-        startActivity(Intent.createChooser(sharingIntent, "Share via"));
+        startActivity(Intent.createChooser(sharingIntent, getResources().getString(R.string.share_via)));
     }
 
     private boolean clearMinerLog = true;

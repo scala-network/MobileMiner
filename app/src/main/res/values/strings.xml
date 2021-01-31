@@ -141,6 +141,10 @@
     <string name="nothanks">Nope.</string>
     <string name="stopmining">Do you want to restart mining?</string>
     <string name="newparametersapplied">The mining process must be restarted in order for the new parameters to be applied.</string>
+    <string name="hashrate_share">Take a look at my Scala Mobile Miner stats! I\'m currently mining on my Android device. Download the app to start mining on your phone: https://mobileminer.scalaproject.io/</string>
+    <string name="app_share">"Did you know you can mine cryptocurrencies on any Android device? Download the app to start mining on your phone: https://mobileminer.scalaproject.io/</string>
+    <string name="share_title">Scala Mobile Miner</string>
+    <string name="share_via">Share via</string>
 
     <string name="donate_help">If you would like to help build this project, feel free to specify a donation level here.\n\nFor example, a value of 5 will make your device mine 5 minutes out of 100 to fund Scala project.\n\nThe default value is 0.</string>
     <string name="mininggoal_help">The mining goal should reflect the pool payout setting, but you can also specify a custom value for your device.\n\nThe default value is the minimum payout value of the specified mining pool.</string>
