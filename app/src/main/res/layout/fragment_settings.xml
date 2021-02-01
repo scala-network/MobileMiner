@@ -33,7 +33,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:gravity="start"
+                        android:layout_gravity="center"
                         android:text="@string/walletaddress2"
                         android:textColor="@color/txt_headline"
                         android:textSize="14sp"
@@ -60,14 +60,38 @@
 
                 </LinearLayout>
 
-                <TextView
-                    android:id="@+id/tvNoWallet"
+                <LinearLayout
+                    android:id="@+id/llNoWallet"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="15dp"
-                    android:text="No wallet address? Click here to create one."
-                    android:textColor="@color/txt_secondary"
-                    android:textSize="14sp" />
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="15dp"
+                        android:text="No wallet address? Click"
+                        android:textColor="@color/txt_secondary"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="3dp"
+                        android:text="here"
+                        android:textColor="@color/c_blue"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="3dp"
+                        android:text="to create one."
+                        android:textColor="@color/txt_secondary"
+                        android:textSize="14sp" />
+
+
+                </LinearLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/addressIL"

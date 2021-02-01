@@ -61,14 +61,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@color/c_green"
+                        android:textStyle="bold"
                         android:text="+ 100.00" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="3dp"
-                        android:textColor="@color/c_green"
-                        android:text="XLA" />
 
                 </LinearLayout>
 
@@ -93,14 +87,6 @@
                         android:textColor="@color/txt_secondary"
                         android:text="0.11" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="3dp"
-                        android:textStyle="italic"
-                        android:textColor="@color/txt_secondary"
-                        android:text="XLA" />
-
                 </LinearLayout>
 
             </LinearLayout>
@@ -123,13 +109,14 @@
             android:id="@+id/tx_hash"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/txt_secondary"
+            android:textColor="@color/txt_main"
             android:text="Hash"/>
 
         <TextView
             android:id="@+id/tx_datetime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="@color/txt_secondary"
             android:text="2020-08-19 21:32" />
 
         </LinearLayout>

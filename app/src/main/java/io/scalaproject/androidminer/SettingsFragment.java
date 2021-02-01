@@ -23,6 +23,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -73,8 +74,8 @@ public class SettingsFragment extends Fragment {
         Context appContext = MainActivity.getContextOfApplication();
         bSave = view.findViewById(R.id.saveSettings);
 
-        TextView tvNoWallet = view.findViewById(R.id.tvNoWallet);
-        tvNoWallet.setOnClickListener(new View.OnClickListener() {
+        LinearLayout llNoWallet = view.findViewById(R.id.llNoWallet);
+        llNoWallet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getActivity(), VaultActivity.class));
