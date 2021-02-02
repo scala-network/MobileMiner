@@ -2475,7 +2475,7 @@ public class MainActivity extends BaseActivity
             return;
         }
 
-        String status = m_nCurrentState == Config.STATE_MINING ? "Hashrate: " + tvHashrate.getText().toString() + " H/s" : tvStatus.getText().toString();
+        String status = llStatus.getVisibility() == View.GONE ? "Hashrate: " + tvHashrate.getText().toString() + " H/s" : tvStatus.getText().toString();
 
         notificationBuilder.setSmallIcon(R.mipmap.ic_notification);
         notificationBuilder.setContentText(status);

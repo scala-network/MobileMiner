@@ -7,7 +7,7 @@
     android:layout_height="wrap_content"
     android:layout_marginTop="8dp"
     android:layout_marginBottom="8dp"
-    android:background="@drawable/corner_radius_gradient_blue"
+    android:background="@drawable/corner_radius_gradient_blue_small"
     android:orientation="horizontal">
 
     <ImageView
@@ -16,7 +16,7 @@
         android:layout_gravity="center"
         android:padding="8dp"
         app:tint="@color/txt_headline"
-        app:srcCompat="@drawable/ic_about" />
+        app:srcCompat="@drawable/ic_info_notice" />
 
     <TextView
         android:id="@+id/tvNotice"
