@@ -221,10 +221,14 @@ public class PoolItem {
         return this.mPool;
     }
 
+    public String getDefaultPort() {
+        return mPort;
+    }
+
     public String getPort() {
         String custom_port = Config.read("custom_port");
 
-        if(this.mPoolType == 0){
+        if(this.mPoolType == 0) {
             return custom_port;
         }
 

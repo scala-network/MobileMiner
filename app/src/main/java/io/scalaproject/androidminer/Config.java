@@ -24,6 +24,7 @@ public class Config {
 
     public final static String CONFIG_USERDEFINED_POOLS = "userdefined_pools";
     public final static String CONFIG_SELECTED_POOL = "selected_pool";
+    public final static String CONFIG_POOL_PORT = "custom_port";
 
     private static Config mSettings;
     private SharedPreferences preferences;

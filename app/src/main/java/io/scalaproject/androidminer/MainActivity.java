@@ -1650,10 +1650,17 @@ public class MainActivity extends BaseActivity
         return nNbMaxCores * fMaxHr / nCores * 1.1f;
     }
 
-    private void updateHashrateTicks(float fMaxHr) {
+    private void updateHashrateTicks(float fHr, float fMaxHr) {
         SpeedView meterTicks = findViewById(R.id.meter_hashrate_ticks);
-        if(meterTicks.getTickNumber() == 0 && fMaxHr > 0) {
+        float fCurrentMax = meterTicks.getMaxSpeed();
+
+        if((meterTicks.getTickNumber() == 0 || (fCurrentMax > 0 && fHr >= fCurrentMax * 0.9)) && fMaxHr > 0) {
             float hrMax = getMaxHr(fMaxHr);
+
+            // This is not normal, we need to recompute it
+            if(fHr > hrMax) {
+                hrMax = getMaxHr(fHr);
+            }
 
             meterTicks.setMaxSpeed(hrMax);
             meterTicks.setTickNumber(10);
@@ -1693,7 +1700,7 @@ public class MainActivity extends BaseActivity
 
         SpeedView meterTicks = findViewById(R.id.meter_hashrate_ticks);
         if(meterTicks.getTickNumber() == 0) {
-            updateHashrateTicks(fMax);
+            updateHashrateTicks(fSpeed, fMax);
 
             // Start timer
             new Handler().postDelayed(new Runnable() {
@@ -1705,7 +1712,7 @@ public class MainActivity extends BaseActivity
             }, 2000);
         }
         else {
-            updateHashrateTicks(fMax);
+            updateHashrateTicks(fSpeed, fMax);
             updateHashrateMeter(fSpeed, fMax);
             addHashrateValue(fSpeed);
         }

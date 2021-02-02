@@ -281,8 +281,8 @@
 
                                 <LinearLayout
                                     android:id="@+id/layout_status"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="75dp"
+                                    android:layout_width="155dp"
+                                    android:layout_height="wrap_content"
                                     android:layout_gravity="center"
                                     android:layout_marginTop="13dp"
                                     android:gravity="center"
@@ -290,7 +290,7 @@
                                     android:visibility="gone">
 
                                     <LinearLayout
-                                        android:layout_width="wrap_content"
+                                        android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
                                         android:orientation="horizontal">
 
@@ -298,6 +298,7 @@
                                             android:id="@+id/miner_status"
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
+                                            android:layout_gravity="start"
                                             android:gravity="start"
                                             android:text="@string/processing"
                                             android:textColor="@color/txt_secondary"
@@ -314,6 +315,7 @@
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
                                             android:gravity="end"
+                                            android:layout_gravity="end"
                                             android:text="100%"
                                             android:textColor="@color/c_blue"
                                             android:textSize="12sp"

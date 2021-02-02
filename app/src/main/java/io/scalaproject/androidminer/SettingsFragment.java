@@ -47,7 +47,7 @@ public class SettingsFragment extends Fragment {
     private static final String LOG_TAG = "MiningSvc";
 
     TextInputLayout tilAddress;
-    private EditText edAddress, edWorkerName, edUsernameparameters;
+    private EditText edAddress, edWorkerName, edUsernameparameters, edPort;
 
     PoolView pvSelectedPool;
 
@@ -64,7 +64,7 @@ public class SettingsFragment extends Fragment {
         ProviderManager.getPools(getContext());
 
         Button bSave;
-        EditText edPort, edMiningGoal;
+        EditText edMiningGoal;
 
         SeekBar sbCores;
         TextView tvCoresNb, tvCoresMax;
@@ -293,27 +293,6 @@ public class SettingsFragment extends Fragment {
 
         PoolItem selectedPoolItem = ProviderManager.getSelectedPool();
 
-        /*poolItem = ProviderManager.getPoolById(poolSelected);
-        if (!Config.read("init").equals("1")) {
-            poolSelected = Integer.toString(sp);
-        }
-
-        if(poolSelected.equals("0")) {
-            edPool.setText(Config.read("custom_pool"));
-            edPort.setText(Config.read("custom_port"));
-        } else if(!Config.read("custom_port").isEmpty()) {
-            assert poolItem != null;
-            edPool.setText(poolItem.getKey());
-            edPort.setText(Config.read("custom_port"));
-        }else{
-            Config.write("custom_pool","");
-            Config.write("custom_port","");
-            edPool.setText(poolItem.getKey());
-            edPort.setText(poolItem.getPort());
-        }
-
-        spPool.setSelection(Integer.parseInt(poolSelected));*/
-
         if(selectedPoolItem != null)
             edPort.setText(selectedPoolItem.getPort());
 
@@ -530,10 +509,18 @@ public class SettingsFragment extends Fragment {
         }
     }
 
+    private void updatePort() {
+        PoolItem selectedPoolItem = ProviderManager.getSelectedPool();
+
+        if(selectedPoolItem != null)
+            edPort.setText(selectedPoolItem.getPort());
+    }
+
     @Override
     public void onResume() {
         super.onResume();
 
         pvSelectedPool.onFinishInflate();
+        updatePort();
     }
 }
