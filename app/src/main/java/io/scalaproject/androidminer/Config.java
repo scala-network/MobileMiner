@@ -34,6 +34,7 @@ public class Config {
     static final String algo = "panthera";
     public static final String githubAppJson = "https://raw.githubusercontent.com/scala-network/MobileMiner/2.0.0/app.json";
 
+    public static final String CONFIG_KEY_CONFIG_VERSION = "config_version";
     public static final String version = "4";
     static final Integer logMaxLength = 50000;
     static final Integer logPruneLength = 1000;

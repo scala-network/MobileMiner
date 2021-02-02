@@ -39,6 +39,7 @@ import com.google.android.material.textfield.TextInputLayout;
 
 import io.scalaproject.androidminer.api.PoolItem;
 import io.scalaproject.androidminer.api.ProviderManager;
+import io.scalaproject.androidminer.widgets.Notice;
 import io.scalaproject.androidminer.widgets.PoolView;
 
 public class SettingsFragment extends Fragment {
@@ -74,13 +75,14 @@ public class SettingsFragment extends Fragment {
         Context appContext = MainActivity.getContextOfApplication();
         bSave = view.findViewById(R.id.saveSettings);
 
-        LinearLayout llNoWallet = view.findViewById(R.id.llNoWallet);
-        llNoWallet.setOnClickListener(new View.OnClickListener() {
+        ViewGroup llNotice = view.findViewById(R.id.llNotice);
+        llNotice.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getActivity(), VaultActivity.class));
             }
         });
+        Notice.showAll(llNotice, Notice.NOTICE_SHOW_VAULT, false);
 
         tilAddress = view.findViewById(R.id.addressIL);
         edAddress = view.findViewById(R.id.address);

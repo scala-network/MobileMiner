@@ -203,4 +203,5 @@
     <string name="powered_by">POWERED BY</string>
     <string name="scala">Scala</string>
     <string name="no_payments">No payments.</string>
+    <string name="notice_no_wallet">No wallet address? Click here to generate one.</string>
 </resources>

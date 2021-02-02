@@ -4,7 +4,6 @@
 
 package io.scalaproject.androidminer;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -16,11 +15,11 @@ public class SplashActivity extends BaseActivity {
         SharedPreferences preferences = getSharedPreferences(getPackageName() + "_preferences", MODE_PRIVATE);
         Config.initialize(preferences);
 
-        /*String configversion = Config.read(Config.CONFIG_KEY_CONFIG_VERSION);
+        String configversion = Config.read(Config.CONFIG_KEY_CONFIG_VERSION);
         if(!configversion.equals(Config.version)) {
             Config.clear();
             Config.write(Config.CONFIG_KEY_CONFIG_VERSION, Config.version);
-        }*/
+        }
 
         super.onCreate(savedInstanceState);
         if ((getIntent().getFlags() & Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT) != 0) {

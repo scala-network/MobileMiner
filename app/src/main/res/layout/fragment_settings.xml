@@ -25,6 +25,12 @@
                 android:orientation="vertical">
 
                 <LinearLayout
+                    android:id="@+id/llNotice"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"/>
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="0dp"
@@ -57,39 +63,6 @@
                         app:iconPadding="0dp"
                         app:iconTint="@color/c_grey"
                         tools:ignore="UnusedAttribute" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/llNoWallet"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="15dp"
-                        android:text="No wallet address? Click"
-                        android:textColor="@color/txt_secondary"
-                        android:textSize="14sp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="3dp"
-                        android:text="here"
-                        android:textColor="@color/c_blue"
-                        android:textSize="14sp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="3dp"
-                        android:text="to create one."
-                        android:textColor="@color/txt_secondary"
-                        android:textSize="14sp" />
-
 
                 </LinearLayout>
 
