@@ -52,7 +52,7 @@ public final class Utils {
     static public Integer INCREMENT = 5;
     static public Integer MIN_CPU_TEMP = 60;
     static public Integer MIN_BATTERY_TEMP = 30;
-    static public Integer MIN_COOLDOWN = 10;
+    static public Integer MIN_COOLDOWN = 5;
 
     static public String SCALA_BTC_ADDRESS = "1XTLY5LqdBXRW6hcHtnuMU7c68mAyW6qm";
     static public String SCALA_ETH_ADDRESS = "0x133a15dF7177823Dd407ca87A190bbE4585a379e";

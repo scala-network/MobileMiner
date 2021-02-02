@@ -64,7 +64,7 @@ public class DonationsFragment extends DialogFragment {
         btnDonateLTC.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Utils.copyToClipboard("Scala LTC Donation Address", Utils.SCALA_ETH_ADDRESS);
+                Utils.copyToClipboard("Scala LTC Donation Address", Utils.SCALA_LTC_ADDRESS);
                 Toast.makeText(getContext(), getResources().getString(R.string.donationadressltc_copied), Toast.LENGTH_SHORT).show();
             }
         });

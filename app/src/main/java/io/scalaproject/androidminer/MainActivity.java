@@ -38,6 +38,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -354,10 +355,14 @@ public class MainActivity extends BaseActivity
         toolbar.setButtonMain(Toolbar.BUTTON_MAIN_LOGO);
         toolbar.setButtonOptions(Toolbar.BUTTON_OPTIONS_SHARE);
 
+        // Leave this here to avoid a crash when app is restored from idle state
+        SharedPreferences preferences = getSharedPreferences(getPackageName() + "_preferences", MODE_PRIVATE);
+        Config.initialize(preferences);
+
         // Open Settings the first time the app is launched
         String minersaddress =  Config.read("address");
 
-            if (minersaddress.equals("") || minersaddress.isEmpty()) {
+        if (minersaddress.equals("") || minersaddress.isEmpty()) {
             navigationView.getMenu().getItem(2).setChecked(true);
 
             SettingsFragment fragment = (SettingsFragment) getSupportFragmentManager().findFragmentByTag("settings_fragment");
