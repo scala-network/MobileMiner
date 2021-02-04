@@ -9,7 +9,7 @@ import java.util.TimerTask;
 
 import io.scalaproject.androidminer.Config;
 
-public class ProviderRequest{
+public class ProviderRequest {
 
     protected PoolItem mPoolItem;
 
@@ -39,7 +39,7 @@ public class ProviderRequest{
         }
 
         @Override
-        public void run(){
+        public void run() {
             mProvider.execute();
             repeat();
         }
@@ -62,10 +62,19 @@ public class ProviderRequest{
         repeat();
     }
 
+    public void run() {
+        if(current == null) {
+            return;
+        }
+
+        current.run();
+    }
+
     public void start() {
         if(current != null || mPoolItem == null) {
             return;
         }
+
         ProviderAbstract pa = mPoolItem.getInterface();
         pa.mListener = mListener;
         current = new ProviderTask(pa);

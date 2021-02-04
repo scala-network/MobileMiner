@@ -381,7 +381,7 @@ public class MainActivity extends BaseActivity
                 if(navigationView.getMenu().findItem(R.id.menu_home).isChecked()) {
                     showCores();
                 } else if (navigationView.getMenu().findItem(R.id.menu_stats).isChecked()){
-                    updateStatsListener();
+                    StatsFragment.updateStatsListener();
                 }
 
                 pullToRefreshHr.setRefreshing(false);
@@ -976,7 +976,7 @@ public class MainActivity extends BaseActivity
                         }
 
                         Utils.hideKeyboardFrom(contextOfApplication, promptsView);
-                        updateStatsListener();
+                        updatePayoutListener();
                     }
                 })
                 .setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
@@ -1267,7 +1267,7 @@ public class MainActivity extends BaseActivity
 
         pullToRefreshHr.setEnabled(true);
 
-        updateStatsListener();
+        updatePayoutListener();
         updateUI();
     }
 
@@ -1289,11 +1289,11 @@ public class MainActivity extends BaseActivity
 
         pullToRefreshHr.setEnabled(true);
 
-        updateStatsListener();
+        updatePayoutListener();
         updateUI();
     }
 
-    public void updateStatsListener() {
+    public void updatePayoutListener() {
         ProviderManager.afterSave();
         ProviderManager.request.setListener(payoutListener).start();
 

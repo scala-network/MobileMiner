@@ -126,6 +126,10 @@ public final class ProviderManager {
 
     static final public ProviderRequest request = new ProviderRequest();
 
+    static public void fetchStats() {
+        request.run();
+    }
+
     static public void loadDefaultPools() {
         request.stop();
         request.mPoolItem = null;

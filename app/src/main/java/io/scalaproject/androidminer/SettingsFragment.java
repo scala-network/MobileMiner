@@ -23,7 +23,6 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -367,7 +366,7 @@ public class SettingsFragment extends Fragment {
                 nav.getMenu().getItem(0).setChecked(true);*/
 
                 main.updateStartButton();
-                main.updateStatsListener();
+                main.updatePayoutListener();
                 main.updateUI();
             }
         });

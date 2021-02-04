@@ -28,14 +28,16 @@ import io.scalaproject.androidminer.api.IProviderListener;
 import io.scalaproject.androidminer.api.ProviderManager;
 
 public class StatsFragment extends Fragment {
-    protected IProviderListener statsListener;
+    protected static IProviderListener statsListener;
 
     public static ProviderData poolData = null;
+
+    static View view = null;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_stats, container, false);
+        view = inflater.inflate(R.layout.fragment_stats, container, false);
 
         statsListener = new IProviderListener() {
             public void onStatsChange(ProviderData d) {
@@ -57,12 +59,18 @@ public class StatsFragment extends Fragment {
 
         ProviderManager.request.setListener(statsListener).start();
         ProviderManager.afterSave();
+
         updateFields(ProviderManager.data, view);
 
         return view;
     }
 
-    private void updateFields(ProviderData d, View view) {
+    public static void updateStatsListener() {
+        ProviderManager.fetchStats();
+        updateFields(ProviderManager.data, view);
+    }
+
+    private static void updateFields(ProviderData d, View view) {
         poolData = d;
 
         if(view == null || view.getContext() == null)
