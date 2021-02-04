@@ -88,12 +88,12 @@ public class SettingsFragment extends Fragment {
         edAddress = view.findViewById(R.id.address);
 
         pvSelectedPool = view.findViewById(R.id.viewPool);
-        /*pvSelectedPool.setOnButtonListener(new PoolView.OnButtonListener() {
+        pvSelectedPool.setOnButtonListener(new PoolView.OnButtonListener() {
             @Override
             public void onButton() {
                 onOpenPools();
             }
-        });*/
+        });
 
         pvSelectedPool.setOnClickListener(new View.OnClickListener()
         {

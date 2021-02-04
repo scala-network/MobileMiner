@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,9 +22,6 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.github.mikephil.charting.charts.LineChart;
-
-import io.scalaproject.androidminer.api.PaymentItem;
 import io.scalaproject.androidminer.api.ProviderData;
 import io.scalaproject.androidminer.api.PoolItem;
 import io.scalaproject.androidminer.api.IProviderListener;
@@ -53,7 +51,7 @@ public class StatsFragment extends Fragment {
         LinearLayout llPayments = view.findViewById(R.id.llPayments);
         llPayments.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                onShowPayments(v);
+                onShowPayments();
             }
         });
 
@@ -74,7 +72,10 @@ public class StatsFragment extends Fragment {
             return;
         }
 
-        PoolItem pm = ProviderManager.getSelectedPool();
+        PoolItem pi = ProviderManager.getSelectedPool();
+
+        ImageView ivShowPayments = view.findViewById(R.id.ivShowPayments);
+        ivShowPayments.setVisibility(pi.getPoolType() == 0 ? View.GONE : View.VISIBLE);
 
         // Network
 
@@ -100,7 +101,7 @@ public class StatsFragment extends Fragment {
         // Pool
 
         TextView tvPoolURL = view.findViewById(R.id.poolurl);
-        tvPoolURL.setText(pm.getPool() == null ? "" : pm.getPool());
+        tvPoolURL.setText(pi.getPool() == null ? "" : pi.getPool());
 
         String[] p = d.pool.hashrate.split(" ");
         TextView tvPoolHashrate = view.findViewById(R.id.hashratepool);
@@ -152,8 +153,11 @@ public class StatsFragment extends Fragment {
         }
     }
 
-    public void onShowPayments(View view) {
-        startActivity(new Intent(getActivity(), PaymentsActivity.class));
+    public void onShowPayments() {
+        PoolItem pi = ProviderManager.getSelectedPool();
+
+        if(pi.getPoolType() != 0)
+            startActivity(new Intent(getActivity(), PaymentsActivity.class));
     }
 
     public boolean checkValidState() {

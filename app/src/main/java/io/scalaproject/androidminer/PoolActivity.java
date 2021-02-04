@@ -306,7 +306,8 @@ public class PoolActivity extends BaseActivity
                 etPoolURL.setError(getString(R.string.value_empty));
                 return false;
             } else {
-            poolEdit.setPoolUrl(poolUrl);
+                poolEdit.setPoolUrl(poolUrl);
+                poolEdit.setPool(poolUrl);
             }
 
             final String poolPort = etPoolPort.getEditText().getText().toString().trim();

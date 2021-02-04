@@ -149,6 +149,7 @@ public class PoolItem {
         if (a.length == 3) {
             this.mKey = a[0];
             this.mPoolUrl = a[1];
+            this.mPool = a[1];
 
             String[] av = a[2].split("@");
             this.mPort = av[0];
@@ -213,12 +214,18 @@ public class PoolItem {
     }
 
     public String getPool() {
-        String custom_pool = Config.read("custom_pool");
         if(this.mPoolType == 0) {
-            return custom_pool;
+            return Config.read("custom_pool");
         }
 
         return this.mPool;
+    }
+
+    public void setPool(String pool) {
+        if(this.mPoolType == 0) {
+            Config.write("custom_pool", pool);
+        } else
+            this.mPool = pool;
     }
 
     public String getDefaultPort() {
@@ -232,7 +239,7 @@ public class PoolItem {
             return custom_port;
         }
 
-        if(custom_port.equals("") || custom_port.equals(this.mPort)) {
+        if(custom_port.isEmpty() || custom_port.equals(this.mPort)) {
             return this.mPort;
         }
 
