@@ -154,6 +154,10 @@ public class ScalaPool extends ProviderAbstract {
                     payment.timestamp = joPaymentsAddressStats.getString(i);
 
                     mBlockData.miner.payments.add(payment);
+
+                    // Max 100 payments
+                    if(mBlockData.miner.payments.size() >= 100)
+                        break;
                 }
             }
 

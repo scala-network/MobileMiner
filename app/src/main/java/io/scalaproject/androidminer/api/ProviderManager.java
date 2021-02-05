@@ -91,21 +91,26 @@ public final class ProviderManager {
             return request.mPoolItem;
         }
 
-        PoolItem pi;
+        // Selected pool
+        PoolItem selectedPool = null;
+        String sp = Config.read(Config.CONFIG_SELECTED_POOL).trim();
         for(int i = 0; i < mPools.size(); i++) {
-            pi = mPools.get(i);
+            PoolItem pi = mPools.get(i);
 
-            if(pi.isSelected())
-                return pi;
+            if(pi.getKey().equals(sp)) {
+                selectedPool = pi;
+                pi.setIsSelected(true);
+            } else {
+                pi.setIsSelected(false);
+            }
         }
 
-        if(!mPools.isEmpty()) {
-            pi = mPools.get(0);
-            pi.setIsSelected(true);
-            return pi;
+        if(!mPools.isEmpty() && selectedPool == null) {
+            selectedPool = mPools.get(0);
+            selectedPool.setIsSelected(true);
         }
 
-        return null;
+        return selectedPool;
     }
 
     static public void afterSave() {

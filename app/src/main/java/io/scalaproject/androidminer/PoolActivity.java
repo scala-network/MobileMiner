@@ -159,8 +159,10 @@ public class PoolActivity extends BaseActivity
 
     @Override
     public void onBackPressed() {
-        Config.write(Config.CONFIG_SELECTED_POOL, selectedPool.getKey().trim());
-        Config.write(Config.CONFIG_POOL_PORT, selectedPool.getDefaultPort().trim());
+        //Config.write(Config.CONFIG_SELECTED_POOL, selectedPool.getKey().trim());
+        //Config.write(Config.CONFIG_POOL_PORT, selectedPool.getDefaultPort().trim());
+
+        SettingsFragment.selectedPoolTmp = selectedPool;
 
         ProviderManager.saveUserDefinedPools(getApplicationContext());
 

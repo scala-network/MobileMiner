@@ -133,32 +133,36 @@ public class StatsFragment extends Fragment {
         tvWalletAddress.setText(prettyaddress);
 
         String sHashrate = d.miner.hashrate;
+        TextView tvAddressHashrate = view.findViewById(R.id.hashrateminer);
+        TextView tvAddressHashrateUnit = view.findViewById(R.id.hashrateminer_unit);
+
         if(sHashrate != null) {
             String[] a = sHashrate.split(" ");
-            TextView tvAddressHashrate = view.findViewById(R.id.hashrateminer);
+
             tvAddressHashrate.setText(a.length > 0 ? a[0] : "n/a");
-
-            TextView tvAddressHashrateUnit = view.findViewById(R.id.hashrateminer_unit);
             tvAddressHashrateUnit.setText(a.length > 1 ? a[1] : "H/s");
-
-            TextView tvAddressLastShare = view.findViewById(R.id.lastshareminer);
-            tvAddressLastShare.setText(d.miner.lastShare.isEmpty() ? "n/a" : d.miner.lastShare);
-
-            TextView tvAddressBlocks = view.findViewById(R.id.blocksminedminer);
-            tvAddressBlocks.setText(d.miner.blocks.isEmpty() ? "n/a" : d.miner.blocks);
-
-            String sBalance = d.miner.balance.replace("XLA", "").trim();
-            TextView tvBalance = view.findViewById(R.id.balance);
-            tvBalance.setText(sBalance);
-
-            String sPaid = d.miner.paid.replace("XLA", "").trim();
-            TextView tvPaid = view.findViewById(R.id.paid);
-            tvPaid.setText(sPaid);
-            tvPaid.setTextSize(sPaid.length() > 6 ? 12 : 14);
-
-            TextView tvPaidUnit = view.findViewById(R.id.paid_unit);
-            tvPaidUnit.setTextSize(sPaid.length() > 6 ? 12 : 14);
+        } else {
+            tvAddressHashrate.setText("n/a");
+            tvAddressHashrateUnit.setText("H/s");
         }
+
+        TextView tvAddressLastShare = view.findViewById(R.id.lastshareminer);
+        tvAddressLastShare.setText(d.miner.lastShare.isEmpty() ? "n/a" : d.miner.lastShare);
+
+        TextView tvAddressBlocks = view.findViewById(R.id.blocksminedminer);
+        tvAddressBlocks.setText(d.miner.blocks.isEmpty() ? "n/a" : d.miner.blocks);
+
+        String sBalance = d.miner.balance.replace("XLA", "").trim();
+        TextView tvBalance = view.findViewById(R.id.balance);
+        tvBalance.setText(sBalance);
+
+        String sPaid = d.miner.paid.replace("XLA", "").trim();
+        TextView tvPaid = view.findViewById(R.id.paid);
+        tvPaid.setText(sPaid);
+        tvPaid.setTextSize(sPaid.length() > 6 ? 12 : 14);
+
+        TextView tvPaidUnit = view.findViewById(R.id.paid_unit);
+        tvPaidUnit.setTextSize(sPaid.length() > 6 ? 12 : 14);
     }
 
     public void onShowPayments() {

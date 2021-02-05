@@ -15,6 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import io.scalaproject.androidminer.R;
+import io.scalaproject.androidminer.SettingsFragment;
 import io.scalaproject.androidminer.Utils;
 import io.scalaproject.androidminer.api.PoolItem;
 import io.scalaproject.androidminer.api.ProviderManager;
@@ -82,7 +83,7 @@ public class PoolView extends LinearLayout {
             }
         });
 
-        PoolItem poolItem = ProviderManager.getSelectedPool();
+        PoolItem poolItem = SettingsFragment.selectedPoolTmp == null ? ProviderManager.getSelectedPool() : SettingsFragment.selectedPoolTmp;
 
         if(poolItem == null)
             return;

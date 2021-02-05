@@ -28,6 +28,7 @@ import io.scalaproject.androidminer.api.PoolItem;
 import io.scalaproject.androidminer.network.Json;
 import io.scalaproject.androidminer.widgets.PoolInfoAdapter;
 
+import static io.scalaproject.androidminer.Tools.getReadableDifficultyString;
 import static io.scalaproject.androidminer.Tools.getReadableHashRateString;
 import static io.scalaproject.androidminer.Tools.parseCurrency;
 import static io.scalaproject.androidminer.Tools.parseCurrencyFloat;
@@ -102,10 +103,10 @@ public final class NodejsPool extends ProviderAbstract {
             JSONObject joNetworkStats = new JSONObject(dataStatsNetwork);
 
             mBlockData.network.lastBlockHeight = joNetworkStats.optString("height");
-            mBlockData.network.difficulty = joNetworkStats.optString("difficulty");
+            mBlockData.network.difficulty = getReadableDifficultyString(joNetworkStats.optLong("difficulty"));
             mBlockData.network.lastBlockTime = pTime.format(new Date(joNetworkStats.optLong("ts") * 1000));
             mBlockData.network.lastRewardAmount =  parseCurrency(joNetworkStats.optString("value", "0"), denominationUnit, denominationUnit, "XLA");
-            mBlockData.network.hashrate = String.valueOf(joNetworkStats.optLong("difficulty") / 120L / 1000000L);
+            mBlockData.network.hashrate = getReadableHashRateString(joNetworkStats.optLong("difficulty") / 120L);
         } catch (JSONException e) {
             Log.i(LOG_TAG, "NETWORK\n" + e.toString());
             e.printStackTrace();
@@ -120,7 +121,7 @@ public final class NodejsPool extends ProviderAbstract {
             mBlockData.pool.lastBlockHeight = joPoolStats.optString("lastBlockFound");
             mBlockData.pool.lastBlockTime = pTime.format(new Date(joPoolStats.optLong("lastBlockFoundTime") * 1000));
             //mBlockData.pool.lastRewardAmount = parseCurrency(joPoolStats.optString("reward", "0"), mBlockData.coin.units, denominationUnit, mBlockData.coin.symbol);
-            mBlockData.pool.hashrate = String.valueOf(tryParseLong(joPoolStats.optString("hashRate"),0L) / 1000L);
+            mBlockData.pool.hashrate = getReadableHashRateString(tryParseLong(joPoolStats.optString("hashRate"),0L));
             mBlockData.pool.blocks = joPoolStats.optString("totalBlocksFound", "0");
         } catch (JSONException e) {
             Log.i(LOG_TAG, "POOL\n" + e.toString());
@@ -152,6 +153,8 @@ public final class NodejsPool extends ProviderAbstract {
             mBlockData.miner.blocks = blocks;
 
             // Payments
+            mBlockData.miner.payments.clear();
+
             url = mPoolItem.getApiUrl() + "/miner/" + getWalletAddress() +"/payments?page=0&limit=100";
             String dataMinerPayments  = Json.fetch(url);
             JSONArray  joMinerPayments = new JSONArray(dataMinerPayments);
@@ -162,6 +165,10 @@ public final class NodejsPool extends ProviderAbstract {
                 payment.amount = parseCurrencyFloat(joMinerPayments.getJSONObject(i).optString("amount", "0"), denominationUnit, denominationUnit);
                 payment.timestamp = pTime.format(new Date(joMinerPayments.getJSONObject(i).optLong("ts") * 1000));
                 mBlockData.miner.payments.add(payment);
+
+                // Max 100 payments
+                if(mBlockData.miner.payments.size() >= 100)
+                    break;
             }
 
         } catch (JSONException e) {

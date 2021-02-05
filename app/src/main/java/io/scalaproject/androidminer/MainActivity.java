@@ -976,7 +976,7 @@ public class MainActivity extends BaseActivity
                         }
 
                         Utils.hideKeyboardFrom(contextOfApplication, promptsView);
-                        updatePayoutListener();
+                        updateStatsListener();
                     }
                 })
                 .setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
@@ -1267,7 +1267,7 @@ public class MainActivity extends BaseActivity
 
         pullToRefreshHr.setEnabled(true);
 
-        updatePayoutListener();
+        updateStatsListener();
         updateUI();
     }
 
@@ -1289,11 +1289,11 @@ public class MainActivity extends BaseActivity
 
         pullToRefreshHr.setEnabled(true);
 
-        updatePayoutListener();
+        updateStatsListener();
         updateUI();
     }
 
-    public void updatePayoutListener() {
+    public void updateStatsListener() {
         ProviderManager.afterSave();
         ProviderManager.request.setListener(payoutListener).start();
 
@@ -1301,6 +1301,8 @@ public class MainActivity extends BaseActivity
             updatePayoutWidget(ProviderManager.data);
             enablePayoutWidget(true, "XLA");
         }
+
+        StatsFragment.updateStatsListener();
     }
 
     @Override

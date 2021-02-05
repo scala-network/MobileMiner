@@ -27,6 +27,7 @@ import io.scalaproject.androidminer.api.ProviderAbstract;
 import io.scalaproject.androidminer.api.PoolItem;
 import io.scalaproject.androidminer.widgets.PoolInfoAdapter;
 
+import static io.scalaproject.androidminer.Tools.getReadableDifficultyString;
 import static io.scalaproject.androidminer.Tools.getReadableHashRateString;
 import static io.scalaproject.androidminer.Tools.parseCurrency;
 import static io.scalaproject.androidminer.Tools.tryParseLong;
@@ -88,15 +89,15 @@ public class CryptonoteNodejsPool extends ProviderAbstract {
             //mBlockData.pool.lastBlockHeight = joStatsPool.optString("height");
             mBlockData.pool.lastBlockTime = pTime.format(new Date(joStatsPool.optLong("lastBlockFound")));
             //mBlockData.pool.lastRewardAmount = parseCurrency(joStatsLastBlock.optString("reward", "0"), mBlockData.coin.units, mBlockData.coin.denominationUnit, mBlockData.coin.symbol);
-            mBlockData.pool.hashrate = String.valueOf(tryParseLong(joStatsPool.optString("hashrate"),0L) / 1000L);
+            mBlockData.pool.hashrate = getReadableHashRateString(tryParseLong(joStatsPool.optString("hashrate"),0L));
             mBlockData.pool.blocks = joStatsPool.optString("roundHashes", "0");
             mBlockData.pool.minPayout = parseCurrency(joStatsConfig.optString("minPaymentThreshold", "0"), mBlockData.coin.units, mBlockData.coin.denominationUnit, mBlockData.coin.symbol);
 
             mBlockData.network.lastBlockHeight = joStatsNetwork.optString("height");
-            mBlockData.network.difficulty = getReadableHashRateString(joStatsNetwork.optLong("difficulty"));
+            mBlockData.network.difficulty = getReadableDifficultyString(joStatsNetwork.optLong("difficulty"));
             mBlockData.network.lastBlockTime = pTime.format(new Date(joStatsNetwork.optLong("timestamp") * 1000));
             mBlockData.network.lastRewardAmount = parseCurrency(joStatsNetwork.optString("reward", "0"), mBlockData.coin.units, mBlockData.coin.denominationUnit, mBlockData.coin.symbol);
-            mBlockData.network.hashrate = String.valueOf(joStatsNetwork.optLong("difficulty") / 120L / 1000000L);
+            mBlockData.network.hashrate = getReadableHashRateString(joStatsNetwork.optLong("difficulty") / 120L);
         } catch (JSONException e) {
             Log.i(LOG_TAG, "NETWORK\n" + e.toString());
             e.printStackTrace();
@@ -129,6 +130,12 @@ public class CryptonoteNodejsPool extends ProviderAbstract {
             mBlockData.miner.paid = paid;
             mBlockData.miner.lastShare = lastShare;
             mBlockData.miner.blocks = blocks;
+
+            // Payments
+            mBlockData.miner.payments.clear();
+
+            //TODO
+
         } catch (JSONException e) {
             Log.i(LOG_TAG, "ADDRESS\n" + e.toString());
             e.printStackTrace();

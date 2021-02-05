@@ -50,6 +50,8 @@ public class SettingsFragment extends Fragment {
 
     PoolView pvSelectedPool;
 
+    public static PoolItem selectedPoolTmp = null;
+
     private Integer nMaxCPUTemp = 70; // 60,65,70,75,80
     private Integer nMaxBatteryTemp = 40; // 30,35,40,45,50
     private Integer nCooldownTheshold = 10; // 5,10,15,20,25
@@ -290,6 +292,7 @@ public class SettingsFragment extends Fragment {
             }
         });
 
+        selectedPoolTmp = null;
         PoolItem selectedPoolItem = ProviderManager.getSelectedPool();
 
         if(selectedPoolItem != null)
@@ -310,6 +313,11 @@ public class SettingsFragment extends Fragment {
 
                 tilAddress.setErrorEnabled(false);
                 tilAddress.setError(null);
+
+                PoolItem selectedPoolItem = getSelectedPoolItem();
+
+                Config.write(Config.CONFIG_SELECTED_POOL, selectedPoolItem.getKey().trim());
+                Config.write(Config.CONFIG_POOL_PORT, selectedPoolItem.getDefaultPort().trim());
 
                 Config.write("address", address);
 
@@ -351,23 +359,11 @@ public class SettingsFragment extends Fragment {
                 main.stopMining();
                 main.loadSettings();
 
-                /*main.setTitle(getResources().getString(R.string.home));
-
-                if (getFragmentManager() != null) {
-                    for (Fragment fragment : getFragmentManager().getFragments()) {
-                        if (fragment != null) {
-                            getFragmentManager().beginTransaction().remove(fragment).commit();
-                            ProviderManager.afterSave();
-                        }
-                    }
-                }
-
-                BottomNavigationView nav = main.findViewById(R.id.main_navigation);
-                nav.getMenu().getItem(0).setChecked(true);*/
-
                 main.updateStartButton();
-                main.updatePayoutListener();
+                main.updateStatsListener();
                 main.updateUI();
+
+                selectedPoolTmp = null;
             }
         });
 
@@ -508,8 +504,12 @@ public class SettingsFragment extends Fragment {
         }
     }
 
+    private PoolItem getSelectedPoolItem() {
+        return selectedPoolTmp == null ? ProviderManager.getSelectedPool() : selectedPoolTmp;
+    }
+
     private void updatePort() {
-        PoolItem selectedPoolItem = ProviderManager.getSelectedPool();
+        PoolItem selectedPoolItem = getSelectedPoolItem();
 
         if(selectedPoolItem != null)
             edPort.setText(selectedPoolItem.getPort());
