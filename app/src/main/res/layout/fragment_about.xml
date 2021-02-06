@@ -326,7 +326,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/powered_by"
                         android:layout_gravity="center"
-                        android:textSize="18sp"
+                        android:textSize="16sp"
                         android:textColor="@color/txt_main"
                         android:textStyle="normal"
                         android:textAllCaps="true"/>
@@ -339,7 +339,7 @@
                         android:text="@string/scala"
                         android:gravity="center"
                         android:layout_gravity="center"
-                        android:textSize="18sp"
+                        android:textSize="16sp"
                         android:textColor="@color/c_blue"
                         android:textStyle="bold"
                         android:textAllCaps="true"/>
