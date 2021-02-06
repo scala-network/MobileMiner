@@ -805,6 +805,15 @@
                                     android:orientation="horizontal">
 
                                     <TextView
+                                        android:id="@+id/payoutmessage"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:gravity="start"
+                                        android:text="@string/message"
+                                        android:textColor="@color/txt_secondary"
+                                        android:textSize="12sp" />
+
+                                    <TextView
                                         android:id="@+id/balance_payout"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
@@ -844,15 +853,6 @@
                                         android:gravity="start"
                                         android:text="@string/percent"
                                         android:textColor="@color/bg_green"
-                                        android:textSize="12sp" />
-
-                                    <TextView
-                                        android:id="@+id/payoutmessage"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:gravity="start"
-                                        android:text="@string/message"
-                                        android:textColor="@color/txt_secondary"
                                         android:textSize="12sp" />
 
                                 </LinearLayout>
