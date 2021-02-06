@@ -206,7 +206,10 @@ public class PoolInfoAdapter extends RecyclerView.Adapter<PoolInfoAdapter.ViewHo
                 ivIcon.getLayoutParams().height = dim;
                 ivIcon.getLayoutParams().width = dim;
 
-                ivIcon.setImageBitmap(Utils.getCroppedBitmap(Utils.getBitmap(context, R.drawable.ic_pool_default)));
+                if(poolItem.isOfficial())
+                    ivIcon.setImageBitmap(Utils.getCroppedBitmap(Utils.getBitmap(context, R.mipmap.ic_logo_blue)));
+                else
+                    ivIcon.setImageBitmap(Utils.getCroppedBitmap(Utils.getBitmap(context, R.drawable.ic_pool_default)));
             }
 
             // Selected view layout

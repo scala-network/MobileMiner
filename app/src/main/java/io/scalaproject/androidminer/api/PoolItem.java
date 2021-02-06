@@ -190,6 +190,8 @@ public class PoolItem {
         }
     }
 
+    public boolean isOfficial() { return getKey().toLowerCase().contains("official"); }
+
     public Bitmap getIcon() {
         return this.icon;
     }
@@ -325,10 +327,10 @@ public class PoolItem {
     static public Comparator<PoolItem> PoolComparator = new Comparator<PoolItem>() {
         @Override
         public int compare(PoolItem o1, PoolItem o2) {
-            if(o1.getKey().toLowerCase().contains("official"))
+            if(o1.isOfficial())
                 return -1;
 
-            if(o2.getKey().toLowerCase().contains("official"))
+            if(o2.isOfficial())
                 return 1;
 
             return o1.getKey().compareToIgnoreCase(o2.getKey());
