@@ -30,6 +30,7 @@ import java.util.List;
 
 import io.scalaproject.androidminer.Utils;
 import io.scalaproject.androidminer.api.PoolItem;
+import io.scalaproject.androidminer.api.ProviderManager;
 
 public class PoolInfoAdapter extends RecyclerView.Adapter<PoolInfoAdapter.ViewHolder> {
 
@@ -206,10 +207,7 @@ public class PoolInfoAdapter extends RecyclerView.Adapter<PoolInfoAdapter.ViewHo
                 ivIcon.getLayoutParams().height = dim;
                 ivIcon.getLayoutParams().width = dim;
 
-                if(poolItem.isOfficial())
-                    ivIcon.setImageBitmap(Utils.getCroppedBitmap(Utils.getBitmap(context, R.mipmap.ic_logo_blue)));
-                else
-                    ivIcon.setImageBitmap(Utils.getCroppedBitmap(Utils.getBitmap(context, R.drawable.ic_pool_default)));
+                ivIcon.setImageBitmap(ProviderManager.getDefaultPoolIcon(context, poolItem));
             }
 
             // Selected view layout

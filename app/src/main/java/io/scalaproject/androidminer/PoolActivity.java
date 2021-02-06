@@ -337,6 +337,8 @@ public class PoolActivity extends BaseActivity
         }
 
         private void apply() {
+            poolEditBackup = null;
+
             if (applyChanges()) {
                 closeDialog();
 
@@ -366,8 +368,10 @@ public class PoolActivity extends BaseActivity
         }
 
         private void undoChanges() {
-            if (poolEditBackup != null)
+            if (poolEditBackup != null) {
                 poolEdit.overwriteWith(poolEditBackup);
+                poolEditBackup = null;
+            }
         }
 
         private void show() {
@@ -417,13 +421,13 @@ public class PoolActivity extends BaseActivity
                 if(icon != null)
                     ivPoolIcon.setImageBitmap(poolItem.getIcon());
                 else {
-                    ivPoolIcon.setImageBitmap(Utils.getBitmap(getApplicationContext(), R.drawable.ic_pool_default));
+                    ivPoolIcon.setImageBitmap(ProviderManager.getDefaultPoolIcon(getApplicationContext(), poolItem));
                 }
             } else {
                 poolEdit = new PoolItem();
                 poolEdit.setUserDefined(true);
                 poolEditBackup = null;
-                ivPoolIcon.setImageBitmap(Utils.getBitmap(getApplicationContext(), R.drawable.ic_pool_default));
+                ivPoolIcon.setImageBitmap(ProviderManager.getDefaultPoolIcon(getApplicationContext(), poolItem));
             }
 
             boolean isUserDefined = poolEdit.isUserDefined();

@@ -17,6 +17,7 @@ import java.util.Collections;
 import java.util.Map;
 
 import io.scalaproject.androidminer.Config;
+import io.scalaproject.androidminer.R;
 import io.scalaproject.androidminer.Utils;
 import io.scalaproject.androidminer.network.Json;
 
@@ -45,6 +46,13 @@ public final class ProviderManager {
         mPools.add(pi);
 
         return pi;
+    }
+
+    static public Bitmap getDefaultPoolIcon(Context context, PoolItem poolItem) {
+        if(poolItem != null && poolItem.isOfficial())
+            return Utils.getCroppedBitmap(Utils.getBitmap(context, R.mipmap.ic_logo_blue));
+
+        return Utils.getCroppedBitmap(Utils.getBitmap(context, R.drawable.ic_pool_default));
     }
 
     static public void loadPools(Context context) {
