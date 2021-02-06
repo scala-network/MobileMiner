@@ -174,7 +174,7 @@ public class PoolActivity extends BaseActivity
         if(rvPools.getLayoutManager().getItemCount() <= 0)
             return;
 
-        String selectedPoolName = Config.read(Config.CONFIG_SELECTED_POOL);
+        String selectedPoolName = SettingsFragment.selectedPoolTmp == null ? Config.read(Config.CONFIG_SELECTED_POOL) : SettingsFragment.selectedPoolTmp.getKey();
 
         PoolItem[] allPools = ProviderManager.getAllPools();
 
@@ -208,6 +208,8 @@ public class PoolActivity extends BaseActivity
         selectedPool.setIsSelected(false);
         poolItem.setIsSelected(true);
         selectedPool = poolItem;
+
+        SettingsFragment.selectedPoolTmp = null;
 
         newPool = false;
 

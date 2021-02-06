@@ -1310,7 +1310,8 @@ public class MainActivity extends BaseActivity
         if(isFromLogView) {
             backHomeMenu();
         } else {
-            super.onBackPressed();
+            // Do nothing
+            //super.onBackPressed();
         }
     }
 

@@ -57,7 +57,7 @@ public class ScalaPool extends ProviderAbstract {
 
                         mPoolItem.setIsValid(true);
                     } catch (Exception e) {
-                        mPoolItem.setIsValid(true);
+                        mPoolItem.setIsValid(false);
                     }
                     finally {
                         poolsAdapter.dataSetChanged();
@@ -116,6 +116,10 @@ public class ScalaPool extends ProviderAbstract {
             String dataWallet  = Json.fetch(url);
 
             JSONObject joStatsAddress = new JSONObject(dataWallet);
+
+            if(!joStatsAddress.has("stats"))
+                return;
+
             JSONObject joStatsAddressStats = joStatsAddress.getJSONObject("stats");
 
             ProviderData.Coin coin = mBlockData.coin;

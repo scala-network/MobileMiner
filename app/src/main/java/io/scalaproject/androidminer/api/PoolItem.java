@@ -234,6 +234,10 @@ public class PoolItem {
         return mPort;
     }
 
+    public String getPortRaw() {
+        return mPort;
+    }
+
     public String getPort() {
         String custom_port = Config.read("custom_port");
 

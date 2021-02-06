@@ -21,7 +21,7 @@ public final class NoPool extends ProviderAbstract {
     public StringRequest getStringRequest(PoolInfoAdapter poolsAdapter) {
         return new StringRequest(Request.Method.GET, mPoolItem.getStatsURL(),
                 response -> {
-                    mPoolItem.setIsValid(true);
+                    mPoolItem.setIsValid(false);
 
                     poolsAdapter.dataSetChanged();
                 }

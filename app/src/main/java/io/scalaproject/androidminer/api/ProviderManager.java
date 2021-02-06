@@ -18,6 +18,7 @@ import java.util.Map;
 
 import io.scalaproject.androidminer.Config;
 import io.scalaproject.androidminer.R;
+import io.scalaproject.androidminer.SettingsFragment;
 import io.scalaproject.androidminer.Utils;
 import io.scalaproject.androidminer.network.Json;
 
@@ -62,7 +63,7 @@ public final class ProviderManager {
 
         // Selected pool
         boolean selectedFound = false;
-        String sp = Config.read(Config.CONFIG_SELECTED_POOL).trim();
+        String sp = SettingsFragment.selectedPoolTmp == null ? Config.read(Config.CONFIG_SELECTED_POOL).trim() : SettingsFragment.selectedPoolTmp.getKey();
         for(int i = 0; i < mPools.size(); i++) {
             PoolItem pi = mPools.get(i);
 
@@ -101,15 +102,25 @@ public final class ProviderManager {
 
         // Selected pool
         PoolItem selectedPool = null;
-        String sp = Config.read(Config.CONFIG_SELECTED_POOL).trim();
-        for(int i = 0; i < mPools.size(); i++) {
-            PoolItem pi = mPools.get(i);
+        if(SettingsFragment.selectedPoolTmp != null) {
+            for(int i = 0; i < mPools.size(); i++) {
+                selectedPool = mPools.get(i);
 
-            if(pi.getKey().equals(sp)) {
-                selectedPool = pi;
-                pi.setIsSelected(true);
-            } else {
-                pi.setIsSelected(false);
+                if(selectedPool.getKey().equals(SettingsFragment.selectedPoolTmp.getKey())) {
+                    return selectedPool;
+                }
+            }
+        } else {
+            String sp = Config.read(Config.CONFIG_SELECTED_POOL).trim();
+            for (int i = 0; i < mPools.size(); i++) {
+                PoolItem pi = mPools.get(i);
+
+                if (pi.getKey().equals(sp)) {
+                    selectedPool = pi;
+                    pi.setIsSelected(true);
+                } else {
+                    pi.setIsSelected(false);
+                }
             }
         }
 
@@ -151,8 +162,9 @@ public final class ProviderManager {
         if(!mPools.isEmpty())
             return;
 
-        String lastFetched = Config.read("RepositoryLastFetched");
-        String jsonString = "";
+        //String lastFetched = Config.read("RepositoryLastFetched");
+        String lastFetched = "";
+                String jsonString = "";
         long now = System.currentTimeMillis() / 1000L;
 
         if(!lastFetched.isEmpty() && Long.parseLong(lastFetched) < now){

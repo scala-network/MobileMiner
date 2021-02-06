@@ -293,10 +293,7 @@ public class SettingsFragment extends Fragment {
         });
 
         selectedPoolTmp = null;
-        PoolItem selectedPoolItem = ProviderManager.getSelectedPool();
-
-        if(selectedPoolItem != null)
-            edPort.setText(selectedPoolItem.getPort());
+        updatePort();
 
         bSave.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -509,10 +506,14 @@ public class SettingsFragment extends Fragment {
     }
 
     private void updatePort() {
-        PoolItem selectedPoolItem = getSelectedPoolItem();
+        if(selectedPoolTmp != null) {
+            edPort.setText(selectedPoolTmp.getPortRaw());
+        } else {
+            PoolItem selectedPoolItem = getSelectedPoolItem();
 
-        if(selectedPoolItem != null)
-            edPort.setText(selectedPoolItem.getPort());
+            if (selectedPoolItem != null)
+                edPort.setText(selectedPoolItem.getPort());
+        }
     }
 
     @Override
