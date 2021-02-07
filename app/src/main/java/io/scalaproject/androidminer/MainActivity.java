@@ -1011,7 +1011,7 @@ public class MainActivity extends BaseActivity
             String sBalance = d.miner.balance;
             sBalance = sBalance.replace("XLA", "").trim();
             TextView tvBalance = findViewById(R.id.balance_payout);
-            tvBalance.setText(sBalance);
+            tvBalance.setText(sBalance.isEmpty() ? "0" : sBalance);
 
             float fMinPayout;
             if(Config.read("mininggoal").equals("")) {
@@ -1023,18 +1023,19 @@ public class MainActivity extends BaseActivity
             TextView tvPayoutGoal = findViewById(R.id.tvPayoutGoal);
             tvPayoutGoal.setText(String.valueOf(Math.round(fMinPayout)));
 
+            TextView tvPercentagePayout = findViewById(R.id.percentage);
             float fBalance = Utils.convertStringToFloat(sBalance);
             if (fBalance > 0 && fMinPayout > 0) {
                 pbPayout.setProgress(Math.round(fBalance));
                 pbPayout.setMax(Math.round(fMinPayout));
+
+                String sPercentagePayout = String.valueOf(Math.round(fBalance / fMinPayout *100));
+                tvPercentagePayout.setText(sPercentagePayout);
             } else {
                 pbPayout.setProgress(0);
                 pbPayout.setMax(100);
+                tvPercentagePayout.setText("0");
             }
-
-            String sPercentagePayout = String.valueOf(Math.round(fBalance / fMinPayout *100));
-            TextView tvPercentagePayout = findViewById(R.id.percentage);
-            tvPercentagePayout.setText(sPercentagePayout);
         }
     }
 

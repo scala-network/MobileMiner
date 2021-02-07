@@ -53,7 +53,7 @@ public final class ProviderData {
     final public Network network = new Network();
     final public Pool pool = new Pool();
     final public Coin coin = new Coin();
-    final public Miner miner = new Miner();
+    public Miner miner = new Miner();
 
     public boolean isNew = true;
 }

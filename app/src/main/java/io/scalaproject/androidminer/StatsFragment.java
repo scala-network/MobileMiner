@@ -136,13 +136,13 @@ public class StatsFragment extends Fragment {
         TextView tvAddressHashrate = view.findViewById(R.id.hashrateminer);
         TextView tvAddressHashrateUnit = view.findViewById(R.id.hashrateminer_unit);
 
-        if(sHashrate != null) {
+        if(!sHashrate.isEmpty()) {
             String[] a = sHashrate.split(" ");
 
             tvAddressHashrate.setText(a.length > 0 ? a[0] : "n/a");
             tvAddressHashrateUnit.setText(a.length > 1 ? a[1] : "H/s");
         } else {
-            tvAddressHashrate.setText("n/a");
+            tvAddressHashrate.setText(pi.getPoolType() == 0 ? "n/a" : "0");
             tvAddressHashrateUnit.setText("H/s");
         }
 
@@ -154,11 +154,11 @@ public class StatsFragment extends Fragment {
 
         String sBalance = d.miner.balance.replace("XLA", "").trim();
         TextView tvBalance = view.findViewById(R.id.balance);
-        tvBalance.setText(sBalance);
+        tvBalance.setText(d.miner.balance.isEmpty() ? pi.getPoolType() == 0 ? "n/a" : "0" : sBalance);
 
         String sPaid = d.miner.paid.replace("XLA", "").trim();
         TextView tvPaid = view.findViewById(R.id.paid);
-        tvPaid.setText(sPaid);
+        tvPaid.setText(d.miner.paid.isEmpty() ? pi.getPoolType() == 0 ? "n/a" : "0" : sPaid);
         tvPaid.setTextSize(sPaid.length() > 6 ? 12 : 14);
 
         TextView tvPaidUnit = view.findViewById(R.id.paid_unit);

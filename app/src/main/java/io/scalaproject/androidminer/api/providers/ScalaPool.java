@@ -117,8 +117,10 @@ public class ScalaPool extends ProviderAbstract {
 
             JSONObject joStatsAddress = new JSONObject(dataWallet);
 
-            if(!joStatsAddress.has("stats"))
+            if(!joStatsAddress.has("stats")) {
+                mBlockData.miner = new ProviderData.Miner();
                 return;
+            }
 
             JSONObject joStatsAddressStats = joStatsAddress.getJSONObject("stats");
 

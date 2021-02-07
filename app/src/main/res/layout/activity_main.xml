@@ -850,6 +850,7 @@
                                         android:id="@+id/percentageunit"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
+                                        android:layout_marginStart="1.5dp"
                                         android:gravity="start"
                                         android:text="@string/percent"
                                         android:textColor="@color/bg_green"
