@@ -103,7 +103,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         if (sessionDepth == 0) {
             // app went to background
             if(MainActivity.isDeviceMiningBackground())
-                Toast.makeText(contextOfApplication, getResources().getString(R.string.miningbackground), Toast.LENGTH_SHORT).show();
+                Utils.showToast(contextOfApplication, getResources().getString(R.string.miningbackground), Toast.LENGTH_SHORT);
         }
     }
 }

@@ -39,6 +39,7 @@ import com.google.android.material.textfield.TextInputLayout;
 
 import io.scalaproject.androidminer.api.PoolItem;
 import io.scalaproject.androidminer.api.ProviderManager;
+import io.scalaproject.androidminer.widgets.CustomToast;
 import io.scalaproject.androidminer.widgets.Notice;
 import io.scalaproject.androidminer.widgets.PoolView;
 
@@ -337,7 +338,7 @@ public class SettingsFragment extends Fragment {
                     }
                 }
                 else {
-                    Toast.makeText(appContext, "This version of Android does not support Qr Code.", Toast.LENGTH_LONG).show();
+                    Utils.showToast(appContext, "This version of Android does not support Qr Code.", Toast.LENGTH_LONG);
                 }
             }
         });
@@ -436,7 +437,7 @@ public class SettingsFragment extends Fragment {
 
         Config.write("init", "1");
 
-        Toast.makeText(getContext(), "Settings Saved", Toast.LENGTH_SHORT).show();
+        Utils.showToast(getContext(), "Settings Saved", Toast.LENGTH_SHORT);
 
         MainActivity main = (MainActivity) getActivity();
         assert main != null;
@@ -492,7 +493,7 @@ public class SettingsFragment extends Fragment {
             Intent intent = new Intent(appContext, QrCodeScannerActivity.class);
             startActivity(intent);
         }catch (Exception e) {
-            Toast.makeText(appContext, e.getMessage(), Toast.LENGTH_SHORT).show();
+            Utils.showToast(appContext, e.getMessage(), Toast.LENGTH_SHORT);
         }
     }
 
@@ -504,7 +505,7 @@ public class SettingsFragment extends Fragment {
                 startQrCodeActivity();
             }
             else {
-                Toast.makeText(appContext,"Camera Permission Denied.", Toast.LENGTH_LONG).show();
+                Utils.showToast(appContext,"Camera Permission Denied.", Toast.LENGTH_LONG);
             }
         }
     }

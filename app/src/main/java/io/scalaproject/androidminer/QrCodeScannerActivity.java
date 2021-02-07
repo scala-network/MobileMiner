@@ -34,7 +34,6 @@ public class QrCodeScannerActivity extends AppCompatActivity implements BarcodeR
             super.onDestroy();
         } catch (Exception e) {
         }
-
     }
 
     @Override
@@ -80,7 +79,8 @@ public class QrCodeScannerActivity extends AppCompatActivity implements BarcodeR
         if(miner.startsWith(XLA_SCHEME)) {
             miner = miner.substring(XLA_SCHEME.length());
         }
-        scanResult.setText("Scala Address : " + miner);
+
+        scanResult.setText("Scala Wallet Address: " + miner);
         if(Utils.verifyAddress(miner)) {
             Log.d("CONSOLE:QRCODE", "Barcode read: " + barcode.displayValue);
 
@@ -92,11 +92,10 @@ public class QrCodeScannerActivity extends AppCompatActivity implements BarcodeR
 
             }
 
-
             return;
         }
 
-        Toast.makeText(MainActivity.contextOfApplication, "Invalid scala address", Toast.LENGTH_SHORT).show();
+        Utils.showToast(MainActivity.contextOfApplication, "Invalid scala address", Toast.LENGTH_SHORT);
     }
 
     @Override

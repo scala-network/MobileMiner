@@ -28,6 +28,7 @@ import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.Toast;
 
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
@@ -45,6 +46,8 @@ import java.util.Objects;
 import java.util.regex.*;
 import java.text.DecimalFormat;
 import java.text.ParseException;
+
+import io.scalaproject.androidminer.widgets.CustomToast;
 
 import static android.content.ClipDescription.MIMETYPE_TEXT_PLAIN;
 
@@ -267,5 +270,10 @@ public final class Utils {
         Calendar c = Calendar.getInstance();
         c.setTimeInMillis(time * 1000L);
         return c.getTime();
+    }
+
+    static public void showToast(Context context, String text, int length) {
+        CustomToast ct = new CustomToast(context, text, length);
+        ct.show();
     }
 }

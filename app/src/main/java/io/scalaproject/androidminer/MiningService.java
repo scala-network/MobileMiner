@@ -349,7 +349,7 @@ public class MiningService extends Service {
 
         } catch (Exception e) {
             Log.e(LOG_TAG, "exception:", e);
-            Toast.makeText(this, e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+            Utils.showToast(this, e.getLocalizedMessage(), Toast.LENGTH_SHORT);
             process = null;
         }
     }

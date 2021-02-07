@@ -177,19 +177,19 @@ public class StatsFragment extends Fragment {
             return false;
 
         if(Config.read("address").equals("")) {
-            Toast.makeText(getContext(),"Wallet address is empty.", Toast.LENGTH_LONG).show();
+            Utils.showToast(getContext(),"Wallet address is empty.", Toast.LENGTH_LONG);
             return false;
         }
 
         PoolItem pi = ProviderManager.getSelectedPool();
 
         if (!Config.read("init").equals("1") || pi == null) {
-            Toast.makeText(getContext(),"Start mining to view statistics.", Toast.LENGTH_LONG).show();
+            Utils.showToast(getContext(),"Start mining to view statistics.", Toast.LENGTH_LONG);
             return false;
         }
 
         if (pi.getPoolType() == 0) {
-            Toast.makeText(getContext(),"Statistics are not available for custom pools.", Toast.LENGTH_LONG).show();
+            Utils.showToast(getContext(),"Statistics are not available for custom pools.", Toast.LENGTH_LONG);
             return false;
         }
 

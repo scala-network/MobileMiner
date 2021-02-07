@@ -341,7 +341,7 @@ public class MainActivity extends BaseActivity
                     }
                     case Toolbar.BUTTON_OPTIONS_COPY: {
                         Utils.copyToClipboard("Mining Log", tvLog.getText().toString());
-                        Toast.makeText(contextOfApplication, "Mining Log copied.", Toast.LENGTH_SHORT).show();
+                        Utils.showToast(contextOfApplication, "Mining Log copied.", Toast.LENGTH_SHORT);
                         break;
                     }
                     default: {
@@ -953,7 +953,7 @@ public class MainActivity extends BaseActivity
 
     private void setStatusText(String status) {
         if (status != null && !status.isEmpty()) {
-            Toast.makeText(contextOfApplication, status, Toast.LENGTH_SHORT).show();
+            Utils.showToast(contextOfApplication, status, Toast.LENGTH_SHORT);
         }
     }
 

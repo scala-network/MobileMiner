@@ -47,7 +47,7 @@ public class DonationsFragment extends DialogFragment {
             @Override
             public void onClick(View view) {
                 Utils.copyToClipboard("Scala BTC Donation Address", Utils.SCALA_BTC_ADDRESS);
-                Toast.makeText(getContext(), getResources().getString(R.string.donationadressbtc_copied), Toast.LENGTH_SHORT).show();
+                Utils.showToast(getContext(), getResources().getString(R.string.donationadressbtc_copied), Toast.LENGTH_SHORT);
             }
         });
 
@@ -56,7 +56,7 @@ public class DonationsFragment extends DialogFragment {
             @Override
             public void onClick(View view) {
                 Utils.copyToClipboard("Scala ETH Donation Address", Utils.SCALA_ETH_ADDRESS);
-                Toast.makeText(getContext(), getResources().getString(R.string.donationadresseth_copied), Toast.LENGTH_SHORT).show();
+                Utils.showToast(getContext(), getResources().getString(R.string.donationadresseth_copied), Toast.LENGTH_SHORT);
             }
         });
 
@@ -65,7 +65,7 @@ public class DonationsFragment extends DialogFragment {
             @Override
             public void onClick(View view) {
                 Utils.copyToClipboard("Scala LTC Donation Address", Utils.SCALA_LTC_ADDRESS);
-                Toast.makeText(getContext(), getResources().getString(R.string.donationadressltc_copied), Toast.LENGTH_SHORT).show();
+                Utils.showToast(getContext(), getResources().getString(R.string.donationadressltc_copied), Toast.LENGTH_SHORT);
             }
         });
 
@@ -74,7 +74,7 @@ public class DonationsFragment extends DialogFragment {
             @Override
             public void onClick(View view) {
                 Utils.copyToClipboard("Scala XLA Donation Address", Utils.SCALA_XLA_ADDRESS);
-                Toast.makeText(getContext(), getResources().getString(R.string.donationadressxla_copied), Toast.LENGTH_SHORT).show();
+                Utils.showToast(getContext(), getResources().getString(R.string.donationadressxla_copied), Toast.LENGTH_SHORT);
             }
         });
 

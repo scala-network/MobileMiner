@@ -98,7 +98,7 @@ public class WizardAddressActivity extends BaseActivity {
         } else if(Build.VERSION.SDK_INT >= 21) {
             startQrCodeActivity();
         }else {
-            Toast.makeText(appContext, "This version of Android does not support Qr Code.", Toast.LENGTH_LONG).show();
+            Utils.showToast(appContext, "This version of Android does not support Qr Code.", Toast.LENGTH_LONG);
         }
     }
 
@@ -109,7 +109,7 @@ public class WizardAddressActivity extends BaseActivity {
             Intent intent = new Intent(appContext, QrCodeScannerActivity.class);
             startActivity(intent);
         } catch (Exception e) {
-            Toast.makeText(appContext, e.getMessage(), Toast.LENGTH_SHORT).show();
+            Utils.showToast(appContext, e.getMessage(), Toast.LENGTH_SHORT);
         }
     }
 
@@ -122,7 +122,7 @@ public class WizardAddressActivity extends BaseActivity {
                 startQrCodeActivity();
             }
             else {
-                Toast.makeText(appContext,"Camera Permission Denied.", Toast.LENGTH_LONG).show();
+                Utils.showToast(appContext,"Camera Permission Denied.", Toast.LENGTH_LONG);
             }
         }
     }
