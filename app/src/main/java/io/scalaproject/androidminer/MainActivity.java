@@ -626,6 +626,14 @@ public class MainActivity extends BaseActivity
 
     @Override
     protected void onDestroy() {
+        if (isServerConnectionBound) {
+            unbindService(serverConnection);
+        }
+
+        if(isBatteryReceiverRegistered) {
+            unregisterReceiver(batteryInfoReceiver);
+        }
+
         super.onDestroy();
     }
 
@@ -1310,9 +1318,33 @@ public class MainActivity extends BaseActivity
         if(isFromLogView) {
             backHomeMenu();
         } else {
-            // Do nothing
-            //super.onBackPressed();
+            if (isDeviceMiningBackground()) {
+                MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this, R.style.MaterialAlertDialogCustom);
+                builder.setTitle(getString(R.string.stopmining))
+                        .setMessage(getString(R.string.closeApp))
+                        .setCancelable(true)
+                        .setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                stopMining();
+                                closeApp();
+                            }
+                        })
+                        .setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                // Do nothing
+                            }
+                        })
+                        .show();
+            } else {
+                closeApp();
+            }
         }
+    }
+
+    private void closeApp() {
+        super.onBackPressed();
     }
 
     public void loadSettings() {

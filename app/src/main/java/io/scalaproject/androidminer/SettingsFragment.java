@@ -15,6 +15,7 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -46,7 +47,7 @@ public class SettingsFragment extends Fragment {
     private static final String LOG_TAG = "MiningSvc";
 
     TextInputLayout tilAddress;
-    private EditText edAddress, edWorkerName, edUsernameparameters, edPort;
+    private EditText edAddress, edWorkerName, edUsernameparameters, edPort, edMiningGoal;
 
     PoolView pvSelectedPool;
 
@@ -56,8 +57,9 @@ public class SettingsFragment extends Fragment {
     private Integer nMaxBatteryTemp = 40; // 30,35,40,45,50
     private Integer nCooldownTheshold = 10; // 5,10,15,20,25
 
-    private SeekBar sbCPUTemp, sbBatteryTemp, sbCooldown;
+    private SeekBar sbCPUTemp, sbBatteryTemp, sbCooldown, sbCores;
     private TextView tvCPUMaxTemp, tvBatteryMaxTemp, tvCooldown;
+    Switch swDisableTempControl, swPauseOnBattery, swKeepScreenOnWhenMining;
 
     @Nullable
     @Override
@@ -65,12 +67,8 @@ public class SettingsFragment extends Fragment {
         ProviderManager.getPools(getContext());
 
         Button bSave;
-        EditText edMiningGoal;
 
-        SeekBar sbCores;
         TextView tvCoresNb, tvCoresMax;
-
-        Switch swDisableTempControl, swPauseOnBattery, swKeepScreenOnWhenMining;
 
         View view = inflater.inflate(R.layout.fragment_settings, container, false);
         Context appContext = MainActivity.getContextOfApplication();
@@ -298,69 +296,28 @@ public class SettingsFragment extends Fragment {
         bSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Validate address
-                String address = edAddress.getText().toString().trim();
-
-                if(address.isEmpty() || !Utils.verifyAddress(address)) {
-                    tilAddress.setErrorEnabled(true);
-                    tilAddress.setError(getResources().getString(R.string.invalidaddress));
-                    requestFocus(edAddress);
-                    return;
+                // if mining, ask to restart
+                if(MainActivity.isDeviceMiningBackground()) {
+                    MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getContext(), R.style.MaterialAlertDialogCustom);
+                    builder.setTitle(getString(R.string.stopmining))
+                            .setMessage(getString(R.string.newparametersapplied))
+                            .setCancelable(true)
+                            .setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    saveSettings();
+                                }
+                            })
+                            .setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    // Do nothing
+                                }
+                            })
+                            .show();
+                } else {
+                    saveSettings();
                 }
-
-                tilAddress.setErrorEnabled(false);
-                tilAddress.setError(null);
-
-                PoolItem selectedPoolItem = getSelectedPoolItem();
-
-                Config.write(Config.CONFIG_SELECTED_POOL, selectedPoolItem.getKey().trim());
-                Config.write(Config.CONFIG_POOL_PORT, selectedPoolItem.getDefaultPort().trim());
-
-                Config.write("address", address);
-
-                Config.write("usernameparameters", edUsernameparameters.getText().toString().trim());
-
-                String workername = edWorkerName.getText().toString().trim();
-                if(workername.isEmpty()) {
-                    workername = Tools.getDeviceName();
-                }
-
-                Log.i(LOG_TAG,"Worker Name : " + workername);
-                Config.write("workername", workername);
-                edWorkerName.setText(workername);
-
-                Config.write("custom_port", edPort.getText().toString().trim());
-                Config.write("cores", Integer.toString(sbCores.getProgress()));
-                Config.write("threads", "1"); // Default value
-                Config.write("intensity", "1"); // Default value
-
-                Config.write("maxcputemp", Integer.toString(getCPUTemp()));
-                Config.write("maxbatterytemp", Integer.toString(getBatteryTemp()));
-                Config.write("cooldownthreshold", Integer.toString(getCooldownTheshold()));
-                Config.write("disableamayc", (swDisableTempControl.isChecked() ? "1" : "0"));
-
-                String mininggoal = edMiningGoal.getText().toString().trim();
-                if(!mininggoal.isEmpty()) {
-                    Config.write("mininggoal", mininggoal);
-                }
-
-                Config.write("pauseonbattery", swPauseOnBattery.isChecked() ? "1" : "0");
-                Config.write("keepscreenonwhenmining", swKeepScreenOnWhenMining.isChecked() ? "1" : "0");
-
-                Config.write("init", "1");
-
-                Toast.makeText(appContext, "Settings Saved", Toast.LENGTH_SHORT).show();
-
-                MainActivity main = (MainActivity) getActivity();
-                assert main != null;
-                main.stopMining();
-                main.loadSettings();
-
-                main.updateStartButton();
-                main.updateStatsListener();
-                main.updateUI();
-
-                selectedPoolTmp = null;
             }
         });
 
@@ -425,6 +382,72 @@ public class SettingsFragment extends Fragment {
         });
 
         return view;
+    }
+
+    private void saveSettings() {
+        // Validate address
+        String address = edAddress.getText().toString().trim();
+
+        if(address.isEmpty() || !Utils.verifyAddress(address)) {
+            tilAddress.setErrorEnabled(true);
+            tilAddress.setError(getResources().getString(R.string.invalidaddress));
+            requestFocus(edAddress);
+            return;
+        }
+
+        tilAddress.setErrorEnabled(false);
+        tilAddress.setError(null);
+
+        PoolItem selectedPoolItem = getSelectedPoolItem();
+
+        Config.write(Config.CONFIG_SELECTED_POOL, selectedPoolItem.getKey().trim());
+        Config.write(Config.CONFIG_POOL_PORT, selectedPoolItem.getDefaultPort().trim());
+
+        Config.write("address", address);
+
+        Config.write("usernameparameters", edUsernameparameters.getText().toString().trim());
+
+        String workername = edWorkerName.getText().toString().trim();
+        if(workername.isEmpty()) {
+            workername = Tools.getDeviceName();
+        }
+
+        Log.i(LOG_TAG,"Worker Name : " + workername);
+        Config.write("workername", workername);
+        edWorkerName.setText(workername);
+
+        Config.write("custom_port", edPort.getText().toString().trim());
+        Config.write("cores", Integer.toString(sbCores.getProgress()));
+        Config.write("threads", "1"); // Default value
+        Config.write("intensity", "1"); // Default value
+
+        Config.write("maxcputemp", Integer.toString(getCPUTemp()));
+        Config.write("maxbatterytemp", Integer.toString(getBatteryTemp()));
+        Config.write("cooldownthreshold", Integer.toString(getCooldownTheshold()));
+        Config.write("disableamayc", (swDisableTempControl.isChecked() ? "1" : "0"));
+
+        String mininggoal = edMiningGoal.getText().toString().trim();
+        if(!mininggoal.isEmpty()) {
+            Config.write("mininggoal", mininggoal);
+        }
+
+        Config.write("pauseonbattery", swPauseOnBattery.isChecked() ? "1" : "0");
+        Config.write("keepscreenonwhenmining", swKeepScreenOnWhenMining.isChecked() ? "1" : "0");
+
+        Config.write("init", "1");
+
+        Toast.makeText(getContext(), "Settings Saved", Toast.LENGTH_SHORT).show();
+
+        MainActivity main = (MainActivity) getActivity();
+        assert main != null;
+        main.stopMining();
+        main.loadSettings();
+
+        main.updateStartButton();
+        main.updateStatsListener();
+        main.updateUI();
+
+        selectedPoolTmp = null;
     }
 
     private void onOpenPools() {
