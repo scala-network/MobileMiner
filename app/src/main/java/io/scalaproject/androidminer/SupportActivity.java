@@ -142,7 +142,7 @@ public class SupportActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 Utils.copyToClipboard("Scala Miner Debug Info", sDebugInfo);
-                Utils.showToast(getApplicationContext(), getResources().getString(R.string.debuginfo_copied), Toast.LENGTH_SHORT);
+                Utils.showToast(getApplicationContext(), getResources().getString(R.string.debuginfo_copied), Toast.LENGTH_SHORT, Tools.TOAST_YOFFSET_BOTTOM);
             }
         });
 

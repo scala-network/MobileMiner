@@ -52,6 +52,8 @@ public class Tools {
 
     private static final String LOG_TAG = "MiningSvc";
 
+    public static final int TOAST_YOFFSET_BOTTOM = 5;
+
     static String loadConfigTemplate(Context context, String path) {
         try {
             StringBuilder buf = new StringBuilder();
@@ -410,6 +412,13 @@ public class Tools {
         DecimalFormat decimalFormat = new DecimalFormat("0.##");
 
         return decimalFormat.format(bn) + ' ' + byteUnits[i];
+    }
+
+    static public String getLongValueString(double value) {
+        NumberFormat nf = NumberFormat.getInstance();
+        nf.setMinimumFractionDigits(2);
+
+        return nf.format(value);
     }
 
     static public String getReadableHashRateString(long hashrate) {

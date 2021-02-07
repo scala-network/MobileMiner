@@ -127,7 +127,9 @@ public class StatsFragment extends Fragment {
         // Address
 
         String wallet = Config.read("address");
-        String prettyaddress = wallet.substring(0, 7) + "..." + wallet.substring(wallet.length() - 7);
+        String prettyaddress = "";
+        if(!wallet.isEmpty())
+            prettyaddress = wallet.substring(0, 7) + "..." + wallet.substring(wallet.length() - 7);
 
         TextView tvWalletAddress = view.findViewById(R.id.walletaddress);
         tvWalletAddress.setText(prettyaddress);
@@ -154,11 +156,11 @@ public class StatsFragment extends Fragment {
 
         String sBalance = d.miner.balance.replace("XLA", "").trim();
         TextView tvBalance = view.findViewById(R.id.balance);
-        tvBalance.setText(d.miner.balance.isEmpty() ? pi.getPoolType() == 0 ? "n/a" : "0" : sBalance);
+        tvBalance.setText(d.miner.balance.isEmpty() ? pi.getPoolType() == 0 ? "n/a" : Tools.getLongValueString(0.0) : sBalance);
 
         String sPaid = d.miner.paid.replace("XLA", "").trim();
         TextView tvPaid = view.findViewById(R.id.paid);
-        tvPaid.setText(d.miner.paid.isEmpty() ? pi.getPoolType() == 0 ? "n/a" : "0" : sPaid);
+        tvPaid.setText(d.miner.paid.isEmpty() ? pi.getPoolType() == 0 ? "n/a" : Tools.getLongValueString(0.0) : sPaid);
         tvPaid.setTextSize(sPaid.length() > 6 ? 12 : 14);
 
         TextView tvPaidUnit = view.findViewById(R.id.paid_unit);

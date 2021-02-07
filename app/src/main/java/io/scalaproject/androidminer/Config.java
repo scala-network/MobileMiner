@@ -29,6 +29,10 @@ public class Config {
     private static Config mSettings;
     private SharedPreferences preferences;
 
+    public final static int DefaultMaxCPUTemp = 70; // 60,65,70,75,80
+    public final static int DefaultMaxBatteryTemp = 40; // 30,35,40,45,50
+    public final static int DefaultCooldownTheshold = 10; // 5,10,15,20,25
+
     static final int DefaultPoolIndex = 1;
     public static final Long statsDelay = 30000L;
     public static final String miner_xlarig = "xlarig";
@@ -66,15 +70,18 @@ public class Config {
     }
 
     public static String read(String key) {
-//        if(key == "address" && Config.debugAddress != "") {
-//            return Config.debugAddress;
-//        }
+        return read(key, "");
+    }
+
+    public static String read(String key, String fallback) {
         if(!key.startsWith("system:")) {
-            return mSettings.preferences.getString(key, "");
+            return mSettings.preferences.getString(key, fallback);
         }
-        if(!mSettings.mConfigs.containsKey(key)) {
-            return "";
+
+        if(!mSettings.mConfigs.containsKey(key) || mSettings.mConfigs.get(key).isEmpty()) {
+            return fallback;
         }
+
         return mSettings.mConfigs.get(key);
     }
 

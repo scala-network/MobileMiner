@@ -94,7 +94,7 @@
     <string name="turnoffamayccontrol">Disable temperature control</string>
     <string name="warning">Warning!</string>
     <string name="allworkers">All workers:</string>
-    <string name="amaycpaused">Cannot resume mining when device is cooling</string>
+    <string name="amaycpaused">Cannot resume mining when device is cooling.</string>
     <string name="amaycerror">AMAYC: Cannot reach distant server.</string>
     <string name="miningpaused">Mining paused until temperatures return to safe levels.</string>
     <string name="miningbackground">Scala Miner is still mining in the background.</string>
@@ -206,4 +206,10 @@
     <string name="scala">Scala</string>
     <string name="no_payments">No payments.</string>
     <string name="notice_no_wallet">No wallet address? Click here to create one.</string>
+    <string name="save_settings_first">Save settings to start mining.</string>
+    <string name="no_wallet_defined">No wallet address defined.</string>
+    <string name="invalid_address">Invalid wallet address provided.</string>
+    <string name="no_pool">No pool defined.</string>
+    <string name="no_pool_url">No pool URL defined.</string>
+    <string name="no_pool_port">No pool port defined.</string>
 </resources>

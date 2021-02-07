@@ -62,7 +62,7 @@
 			android:layout_gravity="center"
 			android:layout_marginTop="20dp"
 			android:text="@string/landingpage_introduction"
-			android:textColor="@color/txt_secondary"
+			android:textColor="@color/txt_main"
 			android:textAlignment="center"
 			android:textSize="14sp" />
 
@@ -70,6 +70,16 @@
 			android:layout_width="0dp"
 			android:layout_height="0dp"
 			android:layout_weight="10" />
+
+		<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_gravity="center"
+			android:layout_marginBottom="10dp"
+			android:text="You need to provide a valid Scala wallet address to start mining."
+			android:textColor="@color/txt_main"
+			android:textAlignment="center"
+			android:textSize="14sp" />
 
 		<Button
 			android:id="@+id/enterWalletAddress"
@@ -115,7 +125,7 @@
 			android:layout_marginStart="35dp"
 			android:layout_marginEnd="35dp"
 			android:text="@string/disclaimer_agreement"
-			android:textColor="@color/txt_main"
+			android:textColor="@color/txt_inactive"
 			android:textAlignment="center"
 			android:textSize="14sp" />
 

@@ -74,6 +74,7 @@ public final class Utils {
 
         p = Pattern.compile(Utils.ADDRESS_REGEX_SUB);
         m = p.matcher(input.trim());
+
         return m.matches();
     }
 
@@ -274,6 +275,11 @@ public final class Utils {
 
     static public void showToast(Context context, String text, int length) {
         CustomToast ct = new CustomToast(context, text, length);
+        ct.show();
+    }
+
+    static public void showToast(Context context, String text, int length, int YOffset) {
+        CustomToast ct = new CustomToast(context, text, length, YOffset);
         ct.show();
     }
 }

@@ -54,9 +54,9 @@ public class SettingsFragment extends Fragment {
 
     public static PoolItem selectedPoolTmp = null;
 
-    private Integer nMaxCPUTemp = 70; // 60,65,70,75,80
-    private Integer nMaxBatteryTemp = 40; // 30,35,40,45,50
-    private Integer nCooldownTheshold = 10; // 5,10,15,20,25
+    private Integer nMaxCPUTemp = Config.DefaultMaxCPUTemp; // 60,65,70,75,80
+    private Integer nMaxBatteryTemp = Config.DefaultMaxBatteryTemp; // 30,35,40,45,50
+    private Integer nCooldownTheshold = Config.DefaultCooldownTheshold; // 5,10,15,20,25
 
     private SeekBar sbCPUTemp, sbBatteryTemp, sbCooldown, sbCores;
     private TextView tvCPUMaxTemp, tvBatteryMaxTemp, tvCooldown;
@@ -300,7 +300,7 @@ public class SettingsFragment extends Fragment {
                 // if mining, ask to restart
                 if(MainActivity.isDeviceMiningBackground()) {
                     MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getContext(), R.style.MaterialAlertDialogCustom);
-                    builder.setTitle(getString(R.string.restartmining))
+                    builder.setTitle(getString(R.string.stopmining))
                             .setMessage(getString(R.string.newparametersapplied))
                             .setCancelable(true)
                             .setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
@@ -338,7 +338,7 @@ public class SettingsFragment extends Fragment {
                     }
                 }
                 else {
-                    Utils.showToast(appContext, "This version of Android does not support Qr Code.", Toast.LENGTH_LONG);
+                    Utils.showToast(appContext, "This version of Android does not support QR Code.", Toast.LENGTH_LONG);
                 }
             }
         });
@@ -437,7 +437,7 @@ public class SettingsFragment extends Fragment {
 
         Config.write("init", "1");
 
-        Utils.showToast(getContext(), "Settings Saved", Toast.LENGTH_SHORT);
+        Utils.showToast(getContext(), "Settings Saved.", Toast.LENGTH_SHORT);
 
         MainActivity main = (MainActivity) getActivity();
         assert main != null;
@@ -505,7 +505,7 @@ public class SettingsFragment extends Fragment {
                 startQrCodeActivity();
             }
             else {
-                Utils.showToast(appContext,"Camera Permission Denied.", Toast.LENGTH_LONG);
+                Utils.showToast(appContext,"Camera permission denied.", Toast.LENGTH_LONG);
             }
         }
     }
