@@ -141,8 +141,9 @@
     <string name="sure">Sure!</string>
     <string name="nothanks">Nope.</string>
     <string name="stopmining">Do you want to stop mining?</string>
+    <string name="restartmining">Do you want to restart mining?</string>
     <string name="closeApp">If you close the app, the mining process will be stopped.</string>
-    <string name="newparametersapplied">The mining process must be restarted in order for the new parameters to be applied.</string>
+    <string name="newparametersapplied">You will have to restart the mining process in order for the new parameters to be applied.</string>
     <string name="hashrate_share">Take a look at my Scala Mobile Miner stats! I\'m currently mining on my Android device. Download the app to start mining on your phone: https://mobileminer.scalaproject.io/</string>
     <string name="app_share">"Did you know you can mine cryptocurrencies on any Android device? Download the app to start mining on your phone: https://mobileminer.scalaproject.io/</string>
     <string name="share_title">Scala Mobile Miner</string>

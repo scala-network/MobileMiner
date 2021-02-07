@@ -299,7 +299,7 @@ public class SettingsFragment extends Fragment {
                 // if mining, ask to restart
                 if(MainActivity.isDeviceMiningBackground()) {
                     MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getContext(), R.style.MaterialAlertDialogCustom);
-                    builder.setTitle(getString(R.string.stopmining))
+                    builder.setTitle(getString(R.string.restartmining))
                             .setMessage(getString(R.string.newparametersapplied))
                             .setCancelable(true)
                             .setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
