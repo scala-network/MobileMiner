@@ -451,8 +451,6 @@ public class SettingsFragment extends Fragment {
 
         Config.write("custom_port", edPort.getText().toString().trim());
         Config.write("cores", Integer.toString(sbCores.getProgress()));
-        Config.write("threads", "1"); // Default value
-        Config.write("intensity", "1"); // Default value
 
         Config.write("maxcputemp", Integer.toString(getCPUTemp()));
         Config.write("maxbatterytemp", Integer.toString(getBatteryTemp()));

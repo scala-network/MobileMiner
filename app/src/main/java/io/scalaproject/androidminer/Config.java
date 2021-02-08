@@ -26,6 +26,7 @@ public class Config {
     public final static String CONFIG_SELECTED_POOL = "selected_pool";
     public final static String CONFIG_POOL_PORT = "custom_port";
     public final static String CONFIG_TEMPERATURE_UNIT = "temperature_unit";
+    public final static String CONFIG_TEMPERATURE_SENSOR_SHOW_WARNING = "temp_sensor_warning";
 
     private static Config mSettings;
     private SharedPreferences preferences;

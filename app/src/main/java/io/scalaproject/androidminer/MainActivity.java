@@ -74,6 +74,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.text.Spannable;
@@ -128,6 +129,7 @@ import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.security.ProviderInstaller;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.textfield.TextInputLayout;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -182,6 +184,7 @@ public class MainActivity extends BaseActivity
     private boolean bValidCPUTemperatureSensor = true;
     private boolean bValidBatteryTemperatureSensor = true;
     private boolean bIsCelsius = true;
+    private boolean bForceMiningNoTempSensor = false;
 
     // Graphics
     private LineChart chartHashrate;
@@ -1421,6 +1424,36 @@ public class MainActivity extends BaseActivity
         initChartTemperature();
     }
 
+    private void showDisclaimerTemperatureSensors() {
+        LayoutInflater li = LayoutInflater.from(this);
+        View disclaimerView = li.inflate(R.layout.disclaimer_temperature_sensor, null);
+
+        MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this, R.style.MaterialAlertDialogCustom);
+        alertDialogBuilder.setView(disclaimerView);
+
+        String disclaimerText = !bValidCPUTemperatureSensor ? getResources().getString(R.string.warning_cpu_temp_sensor) : getResources().getString(R.string.warning_battery_temp_sensor);
+        final TextView tvDisclaimer = disclaimerView.findViewById(R.id.tvDisclaimer);
+        tvDisclaimer.setHint(disclaimerText);
+
+        Switch swDisclaimer = disclaimerView.findViewById(R.id.chkDontShowAgain);
+
+        // set dialog message
+        alertDialogBuilder
+                .setCancelable(false)
+                .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        Config.write(Config.CONFIG_TEMPERATURE_SENSOR_SHOW_WARNING, swDisclaimer.isChecked() ? "0" : "1");
+                        bForceMiningNoTempSensor = true;
+                        startMining();
+                    }
+                })
+                .setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        return;
+                    }
+                }).show();
+    }
+
     private void startMining() {
         if (binder == null) return;
 
@@ -1437,12 +1470,18 @@ public class MainActivity extends BaseActivity
             return;
         }
 
+        if((!bValidCPUTemperatureSensor || !bValidBatteryTemperatureSensor) && !bForceMiningNoTempSensor && !Config.read(Config.CONFIG_TEMPERATURE_SENSOR_SHOW_WARNING).equals("0")) {
+            showDisclaimerTemperatureSensors();
+            return;
+        }
+
         if (Config.read("pauseonbattery").equals("1") && !isCharging && !bForceMiningOnPause) {
             askToForceMining();
             return;
         }
 
         bForceMiningOnPause = false;
+        bForceMiningNoTempSensor = false;
 
         String username = address + Config.read("usernameparameters");
 

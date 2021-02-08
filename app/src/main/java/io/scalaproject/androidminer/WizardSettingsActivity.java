@@ -274,14 +274,11 @@ public class WizardSettingsActivity extends BaseActivity {
         Config.write("maxbatterytemp", Integer.toString(getBatteryTemp()));
         Config.write("cooldownthreshold", Integer.toString(getCooldownTheshold()));
 
-        Config.write("threads", "1"); // Default value
-        Config.write("intensity", "1"); // Default value
-
         Config.write("disableamayc", "0");
 
-        Config.write("init", "1");
+        Config.write(Config.CONFIG_TEMPERATURE_UNIT, tgTemperatureUnit.getCheckedButtonId() == R.id.btnFarehnheit ? "F" : "C");
 
-        //ProviderManager.loadPools(getApplicationContext());
+        Config.write("init", "1");
 
         Intent intent = new Intent(WizardSettingsActivity.this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|
