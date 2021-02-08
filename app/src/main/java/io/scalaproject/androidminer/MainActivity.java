@@ -69,8 +69,10 @@ import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -156,6 +158,7 @@ public class MainActivity extends BaseActivity
     private NestedScrollView svLog;
 
     private LinearLayout llMain, llLog, llHashrate, llStatus;
+    private RelativeLayout rlWarningCPUTemperature, rlWarningBatteryTemperature;
 
     private ProgressBar pbPayout;
     private boolean payoutEnabled;
@@ -175,6 +178,9 @@ public class MainActivity extends BaseActivity
     private boolean bIsRestartEvent = false;
     private boolean bIsRestartDialogShown = false;
     private boolean bForceMiningOnPause = false;
+
+    private boolean bValidCPUTemperatureSensor = true;
+    private boolean bValidBatteryTemperatureSensor = true;
 
     // Graphics
     private LineChart chartHashrate;
@@ -401,7 +407,7 @@ public class MainActivity extends BaseActivity
             }
         });
 
-            // Controls
+        // Controls
 
         payoutEnabled = true;
         pbPayout = findViewById(R.id.progresspayout);
@@ -476,8 +482,33 @@ public class MainActivity extends BaseActivity
         tvHashrate = findViewById(R.id.hashrate);
         tvStatus = findViewById(R.id.miner_status);
 
+        LayoutInflater inflater = LayoutInflater.from(getApplicationContext());
+
         tvCPUTemperature = findViewById(R.id.cputemp);
+        rlWarningCPUTemperature = findViewById(R.id.rlWarningCPUTemp);
+        rlWarningCPUTemperature.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!bValidCPUTemperatureSensor) {
+                    // Inflate the layout of the popup window
+                    View popupView = inflater.inflate(R.layout.warning_cpu_temp_sensor, null);
+                    Utils.showPopup(v, inflater, popupView);
+                }
+            }
+        });
+
         tvBatteryTemperature = findViewById(R.id.batterytemp);
+        rlWarningBatteryTemperature = findViewById(R.id.rlWarningBatteryTemp);
+        rlWarningBatteryTemperature.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!bValidBatteryTemperatureSensor) {
+                    // Inflate the layout of the popup window
+                    View popupView = inflater.inflate(R.layout.warning_battery_temp_sensor, null);
+                    Utils.showPopup(v, inflater, popupView);
+                }
+            }
+        });
 
         tvAcceptedShares = findViewById(R.id.acceptedshare);
         tvDifficulty  = findViewById(R.id.difficulty);
@@ -573,8 +604,7 @@ public class MainActivity extends BaseActivity
             validArchitecture = false;
         }
 
-        StrictMode.ThreadPolicy policy = new
-                StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 
         ProviderManager.loadPools(getApplicationContext());
@@ -2200,8 +2230,13 @@ public class MainActivity extends BaseActivity
         return animation;
     }
 
-    private void updateTemperaturesText(float cpuTemp) {
+    private void updateTemperatureControls(float cpuTemp) {
+        ImageView ivWarningCPUTemp = findViewById(R.id.ivWarningCPUTemp);
+        ImageView ivWarningBatteryTemp = findViewById(R.id.ivWarningBatteryTemp);
+
         if (cpuTemp > 0.0) {
+            ivWarningCPUTemp.setVisibility(View.GONE);
+
             int nCPUTemp = Math.round(cpuTemp);
             tvCPUTemperature.setText(Integer.toString(nCPUTemp));
 
@@ -2218,11 +2253,17 @@ public class MainActivity extends BaseActivity
             }
         }
         else {
+            bValidCPUTemperatureSensor = false;
+
+            ivWarningCPUTemp.setVisibility(View.VISIBLE);
+
             tvCPUTemperature.setText("-");
             tvCPUTemperature.setTextColor(getResources().getColor(R.color.txt_inactive));
         }
 
         if (batteryTemp > 0.0) {
+            ivWarningBatteryTemp.setVisibility(View.GONE);
+
             int nBatteryTemp = Math.round(batteryTemp);
             tvBatteryTemperature.setText(Integer.toString(nBatteryTemp));
 
@@ -2239,6 +2280,10 @@ public class MainActivity extends BaseActivity
             }
         }
         else {
+            bValidBatteryTemperatureSensor = false;
+
+            ivWarningBatteryTemp.setVisibility(View.VISIBLE);
+
             tvBatteryTemperature.setText("-");
             tvBatteryTemperature.setTextColor(getResources().getColor(R.color.txt_inactive));
         }
@@ -2249,7 +2294,7 @@ public class MainActivity extends BaseActivity
         int nCPUTemp = Math.round(cpuTemp);
         int nBatteryTemp = Math.round(batteryTemp);
 
-        updateTemperaturesText(cpuTemp);
+        updateTemperatureControls(cpuTemp);
 
         addTemperaturesValue(cpuTemp, batteryTemp);
 

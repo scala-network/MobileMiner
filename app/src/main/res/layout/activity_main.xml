@@ -538,13 +538,30 @@
                                             android:orientation="vertical"
                                             android:padding="5dp">
 
-                                            <ImageView
-                                                android:layout_width="24dp"
-                                                android:layout_height="24dp"
-                                                android:layout_gravity="center"
-                                                android:layout_marginBottom="10dp"
-                                                app:tint="@color/btn_icon_default"
-                                                app:srcCompat="@drawable/ic_miner" />
+                                            <RelativeLayout
+                                                android:id="@+id/rlWarningCPUTemp"
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:layout_gravity="center" >
+
+                                                <ImageView
+                                                    android:layout_width="24dp"
+                                                    android:layout_height="24dp"
+                                                    android:layout_marginBottom="10dp"
+                                                    app:tint="@color/btn_icon_default"
+                                                    app:srcCompat="@drawable/ic_miner" />
+
+                                                <ImageView
+                                                    android:id="@+id/ivWarningCPUTemp"
+                                                    android:layout_width="14dp"
+                                                    android:layout_height="14dp"
+                                                    android:layout_gravity="center"
+                                                    android:layout_marginStart="16dp"
+                                                    app:tint="@color/c_yellow"
+                                                    app:srcCompat="@drawable/ic_warning"
+                                                    android:visibility="gone" />
+
+                                            </RelativeLayout>
 
                                             <LinearLayout
                                                 android:layout_width="wrap_content"
@@ -567,7 +584,7 @@
                                                     android:layout_marginStart="3dp"
                                                     android:text="°C"
                                                     android:textColor="@color/txt_inactive"
-                                                    android:textSize="12sp" />
+                                                    android:textSize="14sp" />
 
                                             </LinearLayout>
 
@@ -589,13 +606,31 @@
                                             android:orientation="vertical"
                                             android:padding="5dp">
 
-                                            <ImageView
-                                                android:layout_width="24dp"
-                                                android:layout_height="24dp"
-                                                android:layout_gravity="center"
-                                                android:layout_marginBottom="10dp"
-                                                app:tint="@color/btn_icon_default"
-                                                app:srcCompat="@drawable/ic_battery" />
+                                            <RelativeLayout
+                                                android:id="@+id/rlWarningBatteryTemp"
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:layout_gravity="center" >
+
+                                                <ImageView
+                                                    android:layout_width="24dp"
+                                                    android:layout_height="24dp"
+                                                    android:layout_gravity="center"
+                                                    android:layout_marginBottom="10dp"
+                                                    app:tint="@color/btn_icon_default"
+                                                    app:srcCompat="@drawable/ic_battery" />
+
+                                                <ImageView
+                                                    android:id="@+id/ivWarningBatteryTemp"
+                                                    android:layout_width="14dp"
+                                                    android:layout_height="14dp"
+                                                    android:layout_gravity="center"
+                                                    android:layout_marginStart="16dp"
+                                                    app:tint="@color/c_yellow"
+                                                    app:srcCompat="@drawable/ic_warning"
+                                                    android:visibility="gone" />
+
+                                            </RelativeLayout>
 
                                             <LinearLayout
                                                 android:layout_width="wrap_content"
@@ -618,7 +653,7 @@
                                                     android:layout_marginStart="3dp"
                                                     android:text="°C"
                                                     android:textColor="@color/txt_inactive"
-                                                    android:textSize="12sp" />
+                                                    android:textSize="14sp" />
 
                                             </LinearLayout>
 
