@@ -76,7 +76,7 @@
 			android:layout_height="wrap_content"
 			android:layout_gravity="center"
 			android:layout_marginBottom="10dp"
-			android:text="You need to provide a valid Scala wallet address to start mining."
+			android:text="You need to provide your Scala wallet address to start mining."
 			android:textColor="@color/txt_main"
 			android:textAlignment="center"
 			android:textSize="14sp" />
