@@ -12,17 +12,21 @@ import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import com.google.android.material.button.MaterialButtonToggleGroup;
+
 import io.scalaproject.androidminer.widgets.Toolbar;
 
 public class WizardSettingsActivity extends BaseActivity {
     private SeekBar sbCores, sbCPUTemp, sbBatteryTemp, sbCooldown;
-    private TextView tvCPUMaxTemp, tvBatteryMaxTemp, tvCooldown;
+    private TextView tvCPUMaxTemp, tvBatteryMaxTemp, tvCooldown, tvCPUTempUnit, tvBatteryTempUnit;
 
     private Integer nMaxCPUTemp = Config.DefaultMaxCPUTemp; // 60,65,70,75,80
     private Integer nMaxBatteryTemp = Config.DefaultMaxBatteryTemp; // 30,35,40,45,50
     private Integer nCooldownTheshold = Config.DefaultCooldownTheshold; // 5,10,15,20,25
 
     private Toolbar toolbar;
+
+    private MaterialButtonToggleGroup tgTemperatureUnit;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -73,9 +77,11 @@ public class WizardSettingsActivity extends BaseActivity {
 
         sbCPUTemp = view.findViewById(R.id.seekbarcputemperature);
         tvCPUMaxTemp = view.findViewById(R.id.cpumaxtemp);
+        tvCPUTempUnit = view.findViewById(R.id.cputempunit);
 
         sbBatteryTemp = view.findViewById(R.id.seekbarbatterytemperature);
         tvBatteryMaxTemp = view.findViewById(R.id.batterymaxtemp);
+        tvBatteryTempUnit = view.findViewById(R.id.batterytempunit);
 
         sbCooldown = view.findViewById(R.id.seekbarcooldownthreshold);
         tvCooldown = view.findViewById(R.id.cooldownthreshold);
@@ -89,6 +95,23 @@ public class WizardSettingsActivity extends BaseActivity {
 
                 View popupView = inflater.inflate(R.layout.helper_hardware_settings, null);
                 Utils.showPopup(v, inflater, popupView);
+            }
+        });
+
+        tgTemperatureUnit = view.findViewById(R.id.tgTemperatureUnit);
+        tgTemperatureUnit.addOnButtonCheckedListener(new MaterialButtonToggleGroup.OnButtonCheckedListener() {
+            @Override
+            public void onButtonChecked(MaterialButtonToggleGroup group, int checkedId, boolean isChecked) {
+                if(checkedId == R.id.btnFarehnheit) {
+                    tvCPUTempUnit.setText(getString(R.string.celsius));
+                    tvBatteryTempUnit.setText(getString(R.string.celsius));
+                } else {
+                    tvCPUTempUnit.setText(getString(R.string.fahrenheit));
+                    tvBatteryTempUnit.setText(getString(R.string.fahrenheit));
+                }
+
+                updateCPUTemp();
+                updateBatteryTemp();
             }
         });
 
@@ -108,6 +131,17 @@ public class WizardSettingsActivity extends BaseActivity {
             int corenb = Integer.parseInt(Config.read("cores"));
             sbCores.setProgress(corenb);
             tvCoresNb.setText(Integer.toString(corenb));
+        }
+
+        String temperature_unit = Config.read(Config.CONFIG_TEMPERATURE_UNIT, "C");
+        tgTemperatureUnit.check(temperature_unit.equals("C") ? R.id.btnCelsius : R.id.btnFarehnheit);
+
+        if(temperature_unit.equals("C")) {
+            tvCPUTempUnit.setText(getString(R.string.celsius));
+            tvBatteryTempUnit.setText(getString(R.string.celsius));
+        } else {
+            tvCPUTempUnit.setText(getString(R.string.fahrenheit));
+            tvBatteryTempUnit.setText(getString(R.string.fahrenheit));
         }
 
         // CPU Temp
@@ -218,12 +252,14 @@ public class WizardSettingsActivity extends BaseActivity {
         return ((sbCooldown.getProgress() - 1) * Utils.INCREMENT) + Utils.MIN_COOLDOWN;
     }
 
-    private void updateCPUTemp(){
-        tvCPUMaxTemp.setText(Integer.toString(getCPUTemp()));
+    private void updateCPUTemp() {
+        int cpu_temp = getCPUTemp();
+        tvCPUMaxTemp.setText(tgTemperatureUnit.getCheckedButtonId() == R.id.btnFarehnheit ? Integer.toString(Utils.convertCelciusToFahrenheit(cpu_temp)) : Integer.toString(cpu_temp));
     }
 
     private void updateBatteryTemp() {
-        tvBatteryMaxTemp.setText(Integer.toString(getBatteryTemp()));
+        int battery_temp = getBatteryTemp();
+        tvBatteryMaxTemp.setText(tgTemperatureUnit.getCheckedButtonId() == R.id.btnFarehnheit ? Integer.toString(Utils.convertCelciusToFahrenheit(battery_temp)) : Integer.toString(battery_temp));
     }
 
     private void updateCooldownThreshold() {
