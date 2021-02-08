@@ -214,4 +214,6 @@
     <string name="no_pool_port">No pool port defined.</string>
     <string name="warning_cpu_temp_sensor">Your device does not have a sensor to read the processor temperature, or it is impossible to retrieve it. You should mine with caution.</string>
     <string name="warning_battery_temp_sensor">Your device does not have a sensor to read the battery temperature, or it is impossible to retrieve it. You should mine with caution.</string>
+    <string name="fahrenheit">°F</string>
+    <string name="temperature_unit">Temperature unit</string>
 </resources>

@@ -10,8 +10,8 @@
         <item name="android:windowBackground">@android:color/black</item>
 
         <item name="colorPrimaryDark">@android:color/black</item>
-        <item name="colorPrimary">@color/txt_main</item>
-        <item name="colorAccent">@color/txt_main</item>
+        <item name="colorPrimary">@color/c_blue</item>
+        <item name="colorAccent">@color/c_blue</item>
 
         <item name="android:textColorPrimary">@color/txt_main</item>
         <item name="android:textColorSecondary">@color/btn_icon_default</item>
@@ -85,11 +85,8 @@
     </style>
 
     <style name="SwitchTheme" parent="Theme.AppCompat.Light">
-        <!-- active thumb & track color (30% transparency) -->
         <item name="colorControlActivated">@color/c_blue</item>
-        <!-- inactive thumb color -->
         <item name="colorSwitchThumbNormal">@color/c_grey</item>
-        <!-- inactive track color (30% transparency) -->
         <item name="android:colorForeground">@color/c_grey</item>
     </style>
 

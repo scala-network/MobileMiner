@@ -151,7 +151,7 @@ public class MainActivity extends BaseActivity
 
     private Toolbar toolbar;
 
-    private TextView tvHashrate, tvStatus, tvNbCores, tvCPUTemperature, tvBatteryTemperature, tvAcceptedShares, tvDifficulty, tvConnection, tvLog, tvLog2, tvStatusProgess;
+    private TextView tvHashrate, tvStatus, tvNbCores, tvCPUTemperature, tvCPUTemperatureUnit, tvBatteryTemperature, tvBatteryTemperatureUnit, tvAcceptedShares, tvDifficulty, tvConnection, tvLog, tvLog2, tvStatusProgess;
     private TubeSpeedometer meterCores, meterHashrate, meterHashrate_avg, meterHashrate_max;
     private SeekBar sbCores = null;
     private SwipeRefreshLayout pullToRefreshHr;
@@ -181,6 +181,7 @@ public class MainActivity extends BaseActivity
 
     private boolean bValidCPUTemperatureSensor = true;
     private boolean bValidBatteryTemperatureSensor = true;
+    private boolean bIsCelsius = true;
 
     // Graphics
     private LineChart chartHashrate;
@@ -485,6 +486,7 @@ public class MainActivity extends BaseActivity
         LayoutInflater inflater = LayoutInflater.from(getApplicationContext());
 
         tvCPUTemperature = findViewById(R.id.cputemp);
+        tvCPUTemperatureUnit = findViewById(R.id.cputempunit);
         rlWarningCPUTemperature = findViewById(R.id.rlWarningCPUTemp);
         rlWarningCPUTemperature.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -498,6 +500,7 @@ public class MainActivity extends BaseActivity
         });
 
         tvBatteryTemperature = findViewById(R.id.batterytemp);
+        tvBatteryTemperatureUnit = findViewById(R.id.batterytempunit);
         rlWarningBatteryTemperature = findViewById(R.id.rlWarningBatteryTemp);
         rlWarningBatteryTemperature.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -644,8 +647,6 @@ public class MainActivity extends BaseActivity
 
         chartHashrate = findViewById(R.id.chart_hashrate);
         chartTemperature = findViewById(R.id.chart_temprature);
-        initChartHashrate();
-        initChartTemperature();
 
         updateUI();
 
@@ -736,7 +737,6 @@ public class MainActivity extends BaseActivity
         chartTemperature.setPinchZoom(false);
         chartTemperature.animateX(1500);
         chartTemperature.getAxisRight().setEnabled(false);
-        //chartTemperature.setVisibleXRangeMaximum(10);
         chartTemperature.setAutoScaleMinMaxEnabled(true);
         chartTemperature.setNoDataText("No chart data.");
         chartTemperature.setNoDataTextColor(getResources().getColor(R.color.txt_inactive));
@@ -750,7 +750,7 @@ public class MainActivity extends BaseActivity
 
         YAxis leftAxis = chartTemperature.getAxisLeft();
         leftAxis.setTextColor(getResources().getColor(R.color.txt_secondary));
-        leftAxis.setAxisMaximum(90f);
+        leftAxis.setAxisMaximum(bIsCelsius ? 90f : Utils.convertCelciusToFahrenheit(90));
         leftAxis.setAxisMinimum(0f);
         leftAxis.setDrawZeroLine(false);
         leftAxis.setDrawAxisLine(true);
@@ -839,9 +839,6 @@ public class MainActivity extends BaseActivity
             leftAxis.setAxisMinimum(hr * 0.75f);
         }
 
-        // Limit lines are too close to each other - it doesn't look good
-        //setHashrateChartLimits();
-
         chartHashrate.fitScreen();
 
         data.setHighlightEnabled(false);
@@ -858,14 +855,14 @@ public class MainActivity extends BaseActivity
         leftAxis.removeAllLimitLines(); // reset all limit lines to avoid overlapping lines
 
         if(!bDisableTemperatureControl) {
-            LimitLine ll1 = new LimitLine(nMaxBatteryTemp, "Battery");
+            LimitLine ll1 = new LimitLine(bIsCelsius ? nMaxCPUTemp : Utils.convertCelciusToFahrenheit(nMaxCPUTemp), "CPU");
             ll1.setLineWidth(1f);
             ll1.enableDashedLine(10f, 10f, 0f);
             ll1.setLabelPosition(LimitLine.LimitLabelPosition.RIGHT_TOP);
             ll1.setLineColor(getResources().getColor(R.color.c_red));
             ll1.setTextColor(getResources().getColor(R.color.txt_main));
 
-            LimitLine ll2 = new LimitLine(nMaxCPUTemp, "CPU");
+            LimitLine ll2 = new LimitLine(bIsCelsius ? nMaxBatteryTemp : Utils.convertCelciusToFahrenheit(nMaxBatteryTemp), "Battery");
             ll2.setLineWidth(1f);
             ll2.enableDashedLine(10f, 10f, 0f);
             ll2.setLabelPosition(LimitLine.LimitLabelPosition.RIGHT_TOP);
@@ -881,8 +878,11 @@ public class MainActivity extends BaseActivity
         if(!isDeviceMining())
             return;
 
-        lValuesTempCPU.add(new BarEntry(xTemp, cpu));
-        lValuesTempBattery.add(new BarEntry(xTemp, battery));
+        float cpu_temp = bIsCelsius ? cpu : Utils.convertCelciusToFahrenheit(Math.round(cpu));
+        float battery_temp = bIsCelsius ? battery : Utils.convertCelciusToFahrenheit(Math.round(battery));
+
+        lValuesTempCPU.add(new BarEntry(xTemp, cpu_temp));
+        lValuesTempBattery.add(new BarEntry(xTemp, battery_temp));
         xTemp++;
 
         // Only keep 100 last values to avoid overflow
@@ -912,8 +912,6 @@ public class MainActivity extends BaseActivity
             set2.setAxisDependency(YAxis.AxisDependency.LEFT);
 
             data = new BarData(set1, set2);
-            //data.setValueFormatter(new LargeValueFormatter());
-            //data.setValueTypeface(tfLight);
 
             chartTemperature.setData(data);
         }
@@ -1414,6 +1412,13 @@ public class MainActivity extends BaseActivity
         nSafeBatteryTemp = nMaxBatteryTemp - Math.round((float)nMaxBatteryTemp * (float)nCooldownThreshold / 100.0f);
 
         nCores = Integer.parseInt(Config.read("cores", "0"));
+
+        bIsCelsius = Config.read(Config.CONFIG_TEMPERATURE_UNIT, "C").equals("C");
+        tvCPUTemperatureUnit.setText(bIsCelsius ? getString(R.string.celsius) : getString(R.string.fahrenheit));
+        tvBatteryTemperatureUnit.setText(bIsCelsius ? getString(R.string.celsius) : getString(R.string.fahrenheit));
+
+        initChartHashrate();
+        initChartTemperature();
     }
 
     private void startMining() {
@@ -2238,7 +2243,7 @@ public class MainActivity extends BaseActivity
             ivWarningCPUTemp.setVisibility(View.GONE);
 
             int nCPUTemp = Math.round(cpuTemp);
-            tvCPUTemperature.setText(Integer.toString(nCPUTemp));
+            tvCPUTemperature.setText(bIsCelsius ? Integer.toString(nCPUTemp) : Integer.toString(Utils.convertCelciusToFahrenheit(nCPUTemp)));
 
             if(!bDisableTemperatureControl) {
                 if(nCPUTemp <= nMaxCPUTemp * 0.9) {
@@ -2265,7 +2270,7 @@ public class MainActivity extends BaseActivity
             ivWarningBatteryTemp.setVisibility(View.GONE);
 
             int nBatteryTemp = Math.round(batteryTemp);
-            tvBatteryTemperature.setText(Integer.toString(nBatteryTemp));
+            tvBatteryTemperature.setText(bIsCelsius ? Integer.toString(nBatteryTemp) : Integer.toString(Utils.convertCelciusToFahrenheit(nBatteryTemp)));
 
             if(!bDisableTemperatureControl) {
                 if(nBatteryTemp <= nMaxBatteryTemp * 0.9) {

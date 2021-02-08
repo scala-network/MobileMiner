@@ -380,6 +380,7 @@
                         tools:ignore="HardcodedText" />
 
                     <TextView
+                        android:id="@+id/cputempunit"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
@@ -449,6 +450,7 @@
                         tools:ignore="HardcodedText" />
 
                     <TextView
+                        android:id="@+id/batterytempunit"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
@@ -675,6 +677,60 @@
 
                 <View
                     android:layout_marginTop="10dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_width="fill_parent"
+                    android:layout_height="0.7dp"
+                    android:background="@color/txt_inactive"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="0dp"
+                    android:layout_weight="0"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/temperature_unit"
+                        android:layout_gravity="center_vertical"
+                        android:textColor="@color/txt_main"
+                        android:textSize="14sp"
+                        android:checked="false" />
+
+                    <Space
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        tools:ignore="NestedWeights" />
+
+                    <com.google.android.material.button.MaterialButtonToggleGroup
+                        android:id="@+id/tgTemperatureUnit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:singleSelection="true"
+                        app:checkedButton="@id/btnCelsius">
+
+                        <Button
+                            android:id="@+id/btnCelsius"
+                            android:layout_width="50dp"
+                            android:layout_height="40dp"
+                            android:text="@string/celsius"
+                            style="?attr/materialButtonOutlinedStyle" />
+
+                        <Button
+                            android:id="@+id/btnFarehnheit"
+                            android:layout_width="50dp"
+                            android:layout_height="40dp"
+                            android:text="@string/fahrenheit"
+                            style="?attr/materialButtonOutlinedStyle" />
+
+                    </com.google.android.material.button.MaterialButtonToggleGroup>
+
+                </LinearLayout>
+
+                <View
+                    android:layout_marginTop="5dp"
                     android:layout_marginBottom="5dp"
                     android:layout_width="fill_parent"
                     android:layout_height="0.7dp"

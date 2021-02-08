@@ -34,6 +34,7 @@ import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.material.button.MaterialButtonToggleGroup;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputLayout;
 
@@ -59,8 +60,9 @@ public class SettingsFragment extends Fragment {
     private Integer nCooldownTheshold = Config.DefaultCooldownTheshold; // 5,10,15,20,25
 
     private SeekBar sbCPUTemp, sbBatteryTemp, sbCooldown, sbCores;
-    private TextView tvCPUMaxTemp, tvBatteryMaxTemp, tvCooldown;
-    Switch swDisableTempControl, swPauseOnBattery, swKeepScreenOnWhenMining;
+    private TextView tvCPUMaxTemp, tvBatteryMaxTemp, tvCooldown, tvCPUTempUnit, tvBatteryTempUnit;
+    private Switch swDisableTempControl, swPauseOnBattery, swKeepScreenOnWhenMining;
+    private MaterialButtonToggleGroup tgTemperatureUnit;
 
     @Nullable
     @Override
@@ -117,9 +119,11 @@ public class SettingsFragment extends Fragment {
 
         sbCPUTemp = view.findViewById(R.id.seekbarcputemperature);
         tvCPUMaxTemp = view.findViewById(R.id.cpumaxtemp);
+        tvCPUTempUnit = view.findViewById(R.id.cputempunit);
 
         sbBatteryTemp = view.findViewById(R.id.seekbarbatterytemperature);
         tvBatteryMaxTemp = view.findViewById(R.id.batterymaxtemp);
+        tvBatteryTempUnit = view.findViewById(R.id.batterytempunit);
 
         sbCooldown = view.findViewById(R.id.seekbarcooldownthreshold);
         tvCooldown = view.findViewById(R.id.cooldownthreshold);
@@ -127,6 +131,23 @@ public class SettingsFragment extends Fragment {
         swPauseOnBattery = view.findViewById(R.id.chkPauseOnBattery);
         swKeepScreenOnWhenMining = view.findViewById(R.id.chkKeepScreenOnWhenMining);
         swDisableTempControl = view.findViewById(R.id.chkAmaycOff);
+
+        tgTemperatureUnit = view.findViewById(R.id.tgTemperatureUnit);
+        tgTemperatureUnit.addOnButtonCheckedListener(new MaterialButtonToggleGroup.OnButtonCheckedListener() {
+            @Override
+            public void onButtonChecked(MaterialButtonToggleGroup group, int checkedId, boolean isChecked) {
+                if(checkedId == R.id.btnFarehnheit) {
+                    tvCPUTempUnit.setText(getString(R.string.celsius));
+                    tvBatteryTempUnit.setText(getString(R.string.celsius));
+                } else {
+                    tvCPUTempUnit.setText(getString(R.string.fahrenheit));
+                    tvBatteryTempUnit.setText(getString(R.string.fahrenheit));
+                }
+
+                updateCPUTemp();
+                updateBatteryTemp();
+            }
+        });
 
         // CPU Cores
         int cores = Runtime.getRuntime().availableProcessors();
@@ -144,6 +165,17 @@ public class SettingsFragment extends Fragment {
             int corenb = Integer.parseInt(Config.read("cores"));
             sbCores.setProgress(corenb);
             tvCoresNb.setText(Integer.toString(corenb));
+        }
+
+        String temperature_unit = Config.read(Config.CONFIG_TEMPERATURE_UNIT, "C");
+        tgTemperatureUnit.check(temperature_unit.equals("C") ? R.id.btnCelsius : R.id.btnFarehnheit);
+
+        if(temperature_unit.equals("C")) {
+            tvCPUTempUnit.setText(getString(R.string.celsius));
+            tvBatteryTempUnit.setText(getString(R.string.celsius));
+        } else {
+            tvCPUTempUnit.setText(getString(R.string.fahrenheit));
+            tvBatteryTempUnit.setText(getString(R.string.fahrenheit));
         }
 
         if (!Config.read("maxcputemp").isEmpty()) {
@@ -435,6 +467,8 @@ public class SettingsFragment extends Fragment {
         Config.write("pauseonbattery", swPauseOnBattery.isChecked() ? "1" : "0");
         Config.write("keepscreenonwhenmining", swKeepScreenOnWhenMining.isChecked() ? "1" : "0");
 
+        Config.write(Config.CONFIG_TEMPERATURE_UNIT, tgTemperatureUnit.getCheckedButtonId() == R.id.btnFarehnheit ? "F" : "C");
+
         Config.write("init", "1");
 
         Utils.showToast(getContext(), "Settings Saved.", Toast.LENGTH_SHORT);
@@ -469,12 +503,14 @@ public class SettingsFragment extends Fragment {
         return ((sbCooldown.getProgress() - 1) * Utils.INCREMENT) + Utils.MIN_COOLDOWN;
     }
 
-    private void updateCPUTemp(){
-        tvCPUMaxTemp.setText(Integer.toString(getCPUTemp()));
+    private void updateCPUTemp() {
+        int cpu_temp = getCPUTemp();
+        tvCPUMaxTemp.setText(tgTemperatureUnit.getCheckedButtonId() == R.id.btnFarehnheit ? Integer.toString(Utils.convertCelciusToFahrenheit(cpu_temp)) : Integer.toString(cpu_temp));
     }
 
     private void updateBatteryTemp() {
-        tvBatteryMaxTemp.setText(Integer.toString(getBatteryTemp()));
+        int battery_temp = getBatteryTemp();
+        tvBatteryMaxTemp.setText(tgTemperatureUnit.getCheckedButtonId() == R.id.btnFarehnheit ? Integer.toString(Utils.convertCelciusToFahrenheit(battery_temp)) : Integer.toString(battery_temp));
     }
 
     private void updateCooldownThreshold() {

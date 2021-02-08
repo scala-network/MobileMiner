@@ -579,6 +579,7 @@
                                                     android:textStyle="normal" />
 
                                                 <TextView
+                                                    android:id="@+id/cputempunit"
                                                     android:layout_width="wrap_content"
                                                     android:layout_height="wrap_content"
                                                     android:layout_marginStart="3dp"
@@ -648,6 +649,7 @@
                                                     android:textStyle="normal" />
 
                                                 <TextView
+                                                    android:id="@+id/batterytempunit"
                                                     android:layout_width="wrap_content"
                                                     android:layout_height="wrap_content"
                                                     android:layout_marginStart="3dp"

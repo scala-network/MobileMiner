@@ -282,4 +282,14 @@ public final class Utils {
         CustomToast ct = new CustomToast(context, text, length, YOffset);
         ct.show();
     }
+
+    // Converts to celcius
+    static public int convertFahrenheitToCelcius(int fahrenheit) {
+        return ((fahrenheit - 32) * 5 / 9);
+    }
+
+    // Converts to fahrenheit
+    static public int convertCelciusToFahrenheit(int celsius) {
+        return ((celsius * 9) / 5) + 32;
+    }
 }
