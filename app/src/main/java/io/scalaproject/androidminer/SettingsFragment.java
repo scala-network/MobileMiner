@@ -15,7 +15,6 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.content.Context;
 import android.os.Bundle;
-import android.os.Handler;
 import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -40,7 +39,6 @@ import com.google.android.material.textfield.TextInputLayout;
 
 import io.scalaproject.androidminer.api.PoolItem;
 import io.scalaproject.androidminer.api.ProviderManager;
-import io.scalaproject.androidminer.widgets.CustomToast;
 import io.scalaproject.androidminer.widgets.Notice;
 import io.scalaproject.androidminer.widgets.PoolView;
 
@@ -394,12 +392,12 @@ public class SettingsFragment extends Fragment {
             }
         });
 
-        Button btnHardwareHelp = view.findViewById(R.id.btnHardwareHelp);
-        btnHardwareHelp.setOnClickListener(new View.OnClickListener() {
+        Button btnTemperatureControlHelp = view.findViewById(R.id.btnTemperatureControlHelp);
+        btnTemperatureControlHelp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // inflate the layout of the popup window
-                View popupView = inflater.inflate(R.layout.helper_hardware_settings, null);
+                View popupView = inflater.inflate(R.layout.helper_max_temperature, null);
                 Utils.showPopup(v, inflater, popupView);
             }
         });

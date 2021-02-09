@@ -23,40 +23,17 @@
 		android:orientation="vertical"
 		android:layout_below="@+id/toolbar" >
 
-		<LinearLayout
-			android:layout_width="match_parent"
+		<TextView
+			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:layout_marginBottom="5dp"
-			android:layout_weight="0"
-			android:orientation="horizontal">
-
-			<TextView
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:layout_gravity="center_vertical"
-				android:gravity="start"
-				android:text="Intensity"
-				android:textColor="@color/txt_headline"
-				android:textSize="16sp"
-				android:textAllCaps="true"
-				android:textStyle="bold" />
-
-			<Button
-				android:id="@+id/btnHardwareHelp"
-				android:layout_width="24dp"
-				android:layout_height="24dp"
-				android:layout_gravity="center_vertical"
-				app:backgroundTint="@android:color/transparent"
-				app:cornerRadius="5dp"
-				app:icon="@drawable/ic_help"
-				app:iconGravity="textStart"
-				app:iconPadding="0dp"
-				app:iconTint="@color/txt_headline"
-				android:visibility="gone"
-				tools:ignore="UnusedAttribute" />
-
-		</LinearLayout>
-
+			android:layout_gravity="center_vertical"
+			android:layout_marginBottom="15dp"
+			android:gravity="start"
+			android:text="@string/intensity"
+			android:textColor="@color/txt_headline"
+			android:textSize="14sp"
+			android:textAllCaps="true"
+			android:textStyle="bold" />
 
 		<LinearLayout
 			android:layout_width="fill_parent"
@@ -121,17 +98,38 @@
 			android:thumbOffset="0dp"
 			tools:ignore="UnusedAttribute" />
 
-		<TextView
-			android:layout_width="wrap_content"
+		<LinearLayout
+			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:layout_gravity="center_vertical"
-			android:layout_marginTop="15dp"
-			android:gravity="start"
-			android:text="Temperature"
-			android:textColor="@color/txt_headline"
-			android:textSize="16sp"
-			android:textAllCaps="true"
-			android:textStyle="bold" />
+			android:layout_marginTop="30dp"
+			android:layout_marginBottom="15dp"
+			android:orientation="horizontal">
+
+			<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_gravity="center_vertical"
+				android:text="@string/temperature_control"
+				android:textColor="@color/txt_headline"
+				android:textSize="14sp"
+				android:textAllCaps="true"
+				android:textStyle="bold" />
+
+			<Button
+				android:id="@+id/btnTemperatureControlHelp"
+				android:layout_width="24dp"
+				android:layout_height="24dp"
+				android:layout_gravity="center_vertical"
+				app:backgroundTint="@android:color/transparent"
+				app:cornerRadius="5dp"
+				app:icon="@drawable/ic_help"
+				app:iconGravity="textStart"
+				app:iconPadding="0dp"
+				app:iconTint="@color/txt_main"
+				android:visibility="visible"
+				tools:ignore="UnusedAttribute" />
+
+		</LinearLayout>
 
 		<LinearLayout
 			android:layout_width="fill_parent"
@@ -145,7 +143,7 @@
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:layout_gravity="center"
-				android:text="@string/cpu"
+				android:text="@string/cputemperature"
 				android:textColor="@color/txt_main"
 				android:textSize="14sp" />
 
@@ -212,7 +210,7 @@
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:layout_gravity="center"
-				android:text="Battery"
+				android:text="@string/batterytemperature"
 				android:textColor="@color/txt_main"
 				android:textSize="14sp" />
 

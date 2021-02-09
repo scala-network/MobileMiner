@@ -31,7 +31,7 @@
 			android:layout_marginBottom="8dp"
 			android:gravity="start"
 			android:text="Pull down to reload and refresh statistics."
-			android:textSize="16sp"
+			android:textSize="14sp"
 			android:visibility="visible"/>
 
 		<androidx.swiperefreshlayout.widget.SwipeRefreshLayout

@@ -86,14 +86,14 @@ public class WizardSettingsActivity extends BaseActivity {
         sbCooldown = view.findViewById(R.id.seekbarcooldownthreshold);
         tvCooldown = view.findViewById(R.id.cooldownthreshold);
 
-        Button btnHardwareHelp = view.findViewById(R.id.btnHardwareHelp);
-        btnHardwareHelp.setOnClickListener(new View.OnClickListener() {
+        Button btnTemperatureControlHelp = view.findViewById(R.id.btnTemperatureControlHelp);
+        btnTemperatureControlHelp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // inflate the layout of the popup window
                 LayoutInflater inflater = LayoutInflater.from(getApplicationContext());
 
-                View popupView = inflater.inflate(R.layout.helper_hardware_settings, null);
+                View popupView = inflater.inflate(R.layout.helper_max_temperature, null);
                 Utils.showPopup(v, inflater, popupView);
             }
         });
