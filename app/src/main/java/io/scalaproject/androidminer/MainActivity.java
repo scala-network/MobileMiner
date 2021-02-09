@@ -157,7 +157,7 @@ public class MainActivity extends BaseActivity
     private TubeSpeedometer meterCores, meterHashrate, meterHashrate_avg, meterHashrate_max;
     private SeekBar sbCores = null;
     private SwipeRefreshLayout pullToRefreshHr;
-    private NestedScrollView svLog;
+    private NestedScrollView svLog, svLog2;
 
     private LinearLayout llMain, llLog, llHashrate, llStatus;
     private RelativeLayout rlWarningCPUTemperature, rlWarningBatteryTemperature;
@@ -427,7 +427,7 @@ public class MainActivity extends BaseActivity
         svLog = findViewById(R.id.svLog);
 
         tvLog2 = findViewById(R.id.output2);
-        tvLog2.setMovementMethod(new ScrollingMovementMethod());
+        svLog2 = findViewById(R.id.svLog2);
 
         // CPU Cores
 
@@ -2137,10 +2137,13 @@ public class MainActivity extends BaseActivity
             TextView tvNoActivity = findViewById(R.id.tvNoActivity);
             tvNoActivity.setVisibility(tvLog2.getText().toString().isEmpty() ? View.VISIBLE : View.GONE);
 
-            final Layout layout = tvLog2.getLayout();
-            if(layout != null) {
-                final int scrollAmount = layout.getHeight() - tvLog2.getHeight() + tvLog2.getPaddingBottom();
-                tvLog2.scrollTo(0, Math.max(scrollAmount, 0));
+            if(svLog2 != null) {
+                svLog2.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        svLog2.fullScroll(View.FOCUS_DOWN);
+                    }
+                });
             }
         }
     }
@@ -2250,7 +2253,8 @@ public class MainActivity extends BaseActivity
                                 tvConnection.setTextColor(getResources().getColor(R.color.c_white));
                             }
 
-                            updateHashrate(speed, max);
+                            if(status.contains("10s/60s/15m"))
+                                updateHashrate(speed, max);
                         });
                     }
                 });

@@ -1004,7 +1004,7 @@
 
                         <RelativeLayout
                             android:layout_width="match_parent"
-                            android:layout_height="100dp"
+                            android:layout_height="125dp"
                             android:layout_marginTop="15dp"
                             android:background="@drawable/corner_radius_black"
                             android:orientation="vertical">
@@ -1020,17 +1020,24 @@
                                 android:textSize="12sp"
                                 android:text="@string/no_activity" />
 
-                            <TextView
-                                android:id="@+id/output2"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:paddingStart="15dp"
-                                android:paddingTop="5pt"
-                                android:paddingEnd="15dp"
-                                android:paddingBottom="5pt"
-                                android:scrollbars="vertical"
-                                android:textColor="@color/txt_main"
-                                android:textSize="12sp" />
+                            <androidx.core.widget.NestedScrollView
+                                android:id="@+id/svLog2"
+                                android:layout_height="fill_parent"
+                                android:layout_width="fill_parent">
+
+                                <TextView
+                                    android:id="@+id/output2"
+                                    android:layout_width="fill_parent"
+                                    android:layout_height="fill_parent"
+                                    android:layout_weight="1.0"
+                                    android:paddingStart="15dp"
+                                    android:paddingTop="5pt"
+                                    android:paddingEnd="15dp"
+                                    android:paddingBottom="5pt"
+                                    android:textColor="@color/txt_main"
+                                    android:textSize="12sp" />
+
+                            </androidx.core.widget.NestedScrollView>
 
                         </RelativeLayout>
 
