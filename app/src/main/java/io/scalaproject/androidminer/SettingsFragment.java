@@ -305,7 +305,7 @@ public class SettingsFragment extends Fragment {
                 if (checked) {
                     MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getActivity(), R.style.MaterialAlertDialogCustom);
                     builder.setTitle("Warning")
-                            .setMessage(Html.fromHtml(getString(R.string.temp_control_warning)))
+                            .setMessage(Html.fromHtml(getString(R.string.warning_temperature_control_prompt)))
                             .setCancelable(false)
                             .setPositiveButton(getString(R.string.yes), null)
                             .setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
@@ -408,6 +408,9 @@ public class SettingsFragment extends Fragment {
             public void onClick(View v) {
                 // inflate the layout of the popup window
                 View popupView = inflater.inflate(R.layout.helper_temperature_control, null);
+                TextView tvHelper = popupView.findViewById(R.id.tvHelperMessage);
+                tvHelper.setText(Html.fromHtml(getString(R.string.warning_temperature_control)));
+
                 Utils.showPopup(v, inflater, popupView);
             }
         });

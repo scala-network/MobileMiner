@@ -280,6 +280,8 @@ public class WizardSettingsActivity extends BaseActivity {
 
         Config.write("init", "1");
 
+        Config.write("hide_setup_wizard", "1");
+
         Intent intent = new Intent(WizardSettingsActivity.this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|
                 Intent.FLAG_ACTIVITY_CLEAR_TASK|

@@ -8,16 +8,23 @@
 
 package io.scalaproject.androidminer;
 
+import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import android.text.Html;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.TextPaint;
 import android.text.method.LinkMovementMethod;
+import android.text.style.ClickableSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -126,6 +133,33 @@ public class AboutFragment extends Fragment {
             }
         });
 
+        String sDisclaimerText = getResources().getString(R.string.disclaimer_agreement);
+        String sDiclaimer = getResources().getString(R.string.disclaimer);
+
+        SpannableString ss = new SpannableString(sDisclaimerText);
+        ClickableSpan clickableSpan = new ClickableSpan() {
+            @Override
+            public void onClick(View textView) {
+                showDisclaimer();
+            }
+
+            @Override
+            public void updateDrawState(TextPaint ds) {
+                super.updateDrawState(ds);
+                ds.setUnderlineText(false);
+            }
+        };
+
+        int iStart = sDisclaimerText.indexOf(sDiclaimer);
+        int iEnd = iStart + sDiclaimer.length();
+        ss.setSpan(clickableSpan, iStart, iEnd, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        TextView tvDisclaimer = view.findViewById(R.id.disclaimer);
+        tvDisclaimer.setText(ss);
+        tvDisclaimer.setMovementMethod(LinkMovementMethod.getInstance());
+        tvDisclaimer.setLinkTextColor(getResources().getColor(R.color.c_blue));
+        tvDisclaimer.setHighlightColor(Color.TRANSPARENT);
+
         return view;
     }
 
@@ -145,5 +179,24 @@ public class AboutFragment extends Fragment {
         sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
 
         startActivity(Intent.createChooser(sharingIntent, getResources().getString(R.string.share_via)));
+    }
+
+    private void showDisclaimer() {
+        final Dialog dialog = new Dialog(getContext());
+        dialog.setContentView(R.layout.disclaimer);
+        dialog.setTitle("Disclaimer");
+        dialog.setCancelable(false);
+
+        Button btnOK = dialog.findViewById(R.id.btnAgree);
+
+        btnOK.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Config.write("disclaimer_agreed", "1");
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
     }
 }

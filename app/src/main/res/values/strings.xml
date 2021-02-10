@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">Scala Miner</string>
     <string name="navigation_drawer_open">Open Navigation Drawer</string>
     <string name="navigation_drawer_close">Close Navigation Drawer</string>
@@ -151,22 +151,28 @@
 
     <string name="donate_help">If you would like to help build this project, feel free to specify a donation level here.\n\nFor example, a value of 5 will make your device mine 5 minutes out of 100 to fund Scala project.\n\nThe default value is 0.</string>
     <string name="mininggoal_help">The mining goal should reflect the pool payout setting, but you can also specify a custom value for your device.\n\nThe default value is the minimum payout value of the specified mining pool.</string>
-    <string name="temp_control_warning"><![CDATA[
+    <string name="warning_temperature_control_prompt"><![CDATA[
         <p>This application implements two layers of protection for your device.</p>
         <p>The first one is the <strong>As-Much-As-You-Can (AMAYC)</strong> machine learning algorithm that can predict when your device will overheat and pause the miner until the device\'s temperature has normalized.</p>
         <p>The second one is a <strong>static temperature monitoring</strong> that will automatically pause the miner if your device reaches one of the maximum temperatures defined in the settings.</p>
-        <strong>Turning this feature off might cause damage to your device. Are you sure you want to conitnue?</strong>
+        <strong>Turning this feature off might cause damage to your device. Are you sure you want to continue?</strong>
     ]]></string>
-    <string name="temp_control_warning_helper">This application implements two layers of protection for your device.\n\nThe first one is the As-Much-As-You-Can (AMAYC) machine learning algorithm that can predict when your device will overheat and pause the miner until the device\'s temperature has normalized.\n\nThe second one is a static temperature monitoring that will automatically pause the miner if your device reaches one of the maximum temperatures defined in the settings.</string>
+    <string name="warning_temperature_control"><![CDATA[
+        <p>This application implements two layers of protection for your device.</p>
+        <p>The first one is the <strong>As-Much-As-You-Can (AMAYC)</strong> machine learning algorithm that can predict when your device will overheat and pause the miner until the device\'s temperature has normalized.</p>
+        <p>The second one is a <strong>static temperature monitoring</strong> that will automatically pause the miner if your device reaches one of the maximum temperatures defined in the settings.</p>
+        <strong>Turning this feature off might cause damage to your device.</strong>
+    ]]></string>
+
     <string name="temp_control_ownrisks">Turning this feature off might cause damage to your device. Do it at your own risk!</string>
     <string name="shares_help">Your mining reward is based on the amount of shares that contributed to the resolution of a block.</string>
     <string name="donation_addresses_help">If you would like to help build this project, you can send BTC, ETH, LTC or XLA to the project\'s wallet. Thanks for your support!</string>
     <string name="pool_options_help">These parameters are optional, you can leave them blank if you don\'t know what they represent.\n\nTo add a static difficulty or a paymentID, specify it in the \'Username parameters\' field. For example, enter \'+500\' to configure a static difficulty of 500.\n\nMake sure you respect the selected pool configuration. The value of this field will be appended as is to the wallet address.</string>
     <string name="hardware_settings_help">Your device will start cooling when the CPU or battery reach the specified temperatures.\n\nThe cooldown threshold defines the temperature at which the application will resume the mining process.</string>
 
-    <string name="loading_pools">Loading pools...</string>
+    <string name="loading_pools" tools:ignore="TypographyEllipsis">Loading pools...</string>
     <string name="aboutapplication">An open-source cryptocurrency miner for Android devices.</string>
-    <string name="disclaimerText">Running your CPU at a high intensity for a prolonged duration may result in negative effects such as: battery drainage, slow response time, overheating, and may cause permanent damage to your device.\n\nWe recommend using the Temperature Settings and a low amount of CPU Cores to prevent your device from being damaged.\n\nBy using this application, you assume full responsibility for any damage that may be caused to your device, property or self.</string>
+    <string name="disclaimerText">Running your CPU at a high intensity for a prolonged duration may result in negative effects such as: battery drainage, slow response time, overheating, and may cause permanent damage to your device.\n\nWe recommend using the Temperature Control settings and a low number of CPU Cores to prevent damage to your device.\n\nBy using this application, you assume full responsibility for any damage that may be caused to your device, property or self.</string>
     <string name="icons_by">Icons by</string>
     <string name="and">and</string>
     <string name="btc">BTC</string>

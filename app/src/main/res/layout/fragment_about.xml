@@ -318,6 +318,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="25dp"
+                    android:layout_marginBottom="35dp"
                     android:orientation="horizontal"
                     android:gravity="center">
 
@@ -345,6 +346,19 @@
                         android:textAllCaps="true"/>
 
                 </LinearLayout>
+
+                <TextView
+                    android:id="@+id/disclaimer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="15dp"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginEnd="15dp"
+                    android:text="@string/disclaimer_agreement"
+                    android:textColor="@color/txt_inactive"
+                    android:textAlignment="center"
+                    android:textSize="14sp" />
 
             </LinearLayout>
 

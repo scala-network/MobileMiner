@@ -47,7 +47,7 @@
                 android:layout_marginRight="15dp"
                 android:layout_marginBottom="15dp"
                 app:backgroundTint="@color/bg_blue"
-                android:text="I understand"
+                android:text="I Agree"
                 android:textSize="14sp"
                 android:textAllCaps="false"
                 android:textColor="@color/txt_button_filled"

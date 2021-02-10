@@ -16,19 +16,20 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="5dip"
             android:gravity="start"
-            android:text="Temperature Control"
-            android:textColor="@color/txt_headline"
+            android:text="@string/warning"
+            android:textColor="@color/c_yellow"
             android:textStyle="bold"
             android:textSize="14sp" />
 
         <TextView
+            android:id="@+id/tvHelperMessage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:layout_marginBottom="10dip"
             android:textColor="@color/txt_main"
             android:textSize="12sp"
-            android:text="@string/temp_control_warning_helper" />
+            android:text="@string/warning_temperature_control" />
 
     </LinearLayout>
 

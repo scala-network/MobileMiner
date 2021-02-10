@@ -18,7 +18,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="5dip"
             android:gravity="start"
-            android:text="@string/hardwaresettings"
+            android:text="@string/temperature_control"
             android:textColor="@color/c_white"
             android:textStyle="bold"
             android:textSize="14sp" />
@@ -26,7 +26,6 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
             android:textSize="12sp"
             android:textColor="@color/c_grey"
             android:text="@string/hardware_settings_help"/>
