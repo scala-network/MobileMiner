@@ -101,7 +101,7 @@ public class StatsFragment extends Fragment {
         tvNetworkBlocks.setText(d.network.lastBlockTime.isEmpty() ? "n/a" : d.network.lastBlockTime);
 
         TextView tvNetworkHeight = view.findViewById(R.id.height);
-        tvNetworkHeight.setText(d.network.lastBlockHeight.isEmpty() ? "n/a" : d.network.lastBlockHeight);
+        tvNetworkHeight.setText(d.network.lastBlockHeight.isEmpty() ? "n/a" : String.format("%,d", Integer.parseInt(d.network.lastBlockHeight)));
 
         TextView tvNetworkRewards = view.findViewById(R.id.rewards);
         tvNetworkRewards.setText(d.network.lastRewardAmount.isEmpty() ? "n/a" : d.network.lastRewardAmount);
@@ -119,16 +119,16 @@ public class StatsFragment extends Fragment {
         tvPoolHashrateUnit.setText(p.length > 1 ? p[1] : "kH/s");
 
         TextView tvPoolMiners = view.findViewById(R.id.miners);
-        tvPoolMiners.setText(d.pool.miners);
+        tvPoolMiners.setText(String.format("%,d", Integer.parseInt(d.pool.miners)));
 
         LinearLayout llPoolBlocks = view.findViewById(R.id.llBlocksPool);
         llPoolBlocks.setVisibility(pi.getPoolType() == 2 || pi.getPoolType() == 0 ? View.GONE : View.VISIBLE);
 
-        TextView tvPoolBlocks = view.findViewById(R.id.lastblockpool);
-        tvPoolBlocks.setText(d.pool.lastBlockTime.isEmpty() ? "n/a" : d.pool.lastBlockTime);
+        TextView tvPoolLastBlock = view.findViewById(R.id.lastblockpool);
+        tvPoolLastBlock.setText(d.pool.lastBlockTime.isEmpty() ? "n/a" : d.pool.lastBlockTime);
 
-        TextView tvPoolLastBlock = view.findViewById(R.id.blockspool);
-        tvPoolLastBlock.setText(d.pool.blocks.isEmpty() ? "n/a" : d.pool.blocks);
+        TextView tvPoolLBlocks = view.findViewById(R.id.blockspool);
+        tvPoolLBlocks.setText(d.pool.blocks.isEmpty() ? "n/a" : String.format("%,d", Integer.parseInt(d.pool.blocks)));
 
         // Address
 
@@ -157,8 +157,11 @@ public class StatsFragment extends Fragment {
         TextView tvAddressLastShare = view.findViewById(R.id.lastshareminer);
         tvAddressLastShare.setText(d.miner.lastShare.isEmpty() ? "n/a" : d.miner.lastShare);
 
+        TextView tvAddressSubmittedHash = view.findViewById(R.id.submittedhash);
+        tvAddressSubmittedHash.setText(pi.getPoolType() == 1 || pi.getPoolType() == 2 ? view.getResources().getString(R.string.submitted_shares) : view.getResources().getString(R.string.submitted_hashes));
+
         TextView tvAddressBlocks = view.findViewById(R.id.blocksminedminer);
-        tvAddressBlocks.setText(d.miner.blocks.isEmpty() ? "n/a" : d.miner.blocks);
+        tvAddressBlocks.setText(d.miner.shares.isEmpty() ? "n/a" : String.format("%,d", Integer.parseInt(d.miner.shares)));
 
         String sBalance = d.miner.balance.replace("XLA", "").trim();
         TextView tvBalance = view.findViewById(R.id.balance);

@@ -33,7 +33,7 @@ public final class ProviderData {
         public String balance = "";
         public String paid = "";
         public String lastShare = "";
-        public String blocks = "";
+        public String shares = "";
         public List<Payment> payments = new ArrayList<>();
     }
 

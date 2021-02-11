@@ -227,4 +227,6 @@
     <string name="temperature_control">Temperature Control</string>
     <string name="community">Community</string>
     <string name="blocks_found">Blocks Found</string>
+    <string name="submitted_hashes">Submitted Hashes</string>
+    <string name="submitted_shares">Submitted Shares</string>
 </resources>

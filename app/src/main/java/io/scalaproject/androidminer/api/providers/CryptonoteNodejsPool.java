@@ -127,7 +127,7 @@ public class CryptonoteNodejsPool extends ProviderAbstract {
             String balance = parseCurrency(joStatsAddressStats.optString("balance", "0"), coin.units, coin.denominationUnit, coin.symbol);
             String paid = parseCurrency(joStatsAddressStats.optString("paid", "0"), coin.units, coin.denominationUnit, coin.symbol);
             String lastShare = pTime.format(new Date(joStatsAddressStats.optLong("lastShare") * 1000));
-            String blocks = String.valueOf(tryParseLong(joStatsAddressStats.optString("blocks"), 0L));
+            String blocks = String.valueOf(tryParseLong(joStatsAddressStats.optString("shares_good"), 0L));
 
             Log.i(LOG_TAG, "hashRate: " + hashRate);
 
@@ -135,7 +135,7 @@ public class CryptonoteNodejsPool extends ProviderAbstract {
             mBlockData.miner.balance = balance;
             mBlockData.miner.paid = paid;
             mBlockData.miner.lastShare = lastShare;
-            mBlockData.miner.blocks = blocks;
+            mBlockData.miner.shares = blocks;
 
             // Payments
             mBlockData.miner.payments.clear();

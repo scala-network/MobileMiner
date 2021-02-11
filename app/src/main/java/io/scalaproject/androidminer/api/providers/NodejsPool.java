@@ -151,7 +151,7 @@ public final class NodejsPool extends ProviderAbstract {
             mBlockData.miner.balance = balance;
             mBlockData.miner.paid = paid;
             mBlockData.miner.lastShare = lastShare;
-            mBlockData.miner.blocks = blocks;
+            mBlockData.miner.shares = blocks;
 
             // Payments
             mBlockData.miner.payments.clear();
