@@ -83,6 +83,15 @@ public class AboutFragment extends Fragment {
             }
         });
 
+        LinearLayout llPrivacyPolicy = view.findViewById(R.id.llPrivacyPolicy);
+        llPrivacyPolicy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Uri uri = Uri.parse(getResources().getString(R.string.privacyPolicyLink));
+                startActivity(new Intent(Intent.ACTION_VIEW, uri));
+            }
+        });
+
         ImageView ivDiscord = view.findViewById(R.id.ivDiscord);
         ivDiscord.setOnClickListener(new View.OnClickListener() {
             @Override

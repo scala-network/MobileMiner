@@ -35,7 +35,6 @@
                     <ImageView
                         android:layout_width="64dp"
                         android:layout_height="64dp"
-                        android:layout_marginStart="7.5dp"
                         android:layout_gravity="center"
                         app:srcCompat="@mipmap/ic_launcher_round" />
 
@@ -259,11 +258,49 @@
                     android:background="@color/txt_inactive"
                     android:visibility="visible"/>
 
+                <LinearLayout
+                    android:id="@+id/llPrivacyPolicy"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:layout_weight="0"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Privacy Policy"
+                        android:textColor="@color/txt_main"
+                        android:textSize="14sp"
+                        android:layout_gravity="center" />
+
+                    <Space
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        tools:ignore="NestedWeights" />
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        app:srcCompat="@drawable/ic_arrow_right" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_width="fill_parent"
+                    android:layout_height="0.7dp"
+                    android:background="@color/txt_inactive"
+                    android:visibility="visible"/>
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
-                    android:text="Community"
+                    android:text="@string/community"
                     android:layout_gravity="start"
                     android:textSize="14sp"
                     android:textColor="@color/txt_headline"

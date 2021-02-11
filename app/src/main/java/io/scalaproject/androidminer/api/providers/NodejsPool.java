@@ -123,6 +123,7 @@ public final class NodejsPool extends ProviderAbstract {
             //mBlockData.pool.lastRewardAmount = parseCurrency(joPoolStats.optString("reward", "0"), mBlockData.coin.units, denominationUnit, mBlockData.coin.symbol);
             mBlockData.pool.hashrate = getReadableHashRateString(tryParseLong(joPoolStats.optString("hashRate"),0L));
             mBlockData.pool.blocks = joPoolStats.optString("totalBlocksFound", "0");
+            mBlockData.pool.miners = joPoolStats.optString("miners", "0");
         } catch (JSONException e) {
             Log.i(LOG_TAG, "POOL\n" + e.toString());
             e.printStackTrace();

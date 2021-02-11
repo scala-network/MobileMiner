@@ -77,7 +77,7 @@ public class CryptonoteNodejsPool extends ProviderAbstract {
 
             JSONObject joStats = new JSONObject(dataStatsNetwork);
             JSONObject joStatsConfig = joStats.getJSONObject("config");
-            //JSONObject joStatsLastBlock = joStats.getJSONObject("lastblock");
+            JSONObject joStatsLastBlock = joStats.has("lastblock") ? joStats.getJSONObject("lastblock") : null;
             JSONObject joStatsNetwork = joStats.getJSONObject("network");
             JSONObject joStatsPool = joStats.getJSONObject("pool");
 
@@ -91,12 +91,18 @@ public class CryptonoteNodejsPool extends ProviderAbstract {
             //mBlockData.pool.lastRewardAmount = parseCurrency(joStatsLastBlock.optString("reward", "0"), mBlockData.coin.units, mBlockData.coin.denominationUnit, mBlockData.coin.symbol);
             mBlockData.pool.hashrate = getReadableHashRateString(tryParseLong(joStatsPool.optString("hashrate"),0L));
             mBlockData.pool.blocks = joStatsPool.optString("roundHashes", "0");
+            mBlockData.pool.miners = joStatsPool.optString("miners", "0");
             mBlockData.pool.minPayout = parseCurrency(joStatsConfig.optString("minPaymentThreshold", "0"), mBlockData.coin.units, mBlockData.coin.denominationUnit, mBlockData.coin.symbol);
 
             mBlockData.network.lastBlockHeight = joStatsNetwork.optString("height");
             mBlockData.network.difficulty = getReadableDifficultyString(joStatsNetwork.optLong("difficulty"));
-            mBlockData.network.lastBlockTime = pTime.format(new Date(joStatsNetwork.optLong("timestamp") * 1000));
-            mBlockData.network.lastRewardAmount = parseCurrency(joStatsNetwork.optString("reward", "0"), mBlockData.coin.units, mBlockData.coin.denominationUnit, mBlockData.coin.symbol);
+
+            long lastBlock = (joStatsLastBlock != null ? joStatsLastBlock.optLong("timestamp") : joStatsNetwork.optLong("timestamp")) * 1000;
+            mBlockData.network.lastBlockTime = pTime.format(new Date(lastBlock));
+
+            String lastReward = joStatsLastBlock != null ? joStatsLastBlock.optString("reward", "0") : joStatsNetwork.optString("reward", "0");
+            mBlockData.network.lastRewardAmount = parseCurrency(lastReward, mBlockData.coin.units, mBlockData.coin.denominationUnit, mBlockData.coin.symbol);
+
             mBlockData.network.hashrate = getReadableHashRateString(joStatsNetwork.optLong("difficulty") / 120L);
         } catch (JSONException e) {
             Log.i(LOG_TAG, "NETWORK\n" + e.toString());

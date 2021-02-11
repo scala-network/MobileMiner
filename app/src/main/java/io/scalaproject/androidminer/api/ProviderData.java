@@ -24,6 +24,7 @@ public final class ProviderData {
         public String hashrate = "";
         public String blocks = "";
         public String minPayout = "";
+        public String miners = "";
         int type = -1;
     }
 

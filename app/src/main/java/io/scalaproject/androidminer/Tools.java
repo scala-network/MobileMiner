@@ -378,7 +378,7 @@ public class Tools {
         double base = tryParseDouble(value);
         double d = base / (float) coinUnits;
 
-        return Math.round(d * (float) denominationUnits) / (float) denominationUnits;
+        return (float) (d * (float) denominationUnits / (float) denominationUnits);
     }
 
     static public Long tryParseLong(String s, Long fallback) {

@@ -93,6 +93,7 @@ public class ScalaPool extends ProviderAbstract {
             mBlockData.pool.lastRewardAmount = parseCurrency(joStatsPoolStats.optString("lastblock_lastReward", "0"), mBlockData.coin.units, mBlockData.coin.denominationUnit, mBlockData.coin.symbol);
             mBlockData.pool.hashrate = getReadableHashRateString(joStatsPool.optLong("hashrate"));
             mBlockData.pool.blocks = joStatsPoolStats.optString("blocksFound", "0");
+            mBlockData.pool.miners = joStatsPool.optString("miners", "0");
             mBlockData.pool.minPayout = parseCurrency(joStatsConfig.optString("minPaymentThreshold", "0"), mBlockData.coin.units, mBlockData.coin.denominationUnit, mBlockData.coin.symbol);
 
             mBlockData.network.lastBlockHeight = joStatsLastBlock.optString("height");
@@ -129,7 +130,7 @@ public class ScalaPool extends ProviderAbstract {
             String balance = parseCurrency(joStatsAddressStats.optString("balance", "0"), coin.units, coin.denominationUnit, coin.symbol);
             String paid = parseCurrency(joStatsAddressStats.optString("paid", "0"), coin.units, coin.denominationUnit, coin.symbol);
             String lastShare = pTime.format(new Date(joStatsAddressStats.optLong("lastShare") * 1000));
-            String blocks = String.valueOf(tryParseLong(joStatsAddressStats.optString("roundHashes"), 0L));
+            String blocks = String.valueOf(tryParseLong(joStatsAddressStats.optString("hashes"), 0L));
 
             Log.i(LOG_TAG, "hashRate: " + hashRate);
 

@@ -63,6 +63,7 @@
     <string name="mininglog">Mining Log</string>
     <string name="value_empty">We need this!</string>
 
+    <string name="privacyPolicyLink">https://scalaproject.io/miner-privacy-policy.html</string>
     <string name="githubLink">https://github.com/scala-network/MobileMiner/releases</string>
     <string name="discordLink">https://discord.gg/djAFVvy</string>
     <string name="mediumLink">https://medium.com/scala-network</string>
@@ -224,4 +225,6 @@
     <string name="temperature_unit">Temperature unit</string>
     <string name="intensity">Intensity</string>
     <string name="temperature_control">Temperature Control</string>
+    <string name="community">Community</string>
+    <string name="blocks_found">Blocks Found</string>
 </resources>

@@ -118,6 +118,12 @@ public class StatsFragment extends Fragment {
         TextView tvPoolHashrateUnit = view.findViewById(R.id.hashratepool_unit);
         tvPoolHashrateUnit.setText(p.length > 1 ? p[1] : "kH/s");
 
+        TextView tvPoolMiners = view.findViewById(R.id.miners);
+        tvPoolMiners.setText(d.pool.miners);
+
+        LinearLayout llPoolBlocks = view.findViewById(R.id.llBlocksPool);
+        llPoolBlocks.setVisibility(pi.getPoolType() == 2 || pi.getPoolType() == 0 ? View.GONE : View.VISIBLE);
+
         TextView tvPoolBlocks = view.findViewById(R.id.lastblockpool);
         tvPoolBlocks.setText(d.pool.lastBlockTime.isEmpty() ? "n/a" : d.pool.lastBlockTime);
 
