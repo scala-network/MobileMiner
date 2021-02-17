@@ -1,4 +1,4 @@
-// Copyright (c) 2020, Scala
+// Copyright (c) 2021 Scala
 //
 // Please see the included LICENSE file for more information.
 
@@ -26,6 +26,16 @@ public class QrCodeScannerActivity extends AppCompatActivity implements BarcodeR
 
     public TextView scanResult;
     BarcodeCapture barcodeCapture;
+    public static final String XLA_SCHEME = "scala:";
+
+    @Override
+    protected void onDestroy() {
+        try{
+            super.onDestroy();
+        } catch (Exception e) {
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,8 +46,12 @@ public class QrCodeScannerActivity extends AppCompatActivity implements BarcodeR
         findViewById(R.id.stop).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                barcodeCapture.stopScanning();
-                finish();
+                try{
+                    barcodeCapture.stopScanning();
+                   finish();
+                } catch (Exception e) {
+
+                }
             }
         });
 
@@ -51,25 +65,37 @@ public class QrCodeScannerActivity extends AppCompatActivity implements BarcodeR
                 .setBarcodeFormat(Barcode.ALL_FORMATS)
                 .setCameraFacing(CameraSource.CAMERA_FACING_BACK)
                 .setShouldShowText(false);
-        barcodeCapture.refresh();
+        try{
+            barcodeCapture.refresh();
+        } catch (Exception e) {
+
+        }
     }
 
     @Override
     public void onRetrieved(final Barcode barcode) {
+
         String miner = barcode.displayValue;
-        scanResult.setText("Scala Address : " + miner);
+        if(miner.startsWith(XLA_SCHEME)) {
+            miner = miner.substring(XLA_SCHEME.length());
+        }
+
+        scanResult.setText("Scala Wallet Address: " + miner);
         if(Utils.verifyAddress(miner)) {
             Log.d("CONSOLE:QRCODE", "Barcode read: " + barcode.displayValue);
 
             Config.write("address", miner);
-            barcodeCapture.stopScanning();
+            try{
+                barcodeCapture.stopScanning();
+                finish();
+            } catch (Exception e) {
 
-            finish();
+            }
 
             return;
         }
 
-        Toast.makeText(MainActivity.contextOfApplication, "Invalid scala address", Toast.LENGTH_SHORT).show();
+        Utils.showToast(MainActivity.contextOfApplication, "Invalid scala address", Toast.LENGTH_SHORT);
     }
 
     @Override

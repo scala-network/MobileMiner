@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/bg_body">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginBottom="15dp"
+        android:paddingBottom="10dp"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:src="@mipmap/ic_launcher" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="7dp"
+            android:text="Donations"
+            android:textSize="14sp"
+            android:textColor="@color/txt_headline"
+            android:textStyle="bold"
+            android:textAllCaps="true"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="7dp"
+            android:text="@string/donation_addresses_help"
+            android:textSize="14sp"
+            android:gravity="center"
+            android:textColor="@color/txt_main"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/btnDonateBTC"
+                    android:layout_width="100dp"
+                    android:layout_height="45dp"
+                    android:layout_marginEnd="5dp"
+                    app:backgroundTint="@color/bg_lighter"
+                    android:insetLeft="2dp"
+                    android:insetRight="2dp"
+                    android:text="@string/btc"
+                    android:textSize="14sp"
+                    android:textColor="@color/txt_button_filled"
+                    app:cornerRadius="5dp"
+                    app:iconPadding="0dp"
+                    app:icon="@drawable/ic_copy"
+                    app:iconTint="@color/btn_icon_default"/>
+
+                <Button
+                    android:id="@+id/btnDonateETH"
+                    android:layout_width="100dp"
+                    android:layout_height="45dp"
+                    app:backgroundTint="@color/bg_lighter"
+                    android:insetLeft="2dp"
+                    android:insetRight="2dp"
+                    android:text="@string/eth"
+                    android:textSize="14sp"
+                    android:textColor="@color/txt_button_filled"
+                    app:cornerRadius="5dp"
+                    app:iconPadding="0dp"
+                    app:icon="@drawable/ic_copy"
+                    app:iconTint="@color/btn_icon_default"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/btnDonateLTC"
+                    android:layout_width="100dp"
+                    android:layout_height="45dp"
+                    android:layout_marginEnd="5dp"
+                    app:backgroundTint="@color/bg_lighter"
+                    android:insetLeft="2dp"
+                    android:insetRight="2dp"
+                    android:text="@string/ltc"
+                    android:textSize="14sp"
+                    android:textColor="@color/txt_button_filled"
+                    app:cornerRadius="5dp"
+                    app:iconPadding="0dp"
+                    app:icon="@drawable/ic_copy"
+                    app:iconTint="@color/btn_icon_default"/>
+
+                <Button
+                    android:id="@+id/btnDonateXLA"
+                    android:layout_width="100dp"
+                    android:layout_height="45dp"
+                    app:backgroundTint="@color/bg_lighter"
+                    android:insetLeft="2dp"
+                    android:insetRight="2dp"
+                    android:text="@string/xla"
+                    android:textSize="14sp"
+                    android:textColor="@color/txt_button_filled"
+                    app:cornerRadius="5dp"
+                    app:iconPadding="0dp"
+                    app:icon="@drawable/ic_copy"
+                    app:iconTint="@color/btn_icon_default"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>

@@ -1,0 +1,10 @@
+<resources>
+
+    <dimen name="logo_width">129dp</dimen>
+
+    <dimen name="header_top_first">12dp</dimen>
+    <dimen name="header_top">16dp</dimen>
+    <dimen name="section_top">24dp</dimen>
+    <dimen name="data_top">8dp</dimen>
+
+</resources>

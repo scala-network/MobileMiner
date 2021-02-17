@@ -4,6 +4,7 @@
     <color name="c_grey">#a5adc2</color>
     <color name="c_light_grey">#c5d0d9</color>
     <color name="c_dark_grey">#86939e</color>
+    <color name="c_darker_grey">#5b6373</color>
     <color name="c_inactive">#888f9e</color>
     <color name="c_blue">#6190ff</color>
     <color name="c_green">#78c2a4</color>

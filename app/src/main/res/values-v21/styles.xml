@@ -6,4 +6,135 @@
         <item name="android:statusBarColor">@android:color/transparent</item>
     </style>
 
+    <style name="AppTheme" parent="Theme.MaterialComponents">
+        <item name="windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+        <item name="android:windowBackground">@android:color/black</item>
+        <item name="android:navigationBarColor">@android:color/black</item>
+
+        <item name="colorPrimaryDark">@android:color/black</item>
+        <item name="colorPrimary">@color/c_blue</item>
+        <item name="colorAccent">@color/c_blue</item>
+
+        <item name="android:textColorPrimary">@color/txt_main</item>
+        <item name="android:textColorSecondary">@color/btn_icon_default</item>
+
+        <item name="actionMenuTextColor">@color/txt_main</item>
+
+        <item name="popupTheme">@style/ActionBarMenuTheme</item>
+
+        <item name="popupMenuStyle">@style/PopupMenuTheme</item>
+        <item name="textAppearanceLargePopupMenu">@style/PopupMenuTextAppearanceLarge</item>
+        <item name="textAppearanceSmallPopupMenu">@style/PopupMenuTextAppearanceSmall</item>
+
+        <item name="android:colorControlActivated">@color/bg_blue</item>
+
+        <item name="android:alertDialogTheme">@style/MaterialAlertDialogCustom</item>
+    </style>
+
+    <style name="ActionBarMenuTheme" parent="Theme.AppCompat.Light">
+        <item name="android:colorBackground">@color/bg_darker</item>
+        <item name="android:textColor">@color/c_white</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="PopupMenuTheme" parent="@android:style/Widget.PopupMenu">
+        <item name="android:popupBackground">@color/bg_darker</item>
+        <item name="android:textColor">@color/c_white</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="PopupMenuTextAppearanceSmall" parent="@android:style/TextAppearance.DeviceDefault.Widget.PopupMenu.Small">
+        <item name="android:textColor">@color/c_white</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="PopupMenuTextAppearanceLarge" parent="@android:style/TextAppearance.DeviceDefault.Widget.PopupMenu.Large">
+        <item name="android:textColor">@color/c_white</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light">
+        <item name="android:colorBackground">@color/bg_lighter</item>
+        <item name="android:textColor">@color/c_grey</item>
+    </style>
+
+    <style name="Toolbar" parent="@android:style/TextAppearance.DeviceDefault.Medium">
+        <item name="android:textColor">?colorPrimary</item>
+        <item name="android:textColorHint">@color/txt_inactive</item>
+    </style>
+
+    <style name="Toolbar.Title">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/txt_headline</item>
+    </style>
+
+    <style name="Toolbar.Subtitle">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/txt_secondary</item>
+    </style>
+
+    <style name="TextErrorStyle" parent="@android:style/TextAppearance">
+        <item name="android:textColor">@color/c_red</item>
+        <item name="android:textSize">11sp</item>
+    </style>
+
+    <style name="SwitchTheme" parent="Theme.AppCompat.Light">
+        <!-- active thumb & track color (30% transparency) -->
+        <item name="colorControlActivated">@color/c_blue</item>
+        <!-- inactive thumb color -->
+        <item name="colorSwitchThumbNormal">@color/c_grey</item>
+        <!-- inactive track color (30% transparency) -->
+        <item name="android:colorForeground">@color/c_grey</item>
+    </style>
+
+    <style name="ScalaText" parent="@android:style/TextAppearance.DeviceDefault.Medium">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">?colorPrimary</item>
+        <item name="android:textColorHint">@color/txt_inactive</item>
+    </style>
+
+    <style name="ScalaEdit" parent="ScalaText">
+        <item name="android:textColor">?colorPrimary</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="MaterialAlertDialogCustom" parent="@style/ThemeOverlay.MaterialComponents.MaterialAlertDialog">
+        <item name="android:background">@color/bg_lighter</item>
+        <item name="shapeAppearanceOverlay">@style/MaterialAlertDialogCustom.Rounded</item>
+        <item name="buttonBarPositiveButtonStyle">@style/MaterialAlertDialogCustom.Button.Positive</item>
+        <item name="buttonBarNegativeButtonStyle">@style/MaterialAlertDialogCustom.Button.Negative</item>
+        <item name="buttonBarNeutralButtonStyle">@style/MaterialAlertDialogCustom.Button.Neutral</item>
+    </style>
+
+    <style name="MaterialAlertDialogCustom.Rounded" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">6dp</item>
+    </style>
+
+    <style name="MaterialAlertDialogCustom.Button.Positive" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
+        <item name="backgroundTint">@color/bg_blue</item>
+        <item name="android:textColor">@color/txt_button_filled</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:layout_marginTop">2dp</item>
+        <item name="android:layout_marginEnd">10dp</item>
+        <item name="android:layout_marginBottom">2dp</item>
+    </style>
+
+    <style name="MaterialAlertDialogCustom.Button.Negative" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
+        <item name="android:textColor">@color/txt_button_filled</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="MaterialAlertDialogCustom.Button.Neutral" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
+        <item name="android:textColor">@color/c_blue</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
 </resources>

@@ -20,7 +20,7 @@
 //
 // Please see the included LICENSE file for more information.
 //
-// Copyright (c) 2020, Scala
+// Copyright (c) 2021 Scala
 //
 // Please see the included LICENSE file for more information.
 
@@ -43,7 +43,6 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.RequestFuture;
 import com.android.volley.toolbox.Volley;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -54,10 +53,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
-import java.net.Inet4Address;
-import java.net.Inet6Address;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.concurrent.ExecutionException;
@@ -354,7 +349,7 @@ public class MiningService extends Service {
 
         } catch (Exception e) {
             Log.e(LOG_TAG, "exception:", e);
-            Toast.makeText(this, e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+            Utils.showToast(this, e.getLocalizedMessage(), Toast.LENGTH_SHORT);
             process = null;
         }
     }
@@ -437,9 +432,10 @@ public class MiningService extends Service {
                     connection = Integer.parseInt(lineCompare.substring(i, imax).trim());;
                 }
 
-            } else if (lineCompare.contains("speed")) {
+            } // For some reason some devices display "miner" instead of "speed"
+            else if (lineCompare.contains("speed")) {
                 String[] split = TextUtils.split(line, " ");
-                String tmpSpeed = split[4];
+                String tmpSpeed = lineCompare.contains("miner") ? split[9] : split[4];
                 if (tmpSpeed.equals("n/a")) {
                     tmpSpeed = split[5];
                     if (tmpSpeed.equals("n/a")) {
@@ -447,13 +443,22 @@ public class MiningService extends Service {
                     }
                 }
 
-                speed = Float.parseFloat(tmpSpeed.trim());
+                try {
+                    speed = Float.parseFloat(tmpSpeed.trim());
+                } catch (NumberFormatException e) {
+                    // Ignore
+                }
 
                 if (lineCompare.contains("max")) {
                     int i = lineCompare.indexOf("max ") + "max ".length();
                     int imax = lineCompare.indexOf(" ", i);
                     String tmpMax = lineCompare.substring(i, imax).trim();
-                    max = Float.parseFloat(tmpMax);
+
+                    try {
+                        max = Float.parseFloat(tmpMax);
+                    } catch (NumberFormatException e) {
+                        // Ignore
+                    }
                 }
             }
 

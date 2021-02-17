@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:background="@color/bg_body">
+
+	<io.scalaproject.androidminer.widgets.Toolbar
+		android:id="@+id/toolbar"
+		android:layout_width="match_parent"
+		android:layout_height="?attr/actionBarSize"
+		android:background="@drawable/backgound_toolbar"
+		android:minHeight="?attr/actionBarSize" />
+
+	<LinearLayout
+		android:id="@+id/llNoPayments"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_gravity="center"
+		android:layout_centerInParent="true"
+		android:orientation="vertical"
+		android:visibility="gone">
+
+		<ImageView
+			android:layout_width="42dp"
+			android:layout_height="42dp"
+			android:layout_gravity="center"
+			android:tint="@color/txt_inactive"
+			app:srcCompat="@drawable/ic_wallet" />
+
+		<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="0dp"
+			android:layout_weight="1"
+			android:layout_margin="8dp"
+			android:layout_gravity="center"
+			android:textColor="@color/txt_inactive"
+			android:textSize="14sp"
+			android:text="@string/no_payments" />
+
+	</LinearLayout>
+
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_marginTop="15dp"
+		android:layout_marginLeft="15dp"
+		android:layout_marginRight="15dp"
+		android:layout_marginBottom="15dp"
+		android:layout_below="@+id/toolbar"
+		android:orientation="vertical">
+
+		<androidx.recyclerview.widget.RecyclerView
+			android:id="@+id/rvPayments"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:clipToPadding="false"
+			app:layoutManager="LinearLayoutManager"
+			tools:listitem="@layout/item_payment"
+			android:visibility="visible"/>
+
+	</LinearLayout>
+
+</RelativeLayout>

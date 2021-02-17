@@ -2,13 +2,16 @@
 //
 // Please see the included LICENSE file for more information.
 //
-// Copyright (c) 2020, Scala
+// Copyright (c) 2021 Scala
 //
 // Please see the included LICENSE file for more information.
 
 package io.scalaproject.androidminer.api.providers;
 
 import android.util.Log;
+
+import com.android.volley.Request;
+import com.android.volley.toolbox.StringRequest;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -17,11 +20,15 @@ import org.ocpsoft.prettytime.PrettyTime;
 
 import java.util.Date;
 
+import io.scalaproject.androidminer.Utils;
+import io.scalaproject.androidminer.PoolActivity;
 import io.scalaproject.androidminer.api.ProviderData;
 import io.scalaproject.androidminer.api.ProviderAbstract;
 import io.scalaproject.androidminer.api.PoolItem;
 import io.scalaproject.androidminer.network.Json;
+import io.scalaproject.androidminer.widgets.PoolInfoAdapter;
 
+import static io.scalaproject.androidminer.Tools.getReadableDifficultyString;
 import static io.scalaproject.androidminer.Tools.getReadableHashRateString;
 import static io.scalaproject.androidminer.Tools.parseCurrency;
 import static io.scalaproject.androidminer.Tools.parseCurrencyFloat;
@@ -33,6 +40,32 @@ public final class NodejsPool extends ProviderAbstract {
         super(poolItem);
     }
 
+    public StringRequest getStringRequest(PoolInfoAdapter poolsAdapter) {
+        String url = mPoolItem.getApiUrl().isEmpty() ?  mPoolItem.getPool() : mPoolItem.getApiUrl();
+        url += "/pool/stats";
+
+        return new StringRequest(Request.Method.GET, url,
+                response -> {
+                    try {
+                        JSONObject obj = new JSONObject(response);
+                        JSONObject objStats = obj.getJSONObject("pool_statistics");
+
+                        // Miners
+                        mPoolItem.setMiners(objStats.getInt("miners"));
+
+                        // Hashrate
+                        mPoolItem.setHr(Utils.convertStringToFloat(objStats.getString("hashRate")) / 1000.0f);
+
+                        mPoolItem.setIsValid(true);
+                    } catch (Exception e) {
+                        mPoolItem.setIsValid(false);
+                    }
+                    finally {
+                        poolsAdapter.dataSetChanged();
+                    }
+                }
+                , PoolActivity::parseVolleyError);
+    }
     @Override
     protected void onBackgroundFetchData() {
         ProviderData mBlockData = getBlockData();
@@ -70,9 +103,10 @@ public final class NodejsPool extends ProviderAbstract {
             JSONObject joNetworkStats = new JSONObject(dataStatsNetwork);
 
             mBlockData.network.lastBlockHeight = joNetworkStats.optString("height");
-            mBlockData.network.difficulty = joNetworkStats.optString("difficulty");
+            mBlockData.network.difficulty = getReadableDifficultyString(joNetworkStats.optLong("difficulty"));
             mBlockData.network.lastBlockTime = pTime.format(new Date(joNetworkStats.optLong("ts") * 1000));
             mBlockData.network.lastRewardAmount =  parseCurrency(joNetworkStats.optString("value", "0"), denominationUnit, denominationUnit, "XLA");
+            mBlockData.network.hashrate = getReadableHashRateString(joNetworkStats.optLong("difficulty") / 120L);
         } catch (JSONException e) {
             Log.i(LOG_TAG, "NETWORK\n" + e.toString());
             e.printStackTrace();
@@ -85,11 +119,11 @@ public final class NodejsPool extends ProviderAbstract {
             JSONObject joPoolStats = new JSONObject(dataStatsPool).getJSONObject("pool_statistics");
 
             mBlockData.pool.lastBlockHeight = joPoolStats.optString("lastBlockFound");
-            //mBlockData.pool.difficulty = getReadableHashRateString(joPoolStats.optLong("totalDiff"));
             mBlockData.pool.lastBlockTime = pTime.format(new Date(joPoolStats.optLong("lastBlockFoundTime") * 1000));
             //mBlockData.pool.lastRewardAmount = parseCurrency(joPoolStats.optString("reward", "0"), mBlockData.coin.units, denominationUnit, mBlockData.coin.symbol);
-            mBlockData.pool.hashrate = String.valueOf(tryParseLong(joPoolStats.optString("hashRate"),0L) / 1000L);
+            mBlockData.pool.hashrate = getReadableHashRateString(tryParseLong(joPoolStats.optString("hashRate"),0L));
             mBlockData.pool.blocks = joPoolStats.optString("totalBlocksFound", "0");
+            mBlockData.pool.miners = joPoolStats.optString("miners", "0");
         } catch (JSONException e) {
             Log.i(LOG_TAG, "POOL\n" + e.toString());
             e.printStackTrace();
@@ -117,9 +151,11 @@ public final class NodejsPool extends ProviderAbstract {
             mBlockData.miner.balance = balance;
             mBlockData.miner.paid = paid;
             mBlockData.miner.lastShare = lastShare;
-            mBlockData.miner.blocks = blocks;
+            mBlockData.miner.shares = blocks;
 
             // Payments
+            mBlockData.miner.payments.clear();
+
             url = mPoolItem.getApiUrl() + "/miner/" + getWalletAddress() +"/payments?page=0&limit=100";
             String dataMinerPayments  = Json.fetch(url);
             JSONArray  joMinerPayments = new JSONArray(dataMinerPayments);
@@ -128,8 +164,12 @@ public final class NodejsPool extends ProviderAbstract {
             for (int i = 0; i < n; ++i) {
                 ProviderData.Payment payment = new ProviderData.Payment();
                 payment.amount = parseCurrencyFloat(joMinerPayments.getJSONObject(i).optString("amount", "0"), denominationUnit, denominationUnit);
-                payment.timestamp = new Date(joMinerPayments.getJSONObject(i).optLong("ts") * 1000);
+                payment.timestamp = pTime.format(new Date(joMinerPayments.getJSONObject(i).optLong("ts") * 1000));
                 mBlockData.miner.payments.add(payment);
+
+                // Max 100 payments
+                if(mBlockData.miner.payments.size() >= 100)
+                    break;
             }
 
         } catch (JSONException e) {

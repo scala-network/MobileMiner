@@ -1,13 +1,15 @@
-// Copyright (c) 2020, Scala
+// Copyright (c) 2021 Scala
 //
 // Please see the included LICENSE file for more information.
 
 package io.scalaproject.androidminer.api;
 
 import android.os.AsyncTask;
-import java.util.Timer;
+
+import com.android.volley.toolbox.StringRequest;
 
 import io.scalaproject.androidminer.Config;
+import io.scalaproject.androidminer.widgets.PoolInfoAdapter;
 
 public abstract class ProviderAbstract extends AsyncTask<Void, Void, Void> {
 
@@ -29,15 +31,19 @@ public abstract class ProviderAbstract extends AsyncTask<Void, Void, Void> {
         return Config.read("address");
     }
 
+    abstract public StringRequest getStringRequest(PoolInfoAdapter poolsAdapter);
+
     @Override
     protected void onPostExecute(Void aVoid) {
         super.onPostExecute(aVoid);
         if(mListener == null) {
             return;
         }
+
         if(!mListener.onEnabledRequest()) {
             return;
         }
+
         mListener.onStatsChange(getBlockData());
     }
 
@@ -48,7 +54,6 @@ public abstract class ProviderAbstract extends AsyncTask<Void, Void, Void> {
         try {
             onBackgroundFetchData();
         } catch (Exception e) {
-
         }
 
         getBlockData().pool.type = mPoolItem.getPoolType();

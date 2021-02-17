@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content"
+	android:orientation="vertical"
+	android:background="@color/bg_body">
+
+	<ImageView
+		android:layout_width="32dp"
+		android:layout_height="32dp"
+		android:layout_marginTop="15dp"
+		android:layout_marginEnd="15dp"
+		android:layout_gravity="center"
+		android:layout_alignParentTop="true"
+		android:layout_alignParentEnd="true"
+		android:onClick="onCloseVault"
+		app:srcCompat="@drawable/ic_close_white_24dp"/>
+
+	<LinearLayout
+		android:orientation="vertical"
+		android:layout_width="wrap_content"
+		android:layout_height="fill_parent"
+		android:layout_marginTop="15dp"
+		android:layout_marginBottom="15dp"
+		android:layout_marginStart="25dp"
+		android:layout_marginEnd="25dp"
+		android:layout_gravity="center">
+
+		<LinearLayout
+		android:id="@+id/llVaultTitle"
+		android:orientation="vertical"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_marginTop="5dp"
+		android:layout_gravity="center">
+
+			<LinearLayout
+				android:orientation="horizontal"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_gravity="center">
+
+				<TextView
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:text="SCALA VAULT"
+					android:gravity="center"
+					android:layout_gravity="center"
+					android:textSize="24sp"
+					android:textStyle="bold"
+					android:textColor="@color/txt_headline"/>
+
+			</LinearLayout>
+
+		<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_gravity="center"
+			android:layout_marginTop="5dp"
+			android:text="A secure and lightweight wallet to store your Scala coins"
+			android:textColor="@color/txt_main"
+			android:textAlignment="center"
+			android:textSize="18sp" />
+
+	</LinearLayout>
+
+		<ImageView
+			android:layout_width="wrap_content"
+			android:layout_height="0dp"
+			android:layout_weight="1"
+			android:layout_marginTop="15dp"
+			android:layout_gravity="center"
+			android:src="@mipmap/vault"/>
+
+		<ImageView
+			android:layout_width="wrap_content"
+			android:layout_height="75dp"
+			android:layout_marginTop="5dp"
+			android:layout_gravity="center"
+			android:onClick="onPlayStore"
+			android:src="@mipmap/en_badge_web_generic"/>
+
+	</LinearLayout>
+
+</RelativeLayout>

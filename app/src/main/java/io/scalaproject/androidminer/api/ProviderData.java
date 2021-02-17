@@ -1,4 +1,4 @@
-// Copyright (c) 2020, Scala
+// Copyright (c) 2021 Scala
 //
 // Please see the included LICENSE file for more information.
 
@@ -19,12 +19,12 @@ public final class ProviderData {
 
     public static class Pool {
         public String lastBlockHeight = "";
-        public String difficulty = "";
         public String lastRewardAmount = "";
         public String lastBlockTime = "";
         public String hashrate = "";
         public String blocks = "";
         public String minPayout = "";
+        public String miners = "";
         int type = -1;
     }
 
@@ -33,7 +33,7 @@ public final class ProviderData {
         public String balance = "";
         public String paid = "";
         public String lastShare = "";
-        public String blocks = "";
+        public String shares = "";
         public List<Payment> payments = new ArrayList<>();
     }
 
@@ -46,13 +46,15 @@ public final class ProviderData {
 
     public static class Payment {
         public float amount;
-        public Date timestamp;
+        public float fee;
+        public String hash;
+        public String timestamp;
     }
 
     final public Network network = new Network();
     final public Pool pool = new Pool();
     final public Coin coin = new Coin();
-    final public Miner miner = new Miner();
+    public Miner miner = new Miner();
 
     public boolean isNew = true;
 }

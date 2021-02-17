@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:background="@color/bg_body">
+
+	<io.scalaproject.androidminer.widgets.Toolbar
+		android:id="@+id/toolbar"
+		android:layout_width="match_parent"
+		android:layout_height="?attr/actionBarSize"
+		android:background="@drawable/backgound_toolbar"
+		android:minHeight="?attr/actionBarSize" />
+
+	<LinearLayout
+		android:id="@+id/llPoolsParent"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_marginTop="15dp"
+		android:layout_marginLeft="15dp"
+		android:layout_marginRight="15dp"
+		android:layout_marginBottom="90dp"
+		android:layout_below="@+id/toolbar"
+		android:orientation="vertical">
+
+		<TextView
+			android:id="@+id/tvSwipe"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_marginBottom="8dp"
+			android:gravity="start"
+			android:text="Pull down to reload and refresh statistics."
+			android:textSize="14sp"
+			android:visibility="visible"/>
+
+		<androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+			android:id="@+id/pullToRefresh"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_below="@+id/tvSwipe">
+
+			<LinearLayout
+				android:id="@+id/llPools"
+				android:layout_width="match_parent"
+				android:layout_height="match_parent"
+				android:orientation="vertical">
+
+				<androidx.recyclerview.widget.RecyclerView
+					android:id="@+id/rvPools"
+					android:layout_width="match_parent"
+					android:layout_height="match_parent"
+					android:clipToPadding="false"
+					app:layoutManager="LinearLayoutManager"
+					tools:listitem="@layout/item_pool" />
+			</LinearLayout>
+		</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+	</LinearLayout>
+
+	<RelativeLayout
+		android:id="@+id/rlSaveSettings"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_alignParentBottom="true"
+		android:visibility="visible">
+
+		<Button
+			android:id="@+id/bSaveSettings"
+			android:layout_width="match_parent"
+			android:layout_height="55dp"
+			android:layout_marginTop="15dp"
+			android:layout_marginLeft="15dp"
+			android:layout_marginRight="15dp"
+			android:layout_marginBottom="15dp"
+			app:backgroundTint="@color/bg_blue"
+			android:text="@string/next"
+			android:onClick="onNext"
+			android:textSize="14sp"
+			android:textAllCaps="false"
+			android:textColor="@color/txt_button_filled"
+			app:cornerRadius="5dp"
+			tools:ignore="TooManyViews,UnusedAttribute" />
+
+	</RelativeLayout>
+
+	<FrameLayout
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignParentEnd="true"
+		android:layout_alignParentBottom="true"
+		android:layout_marginRight="16dp"
+		android:layout_marginBottom="15dp"
+		android:background="@drawable/oval_blue"
+		android:elevation="6dp">
+
+		<com.google.android.material.floatingactionbutton.FloatingActionButton
+			android:id="@+id/fabAddPool"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_gravity="bottom|end"
+			app:backgroundTint="@android:color/transparent"
+			app:backgroundTintMode="src_in"
+			app:tint="@color/btn_icon_default"
+			app:srcCompat="@drawable/ic_add_white_24dp"
+			app:borderWidth="0dp"
+			app:elevation="0dp"
+			app:fabSize="normal"
+			app:pressedTranslationZ="0dp" />
+	</FrameLayout>
+
+</RelativeLayout>

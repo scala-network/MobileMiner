@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/bg_body">
 
     <LinearLayout
@@ -14,336 +15,85 @@
         android:layout_marginBottom="5dp"
         android:orientation="vertical">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="15dp"
-            android:gravity="start"
-            android:text="@string/about"
-            android:textColor="@color/txt_headline"
-            android:textStyle="bold"
-            android:textSize="20sp" />
-
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:scrollbars="none">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/aboutTitle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dp"
-                    android:gravity="start"
-                    android:text="@string/app_name"
-                    android:textColor="@color/txt_secondary"
-                    android:textStyle="bold"
-                    android:textSize="16sp" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dp"
-                    android:gravity="start"
-                    android:text="@string/aboutapplication"
-                    android:textColor="@color/txt_main"
-                    android:textSize="14sp"/>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp"
-                android:gravity="start"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/build"
-                    android:textColor="@color/c_grey"
-                    android:textSize="14sp"/>
-
-                <TextView
-                    android:id="@+id/build"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="3dp"
-                    android:gravity="start"
-                    android:text=""
-                    android:textColor="@color/c_grey"
-                    android:textSize="14sp"/>
-
-            </LinearLayout>
-
-                <Button
-                    android:id="@+id/btnDebugInfo"
-                    android:layout_width="140dp"
-                    android:layout_height="45dp"
-                    android:backgroundTint="@color/bg_lighter"
-                    android:insetLeft="2dp"
-                    android:insetRight="2dp"
-                    android:text="@string/debuginfo"
-                    android:textSize="14sp"
-                    android:textColor="@color/txt_button_filled"
-                    android:textAllCaps="false"
-                    app:cornerRadius="5dp"
-                    app:iconPadding="0dp"
-                    app:icon="@drawable/ic_copy"
-                    app:iconTint="@color/btn_icon_default"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dp"
-                    android:text="@string/credits"
-                    android:layout_gravity="start"
-                    android:textSize="16sp"
-                    android:textColor="@color/txt_secondary"
-                    android:textStyle="bold"
-                    android:layout_marginTop="20sp"/>
-
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="start|center"
+                    android:layout_marginBottom="5dp"
+                    android:padding="10dp"
+                    android:background="@drawable/corner_radius_lighter"
                     android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="start"
-                        android:text="@string/made_with"
-                        android:textColor="@color/txt_main"
-                        android:textSize="14sp"/>
 
                     <ImageView
-                        android:layout_width="16dp"
-                        android:layout_height="16dp"
-                        android:layout_marginStart="3dp"
-                        android:layout_marginEnd="3dp"
-                        app:srcCompat="@drawable/ic_heart" />
+                        android:layout_width="64dp"
+                        android:layout_height="64dp"
+                        android:layout_gravity="center"
+                        app:srcCompat="@mipmap/ic_launcher_round" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="start"
-                        android:text="@string/by"
-                        android:textColor="@color/txt_main"
-                        android:textSize="14sp"/>
-
-                    <TextView
-                        android:id="@+id/ScalaURL"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="3dp"
-                        android:gravity="start"
-                        android:text=""
-                        android:textColor="@color/c_blue"
-                        android:textColorLink="@color/c_blue"
-                        android:textSize="14sp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="start"
-                        android:text="."
-                        android:textColor="@color/txt_main"
-                        android:textSize="14sp"/>
-
-                </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="start|center"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="start"
-                    android:text="@string/forked_from"
-                    android:textColor="@color/txt_main"
-                    android:textSize="14sp"/>
-
-                <TextView
-                    android:id="@+id/Mine2getherURL"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="3dp"
-                    android:gravity="start"
-                    android:text=""
-                    android:textColor="@color/c_blue"
-                    android:textColorLink="@color/c_blue"
-                    android:textSize="14sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="3dp"
-                    android:layout_marginEnd="3dp"
-                    android:gravity="start"
-                    android:text="@string/and"
-                    android:textColor="@color/txt_main"
-                    android:textSize="14sp"/>
-
-                <TextView
-                    android:id="@+id/MoneroMinerURL"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="start"
-                    android:text=""
-                    android:textColor="@color/c_blue"
-                    android:textColorLink="@color/c_blue"
-                    android:textSize="14sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="start"
-                    android:text="."
-                    android:textColor="@color/txt_main"
-                    android:textSize="14sp"/>
-
-            </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="start|center"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="3dp"
-                        android:gravity="start"
-                        android:text="@string/icons_by"
-                        android:textColor="@color/txt_main"
-                        android:textSize="14sp"/>
-
-                    <TextView
-                        android:id="@+id/MaterialDesignURL"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="start"
-                        android:text=""
-                        android:textColor="@color/c_blue"
-                        android:textColorLink="@color/c_blue"
-                        android:textSize="14sp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="3dp"
-                        android:layout_marginEnd="3dp"
-                        android:gravity="start"
-                        android:text="@string/and"
-                        android:textColor="@color/txt_main"
-                        android:textSize="14sp"/>
-
-                    <TextView
-                        android:id="@+id/FontAwesomeURL"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="start"
-                        android:text=""
-                        android:textColor="@color/c_blue"
-                        android:textColorLink="@color/c_blue"
-                        android:textSize="14sp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="start"
-                        android:text="."
-                        android:textColor="@color/txt_main"
-                        android:textSize="14sp"/>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginBottom="5dp"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:text="@string/donationadresses"
-                        android:textSize="16sp"
-                        android:textColor="@color/txt_secondary"
-                        android:textStyle="bold"/>
+                        android:layout_marginStart="10dp"
+                        android:orientation="vertical">
 
-                    <Button
-                        android:id="@+id/btnDonationsHelp"
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:backgroundTint="@android:color/transparent"
-                        app:cornerRadius="5dp"
-                        app:icon="@drawable/ic_help"
-                        app:iconGravity="textStart"
-                        app:iconPadding="0dp"
-                        app:iconTint="@color/c_grey" />
+                    <TextView
+                        android:id="@+id/aboutTitle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:gravity="start"
+                        android:text="@string/app_name"
+                        android:textColor="@color/txt_headline"
+                        android:textStyle="bold"
+                        android:textAllCaps="true"
+                        android:textSize="14sp" />
 
-                </LinearLayout>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:gravity="start"
+                        android:text="@string/aboutapplication"
+                        android:textColor="@color/txt_main"
+                        android:textSize="14sp"/>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="5dp"
+                            android:gravity="start"
+                            android:orientation="horizontal">
 
-                    <Button
-                        android:id="@+id/btnDonateBTC"
-                        android:layout_width="100dp"
-                        android:layout_height="45dp"
-                        android:backgroundTint="@color/bg_lighter"
-                        android:insetLeft="2dp"
-                        android:insetRight="2dp"
-                        android:text="@string/btc"
-                        android:textSize="14sp"
-                        android:textColor="@color/txt_button_filled"
-                        app:cornerRadius="5dp"
-                        app:iconPadding="0dp"
-                        app:icon="@drawable/ic_copy"
-                        app:iconTint="@color/btn_icon_default"/>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/build"
+                                android:textColor="@color/txt_headline"
+                                android:textSize="14sp"/>
 
-                    <Button
-                        android:id="@+id/btnDonateETH"
-                        android:layout_width="100dp"
-                        android:layout_height="45dp"
-                        android:backgroundTint="@color/bg_lighter"
-                        android:insetLeft="2dp"
-                        android:insetRight="2dp"
-                        android:text="@string/eth"
-                        android:textSize="14sp"
-                        android:textColor="@color/txt_button_filled"
-                        app:cornerRadius="5dp"
-                        app:iconPadding="0dp"
-                        app:icon="@drawable/ic_copy"
-                        app:iconTint="@color/btn_icon_default"/>
+                            <TextView
+                                android:id="@+id/build"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="3dp"
+                                android:gravity="start"
+                                android:text=""
+                                android:textColor="@color/txt_headline"
+                                android:textSize="14sp"/>
 
-                    <Button
-                        android:id="@+id/btnDonateXLA"
-                        android:layout_width="100dp"
-                        android:layout_height="45dp"
-                        android:backgroundTint="@color/bg_lighter"
-                        android:insetLeft="2dp"
-                        android:insetRight="2dp"
-                        android:text="@string/xla"
-                        android:textSize="14sp"
-                        android:textColor="@color/txt_button_filled"
-                        app:cornerRadius="5dp"
-                        app:iconPadding="0dp"
-                        app:icon="@drawable/ic_copy"
-                        app:iconTint="@color/btn_icon_default"/>
+                        </LinearLayout>
+
+                    </LinearLayout>
 
                 </LinearLayout>
 
@@ -351,84 +101,302 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="5dp"
-                    android:text="@string/followus"
+                    android:text="About"
                     android:layout_gravity="start"
-                    android:textSize="16sp"
-                    android:textColor="@color/txt_secondary"
+                    android:textSize="14sp"
+                    android:textColor="@color/txt_headline"
                     android:textStyle="bold"
-                    android:layout_marginTop="20sp"/>
+                    android:textAllCaps="true"
+                    android:layout_marginTop="25dp"/>
+
+                <LinearLayout
+                    android:id="@+id/llSupport"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:layout_weight="0"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Support"
+                        android:layout_gravity="center"
+                        android:textColor="@color/txt_main"
+                        android:textSize="14sp" />
+
+                    <Space
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        tools:ignore="NestedWeights" />
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        app:srcCompat="@drawable/ic_arrow_right" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_width="fill_parent"
+                    android:layout_height="0.7dp"
+                    android:background="@color/txt_inactive"/>
+
+                <LinearLayout
+                    android:id="@+id/llCredits"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:layout_weight="0"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/credits"
+                        android:textColor="@color/txt_main"
+                        android:layout_gravity="center"
+                        android:textSize="14sp" />
+
+                    <Space
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        tools:ignore="NestedWeights" />
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        app:srcCompat="@drawable/ic_arrow_right" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_width="fill_parent"
+                    android:layout_height="0.7dp"
+                    android:background="@color/txt_inactive"/>
+
+                <LinearLayout
+                    android:id="@+id/llShare"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:layout_weight="0"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Share this app"
+                        android:textColor="@color/txt_main"
+                        android:textSize="14sp"
+                        android:layout_gravity="center"/>
+
+                    <Space
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        tools:ignore="NestedWeights" />
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        app:srcCompat="@drawable/ic_arrow_right" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_width="fill_parent"
+                    android:layout_height="0.7dp"
+                    android:background="@color/txt_inactive"
+                    android:visibility="visible"/>
+
+                <LinearLayout
+                    android:id="@+id/llDonations"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:layout_weight="0"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Donations"
+                        android:textColor="@color/txt_main"
+                        android:textSize="14sp"
+                        android:layout_gravity="center" />
+
+                    <Space
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        tools:ignore="NestedWeights" />
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        app:srcCompat="@drawable/ic_arrow_right" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_width="fill_parent"
+                    android:layout_height="0.7dp"
+                    android:background="@color/txt_inactive"
+                    android:visibility="visible"/>
+
+                <LinearLayout
+                    android:id="@+id/llPrivacyPolicy"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:layout_weight="0"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Privacy Policy"
+                        android:textColor="@color/txt_main"
+                        android:textSize="14sp"
+                        android:layout_gravity="center" />
+
+                    <Space
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        tools:ignore="NestedWeights" />
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        app:srcCompat="@drawable/ic_arrow_right" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_width="fill_parent"
+                    android:layout_height="0.7dp"
+                    android:background="@color/txt_inactive"
+                    android:visibility="visible"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:text="@string/community"
+                    android:layout_gravity="start"
+                    android:textSize="14sp"
+                    android:textColor="@color/txt_headline"
+                    android:textStyle="bold"
+                    android:textAllCaps="true"
+                    android:layout_marginTop="25dp"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:layout_marginTop="6dp"
+                    android:orientation="horizontal"
+                    android:gravity="center">
 
-                    <Button
-                        android:id="@+id/btnGitHub"
-                        android:layout_width="45dp"
-                        android:layout_height="45dp"
-                        android:backgroundTint="@color/bg_lighter"
-                        android:insetLeft="2dp"
-                        android:insetRight="2dp"
-                        app:iconGravity="textStart"
-                        app:cornerRadius="5dp"
-                        app:iconPadding="0dp"
-                        app:icon="@drawable/ic_github"
-                        app:iconTint="@color/btn_icon_default"/>
+                    <ImageView
+                        android:id="@+id/ivDiscord"
+                        android:layout_width="42dp"
+                        android:layout_height="42dp"
+                        android:layout_marginEnd="15dp"
+                        app:srcCompat="@drawable/ic_discord1" />
 
-                    <Button
-                        android:id="@+id/btnDiscord"
-                        android:layout_width="45dp"
-                        android:layout_height="45dp"
-                        android:backgroundTint="@color/bg_lighter"
-                        android:insetLeft="2dp"
-                        android:insetRight="2dp"
-                        app:cornerRadius="5dp"
-                        app:icon="@drawable/ic_discord"
-                        app:iconGravity="textStart"
-                        app:iconPadding="0dp"
-                        app:iconTint="@color/btn_icon_default"/>
+                    <ImageView
+                        android:id="@+id/ivTelegram"
+                        android:layout_width="42dp"
+                        android:layout_height="42dp"
+                        android:layout_marginEnd="15dp"
+                        app:srcCompat="@drawable/ic_telegram1" />
 
-                    <Button
-                        android:id="@+id/btnMedium"
-                        android:layout_width="45dp"
-                        android:layout_height="45dp"
-                        android:backgroundTint="@color/bg_lighter"
-                        android:insetLeft="2dp"
-                        android:insetRight="2dp"
-                        app:iconGravity="textStart"
-                        app:cornerRadius="5dp"
-                        app:iconPadding="0dp"
-                        app:icon="@drawable/ic_medium"
-                        app:iconTint="@color/btn_icon_default"/>
+                    <ImageView
+                        android:id="@+id/ivMedium"
+                        android:layout_width="42dp"
+                        android:layout_height="42dp"
+                        android:layout_marginEnd="15dp"
+                        app:srcCompat="@drawable/ic_medium1" />
 
-                    <Button
-                        android:id="@+id/btnTwitter"
-                        android:layout_width="45dp"
-                        android:layout_height="45dp"
-                        android:backgroundTint="@color/bg_lighter"
-                        android:insetLeft="2dp"
-                        android:insetRight="2dp"
-                        app:iconGravity="textStart"
-                        app:cornerRadius="5dp"
-                        app:iconPadding="0dp"
-                        app:icon="@drawable/ic_twitter"
-                        app:iconTint="@color/btn_icon_default"/>
+                    <ImageView
+                        android:id="@+id/ivTwitter"
+                        android:layout_width="42dp"
+                        android:layout_height="42dp"
+                        android:layout_marginEnd="15dp"
+                        app:srcCompat="@drawable/ic_twitter1" />
 
-                    <Button
-                        android:id="@+id/btnTelegram"
-                        android:layout_width="45dp"
-                        android:layout_height="45dp"
-                        android:backgroundTint="@color/bg_lighter"
-                        android:insetLeft="2dp"
-                        android:insetRight="2dp"
-                        app:iconGravity="textStart"
-                        app:cornerRadius="5dp"
-                        app:iconPadding="0dp"
-                        app:icon="@drawable/ic_telegram"
-                        app:iconTint="@color/btn_icon_default"/>
+                    <ImageView
+                        android:id="@+id/ivReddit"
+                        android:layout_width="42dp"
+                        android:layout_height="42dp"
+                        app:srcCompat="@drawable/ic_reddit1" />
 
                 </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="25dp"
+                    android:layout_marginBottom="35dp"
+                    android:orientation="horizontal"
+                    android:gravity="center">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/powered_by"
+                        android:layout_gravity="center"
+                        android:textSize="16sp"
+                        android:textColor="@color/txt_main"
+                        android:textStyle="normal"
+                        android:textAllCaps="true"/>
+
+                    <TextView
+                        android:id="@+id/tvScala"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:text="@string/scala"
+                        android:gravity="center"
+                        android:layout_gravity="center"
+                        android:textSize="16sp"
+                        android:textColor="@color/c_blue"
+                        android:textStyle="bold"
+                        android:textAllCaps="true"/>
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/disclaimer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="15dp"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginEnd="15dp"
+                    android:text="@string/disclaimer_agreement"
+                    android:textColor="@color/txt_inactive"
+                    android:textAlignment="center"
+                    android:textSize="14sp" />
 
             </LinearLayout>
 

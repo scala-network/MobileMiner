@@ -1,4 +1,4 @@
-// Copyright (c) 2020, Scala
+// Copyright (c) 2021 Scala
 //
 // Please see the included LICENSE file for more information.
 
@@ -9,7 +9,7 @@ import java.util.TimerTask;
 
 import io.scalaproject.androidminer.Config;
 
-public class ProviderRequest{
+public class ProviderRequest {
 
     protected PoolItem mPoolItem;
 
@@ -19,6 +19,7 @@ public class ProviderRequest{
         if(mListener == listener) {
             return this;
         }
+
         mListener = listener;
 
         PoolItem pi = ProviderManager.getSelectedPool();
@@ -29,7 +30,7 @@ public class ProviderRequest{
         return this;
     }
 
-    public class ProviderTask extends TimerTask{
+    public class ProviderTask extends TimerTask {
 
         private ProviderAbstract mProvider;
 
@@ -38,7 +39,7 @@ public class ProviderRequest{
         }
 
         @Override
-        public void run(){
+        public void run() {
             mProvider.execute();
             repeat();
         }
@@ -56,10 +57,24 @@ public class ProviderRequest{
         }
     }
 
+    public void execute() {
+        start();
+        repeat();
+    }
+
+    public void run() {
+        if(current == null) {
+            return;
+        }
+
+        current.run();
+    }
+
     public void start() {
         if(current != null || mPoolItem == null) {
             return;
         }
+
         ProviderAbstract pa = mPoolItem.getInterface();
         pa.mListener = mListener;
         current = new ProviderTask(pa);

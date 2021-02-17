@@ -1,4 +1,4 @@
-// Copyright (c) 2020, Scala
+// Copyright (c) 2021 Scala
 //
 // Please see the included LICENSE file for more information.
 
@@ -31,7 +31,6 @@ public class Json {
 
         StringBuilder data = new StringBuilder();
         try {
-
             URL urlFetch = new URL(url);
             HttpURLConnection httpURLConnection = (HttpURLConnection) urlFetch.openConnection();
             InputStream inputStream = httpURLConnection.getInputStream();

@@ -20,7 +20,7 @@
 //
 // Please see the included LICENSE file for more information.
 //
-// Copyright (c) 2020, Scala
+// Copyright (c) 2021 Scala
 //
 // Please see the included LICENSE file for more information.
 
@@ -28,14 +28,11 @@ package io.scalaproject.androidminer;
 
 import android.content.Context;
 import android.os.Build;
-import android.os.StrictMode;
 import android.text.TextUtils;
 import android.util.Log;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
@@ -54,6 +51,8 @@ import java.util.Objects;
 public class Tools {
 
     private static final String LOG_TAG = "MiningSvc";
+
+    public static final int TOAST_YOFFSET_BOTTOM = 5;
 
     static String loadConfigTemplate(Context context, String path) {
         try {
@@ -265,7 +264,7 @@ public class Tools {
         return output;
     }
 
-    static String getABI() {
+    public static String getABI() {
         String abiString;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             abiString = Build.SUPPORTED_ABIS[0];
@@ -379,7 +378,7 @@ public class Tools {
         double base = tryParseDouble(value);
         double d = base / (float) coinUnits;
 
-        return Math.round(d * (float) denominationUnits) / (float) denominationUnits;
+        return (float) (d * (float) denominationUnits / (float) denominationUnits);
     }
 
     static public Long tryParseLong(String s, Long fallback) {
@@ -398,12 +397,36 @@ public class Tools {
         }
     }
 
+    static public String getReadableDifficultyString(long difficulty) {
+        BigDecimal bn = new BigDecimal(difficulty);
+        BigDecimal bnThousand = new BigDecimal(1000);
+
+        int i = 0;
+        String[] byteUnits = {"", "k", "M", "G", "T", "P"};
+
+        while (bn.compareTo(bnThousand) > 0) {
+            bn = bn.divide(bnThousand);
+            i++;
+        }
+
+        DecimalFormat decimalFormat = new DecimalFormat("0.##");
+
+        return decimalFormat.format(bn) + ' ' + byteUnits[i];
+    }
+
+    static public String getLongValueString(double value) {
+        NumberFormat nf = NumberFormat.getInstance();
+        nf.setMinimumFractionDigits(2);
+
+        return nf.format(value);
+    }
+
     static public String getReadableHashRateString(long hashrate) {
         BigDecimal bn = new BigDecimal(hashrate);
         BigDecimal bnThousand = new BigDecimal(1000);
 
         int i = 0;
-        String[] byteUnits = {"H", "KH", "MH", "GH", "TH", "PH"};
+        String[] byteUnits = {"H/s", "kH/s", "MH/s", "GH/s", "TH/s", "PH/s"};
 
         while (bn.compareTo(bnThousand) > 0) {
             bn = bn.divide(bnThousand);

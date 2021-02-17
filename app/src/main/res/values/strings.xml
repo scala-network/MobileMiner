@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">Scala Miner</string>
     <string name="navigation_drawer_open">Open Navigation Drawer</string>
     <string name="navigation_drawer_close">Close Navigation Drawer</string>
@@ -43,15 +43,15 @@
     <string name="checkstatsonline">View statistics online</string>
     <string name="lastshare">Last Share</string>
     <string name="sharesubmitted">Submitted Shares</string>
-    <string name="blockheight">Block Height</string>
-    <string name="blockreward">Block Reward</string>
+    <string name="blockheight">Blockchain Height</string>
+    <string name="blockreward">Last Reward</string>
     <string name="totalhashrate">Total Hashrate</string>
     <string name="emptyaddress">Wallet address is empty.</string>
     <string name="startminingstats">Start mining to view statisticss</string>
     <string name="notavailablecustompool">Statistics are not available for custom pools</string>
     <string name="address">Address</string>
     <string name="balance">Balance</string>
-    <string name="paid">Paid</string>
+    <string name="paid">Total Paid</string>
     <string name="total">Total:</string>
     <string name="na">n/a</string>
     <string name="options">Options</string>
@@ -61,12 +61,17 @@
     <string name="miningstatus">Mining Status</string>
     <string name="startmining">I am ready!</string>
     <string name="mininglog">Mining Log</string>
+    <string name="value_empty">We need this!</string>
 
+    <string name="privacyPolicyLink">https://scalaproject.io/miner-privacy-policy.html</string>
     <string name="githubLink">https://github.com/scala-network/MobileMiner/releases</string>
     <string name="discordLink">https://discord.gg/djAFVvy</string>
     <string name="mediumLink">https://medium.com/scala-network</string>
     <string name="twitterLink">https://twitter.com/scalahq</string>
     <string name="telegramLink">https://t.me/scalaofficial</string>
+    <string name="redditLink">https://www.reddit.com/r/ScalaNetwork</string>
+    <string name="emailLink">mailto:hello@scalaproject.io</string>
+    <string name="ScalaLinkClean">https://scalaproject.io</string>
     <string name="ScalaLink">&lt;a href=&quot;https://scalaproject.io&quot;&gt;Scala&lt;/a&gt;</string>
     <string name="Mine2getherLink">&lt;a href=&quot;https://github.com/Mine2Gether/m2g_android_miner&quot;&gt;Mine2gether&lt;/a&gt;</string>
     <string name="MoneroMinerLink">&lt;a href=&quot;https://github.com/upost/MoneroMiner&quot;&gt;MoneroMiner&lt;/a&gt;</string>
@@ -87,10 +92,10 @@
     <string name="degreecelsius">°C</string>
     <string name="pauseminingonbattery">Pause mining on battery power</string>
     <string name="keepscreenonwhenmining">Keep screen ON when mining</string>
-    <string name="turnoffamayccontrol">Disable temperature control</string>
+    <string name="turnoffamayccontrol">Disable Temperature Control</string>
     <string name="warning">Warning!</string>
     <string name="allworkers">All workers:</string>
-    <string name="amaycpaused">Cannot resume mining when device is cooling</string>
+    <string name="amaycpaused">Cannot resume mining when device is cooling.</string>
     <string name="amaycerror">AMAYC: Cannot reach distant server.</string>
     <string name="miningpaused">Mining paused until temperatures return to safe levels.</string>
     <string name="miningbackground">Scala Miner is still mining in the background.</string>
@@ -98,11 +103,12 @@
     <string name="donationadresses">Donations</string>
     <string name="donationadressbtc_copied">BTC Donation Address copied.</string>
     <string name="donationadresseth_copied">ETH Donation Address copied.</string>
+    <string name="donationadressltc_copied">LTC Donation Address copied.</string>
     <string name="donationadressxla_copied">XLA Donation Address copied.</string>
     <string name="statictempcontrol">Switched to static temperature control.</string>
-    <string name="debuginfo">Debug Info</string>
+    <string name="debuginfo">Copy Debug Info</string>
     <string name="debuginfo_copied">Debug Information copied.</string>
-    <string name="pooloptions">Optional</string>
+    <string name="pooloptions">Options</string>
     <string name="usernameparametershint">Username parameters</string>
     <string name="workernamehint">Worker name or password</string>
     <string name="landingpage_headline">Start mining on your mobile device safely and efficiently</string>
@@ -121,7 +127,7 @@
     <string name="next">Next</string>
     <string name="walletaddress2">Wallet Address</string>
     <string name="paste">Paste</string>
-    <string name="selectminingpool">Select Mining Pool</string>
+    <string name="selectminingpool">Mining Pool</string>
     <string name="specifywalletaddress">Your Wallet Address</string>
     <string name="supportproject">Support us</string>
     <string name="enteraddress">Enter your wallet address</string>
@@ -135,20 +141,39 @@
     <string name="minetoscala">The Scala donation address will then be used for mining.</string>
     <string name="sure">Sure!</string>
     <string name="nothanks">Nope.</string>
-    <string name="stopmining">Do you want to restart mining?</string>
-    <string name="newparametersapplied">The mining process must be restarted in order for the new parameters to be applied.</string>
+    <string name="stopmining">Do you want to stop mining?</string>
+    <string name="restartmining">Do you want to restart mining?</string>
+    <string name="closeApp">If you close the app, the mining process will be stopped.</string>
+    <string name="newparametersapplied">You will have to restart the mining process in order for the new parameters to be applied.</string>
+    <string name="hashrate_share">Take a look at my Scala Mobile Miner stats! I\'m currently mining on my Android device. Download the app to start mining on your phone: https://mobileminer.scalaproject.io/</string>
+    <string name="app_share">"Did you know you can mine cryptocurrencies on any Android device? Download the app to start mining on your phone: https://mobileminer.scalaproject.io/</string>
+    <string name="share_title">Scala Mobile Miner</string>
+    <string name="share_via">Share via</string>
 
     <string name="donate_help">If you would like to help build this project, feel free to specify a donation level here.\n\nFor example, a value of 5 will make your device mine 5 minutes out of 100 to fund Scala project.\n\nThe default value is 0.</string>
     <string name="mininggoal_help">The mining goal should reflect the pool payout setting, but you can also specify a custom value for your device.\n\nThe default value is the minimum payout value of the specified mining pool.</string>
-    <string name="temp_control_warning">This application implements two layers of protection for your device.\n\nThe first one is the As-Much-As-You-Can (AMAYC) machine learning algorithm that can predict when your device will overheat and pause the miner until the device\'s temperature has normalized.\n\nThe second one is a static temperature monitoring that will automatically pause the miner if your device reaches one of the maximum temperatures defined in the settings.</string>
+    <string name="warning_temperature_control_prompt"><![CDATA[
+        <p>This application implements two layers of protection for your device.</p>
+        <p>The first one is the <strong>As-Much-As-You-Can (AMAYC)</strong> machine learning algorithm that can predict when your device will overheat and pause the miner until the device\'s temperature has normalized.</p>
+        <p>The second one is a <strong>static temperature monitoring</strong> that will automatically pause the miner if your device reaches one of the maximum temperatures defined in the settings.</p>
+        <strong>Turning this feature off might cause damage to your device. Are you sure you want to continue?</strong>
+    ]]></string>
+    <string name="warning_temperature_control"><![CDATA[
+        <p>This application implements two layers of protection for your device.</p>
+        <p>The first one is the <strong>As-Much-As-You-Can (AMAYC)</strong> machine learning algorithm that can predict when your device will overheat and pause the miner until the device\'s temperature has normalized.</p>
+        <p>The second one is a <strong>static temperature monitoring</strong> that will automatically pause the miner if your device reaches one of the maximum temperatures defined in the settings.</p>
+        <strong>Turning this feature off might cause damage to your device.</strong>
+    ]]></string>
+
     <string name="temp_control_ownrisks">Turning this feature off might cause damage to your device. Do it at your own risk!</string>
     <string name="shares_help">Your mining reward is based on the amount of shares that contributed to the resolution of a block.</string>
-    <string name="donation_addresses_help">If you would like to help build this project, you can send BTC, ETH or XLA to the project\'s wallet.\n\nDonations support the contributors and help the team pay for the project expenses. Thanks for your support!</string>
+    <string name="donation_addresses_help">If you would like to help build this project, you can send BTC, ETH, LTC or XLA to the project\'s wallet. Thanks for your support!</string>
     <string name="pool_options_help">These parameters are optional, you can leave them blank if you don\'t know what they represent.\n\nTo add a static difficulty or a paymentID, specify it in the \'Username parameters\' field. For example, enter \'+500\' to configure a static difficulty of 500.\n\nMake sure you respect the selected pool configuration. The value of this field will be appended as is to the wallet address.</string>
     <string name="hardware_settings_help">Your device will start cooling when the CPU or battery reach the specified temperatures.\n\nThe cooldown threshold defines the temperature at which the application will resume the mining process.</string>
 
+    <string name="loading_pools" tools:ignore="TypographyEllipsis">Loading pools...</string>
     <string name="aboutapplication">An open-source cryptocurrency miner for Android devices.</string>
-    <string name="disclaimerText">Running your CPU at a high intensity for a prolonged duration may result in negative effects such as: battery drainage, slow response time, overheating, and may cause permanent damage to your device.\n\nWe recommend using the Temperature Settings and a low amount of CPU Cores to prevent your device from being damaged.\n\nBy using this application, you assume full responsibility for any damage that may be caused to your device, property or self.</string>
+    <string name="disclaimerText">Running your CPU at a high intensity for a prolonged duration may result in negative effects such as: battery drainage, slow response time, overheating, and may cause permanent damage to your device.\n\nWe recommend using the Temperature Control settings and a low number of CPU Cores to prevent damage to your device.\n\nBy using this application, you assume full responsibility for any damage that may be caused to your device, property or self.</string>
     <string name="icons_by">Icons by</string>
     <string name="and">and</string>
     <string name="btc">BTC</string>
@@ -181,4 +206,30 @@
     <string name="yes">Yes</string>
     <string name="avg">AVG</string>
     <string name="resume">Resume</string>
+    <string name="no_activity">No activity.</string>
+    <string name="mh_s">MH/s</string>
+    <string name="ltc">LTC</string>
+    <string name="powered_by">POWERED BY</string>
+    <string name="scala">Scala</string>
+    <string name="no_payments">No payments.</string>
+    <string name="notice_no_wallet">No wallet address? Click here to create one.</string>
+    <string name="save_settings_first">Save settings to start mining.</string>
+    <string name="no_wallet_defined">No wallet address defined.</string>
+    <string name="invalid_address">Invalid wallet address provided.</string>
+    <string name="no_pool">No pool defined.</string>
+    <string name="no_pool_url">No pool URL defined.</string>
+    <string name="no_pool_port">No pool port defined.</string>
+    <string name="warning_cpu_temp_sensor">Your device does not have a sensor to read the processor temperature, or it is impossible to retrieve it. You should mine with caution and monitor your device to check if it\'s overheating.</string>
+    <string name="warning_battery_temp_sensor">Your device does not have a sensor to read the battery temperature, or it is impossible to retrieve it. You should mine with caution and monitor your device to check if it\'s overheating.</string>
+    <string name="fahrenheit">°F</string>
+    <string name="temperature_unit">Temperature Unit</string>
+    <string name="intensity">Intensity</string>
+    <string name="temperature_control">Temperature Control</string>
+    <string name="community">Community</string>
+    <string name="blocks_found">Blocks Found</string>
+    <string name="submitted_hashes">Submitted Hashes</string>
+    <string name="submitted_shares">Submitted Shares</string>
+    <string name="hashrate_refresh_delay_seconds">Hashrate Refresh Delay</string>
+    <string name="amayc_too_hot">AMAYC temperature check: Too hot</string>
+    <string name="amayc_ok">AMAYC temperature check: OK</string>
 </resources>

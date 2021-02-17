@@ -1,4 +1,4 @@
-// Copyright (c) 2020, Scala
+// Copyright (c) 2021 Scala
 //
 // Please see the included LICENSE file for more information.
 
@@ -7,7 +7,6 @@ package io.scalaproject.androidminer;
 import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.Spanned;
@@ -63,22 +62,10 @@ public class WizardHomeActivity extends BaseActivity {
 
     public void onEnterAddress(View view) {
         startActivity(new Intent(WizardHomeActivity.this, WizardAddressActivity.class));
-        finish();
-
-        Config.write("hide_setup_wizard", "1");
     }
 
     public void onCreateWallet(View view) {
-        Uri uri = Uri.parse(getResources().getString(R.string.scala_vault_play_store));
-        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-        startActivity(intent);
-    }
-
-    public void onSkip(View view) {
-        startActivity(new Intent(WizardHomeActivity.this, MainActivity.class));
-        finish();
-
-        Config.write("hide_setup_wizard", "1");
+        startActivity(new Intent(WizardHomeActivity.this, VaultActivity.class));
     }
 
     private void showDisclaimer() {

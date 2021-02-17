@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:background="@color/bg_body">
+
+	<io.scalaproject.androidminer.widgets.Toolbar
+		android:id="@+id/toolbar"
+		android:layout_width="match_parent"
+		android:layout_height="?attr/actionBarSize"
+		android:background="@drawable/backgound_toolbar"
+		android:minHeight="?attr/actionBarSize" />
+
+	<LinearLayout
+		android:orientation="vertical"
+		android:layout_width="fill_parent"
+		android:layout_height="fill_parent"
+		android:layout_marginStart="35dp"
+		android:layout_marginEnd="35dp"
+		android:weightSum="80">
+
+		<Space
+			android:layout_width="0dp"
+			android:layout_height="0dp"
+			android:layout_weight="25"/>
+
+		<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_gravity="center"
+			android:layout_marginTop="35dp"
+			android:text="Need help getting started? Did you encounter an issue with the application?"
+			android:textColor="@color/txt_headline"
+			android:textStyle="bold"
+			android:textAlignment="center"
+			android:textSize="22sp" />
+
+		<Space
+			android:layout_width="0dp"
+			android:layout_height="0dp"
+			android:layout_weight="5"/>
+
+		<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_gravity="center"
+			android:layout_marginTop="20dp"
+			android:text="To help us better understand your problem, start by copying the debug information of your device."
+			android:textColor="@color/txt_main"
+			android:textAlignment="center"
+			android:textSize="14sp" />
+
+		<LinearLayout
+			android:layout_width="match_parent"
+			android:layout_height="100dp"
+			android:layout_marginTop="15dp"
+			android:background="@drawable/corner_radius_black"
+			android:orientation="vertical">
+
+			<TextView
+				android:id="@+id/debuginfo"
+				android:layout_width="match_parent"
+				android:layout_height="match_parent"
+				android:paddingStart="15dp"
+				android:paddingTop="5pt"
+				android:paddingEnd="15dp"
+				android:paddingBottom="5pt"
+				android:scrollbars="vertical"
+				android:textColor="@color/txt_main"
+				android:textSize="12sp" />
+
+		</LinearLayout>
+
+		<Button
+			android:id="@+id/btnDebugInfo"
+			android:layout_width="fill_parent"
+			android:layout_height="50dp"
+			android:layout_marginTop="5dp"
+			app:backgroundTint="@color/bg_lighter"
+			android:text="@string/debuginfo"
+			android:textSize="14sp"
+			android:textAllCaps="false"
+			android:textColor="@color/txt_button_filled"
+			app:icon="@drawable/ic_copy"
+			app:iconGravity="textStart"
+			app:iconSize="18dp"
+			app:iconTint="@color/btn_icon_default"
+			app:cornerRadius="5dp"
+			tools:ignore="UnusedAttribute" />
+
+		<Space
+			android:layout_width="0dp"
+			android:layout_height="0dp"
+			android:layout_weight="5"/>
+
+		<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_gravity="center"
+			android:layout_marginTop="20dp"
+			android:text="Send us a message through one of our official communication channels, and make sure to paste the debug information."
+			android:textColor="@color/txt_main"
+			android:textAlignment="center"
+			android:textSize="14sp" />
+
+		<LinearLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_marginTop="15dp"
+			android:gravity="center"
+			android:orientation="horizontal">
+
+			<ImageView
+				android:id="@+id/ivDiscord"
+				android:layout_width="42dp"
+				android:layout_height="42dp"
+				android:layout_marginEnd="15dp"
+				app:srcCompat="@drawable/ic_discord1" />
+
+			<ImageView
+				android:id="@+id/ivTelegram"
+				android:layout_width="42dp"
+				android:layout_height="42dp"
+				android:layout_marginEnd="15dp"
+				app:srcCompat="@drawable/ic_telegram1" />
+
+			<ImageView
+				android:id="@+id/ivReddit"
+				android:layout_width="42dp"
+				android:layout_height="42dp"
+				android:layout_marginEnd="15dp"
+				app:srcCompat="@drawable/ic_reddit1" />
+
+			<ImageView
+				android:id="@+id/ivEmail"
+				android:layout_width="42dp"
+				android:layout_height="42dp"
+				app:srcCompat="@drawable/ic_email_blue" />
+
+		</LinearLayout>
+
+		<Space
+			android:layout_width="0dp"
+			android:layout_height="0dp"
+			android:layout_weight="5"/>
+
+		<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_gravity="center"
+			android:text="Happy mining!"
+			android:textColor="@color/txt_headline"
+			android:textStyle="bold"
+			android:textAlignment="center"
+			android:textSize="22sp" />
+
+	</LinearLayout>
+
+</RelativeLayout>

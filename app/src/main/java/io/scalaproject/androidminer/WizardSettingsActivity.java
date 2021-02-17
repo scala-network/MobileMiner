@@ -1,4 +1,4 @@
-// Copyright (c) 2020, Scala
+// Copyright (c) 2021 Scala
 //
 // Please see the included LICENSE file for more information.
 
@@ -12,15 +12,21 @@ import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import io.scalaproject.androidminer.api.ProviderManager;
+import com.google.android.material.button.MaterialButtonToggleGroup;
+
+import io.scalaproject.androidminer.widgets.Toolbar;
 
 public class WizardSettingsActivity extends BaseActivity {
     private SeekBar sbCores, sbCPUTemp, sbBatteryTemp, sbCooldown;
-    private TextView tvCPUMaxTemp, tvBatteryMaxTemp, tvCooldown;
+    private TextView tvCPUMaxTemp, tvBatteryMaxTemp, tvCooldown, tvCPUTempUnit, tvBatteryTempUnit;
 
-    private Integer nMaxCPUTemp = 65; // 55,60,65,70,75
-    private Integer nMaxBatteryTemp = 40; // 30,35,40,45,50
-    private Integer nCooldownTheshold = 15; // 10,15,20,25,30
+    private Integer nMaxCPUTemp = Config.DefaultMaxCPUTemp; // 60,65,70,75,80
+    private Integer nMaxBatteryTemp = Config.DefaultMaxBatteryTemp; // 30,35,40,45,50
+    private Integer nCooldownTheshold = Config.DefaultCooldownTheshold; // 5,10,15,20,25
+
+    private Toolbar toolbar;
+
+    private MaterialButtonToggleGroup tgTemperatureUnit;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -36,28 +42,76 @@ public class WizardSettingsActivity extends BaseActivity {
 
         View view = findViewById(android.R.id.content).getRootView();
 
+        // Toolbar
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+        toolbar.setOnButtonListener(new Toolbar.OnButtonListener() {
+            @Override
+            public void onButtonMain(int type) {
+                switch (type) {
+                    case Toolbar.BUTTON_MAIN_BACK:
+                        //onBackPressed();
+                        //startActivity(new Intent(WizardSettingsActivity.this, PoolActivity.class));
+                        finish();
+                        break;
+                }
+            }
+
+            @Override
+            public void onButtonOptions(int type) {
+                switch (type) {
+                    // Do nothing
+                }
+            }
+        });
+
+        toolbar.setTitle("Settings");
+        toolbar.setButtonMain(Toolbar.BUTTON_MAIN_BACK);
+        toolbar.setButtonOptions(Toolbar.BUTTON_OPTIONS_NONE);
+
         sbCores = view.findViewById(R.id.seekbarcores);
         TextView tvCoresNb = view.findViewById(R.id.coresnb);
         TextView tvCoresMax = view.findViewById(R.id.coresmax);
 
         sbCPUTemp = view.findViewById(R.id.seekbarcputemperature);
         tvCPUMaxTemp = view.findViewById(R.id.cpumaxtemp);
+        tvCPUTempUnit = view.findViewById(R.id.cputempunit);
 
         sbBatteryTemp = view.findViewById(R.id.seekbarbatterytemperature);
         tvBatteryMaxTemp = view.findViewById(R.id.batterymaxtemp);
+        tvBatteryTempUnit = view.findViewById(R.id.batterytempunit);
 
         sbCooldown = view.findViewById(R.id.seekbarcooldownthreshold);
         tvCooldown = view.findViewById(R.id.cooldownthreshold);
 
-        Button btnHardwareHelp = view.findViewById(R.id.btnHardwareHelp);
-        btnHardwareHelp.setOnClickListener(new View.OnClickListener() {
+        Button btnTemperatureControlHelp = view.findViewById(R.id.btnTemperatureControlHelp);
+        btnTemperatureControlHelp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // inflate the layout of the popup window
                 LayoutInflater inflater = LayoutInflater.from(getApplicationContext());
 
-                View popupView = inflater.inflate(R.layout.helper_hardware_settings, null);
+                View popupView = inflater.inflate(R.layout.helper_max_temperature, null);
                 Utils.showPopup(v, inflater, popupView);
+            }
+        });
+
+        tgTemperatureUnit = view.findViewById(R.id.tgTemperatureUnit);
+        tgTemperatureUnit.addOnButtonCheckedListener(new MaterialButtonToggleGroup.OnButtonCheckedListener() {
+            @Override
+            public void onButtonChecked(MaterialButtonToggleGroup group, int checkedId, boolean isChecked) {
+                if(checkedId == R.id.btnFarehnheit) {
+                    tvCPUTempUnit.setText(getString(R.string.celsius));
+                    tvBatteryTempUnit.setText(getString(R.string.celsius));
+                } else {
+                    tvCPUTempUnit.setText(getString(R.string.fahrenheit));
+                    tvBatteryTempUnit.setText(getString(R.string.fahrenheit));
+                }
+
+                updateCPUTemp();
+                updateBatteryTemp();
             }
         });
 
@@ -67,16 +121,27 @@ public class WizardSettingsActivity extends BaseActivity {
         int suggested = cores / 2;
         if (suggested == 0) suggested = 1;
 
-        sbCores.setMax(cores);
+        sbCores.setMax(cores-1);
         tvCoresMax.setText(Integer.toString(cores));
 
         if (Config.read("cores").equals("")) {
-            sbCores.setProgress(suggested);
+            sbCores.setProgress(suggested-1);
             tvCoresNb.setText(Integer.toString(suggested));
         } else {
             int corenb = Integer.parseInt(Config.read("cores"));
-            sbCores.setProgress(corenb);
+            sbCores.setProgress(corenb-1);
             tvCoresNb.setText(Integer.toString(corenb));
+        }
+
+        String temperature_unit = Config.read(Config.CONFIG_TEMPERATURE_UNIT, "C");
+        tgTemperatureUnit.check(temperature_unit.equals("C") ? R.id.btnCelsius : R.id.btnFarehnheit);
+
+        if(temperature_unit.equals("C")) {
+            tvCPUTempUnit.setText(getString(R.string.celsius));
+            tvBatteryTempUnit.setText(getString(R.string.celsius));
+        } else {
+            tvCPUTempUnit.setText(getString(R.string.fahrenheit));
+            tvBatteryTempUnit.setText(getString(R.string.fahrenheit));
         }
 
         // CPU Temp
@@ -84,7 +149,7 @@ public class WizardSettingsActivity extends BaseActivity {
             nMaxCPUTemp = Integer.parseInt(Config.read("maxcputemp"));
         }
 
-        int nProgress = ((nMaxCPUTemp - Utils.MIN_CPU_TEMP)/Utils.INCREMENT) + 1;
+        int nProgress = ((nMaxCPUTemp - Utils.MIN_CPU_TEMP)/Utils.INCREMENT);
         sbCPUTemp.setProgress(nProgress);
         updateCPUTemp();
 
@@ -93,7 +158,7 @@ public class WizardSettingsActivity extends BaseActivity {
         }
 
         // Battery Temp
-        nProgress = ((nMaxBatteryTemp-Utils.MIN_BATTERY_TEMP)/Utils.INCREMENT)+1;
+        nProgress = ((nMaxBatteryTemp-Utils.MIN_BATTERY_TEMP)/Utils.INCREMENT);
         sbBatteryTemp.setProgress(nProgress);
         updateBatteryTemp();
 
@@ -102,7 +167,7 @@ public class WizardSettingsActivity extends BaseActivity {
         }
 
         // Cooldown
-        nProgress = ((nCooldownTheshold - Utils.MIN_COOLDOWN) / Utils.INCREMENT) + 1;
+        nProgress = ((nCooldownTheshold - Utils.MIN_COOLDOWN)/Utils.INCREMENT);
         sbCooldown.setProgress(nProgress);
         updateCooldownThreshold();
 
@@ -119,7 +184,7 @@ public class WizardSettingsActivity extends BaseActivity {
 
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                tvCoresNb.setText(Integer.toString(progress));
+                tvCoresNb.setText(Integer.toString(progress+1));
             }
         });
 
@@ -176,23 +241,25 @@ public class WizardSettingsActivity extends BaseActivity {
     }
 
     private Integer getCPUTemp() {
-        return ((sbCPUTemp.getProgress() - 1) * Utils.INCREMENT) + Utils.MIN_CPU_TEMP;
+        return ((sbCPUTemp.getProgress()) * Utils.INCREMENT) + Utils.MIN_CPU_TEMP;
     }
 
     private Integer getBatteryTemp() {
-        return ((sbBatteryTemp.getProgress() - 1) * Utils.INCREMENT) + Utils.MIN_BATTERY_TEMP;
+        return ((sbBatteryTemp.getProgress()) * Utils.INCREMENT) + Utils.MIN_BATTERY_TEMP;
     }
 
     private Integer getCooldownTheshold() {
-        return ((sbCooldown.getProgress() - 1) * Utils.INCREMENT) + Utils.MIN_COOLDOWN;
+        return ((sbCooldown.getProgress()) * Utils.INCREMENT) + Utils.MIN_COOLDOWN;
     }
 
-    private void updateCPUTemp(){
-        tvCPUMaxTemp.setText(Integer.toString(getCPUTemp()));
+    private void updateCPUTemp() {
+        int cpu_temp = getCPUTemp();
+        tvCPUMaxTemp.setText(tgTemperatureUnit.getCheckedButtonId() == R.id.btnFarehnheit ? Integer.toString(Utils.convertCelciusToFahrenheit(cpu_temp)) : Integer.toString(cpu_temp));
     }
 
     private void updateBatteryTemp() {
-        tvBatteryMaxTemp.setText(Integer.toString(getBatteryTemp()));
+        int battery_temp = getBatteryTemp();
+        tvBatteryMaxTemp.setText(tgTemperatureUnit.getCheckedButtonId() == R.id.btnFarehnheit ? Integer.toString(Utils.convertCelciusToFahrenheit(battery_temp)) : Integer.toString(battery_temp));
     }
 
     private void updateCooldownThreshold() {
@@ -202,21 +269,24 @@ public class WizardSettingsActivity extends BaseActivity {
     public void onStart(View view) {
         Config.write("workername", Tools.getDeviceName());
 
-        Config.write("cores", Integer.toString(sbCores.getProgress()));
+        Config.write("cores", Integer.toString(sbCores.getProgress()+1));
         Config.write("maxcputemp", Integer.toString(getCPUTemp()));
         Config.write("maxbatterytemp", Integer.toString(getBatteryTemp()));
         Config.write("cooldownthreshold", Integer.toString(getCooldownTheshold()));
 
-        Config.write("threads", "1"); // Default value
-        Config.write("intensity", "1"); // Default value
-
         Config.write("disableamayc", "0");
+
+        Config.write(Config.CONFIG_TEMPERATURE_UNIT, tgTemperatureUnit.getCheckedButtonId() == R.id.btnFarehnheit ? "F" : "C");
 
         Config.write("init", "1");
 
-        ProviderManager.generate();
+        Config.write("hide_setup_wizard", "1");
 
-        startActivity(new Intent(WizardSettingsActivity.this, MainActivity.class));
-        finish();
+        Intent intent = new Intent(WizardSettingsActivity.this, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|
+                Intent.FLAG_ACTIVITY_CLEAR_TASK|
+                Intent.FLAG_ACTIVITY_NEW_TASK);
+
+        startActivity(intent);
     }
 }

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest package="io.scalaproject.androidminer"
-          xmlns:android="http://schemas.android.com/apk/res/android">
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -11,6 +11,8 @@
     <application
         android:allowBackup="true"
         android:usesCleartextTraffic="true"
+        android:hardwareAccelerated="false"
+        android:largeHeap="true"
         android:icon="@mipmap/ic_launcher"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:label="@string/app_name"
@@ -22,63 +24,97 @@
 
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
-            android:resource="@drawable/ic_notification" />
+            android:resource="@mipmap/ic_notification" />
 
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/c_white" />
 
         <activity
-            android:name="io.scalaproject.androidminer.MainActivity"
-            android:configChanges="orientation|screenSize"
-            android:windowSoftInputMode="adjustPan|stateHidden"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
-
-        <activity
-            android:name="io.scalaproject.androidminer.SplashActivity">
+            android:name=".SplashActivity">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
+        <activity
+            android:name=".MainActivity"
+            android:windowSoftInputMode="adjustPan|stateHidden"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:launchMode="singleTask"
+            android:screenOrientation="behind">
+        </activity>
+
 	    <activity
-            android:name="io.scalaproject.androidminer.QrCodeScannerActivity"
-            android:parentActivityName="io.scalaproject.androidminer.MainActivity">
-        </activity>
+            android:name=".QrCodeScannerActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:label="QrCode"
+            android:launchMode="singleTask"
+            android:screenOrientation="behind" />
 
         <activity
-            android:name="io.scalaproject.androidminer.WizardHomeActivity"
-            android:parentActivityName="io.scalaproject.androidminer.MainActivity">
-        </activity>
+            android:name=".WizardHomeActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:label="Welcome"
+            android:launchMode="singleTask"
+            android:screenOrientation="behind" />
 
         <activity
-            android:name="io.scalaproject.androidminer.WizardAddressActivity"
-            android:parentActivityName="io.scalaproject.androidminer.MainActivity">
-        </activity>
+            android:name=".VaultActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:label="Vault"
+            android:launchMode="singleTask"
+            android:screenOrientation="behind" />
 
         <activity
-            android:name="io.scalaproject.androidminer.WizardPoolActivity"
-            android:parentActivityName="io.scalaproject.androidminer.MainActivity">
-        </activity>
+            android:name=".WizardAddressActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:label="Address"
+            android:launchMode="singleTask"
+            android:screenOrientation="behind" />
 
         <activity
-            android:name="io.scalaproject.androidminer.WizardSettingsActivity"
-            android:parentActivityName="io.scalaproject.androidminer.MainActivity">
-        </activity>
+            android:name=".PoolActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:label="Pool"
+            android:launchMode="singleTask"
+            android:screenOrientation="behind" />
 
         <activity
-            android:name="io.scalaproject.androidminer.BaseActivity"
-            android:parentActivityName="io.scalaproject.androidminer.MainActivity">
-        </activity>
+            android:name=".WizardSettingsActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:label="Settings"
+            android:launchMode="singleTask"
+            android:screenOrientation="behind" />
+
+        <activity
+            android:name=".SupportActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:label="Support"
+            android:launchMode="singleTask"
+            android:screenOrientation="behind" />
+
+        <activity
+            android:name=".PaymentsActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:label="Payments"
+            android:launchMode="singleTask"
+            android:screenOrientation="behind" />
+
+        <activity
+            android:name=".BaseActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:label="Base"
+            android:launchMode="singleTask"
+            android:screenOrientation="behind" />
 
         <service
-            android:name="io.scalaproject.androidminer.MiningService"
+            android:name=".MiningService"
             android:enabled="true"/>
 
         <receiver
-            android:name="io.scalaproject.androidminer.NotificationsReceiver"
+            android:name=".NotificationsReceiver"
             android:enabled="true">
             <intent-filter>
                 <action android:name="OPEN_ACTION"/>

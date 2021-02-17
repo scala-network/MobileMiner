@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/llNotice"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="8dp"
+    android:layout_marginBottom="8dp"
+    android:paddingTop="5dp"
+    android:paddingBottom="5dp"
+    android:background="@color/c_darker_grey"
+    android:orientation="horizontal">
+
+    <TextView
+        android:id="@+id/tvToastMessage"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_gravity="center"
+        android:padding="8dp"
+        android:textSize="14sp"
+        android:textStyle="normal"
+        android:textColor="@color/txt_headline"
+        tools:text="This is a status message." />
+
+</LinearLayout>

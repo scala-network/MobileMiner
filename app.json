@@ -1,0 +1,52 @@
+{
+  "pools" : [
+    {
+      "key" : "Scala Project (Official Pool)",
+      "pool" : "mine.scalaproject.io",
+      "port" : "3333",
+      "poolType"  :  3,
+      "poolUrl" : "https://pool.scalaproject.io",
+      "poolIp" : "95.111.237.231"
+    },
+    {
+      "key" : "PoolDeMineria",
+      "pool" : "scala.pooldemineria.com",
+      "port" : "3333",
+      "poolType"  :  3,
+      "poolUrl" : "https://pooldemineria.com",
+      "poolIp" : "168.119.229.63"
+    },
+    {
+      "key" : "GNTL",
+      "pool" : "xla.pool.gntl.co.uk",
+      "port" : "40002",
+      "poolType"  :  1,
+      "poolUrl" : "https://xla.pool.gntl.co.uk",
+      "poolIp" : "83.151.238.34"
+    },
+    {
+      "key" : "LuckyPool",
+      "pool" : "scala.luckypool.io",
+      "port" : "6677",
+      "poolType"  :  2,
+      "poolUrl" : "https://scala.luckypool.io",
+      "poolIp" : "51.89.96.162"
+    },
+    {
+      "key" : "HeroMiners",
+      "pool" : "scala.herominers.com",
+      "port" : "10130",
+      "poolType"  :  2,
+      "poolUrl" : "https://scala.herominers.com",
+      "poolIp" : "138.201.217.40"
+    },
+    {
+      "key" : "LetsHashIt",
+      "pool" : "xla.letshash.online",
+      "port" : "1559",
+      "poolType"  :  3,
+      "poolUrl" : "https://xla.letshash.online",
+      "poolIp" : "135.181.62.60"
+    }
+  ]
+}

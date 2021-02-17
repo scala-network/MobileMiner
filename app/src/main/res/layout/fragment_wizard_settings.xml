@@ -6,6 +6,13 @@
 	xmlns:tools="http://schemas.android.com/tools"
 	android:background="@color/bg_body">
 
+	<io.scalaproject.androidminer.widgets.Toolbar
+		android:id="@+id/toolbar"
+		android:layout_width="match_parent"
+		android:layout_height="?attr/actionBarSize"
+		android:background="@drawable/backgound_toolbar"
+		android:minHeight="?attr/actionBarSize" />
+
 	<LinearLayout
 		android:layout_width="match_parent"
 		android:layout_height="fill_parent"
@@ -13,44 +20,24 @@
 		android:layout_marginStart="15dp"
 		android:layout_marginEnd="15dp"
 		android:layout_marginBottom="15dp"
-		android:orientation="vertical">
+		android:orientation="vertical"
+		android:layout_below="@+id/toolbar" >
 
-		<LinearLayout
-			android:layout_width="match_parent"
+		<TextView
+			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:layout_marginBottom="5dp"
-			android:layout_weight="0"
-			android:orientation="horizontal">
-
-			<TextView
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:layout_gravity="center_vertical"
-				android:gravity="start"
-				android:text="@string/hardwaresettings"
-				android:textColor="@color/txt_headline"
-				android:textSize="16sp"
-				android:textStyle="bold" />
-
-			<Button
-				android:id="@+id/btnHardwareHelp"
-				android:layout_width="24dp"
-				android:layout_height="24dp"
-				android:layout_gravity="center_vertical"
-				android:backgroundTint="@android:color/transparent"
-				app:cornerRadius="5dp"
-				app:icon="@drawable/ic_help"
-				app:iconGravity="textStart"
-				app:iconPadding="0dp"
-				app:iconTint="@color/txt_headline"
-				tools:ignore="UnusedAttribute" />
-
-		</LinearLayout>
+			android:layout_gravity="center_vertical"
+			android:layout_marginBottom="15dp"
+			android:gravity="start"
+			android:text="@string/intensity"
+			android:textColor="@color/txt_headline"
+			android:textSize="14sp"
+			android:textAllCaps="true"
+			android:textStyle="bold" />
 
 		<LinearLayout
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
-			android:layout_marginTop="5dp"
 			android:layout_marginBottom="5dp"
 			android:layout_weight="0"
 			android:orientation="horizontal">
@@ -98,9 +85,9 @@
 			android:id="@+id/seekbarcores"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:max="8"
+			android:max="7"
 			android:maxHeight="5dp"
-			android:min="1"
+			android:min="0"
 			android:minHeight="5dp"
 			android:paddingStart="0dp"
 			android:paddingEnd="0dp"
@@ -111,9 +98,41 @@
 			tools:ignore="UnusedAttribute" />
 
 		<LinearLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_marginTop="25dp"
+			android:layout_marginBottom="15dp"
+			android:orientation="horizontal">
+
+			<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_gravity="center_vertical"
+				android:text="@string/temperature_control"
+				android:textColor="@color/txt_headline"
+				android:textSize="14sp"
+				android:textAllCaps="true"
+				android:textStyle="bold" />
+
+			<Button
+				android:id="@+id/btnTemperatureControlHelp"
+				android:layout_width="24dp"
+				android:layout_height="24dp"
+				android:layout_gravity="center_vertical"
+				app:backgroundTint="@android:color/transparent"
+				app:cornerRadius="5dp"
+				app:icon="@drawable/ic_help"
+				app:iconGravity="textStart"
+				app:iconPadding="0dp"
+				app:iconTint="@color/txt_main"
+				android:visibility="visible"
+				tools:ignore="UnusedAttribute" />
+
+		</LinearLayout>
+
+		<LinearLayout
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
-			android:layout_marginTop="10dp"
 			android:layout_marginBottom="5dp"
 			android:layout_weight="0"
 			android:orientation="horizontal">
@@ -151,6 +170,7 @@
 				android:textSize="14sp" />
 
 			<TextView
+				android:id="@+id/cputempunit"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:layout_gravity="center"
@@ -164,9 +184,9 @@
 			android:id="@+id/seekbarcputemperature"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:max="5"
+			android:max="4"
 			android:maxHeight="5dp"
-			android:min="1"
+			android:min="0"
 			android:minHeight="5dp"
 			android:paddingStart="0dp"
 			android:paddingEnd="0dp"
@@ -217,6 +237,7 @@
 				android:textSize="14sp" />
 
 			<TextView
+				android:id="@+id/batterytempunit"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:layout_gravity="center"
@@ -230,9 +251,9 @@
 			android:id="@+id/seekbarbatterytemperature"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:max="5"
+			android:max="4"
 			android:maxHeight="5dp"
-			android:min="1"
+			android:min="0"
 			android:minHeight="5dp"
 			android:paddingStart="0dp"
 			android:paddingEnd="0dp"
@@ -296,9 +317,9 @@
 			android:id="@+id/seekbarcooldownthreshold"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:max="5"
+			android:max="4"
 			android:maxHeight="5dp"
-			android:min="1"
+			android:min="0"
 			android:minHeight="5dp"
 			android:paddingStart="0dp"
 			android:paddingEnd="0dp"
@@ -307,6 +328,53 @@
 			android:thumbTint="@color/c_light_grey"
 			android:thumbOffset="0dp"
 			tools:ignore="UnusedAttribute" />
+
+		<LinearLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_marginTop="5dp"
+			android:layout_weight="0"
+			android:orientation="horizontal">
+
+			<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="@string/temperature_unit"
+				android:layout_gravity="center_vertical"
+				android:textColor="@color/txt_main"
+				android:textSize="14sp"
+				android:checked="false" />
+
+			<Space
+				android:layout_width="0dp"
+				android:layout_height="match_parent"
+				android:layout_weight="1"
+				tools:ignore="NestedWeights" />
+
+			<com.google.android.material.button.MaterialButtonToggleGroup
+				android:id="@+id/tgTemperatureUnit"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				app:singleSelection="true"
+				app:checkedButton="@id/btnCelsius">
+
+				<Button
+					android:id="@+id/btnCelsius"
+					android:layout_width="50dp"
+					android:layout_height="40dp"
+					android:text="@string/celsius"
+					style="?attr/materialButtonOutlinedStyle" />
+
+				<Button
+					android:id="@+id/btnFarehnheit"
+					android:layout_width="50dp"
+					android:layout_height="40dp"
+					android:text="@string/fahrenheit"
+					style="?attr/materialButtonOutlinedStyle" />
+
+			</com.google.android.material.button.MaterialButtonToggleGroup>
+
+		</LinearLayout>
 
 	</LinearLayout>
 
@@ -323,7 +391,7 @@
 			android:layout_marginStart="15dp"
 			android:layout_marginEnd="15dp"
 			android:layout_marginBottom="15dp"
-			android:backgroundTint="@color/bg_green"
+			app:backgroundTint="@color/bg_green"
 			android:onClick="onStart"
 			android:text="@string/startmining"
 			android:textSize="14sp"
