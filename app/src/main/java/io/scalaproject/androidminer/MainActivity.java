@@ -2494,11 +2494,17 @@ public class MainActivity extends BaseActivity
         String message = "";
         try {
             String responseBody = new String(error.networkResponse.data, StandardCharsets.UTF_8);
-            JSONObject data = new JSONObject(responseBody);
-            JSONArray errors = data.getJSONArray("errors");
-            JSONObject jsonMessage = errors.getJSONObject(0);
 
-            message = "AMYAC error: " + jsonMessage.getString("message");
+            String jsonMessage;
+            if(!responseBody.isEmpty()) {
+                JSONObject data = new JSONObject(responseBody);
+                JSONArray errors = data.getJSONArray("errors");
+                jsonMessage = errors.getJSONObject(0).getString("message");
+            } else {
+                jsonMessage = error.getMessage();
+            }
+
+            message = "AMYAC error: " + jsonMessage;
         } catch (JSONException e) {
             message = "AMYAC error JSONException: " + e.getMessage();
         } finally {
