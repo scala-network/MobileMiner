@@ -27,6 +27,9 @@ public class Config {
     public final static String CONFIG_POOL_PORT = "custom_port";
     public final static String CONFIG_TEMPERATURE_UNIT = "temperature_unit";
     public final static String CONFIG_TEMPERATURE_SENSOR_SHOW_WARNING = "temp_sensor_warning";
+    public final static String CONFIG_HASHRATE_REFRESH_DELAY = "hashrate_refresh_delay";
+
+    public final static int DefaultRefreshDelay = 30; // In seconds
 
     private static Config mSettings;
     private SharedPreferences preferences;

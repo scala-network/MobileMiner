@@ -121,15 +121,15 @@ public class WizardSettingsActivity extends BaseActivity {
         int suggested = cores / 2;
         if (suggested == 0) suggested = 1;
 
-        sbCores.setMax(cores);
+        sbCores.setMax(cores-1);
         tvCoresMax.setText(Integer.toString(cores));
 
         if (Config.read("cores").equals("")) {
-            sbCores.setProgress(suggested);
+            sbCores.setProgress(suggested-1);
             tvCoresNb.setText(Integer.toString(suggested));
         } else {
             int corenb = Integer.parseInt(Config.read("cores"));
-            sbCores.setProgress(corenb);
+            sbCores.setProgress(corenb-1);
             tvCoresNb.setText(Integer.toString(corenb));
         }
 
@@ -149,7 +149,7 @@ public class WizardSettingsActivity extends BaseActivity {
             nMaxCPUTemp = Integer.parseInt(Config.read("maxcputemp"));
         }
 
-        int nProgress = ((nMaxCPUTemp - Utils.MIN_CPU_TEMP)/Utils.INCREMENT) + 1;
+        int nProgress = ((nMaxCPUTemp - Utils.MIN_CPU_TEMP)/Utils.INCREMENT);
         sbCPUTemp.setProgress(nProgress);
         updateCPUTemp();
 
@@ -158,7 +158,7 @@ public class WizardSettingsActivity extends BaseActivity {
         }
 
         // Battery Temp
-        nProgress = ((nMaxBatteryTemp-Utils.MIN_BATTERY_TEMP)/Utils.INCREMENT)+1;
+        nProgress = ((nMaxBatteryTemp-Utils.MIN_BATTERY_TEMP)/Utils.INCREMENT);
         sbBatteryTemp.setProgress(nProgress);
         updateBatteryTemp();
 
@@ -167,7 +167,7 @@ public class WizardSettingsActivity extends BaseActivity {
         }
 
         // Cooldown
-        nProgress = ((nCooldownTheshold - Utils.MIN_COOLDOWN) / Utils.INCREMENT) + 1;
+        nProgress = ((nCooldownTheshold - Utils.MIN_COOLDOWN)/Utils.INCREMENT);
         sbCooldown.setProgress(nProgress);
         updateCooldownThreshold();
 
@@ -184,7 +184,7 @@ public class WizardSettingsActivity extends BaseActivity {
 
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                tvCoresNb.setText(Integer.toString(progress));
+                tvCoresNb.setText(Integer.toString(progress+1));
             }
         });
 
@@ -241,15 +241,15 @@ public class WizardSettingsActivity extends BaseActivity {
     }
 
     private Integer getCPUTemp() {
-        return ((sbCPUTemp.getProgress() - 1) * Utils.INCREMENT) + Utils.MIN_CPU_TEMP;
+        return ((sbCPUTemp.getProgress()) * Utils.INCREMENT) + Utils.MIN_CPU_TEMP;
     }
 
     private Integer getBatteryTemp() {
-        return ((sbBatteryTemp.getProgress() - 1) * Utils.INCREMENT) + Utils.MIN_BATTERY_TEMP;
+        return ((sbBatteryTemp.getProgress()) * Utils.INCREMENT) + Utils.MIN_BATTERY_TEMP;
     }
 
     private Integer getCooldownTheshold() {
-        return ((sbCooldown.getProgress() - 1) * Utils.INCREMENT) + Utils.MIN_COOLDOWN;
+        return ((sbCooldown.getProgress()) * Utils.INCREMENT) + Utils.MIN_COOLDOWN;
     }
 
     private void updateCPUTemp() {
@@ -269,7 +269,7 @@ public class WizardSettingsActivity extends BaseActivity {
     public void onStart(View view) {
         Config.write("workername", Tools.getDeviceName());
 
-        Config.write("cores", Integer.toString(sbCores.getProgress()));
+        Config.write("cores", Integer.toString(sbCores.getProgress()+1));
         Config.write("maxcputemp", Integer.toString(getCPUTemp()));
         Config.write("maxbatterytemp", Integer.toString(getBatteryTemp()));
         Config.write("cooldownthreshold", Integer.toString(getCooldownTheshold()));

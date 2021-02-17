@@ -92,7 +92,7 @@
     <string name="degreecelsius">°C</string>
     <string name="pauseminingonbattery">Pause mining on battery power</string>
     <string name="keepscreenonwhenmining">Keep screen ON when mining</string>
-    <string name="turnoffamayccontrol">Disable temperature control</string>
+    <string name="turnoffamayccontrol">Disable Temperature Control</string>
     <string name="warning">Warning!</string>
     <string name="allworkers">All workers:</string>
     <string name="amaycpaused">Cannot resume mining when device is cooling.</string>
@@ -108,7 +108,7 @@
     <string name="statictempcontrol">Switched to static temperature control.</string>
     <string name="debuginfo">Copy Debug Info</string>
     <string name="debuginfo_copied">Debug Information copied.</string>
-    <string name="pooloptions">Optional</string>
+    <string name="pooloptions">Options</string>
     <string name="usernameparametershint">Username parameters</string>
     <string name="workernamehint">Worker name or password</string>
     <string name="landingpage_headline">Start mining on your mobile device safely and efficiently</string>
@@ -222,11 +222,12 @@
     <string name="warning_cpu_temp_sensor">Your device does not have a sensor to read the processor temperature, or it is impossible to retrieve it. You should mine with caution and monitor your device to check if it\'s overheating.</string>
     <string name="warning_battery_temp_sensor">Your device does not have a sensor to read the battery temperature, or it is impossible to retrieve it. You should mine with caution and monitor your device to check if it\'s overheating.</string>
     <string name="fahrenheit">°F</string>
-    <string name="temperature_unit">Temperature unit</string>
+    <string name="temperature_unit">Temperature Unit</string>
     <string name="intensity">Intensity</string>
     <string name="temperature_control">Temperature Control</string>
     <string name="community">Community</string>
     <string name="blocks_found">Blocks Found</string>
     <string name="submitted_hashes">Submitted Hashes</string>
     <string name="submitted_shares">Submitted Shares</string>
+    <string name="hashrate_refresh_delay_seconds">Hashrate Refresh Delay</string>
 </resources>

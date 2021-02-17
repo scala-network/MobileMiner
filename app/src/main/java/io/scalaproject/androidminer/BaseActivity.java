@@ -19,7 +19,7 @@ import static io.scalaproject.androidminer.MainActivity.contextOfApplication;
 public abstract class BaseActivity extends AppCompatActivity {
     io.scalaproject.androidminer.dialogs.ProgressDialog progressDialog = null;
 
-    private class SimpleProgressDialog extends io.scalaproject.androidminer.dialogs.ProgressDialog {
+    private static class SimpleProgressDialog extends io.scalaproject.androidminer.dialogs.ProgressDialog {
         SimpleProgressDialog(Context context, int msgId) {
             super(context);
             setCancelable(false);

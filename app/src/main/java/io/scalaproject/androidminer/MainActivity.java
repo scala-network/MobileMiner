@@ -156,9 +156,12 @@ public class MainActivity extends BaseActivity
     private boolean payoutEnabled;
     protected IProviderListener payoutListener;
 
-    private Timer timerHashrate = null;
-    private TimerTask timerTaskHashrate = null;
+    private Timer timerStatusHashrate = null;
+    private TimerTask timerTaskStatusHashrate = null;
     private ProgressBar pbStatus;
+
+    private Timer timerRefreshHashrate = null;
+    private TimerTask timerTaskRefreshHashrate = null;
 
     private boolean validArchitecture = true;
 
@@ -314,7 +317,7 @@ public class MainActivity extends BaseActivity
                         break;
                     }
                     case Toolbar.BUTTON_OPTIONS_SHOW_CORES: {
-                        showCores();
+                        refreshHashrate();
 
                         break;
                     }
@@ -366,7 +369,7 @@ public class MainActivity extends BaseActivity
             @Override
             public void onRefresh() {
                 if(navigationView.getMenu().findItem(R.id.menu_home).isChecked()) {
-                    showCores();
+                    refreshHashrate();
                 } else if (navigationView.getMenu().findItem(R.id.menu_stats).isChecked()){
                     StatsFragment.updateStatsListener();
                 }
@@ -387,6 +390,14 @@ public class MainActivity extends BaseActivity
             public void onClick(View v) {
                 showDetailedLog();
                 navigationView.setVisibility(View.GONE);
+            }
+        });
+
+        LinearLayout llUpdateHashrate = findViewById(R.id.llUpdateHashrate);
+        llUpdateHashrate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                refreshHashrate();
             }
         });
 
@@ -620,15 +631,18 @@ public class MainActivity extends BaseActivity
         ProviderManager.request.setListener(payoutListener).start();
         ProviderManager.afterSave();
 
+        chartHashrate = findViewById(R.id.chart_hashrate);
+        chartTemperature = findViewById(R.id.chart_temprature);
+
+        initChartHashrate();
+        initChartTemperature();
+
         startTimerTemperatures();
 
         createNotificationManager();
 
         updateStartButton();
         resetAvgMaxHashrate();
-
-        chartHashrate = findViewById(R.id.chart_hashrate);
-        chartTemperature = findViewById(R.id.chart_temprature);
 
         updateUI();
 
@@ -664,7 +678,7 @@ public class MainActivity extends BaseActivity
         chartHashrate.setDrawGridBackground(false);
         chartHashrate.setHighlightPerDragEnabled(true);
         chartHashrate.setPinchZoom(true);
-        chartHashrate.animateX(1500);
+        chartHashrate.animateX(1000);
         chartHashrate.getAxisRight().setEnabled(false);
         chartHashrate.setVisibleXRangeMaximum(10);
         chartHashrate.setNoDataText("No chart data.");
@@ -717,7 +731,7 @@ public class MainActivity extends BaseActivity
         chartTemperature.setDrawGridBackground(false);
         chartTemperature.setHighlightPerDragEnabled(true);
         chartTemperature.setPinchZoom(false);
-        chartTemperature.animateX(1500);
+        chartTemperature.animateX(1000);
         chartTemperature.getAxisRight().setEnabled(false);
         chartTemperature.setAutoScaleMinMaxEnabled(true);
         chartTemperature.setNoDataText("No chart data.");
@@ -765,6 +779,8 @@ public class MainActivity extends BaseActivity
 
             chartTemperature.clear();
         }
+
+        System.gc(); System.gc();
     }
 
     private void addHashrateValue(float hr) {
@@ -783,7 +799,6 @@ public class MainActivity extends BaseActivity
             set1 = (LineDataSet) data.getDataSetByIndex(0);
             set1.setValues(lValuesHr);
             data.notifyDataChanged();
-            chartHashrate.notifyDataSetChanged();
         } else {
             // Set Min/Max YAxis
 
@@ -825,6 +840,7 @@ public class MainActivity extends BaseActivity
 
         data.setHighlightEnabled(false);
 
+        chartHashrate.notifyDataSetChanged();
         chartHashrate.setMaxVisibleValueCount(10);
         chartHashrate.setVisibleXRangeMaximum(10);
         chartHashrate.moveViewToX(data.getEntryCount());
@@ -875,7 +891,7 @@ public class MainActivity extends BaseActivity
             lValuesTempBattery.remove(0);
 
         BarDataSet set1, set2;
-        BarData data = chartTemperature.getData();
+        BarData data = chartTemperature.getBarData();
         if (data != null && data.getDataSetCount() > 0) {
             set1 = (BarDataSet) data.getDataSetByIndex(0);
             set2 = (BarDataSet) data.getDataSetByIndex(1);
@@ -884,6 +900,15 @@ public class MainActivity extends BaseActivity
             data.notifyDataChanged();
             chartTemperature.notifyDataSetChanged();
         } else {
+            if(data != null) {
+                data.clearValues();
+            }
+
+            chartTemperature.clear();
+
+            System.gc();
+            System.gc();
+
             // create 4 DataSets
             set1 = new BarDataSet(lValuesTempCPU, "CPU");
             set1.setColor(getResources().getColor(R.color.c_blue));
@@ -924,7 +949,7 @@ public class MainActivity extends BaseActivity
         chartTemperature.invalidate();
     }
 
-    public void showCores() {
+    public void refreshHashrate() {
         sendInput("h");
     }
 
@@ -1398,9 +1423,6 @@ public class MainActivity extends BaseActivity
         bIsCelsius = Config.read(Config.CONFIG_TEMPERATURE_UNIT, "C").equals("C");
         tvCPUTemperatureUnit.setText(bIsCelsius ? getString(R.string.celsius) : getString(R.string.fahrenheit));
         tvBatteryTemperatureUnit.setText(bIsCelsius ? getString(R.string.celsius) : getString(R.string.fahrenheit));
-
-        initChartHashrate();
-        initChartTemperature();
     }
 
     private void showDisclaimerTemperatureSensors() {
@@ -1708,12 +1730,47 @@ public class MainActivity extends BaseActivity
         updateNotification();
     }
 
+    public void startTimerRefreshHashrate() {
+        if(timerRefreshHashrate != null || timerStatusHashrate != null)
+            return;
+
+        String refreshDelay = Config.read(Config.CONFIG_HASHRATE_REFRESH_DELAY);
+        if(refreshDelay.isEmpty() || refreshDelay.equals(String.valueOf(Config.DefaultRefreshDelay)))
+            return;
+
+        timerTaskRefreshHashrate = new TimerTask() {
+            @Override
+            public void run() {
+                runOnUiThread(new Runnable() {
+                    public void run() {
+                        refreshHashrate();
+                    }
+                });
+            }
+        };
+
+        timerRefreshHashrate = new Timer();
+
+        int nRefreshDelay = Integer.parseInt(refreshDelay);
+        timerRefreshHashrate.scheduleAtFixedRate(timerTaskRefreshHashrate, 0, nRefreshDelay * 1000);
+    }
+
+    public void stopTimerRefreshHashrate() {
+        if(timerRefreshHashrate != null) {
+            timerRefreshHashrate.cancel();
+            timerRefreshHashrate = null;
+            timerTaskRefreshHashrate = null;
+        }
+    }
+
     public void startTimerStatusHashrate() {
-        if(timerHashrate != null) {
+        if(timerStatusHashrate != null) {
             return;
         }
 
-        timerTaskHashrate = new TimerTask() {
+        stopTimerRefreshHashrate();
+
+        timerTaskStatusHashrate = new TimerTask() {
             @Override
             public void run() {
                 runOnUiThread(new Runnable() {
@@ -1724,20 +1781,22 @@ public class MainActivity extends BaseActivity
             }
         };
 
-        timerHashrate = new Timer();
-        timerHashrate.scheduleAtFixedRate(timerTaskHashrate, 0, 500);
+        timerStatusHashrate = new Timer();
+        timerStatusHashrate.scheduleAtFixedRate(timerTaskStatusHashrate, 0, 500);
     }
 
     public void stopTimerStatusHashrate() {
-        if(timerHashrate != null) {
-            timerHashrate.cancel();
-            timerHashrate = null;
-            timerTaskHashrate = null;
+        if(timerStatusHashrate != null) {
+            timerStatusHashrate.cancel();
+            timerStatusHashrate = null;
+            timerTaskStatusHashrate = null;
 
             pbStatus.setProgress(0);
 
             tvStatusProgess.setVisibility(View.VISIBLE);
             tvStatusProgess.setText("0%");
+
+            startTimerRefreshHashrate();
         }
     }
 

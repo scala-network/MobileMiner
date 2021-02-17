@@ -7,5 +7,5 @@
 
     <path
         android:fillColor="@color/btn_icon_default"
-        android:pathData="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z" />
+        android:pathData="M15.41 16.59L10.83 12l4.58-4.59L14 6l-6 6 6 6 1.41-1.41z" />
 </vector>

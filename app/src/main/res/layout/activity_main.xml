@@ -821,17 +821,16 @@
                                 android:layout_marginTop="25dp"
                                 android:gravity="start"
                                 android:text="Payout"
-                                android:textSize="16sp"
+                                android:textSize="14sp"
                                 android:textStyle="bold"
+                                android:textAllCaps="true"
                                 android:textColor="@color/txt_headline" />
-
 
                             <LinearLayout
                                 android:id="@+id/layout_payout"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="15dp"
-                                android:layout_marginBottom="15dp"
                                 android:orientation="vertical"
                                 android:visibility="visible">
 
@@ -957,8 +956,7 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="15dp"
-                            android:background="@color/bg_body"
+                            android:layout_marginTop="20dp"
                             android:orientation="horizontal">
 
                             <TextView
@@ -967,8 +965,9 @@
                                 android:layout_gravity="start"
                                 android:gravity="center"
                                 android:text="Activity"
+                                android:textAllCaps="true"
                                 android:textColor="@color/txt_headline"
-                                android:textSize="16sp"
+                                android:textSize="14sp"
                                 android:textStyle="bold" />
 
                             <Space
@@ -986,9 +985,10 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="center"
-                                    android:text="See More"
+                                    android:text="More"
                                     android:textColor="@color/c_blue"
                                     android:textSize="14sp"
+                                    android:textAllCaps="true"
                                     android:textStyle="bold" />
 
                                 <ImageView
@@ -1041,17 +1041,58 @@
 
                         </RelativeLayout>
 
-                        <TextView
-                            android:layout_width="wrap_content"
+                        <LinearLayout
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="20dp"
                             android:layout_marginBottom="15dp"
-                            android:layout_gravity="start"
-                            android:gravity="center"
-                            android:text="Hashrate"
-                            android:textColor="@color/txt_headline"
-                            android:textSize="16sp"
-                            android:textStyle="bold" />
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="start"
+                                android:gravity="center"
+                                android:text="Hashrate"
+                                android:textColor="@color/txt_headline"
+                                android:textSize="14sp"
+                                android:textAllCaps="true"
+                                android:textStyle="bold" />
+
+                            <Space
+                                android:layout_width="0dp"
+                                android:layout_height="1dp"
+                                android:layout_weight="1" />
+
+                            <LinearLayout
+                                android:id="@+id/llUpdateHashrate"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:text="Refresh"
+                                    android:textColor="@color/c_blue"
+                                    android:textSize="14sp"
+                                    android:textAllCaps="true"
+                                    android:visibility="visible"
+                                    android:textStyle="bold" />
+
+                                <ImageView
+                                    android:layout_width="16dp"
+                                    android:layout_height="16dp"
+                                    android:layout_gravity="center"
+                                    android:layout_marginStart="3dp"
+                                    app:tint="@color/c_blue"
+                                    app:srcCompat="@drawable/ic_refresh" />
+
+                            </LinearLayout>
+
+
+                        </LinearLayout>
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -1073,13 +1114,14 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="15dp"
+                                android:layout_marginTop="20dp"
                                 android:layout_marginBottom="15dp"
                                 android:layout_gravity="start"
                                 android:gravity="center"
                                 android:text="Temperature"
+                                android:textAllCaps="true"
                                 android:textColor="@color/txt_headline"
-                                android:textSize="16sp"
+                                android:textSize="14sp"
                                 android:textStyle="bold" />
 
                         <LinearLayout

@@ -12,6 +12,7 @@ import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Build;
 import android.content.Context;
 import android.os.Bundle;
@@ -23,6 +24,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -58,8 +60,9 @@ public class SettingsFragment extends Fragment {
     private Integer nCooldownTheshold = Config.DefaultCooldownTheshold; // 5,10,15,20,25
 
     private SeekBar sbCPUTemp, sbBatteryTemp, sbCooldown, sbCores;
-    private TextView tvCPUMaxTemp, tvBatteryMaxTemp, tvCooldown, tvCPUTempUnit, tvBatteryTempUnit;
+    private TextView tvCPUMaxTemp, tvBatteryMaxTemp, tvCooldown, tvCPUTempUnit, tvBatteryTempUnit, tvRefreshHashrateDelay;
     private Switch swDisableTempControl, swPauseOnBattery, swKeepScreenOnWhenMining;
+    private ImageView ivDecreaseRefreshHashrateDelay, ivIncreaseRefreshHashrateDelay;
     private MaterialButtonToggleGroup tgTemperatureUnit;
 
     @Nullable
@@ -126,6 +129,8 @@ public class SettingsFragment extends Fragment {
         sbCooldown = view.findViewById(R.id.seekbarcooldownthreshold);
         tvCooldown = view.findViewById(R.id.cooldownthreshold);
 
+        tvRefreshHashrateDelay = view.findViewById(R.id.tvRefreshHashrateDelay);
+
         swPauseOnBattery = view.findViewById(R.id.chkPauseOnBattery);
         swKeepScreenOnWhenMining = view.findViewById(R.id.chkKeepScreenOnWhenMining);
         swDisableTempControl = view.findViewById(R.id.chkAmaycOff);
@@ -153,15 +158,15 @@ public class SettingsFragment extends Fragment {
         int suggested = cores / 2;
         if (suggested == 0) suggested = 1;
 
-        sbCores.setMax(cores);
+        sbCores.setMax(cores-1);
         tvCoresMax.setText(Integer.toString(cores));
 
         if (Config.read("cores").isEmpty()) {
-            sbCores.setProgress(suggested);
+            sbCores.setProgress(suggested-1);
             tvCoresNb.setText(Integer.toString(suggested));
         } else {
             int corenb = Integer.parseInt(Config.read("cores"));
-            sbCores.setProgress(corenb);
+            sbCores.setProgress(corenb-1);
             tvCoresNb.setText(Integer.toString(corenb));
         }
 
@@ -179,21 +184,21 @@ public class SettingsFragment extends Fragment {
         if (!Config.read("maxcputemp").isEmpty()) {
             nMaxCPUTemp = Integer.parseInt(Config.read("maxcputemp"));
         }
-        int nProgress = ((nMaxCPUTemp-Utils.MIN_CPU_TEMP)/Utils.INCREMENT)+1;
+        int nProgress = ((nMaxCPUTemp-Utils.MIN_CPU_TEMP)/Utils.INCREMENT);
         sbCPUTemp.setProgress(nProgress);
         updateCPUTemp();
 
         if (!Config.read("maxbatterytemp").isEmpty()) {
             nMaxBatteryTemp = Integer.parseInt(Config.read("maxbatterytemp"));
         }
-        nProgress = ((nMaxBatteryTemp-Utils.MIN_BATTERY_TEMP)/Utils.INCREMENT)+1;
+        nProgress = ((nMaxBatteryTemp-Utils.MIN_BATTERY_TEMP)/Utils.INCREMENT);
         sbBatteryTemp.setProgress(nProgress);
         updateBatteryTemp();
 
         if (!Config.read("cooldownthreshold").isEmpty()) {
             nCooldownTheshold = Integer.parseInt(Config.read("cooldownthreshold"));
         }
-        nProgress = ((nCooldownTheshold-Utils.MIN_COOLDOWN)/Utils.INCREMENT)+1;
+        nProgress = ((nCooldownTheshold-Utils.MIN_COOLDOWN)/Utils.INCREMENT);
         sbCooldown.setProgress(nProgress);
         updateCooldownThreshold();
 
@@ -229,6 +234,12 @@ public class SettingsFragment extends Fragment {
             edWorkerName.setText(Config.read("workername"));
         }
 
+        if (!Config.read(Config.CONFIG_HASHRATE_REFRESH_DELAY).isEmpty()) {
+            tvRefreshHashrateDelay.setText(Config.read(Config.CONFIG_HASHRATE_REFRESH_DELAY));
+        } else {
+            tvRefreshHashrateDelay.setText(Integer.toString(Config.DefaultRefreshDelay));
+        }
+
         sbCores.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
@@ -242,7 +253,7 @@ public class SettingsFragment extends Fragment {
 
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                tvCoresNb.setText(Integer.toString(progress));
+                tvCoresNb.setText(Integer.toString(progress+1));
             }
         });
 
@@ -296,6 +307,24 @@ public class SettingsFragment extends Fragment {
                 updateCooldownThreshold();
             }
         });
+
+        ivDecreaseRefreshHashrateDelay = view.findViewById(R.id.ivDecreaseRefreshHashrateDelay);
+        ivDecreaseRefreshHashrateDelay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onDecreaseHashrateRefreshDelay();
+            }
+        });
+
+        ivIncreaseRefreshHashrateDelay = view.findViewById(R.id.ivIncreaseRefreshHashrateDelay);
+        ivIncreaseRefreshHashrateDelay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onIncreaseHashrateRefreshDelay();
+            }
+        });
+
+        updateHashrateRefreshDelayControls();
 
         swDisableTempControl.setOnClickListener(new View.OnClickListener()
         {
@@ -418,6 +447,32 @@ public class SettingsFragment extends Fragment {
         return view;
     }
 
+    private void updateHashrateRefreshDelayControls() {
+        int delay = Integer.parseInt(tvRefreshHashrateDelay.getText().toString());
+        ivDecreaseRefreshHashrateDelay.setEnabled(delay > 1);
+        ivDecreaseRefreshHashrateDelay.setColorFilter(delay > 1 ? getResources().getColor(R.color.c_blue) : getResources().getColor(R.color.txt_inactive));
+
+        ivIncreaseRefreshHashrateDelay.setEnabled(delay < Config.DefaultRefreshDelay);
+        ivIncreaseRefreshHashrateDelay.setColorFilter(delay < Config.DefaultRefreshDelay ? getResources().getColor(R.color.c_blue) : getResources().getColor(R.color.txt_inactive));
+    }
+
+    public void onDecreaseHashrateRefreshDelay() {
+        int delay = Integer.parseInt(tvRefreshHashrateDelay.getText().toString());
+        if(delay > 1)
+            tvRefreshHashrateDelay.setText(Integer.toString(delay-1));
+
+        updateHashrateRefreshDelayControls();
+    }
+
+    public void onIncreaseHashrateRefreshDelay() {
+        int delay = Integer.parseInt(tvRefreshHashrateDelay.getText().toString());
+
+        if(delay < Config.DefaultRefreshDelay)
+            tvRefreshHashrateDelay.setText(Integer.toString(delay+1));
+
+        updateHashrateRefreshDelayControls();
+    }
+
     private void saveSettings() {
         // Validate address
         String address = edAddress.getText().toString().trim();
@@ -451,11 +506,15 @@ public class SettingsFragment extends Fragment {
         edWorkerName.setText(workername);
 
         Config.write("custom_port", edPort.getText().toString().trim());
-        Config.write("cores", Integer.toString(sbCores.getProgress()));
+
+        Config.write("cores", Integer.toString(sbCores.getProgress()+1));
 
         Config.write("maxcputemp", Integer.toString(getCPUTemp()));
         Config.write("maxbatterytemp", Integer.toString(getBatteryTemp()));
         Config.write("cooldownthreshold", Integer.toString(getCooldownTheshold()));
+
+        Config.write(Config.CONFIG_HASHRATE_REFRESH_DELAY, tvRefreshHashrateDelay.getText().toString());
+
         Config.write("disableamayc", (swDisableTempControl.isChecked() ? "1" : "0"));
 
         String mininggoal = edMiningGoal.getText().toString().trim();
@@ -491,15 +550,15 @@ public class SettingsFragment extends Fragment {
     }
 
     private Integer getCPUTemp() {
-        return ((sbCPUTemp.getProgress() - 1) * Utils.INCREMENT) + Utils.MIN_CPU_TEMP;
+        return ((sbCPUTemp.getProgress()) * Utils.INCREMENT) + Utils.MIN_CPU_TEMP;
     }
 
     private Integer getBatteryTemp() {
-        return ((sbBatteryTemp.getProgress() - 1) * Utils.INCREMENT) + Utils.MIN_BATTERY_TEMP;
+        return ((sbBatteryTemp.getProgress()) * Utils.INCREMENT) + Utils.MIN_BATTERY_TEMP;
     }
 
     private Integer getCooldownTheshold() {
-        return ((sbCooldown.getProgress() - 1) * Utils.INCREMENT) + Utils.MIN_COOLDOWN;
+        return ((sbCooldown.getProgress()) * Utils.INCREMENT) + Utils.MIN_COOLDOWN;
     }
 
     private void updateCPUTemp() {

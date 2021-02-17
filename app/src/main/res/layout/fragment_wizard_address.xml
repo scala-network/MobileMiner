@@ -22,6 +22,12 @@
 		android:layout_marginBottom="15dp"
 		android:layout_below="@+id/toolbar" >
 
+		<LinearLayout
+			android:id="@+id/llNotice"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:orientation="vertical"/>
+
 		<TextView
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"

@@ -181,7 +181,7 @@
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="3dp"
+                    android:layout_marginTop="5dp"
                     app:errorEnabled="false">
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -301,9 +301,9 @@
                     android:id="@+id/seekbarcores"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:max="8"
+                    android:max="7"
                     android:maxHeight="5dp"
-                    android:min="1"
+                    android:min="0"
                     android:minHeight="5dp"
                     android:paddingStart="0dp"
                     android:paddingEnd="0dp"
@@ -405,9 +405,9 @@
                     android:id="@+id/seekbarcputemperature"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:max="5"
+                    android:max="4"
                     android:maxHeight="5dp"
-                    android:min="1"
+                    android:min="0"
                     android:minHeight="5dp"
                     android:paddingStart="0dp"
                     android:paddingEnd="0dp"
@@ -475,9 +475,9 @@
                     android:id="@+id/seekbarbatterytemperature"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:max="5"
+                    android:max="4"
                     android:maxHeight="5dp"
-                    android:min="1"
+                    android:min="0"
                     android:minHeight="5dp"
                     android:paddingStart="0dp"
                     android:paddingEnd="0dp"
@@ -546,9 +546,9 @@
                     android:id="@+id/seekbarcooldownthreshold"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:max="5"
+                    android:max="4"
                     android:maxHeight="5dp"
-                    android:min="1"
+                    android:min="0"
                     android:minHeight="5dp"
                     android:paddingStart="0dp"
                     android:paddingEnd="0dp"
@@ -561,62 +561,26 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="25dp"
-                    android:layout_marginBottom="15dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginBottom="2.5dp"
                     android:gravity="start"
-                    android:text="@string/advanced"
+                    android:text="@string/pooloptions"
                     android:textColor="@color/txt_headline"
                     android:textSize="14sp"
-                    android:textAllCaps="true"
                     android:textStyle="bold" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="0"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/pauseminingonbattery"
-                        android:textColor="@color/c_grey"
-                        android:textSize="14sp"
-                        android:checked="false"
-                        app:buttonTint="@color/txt_main" />
-
-                    <Space
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        tools:ignore="NestedWeights" />
-
-                    <Switch
-                        android:id="@+id/chkPauseOnBattery"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:theme="@style/SwitchTheme" />
-
-                </LinearLayout>
-
-                <View
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="5dp"
-                    android:layout_width="fill_parent"
-                    android:layout_height="0.7dp"
-                    android:background="@color/txt_inactive"/>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
-                    android:layout_weight="0"
                     android:orientation="horizontal">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/keepscreenonwhenmining"
+                        android:text="@string/temperature_unit"
+                        android:layout_gravity="center_vertical"
                         android:textColor="@color/txt_main"
                         android:textSize="14sp"
                         android:checked="false" />
@@ -627,16 +591,33 @@
                         android:layout_weight="1"
                         tools:ignore="NestedWeights" />
 
-                    <Switch
-                        android:id="@+id/chkKeepScreenOnWhenMining"
+                    <com.google.android.material.button.MaterialButtonToggleGroup
+                        android:id="@+id/tgTemperatureUnit"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:theme="@style/SwitchTheme" />
+                        app:singleSelection="true"
+                        app:checkedButton="@id/btnCelsius">
+
+                        <Button
+                            android:id="@+id/btnCelsius"
+                            android:layout_width="50dp"
+                            android:layout_height="40dp"
+                            android:text="@string/celsius"
+                            style="?attr/materialButtonOutlinedStyle" />
+
+                        <Button
+                            android:id="@+id/btnFarehnheit"
+                            android:layout_width="50dp"
+                            android:layout_height="40dp"
+                            android:text="@string/fahrenheit"
+                            style="?attr/materialButtonOutlinedStyle" />
+
+                    </com.google.android.material.button.MaterialButtonToggleGroup>
 
                 </LinearLayout>
 
                 <View
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="5dp"
                     android:layout_marginBottom="5dp"
                     android:layout_width="fill_parent"
                     android:layout_height="0.7dp"
@@ -645,7 +626,8 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
                     android:layout_weight="0"
                     android:orientation="horizontal">
 
@@ -686,7 +668,95 @@
                 </LinearLayout>
 
                 <View
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_width="fill_parent"
+                    android:layout_height="0.7dp"
+                    android:background="@color/txt_inactive"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="25dp"
+                    android:layout_marginBottom="15dp"
+                    android:gravity="start"
+                    android:text="@string/advanced"
+                    android:textColor="@color/txt_headline"
+                    android:textSize="14sp"
+                    android:textAllCaps="true"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="@string/hashrate_refresh_delay_seconds"
+                        android:textColor="@color/c_grey"
+                        android:textSize="14sp"
+                        android:checked="false"
+                        app:buttonTint="@color/txt_main" />
+
+                    <Space
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        tools:ignore="NestedWeights" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:id="@+id/ivDecreaseRefreshHashrateDelay"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_gravity="center"
+                            app:tint="@color/c_blue"
+                            app:srcCompat="@drawable/ic_arrow_left" />
+
+                        <TextView
+                            android:id="@+id/tvRefreshHashrateDelay"
+                            android:layout_width="20dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            android:text="30"
+                            android:textColor="@color/txt_main"
+                            android:textSize="14sp"
+                            android:checked="false" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            android:text="s"
+                            android:textColor="@color/txt_main"
+                            android:textSize="14sp"
+                            android:checked="false" />
+
+                        <ImageView
+                            android:id="@+id/ivIncreaseRefreshHashrateDelay"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_gravity="center"
+                            app:tint="@color/c_blue"
+                            app:srcCompat="@drawable/ic_arrow_right" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <View
+                    android:layout_marginTop="5dp"
                     android:layout_marginBottom="5dp"
                     android:layout_width="fill_parent"
                     android:layout_height="0.7dp"
@@ -695,15 +765,52 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="0dp"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/pauseminingonbattery"
+                        android:textColor="@color/c_grey"
+                        android:textSize="14sp"
+                        android:checked="false"
+                        app:buttonTint="@color/txt_main" />
+
+                    <Space
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        tools:ignore="NestedWeights" />
+
+                    <Switch
+                        android:id="@+id/chkPauseOnBattery"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:theme="@style/SwitchTheme" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_width="fill_parent"
+                    android:layout_height="0.7dp"
+                    android:background="@color/txt_inactive"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
                     android:layout_weight="0"
                     android:orientation="horizontal">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/temperature_unit"
-                        android:layout_gravity="center_vertical"
+                        android:text="@string/keepscreenonwhenmining"
                         android:textColor="@color/txt_main"
                         android:textSize="14sp"
                         android:checked="false" />
@@ -714,28 +821,11 @@
                         android:layout_weight="1"
                         tools:ignore="NestedWeights" />
 
-                    <com.google.android.material.button.MaterialButtonToggleGroup
-                        android:id="@+id/tgTemperatureUnit"
+                    <Switch
+                        android:id="@+id/chkKeepScreenOnWhenMining"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        app:singleSelection="true"
-                        app:checkedButton="@id/btnCelsius">
-
-                        <Button
-                            android:id="@+id/btnCelsius"
-                            android:layout_width="50dp"
-                            android:layout_height="40dp"
-                            android:text="@string/celsius"
-                            style="?attr/materialButtonOutlinedStyle" />
-
-                        <Button
-                            android:id="@+id/btnFarehnheit"
-                            android:layout_width="50dp"
-                            android:layout_height="40dp"
-                            android:text="@string/fahrenheit"
-                            style="?attr/materialButtonOutlinedStyle" />
-
-                    </com.google.android.material.button.MaterialButtonToggleGroup>
+                        android:theme="@style/SwitchTheme" />
 
                 </LinearLayout>
 

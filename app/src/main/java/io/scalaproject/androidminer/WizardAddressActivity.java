@@ -14,6 +14,7 @@ import android.os.Bundle;
 
 import android.os.StrictMode;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,6 +25,7 @@ import androidx.core.content.ContextCompat;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputLayout;
 
+import io.scalaproject.androidminer.widgets.Notice;
 import io.scalaproject.androidminer.widgets.Toolbar;
 
 public class WizardAddressActivity extends BaseActivity {
@@ -79,6 +81,15 @@ public class WizardAddressActivity extends BaseActivity {
         toolbar.setTitle("Wallet Address");
         toolbar.setButtonMain(Toolbar.BUTTON_MAIN_BACK);
         toolbar.setButtonOptions(Toolbar.BUTTON_OPTIONS_STAR);
+
+        ViewGroup llNotice = findViewById(R.id.llNotice);
+        llNotice.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(WizardAddressActivity.this, VaultActivity.class));
+            }
+        });
+        Notice.showAll(llNotice, Notice.NOTICE_SHOW_VAULT, false);
     }
 
     public void onPaste(View view) {
