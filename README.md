@@ -3,7 +3,7 @@
 A high performance and open-source application for mining Scala on Android mobile devices.
 
 <p align="left">
-  <img src="https://scalaproject.io/assets/img/mobile-miner.png" width="350" title="hover text">
+  <img src="https://scalaproject.io/assets/img/mobile-minerv2.png" width="350" title="hover text">
 </p>
 
 ## Supported CPU instruction sets
