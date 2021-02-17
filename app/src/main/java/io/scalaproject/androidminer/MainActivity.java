@@ -2092,6 +2092,24 @@ public class MainActivity extends BaseActivity
             return textSpan;
         }
 
+        formatText = getResources().getString(R.string.amayc_ok);
+        if(text.contains(formatText)) {
+            int i = text.indexOf(formatText);
+            int imax = i + formatText.length();
+            textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_white)), i, imax, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            textSpan.setSpan(new StyleSpan(android.graphics.Typeface.NORMAL), i, imax, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+            return textSpan;
+        }
+
+        formatText = getResources().getString(R.string.amayc_too_hot);
+        if(text.contains(formatText)) {
+            int i = text.indexOf(formatText);
+            int imax = i + formatText.length();
+            textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_orange)), i, imax, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            textSpan.setSpan(new StyleSpan(android.graphics.Typeface.NORMAL), i, imax, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+            return textSpan;
+        }
+
         formatText = getResources().getString(R.string.maxtemperaturereached);
         if(text.contains(formatText)) {
             int i = text.indexOf(formatText);
@@ -2461,7 +2479,10 @@ public class MainActivity extends BaseActivity
                                     int batterypred = (int)Math.round(predictedNext.getDouble(1));
 
                                     if (cpupred >= nMaxCPUTemp || batterypred >= nMaxBatteryTemp) {
+                                        appendLogOutputFormattedText(getString(R.string.amayc_too_hot));
                                         enableCooling(true);
+                                    } else {
+                                        appendLogOutputFormattedText(getString(R.string.amayc_ok));
                                     }
                                 }
                             }
@@ -2472,12 +2493,18 @@ public class MainActivity extends BaseActivity
                                 if (!listCPUTemp.isEmpty()) {
                                     int cpupred = (int)Math.round(predictedNext);
                                     if (cpupred >= nMaxCPUTemp) {
+                                        appendLogOutputFormattedText(getString(R.string.amayc_too_hot));
                                         enableCooling(true);
+                                    } else {
+                                        appendLogOutputFormattedText("AMAYC temperature check: OK");
                                     }
                                 } else if (!listBatteryTemp.isEmpty()) {
                                     int batterypred = (int)Math.round(predictedNext);
                                     if (batterypred >= nMaxBatteryTemp) {
+                                        appendLogOutputFormattedText(getString(R.string.amayc_too_hot));
                                         enableCooling(true);
+                                    } else {
+                                        appendLogOutputFormattedText("AMAYC temperature check: OK");
                                     }
                                 }
                             }
