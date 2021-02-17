@@ -213,7 +213,8 @@ public class MainActivity extends BaseActivity
     private final List<String> listCPUTemp = new ArrayList<>();
     private final List<String> listBatteryTemp = new ArrayList<>();
     private boolean isCharging = false;
-    private final int MAX_CHART_VALUES = 250;
+    private final int MAX_HR_VALUES = 100;
+    private final int MAX_TEMP_VALUES = 50;
 
     public static Context contextOfApplication;
 
@@ -757,30 +758,12 @@ public class MainActivity extends BaseActivity
     }
 
     private void resetCharts() {
-        LineData dataH = chartHashrate.getData();
-        if(dataH != null && dataH.getDataSetCount() > 0) {
-            lValuesHr.clear();
+        lValuesHr.clear();
+        xHr = 0;
 
-            dataH.clearValues();
-            dataH.notifyDataChanged();
-            chartHashrate.notifyDataSetChanged();
-
-            chartHashrate.clear();
-        }
-
-        BarData dataT = chartTemperature.getData();
-        if(dataT != null && dataT.getDataSetCount() > 0) {
-            lValuesTempBattery.clear();
-            lValuesTempCPU.clear();
-
-            dataT.clearValues();
-            dataT.notifyDataChanged();
-            chartTemperature.notifyDataSetChanged();
-
-            chartTemperature.clear();
-        }
-
-        System.gc(); System.gc();
+        lValuesTempBattery.clear();
+        lValuesTempCPU.clear();
+        xTemp = 0;
     }
 
     private void addHashrateValue(float hr) {
@@ -788,7 +771,7 @@ public class MainActivity extends BaseActivity
         xHr++;
 
         // Only keep 100 last values to avoid overflow
-        if(lValuesHr.size() > MAX_CHART_VALUES)
+        if(lValuesHr.size() > MAX_HR_VALUES)
             lValuesHr.remove(0);
 
         LineDataSet set1;
@@ -801,11 +784,9 @@ public class MainActivity extends BaseActivity
             data.notifyDataChanged();
         } else {
             // Set Min/Max YAxis
-
             leftAxis.setAxisMaximum(hr * 1.25f);
             leftAxis.setAxisMinimum(hr * 0.75f);
 
-            // create a dataset and give it a type
             set1 = new LineDataSet(lValuesHr, "Hashrate");
 
             set1.setLabel("");
@@ -819,11 +800,9 @@ public class MainActivity extends BaseActivity
             set1.setHighLightColor(Color.rgb(244, 117, 117));
             set1.setDrawCircleHole(false);
 
-            // create a data object with the data sets
             data = new LineData(set1);
             data.setDrawValues(false);
 
-            // set data
             chartHashrate.setData(data);
         }
 
@@ -884,10 +863,10 @@ public class MainActivity extends BaseActivity
         xTemp++;
 
         // Only keep 100 last values to avoid overflow
-        if(lValuesTempCPU.size() > MAX_CHART_VALUES)
+        if(lValuesTempCPU.size() > MAX_TEMP_VALUES)
             lValuesTempCPU.remove(0);
 
-        if(lValuesTempBattery.size() > MAX_CHART_VALUES)
+        if(lValuesTempBattery.size() > MAX_TEMP_VALUES)
             lValuesTempBattery.remove(0);
 
         BarDataSet set1, set2;
@@ -900,16 +879,6 @@ public class MainActivity extends BaseActivity
             data.notifyDataChanged();
             chartTemperature.notifyDataSetChanged();
         } else {
-            if(data != null) {
-                data.clearValues();
-            }
-
-            chartTemperature.clear();
-
-            System.gc();
-            System.gc();
-
-            // create 4 DataSets
             set1 = new BarDataSet(lValuesTempCPU, "CPU");
             set1.setColor(getResources().getColor(R.color.c_blue));
             set1.setAxisDependency(YAxis.AxisDependency.LEFT);
@@ -919,6 +888,7 @@ public class MainActivity extends BaseActivity
             set2.setAxisDependency(YAxis.AxisDependency.LEFT);
 
             data = new BarData(set1, set2);
+            data.setDrawValues(false);
 
             chartTemperature.setData(data);
         }
@@ -1568,6 +1538,7 @@ public class MainActivity extends BaseActivity
     @Override
     protected void onResume() {
         super.onResume();
+
         updateUI();
 
         ProviderManager.request.setListener(payoutListener).start();
