@@ -757,6 +757,11 @@ public class MainActivity extends BaseActivity
         setTemperaturesChartLimits();
     }
 
+    private void updateChartTemperatureAxis() {
+        YAxis leftAxis = chartTemperature.getAxisLeft();
+        leftAxis.setAxisMaximum(bIsCelsius ? 90f : Utils.convertCelciusToFahrenheit(90));
+    }
+
     private void resetCharts() {
         lValuesHr.clear();
         xHr = 0;
@@ -764,6 +769,8 @@ public class MainActivity extends BaseActivity
         lValuesTempBattery.clear();
         lValuesTempCPU.clear();
         xTemp = 0;
+
+        updateChartTemperatureAxis();
     }
 
     private void addHashrateValue(float hr) {
@@ -1193,6 +1200,7 @@ public class MainActivity extends BaseActivity
         updatePayoutWidgetStatus();
         refreshLogOutputView();
         updateCores();
+
         setTemperaturesChartLimits();
     }
 
