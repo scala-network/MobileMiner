@@ -450,6 +450,16 @@ public class SettingsFragment extends Fragment {
             }
         });
 
+        Button btnSendDebugInformationHelp = view.findViewById(R.id.btnSendDebugInformationHelp);
+        btnSendDebugInformationHelp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // inflate the layout of the popup window
+                View popupView = inflater.inflate(R.layout.helper_send_debug_information, null);
+                Utils.showPopup(v, inflater, popupView);
+            }
+        });
+
         return view;
     }
 

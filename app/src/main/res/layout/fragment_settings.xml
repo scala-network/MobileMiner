@@ -644,7 +644,7 @@
                         android:id="@+id/btnAmaycWarning"
                         android:layout_width="24dp"
                         android:layout_height="24dp"
-                        android:layout_marginStart="25dp"
+                        android:layout_marginStart="10dp"
                         android:layout_gravity="center_vertical"
                         app:backgroundTint="@android:color/transparent"
                         app:cornerRadius="5dp"
@@ -773,6 +773,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
                         android:text="@string/pauseminingonbattery"
                         android:textColor="@color/c_grey"
                         android:textSize="14sp"
@@ -811,6 +812,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
                         android:text="@string/keepscreenonwhenmining"
                         android:textColor="@color/txt_main"
                         android:textSize="14sp"
@@ -848,10 +850,25 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
                         android:text="@string/send_debug_information"
                         android:textColor="@color/txt_main"
                         android:textSize="14sp"
                         android:checked="false" />
+
+                    <Button
+                        android:id="@+id/btnSendDebugInformationHelp"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_gravity="center_vertical"
+                        app:backgroundTint="@android:color/transparent"
+                        app:cornerRadius="5dp"
+                        app:icon="@drawable/ic_help"
+                        app:iconGravity="textStart"
+                        app:iconPadding="0dp"
+                        app:iconTint="@color/txt_main"
+                        android:visibility="visible"
+                        tools:ignore="UnusedAttribute" />
 
                     <Space
                         android:layout_width="0dp"

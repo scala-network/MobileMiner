@@ -233,4 +233,5 @@
     <string name="amayc_too_hot">AMAYC temperature check: Too hot</string>
     <string name="amayc_ok">AMAYC temperature check: OK</string>
     <string name="send_debug_information">Send Debug Information</string>
+    <string name="send_debug_information_help">When this option is enabled and the application encounters a fatal error, your default email client will be opened to let you send the detailed debug and stack trace report to our team.</string>
 </resources>
