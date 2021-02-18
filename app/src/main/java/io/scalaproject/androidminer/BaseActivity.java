@@ -57,6 +57,18 @@ public abstract class BaseActivity extends AppCompatActivity {
         });
     }
 
+    public void handleUncaughtException (Thread thread, Throwable e)
+    {
+        e.printStackTrace(); // not all Android versions will print the stack trace automatically
+
+        /*Intent intent = new Intent ();
+        intent.setAction ("com.mydomain.SEND_LOG"); // see step 5.
+        intent.setFlags (Intent.FLAG_ACTIVITY_NEW_TASK); // required when starting from Application
+        startActivity (intent);
+
+        System.exit(1); // kill off the crashed app*/
+    }
+
     public void showProgressDialog(int msgId) {
         showProgressDialog(msgId, 250); // don't show dialog for fast operations
     }

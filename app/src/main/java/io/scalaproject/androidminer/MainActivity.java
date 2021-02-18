@@ -1436,6 +1436,10 @@ public class MainActivity extends BaseActivity
     private void startMining() {
         if (binder == null) return;
 
+        // cause a crash...
+        //String sCrashString = null;
+        //Log.e("MyApp", sCrashString.toString() );
+
         if (!Config.read("init").equals("1")) {
             setStatusText(getString(R.string.save_settings_first));
             return;

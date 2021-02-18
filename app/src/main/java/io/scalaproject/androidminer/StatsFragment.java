@@ -22,6 +22,8 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import java.util.Locale;
+
 import io.scalaproject.androidminer.api.ProviderData;
 import io.scalaproject.androidminer.api.PoolItem;
 import io.scalaproject.androidminer.api.IProviderListener;
@@ -101,7 +103,7 @@ public class StatsFragment extends Fragment {
         tvNetworkBlocks.setText(d.network.lastBlockTime.isEmpty() ? "n/a" : d.network.lastBlockTime);
 
         TextView tvNetworkHeight = view.findViewById(R.id.height);
-        tvNetworkHeight.setText(d.network.lastBlockHeight.isEmpty() ? "n/a" : String.format("%,d", Integer.parseInt(d.network.lastBlockHeight)));
+        tvNetworkHeight.setText(d.network.lastBlockHeight.isEmpty() ? "n/a" : String.format(Locale.getDefault(), "%,d", Long.parseLong(d.network.lastBlockHeight)));
 
         TextView tvNetworkRewards = view.findViewById(R.id.rewards);
         tvNetworkRewards.setText(d.network.lastRewardAmount.isEmpty() ? "n/a" : d.network.lastRewardAmount);
@@ -119,7 +121,7 @@ public class StatsFragment extends Fragment {
         tvPoolHashrateUnit.setText(p.length > 1 ? p[1] : "kH/s");
 
         TextView tvPoolMiners = view.findViewById(R.id.miners);
-        tvPoolMiners.setText(String.format("%,d", Integer.parseInt(d.pool.miners)));
+        tvPoolMiners.setText(String.format(Locale.getDefault(), "%,d", Integer.parseInt(d.pool.miners)));
 
         LinearLayout llPoolBlocks = view.findViewById(R.id.llBlocksPool);
         llPoolBlocks.setVisibility(pi.getPoolType() == 2 || pi.getPoolType() == 0 ? View.GONE : View.VISIBLE);
@@ -128,7 +130,7 @@ public class StatsFragment extends Fragment {
         tvPoolLastBlock.setText(d.pool.lastBlockTime.isEmpty() ? "n/a" : d.pool.lastBlockTime);
 
         TextView tvPoolLBlocks = view.findViewById(R.id.blockspool);
-        tvPoolLBlocks.setText(d.pool.blocks.isEmpty() ? "n/a" : String.format("%,d", Integer.parseInt(d.pool.blocks)));
+        tvPoolLBlocks.setText(d.pool.blocks.isEmpty() ? "n/a" : String.format(Locale.getDefault(), "%,d", Integer.parseInt(d.pool.blocks)));
 
         // Address
 
@@ -161,7 +163,7 @@ public class StatsFragment extends Fragment {
         tvAddressSubmittedHash.setText(pi.getPoolType() == 1 || pi.getPoolType() == 2 ? view.getResources().getString(R.string.submitted_shares) : view.getResources().getString(R.string.submitted_hashes));
 
         TextView tvAddressBlocks = view.findViewById(R.id.blocksminedminer);
-        tvAddressBlocks.setText(d.miner.shares.isEmpty() ? "n/a" : String.format("%,d", Integer.parseInt(d.miner.shares)));
+        tvAddressBlocks.setText(d.miner.shares.isEmpty() ? "n/a" : String.format(Locale.getDefault(), "%,d", Long.parseLong(d.miner.shares)));
 
         String sBalance = d.miner.balance.replace("XLA", "").trim();
         TextView tvBalance = view.findViewById(R.id.balance);
