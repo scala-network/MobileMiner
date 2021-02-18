@@ -83,7 +83,7 @@ public class MiningService extends Service {
     private String lastOutput = "";
     private static RequestQueue reqQueue;
 
-    private static String API_IP = "https://json.geoiplookup.io/";
+    private final static String API_IP = "https://json.geoiplookup.io/";
 
     @Override
     public void onCreate()
@@ -387,7 +387,6 @@ public class MiningService extends Service {
 
         public void run() {
             try {
-
                 raiseMiningServiceStateChange(true);
                 if (proc != null) {
                     proc.waitFor();
@@ -513,7 +512,9 @@ public class MiningService extends Service {
 
                     }
 
-                    if (currentThread().isInterrupted()) return;
+                    if (currentThread().isInterrupted()) {
+                        return;
+                    }
                 }
 
             } catch (Exception e) {
@@ -530,5 +531,18 @@ public class MiningService extends Service {
                 Log.w(LOG_TAG, "exception", e);
             }
         }
+    }
+
+    public boolean isMiningProcessAlive() {
+        try {
+            if(process != null) {
+                process.exitValue();
+            }
+        } catch(IllegalThreadStateException ignored) {
+            // Mining process is alive
+            return true;
+        }
+
+        return false;
     }
 }

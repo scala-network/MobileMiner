@@ -13,6 +13,8 @@ import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.security.ProviderInstaller;
 
+import org.acra.ACRA;
+
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 
@@ -29,6 +31,8 @@ public class SplashActivity extends BaseActivity {
             Config.clear();
             Config.write(Config.CONFIG_KEY_CONFIG_VERSION, Config.version);
         }
+
+        ACRA.getErrorReporter().setEnabled(Config.read(Config.CONFIG_SEND_DEBUG_INFO, "0").equals("1"));
 
         super.onCreate(savedInstanceState);
         if ((getIntent().getFlags() & Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT) != 0) {

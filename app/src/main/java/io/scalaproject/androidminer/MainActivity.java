@@ -164,6 +164,9 @@ public class MainActivity extends BaseActivity
     private Timer timerRefreshHashrate = null;
     private TimerTask timerTaskRefreshHashrate = null;
 
+    private Timer timerMiningSanity = null;
+    private TimerTask timerTaskMiningSanity = null;
+
     private boolean validArchitecture = true;
 
     private MiningService.MiningServiceBinder binder;
@@ -208,6 +211,8 @@ public class MainActivity extends BaseActivity
     private Integer nHrCount = 0;
     private float fMaxHr = 0.0f;
 
+    private int nAcceptedShares = 0;
+
     // Temperature Control
     private Timer timerTemperatures = null;
     private TimerTask timerTaskTemperatures = null;
@@ -229,6 +234,7 @@ public class MainActivity extends BaseActivity
     }
 
     private Button btnStart;
+    private Boolean bMiningStoppedByUser = false;
 
     private static int m_nLastCurrentState = Config.STATE_STOPPED;
     private static int m_nCurrentState = Config.STATE_STOPPED;
@@ -580,7 +586,7 @@ public class MainActivity extends BaseActivity
 
         if (!Arrays.asList(Config.SUPPORTED_ARCHITECTURES).contains(Tools.getABI())) {
             String sArchError = "Your architecture is not supported: " + Tools.getABI();
-            appendLogOutputFormattedText(sArchError);
+            appendLogOutputTextWithDate(sArchError);
             refreshLogOutputView();
             setStatusText(sArchError);
 
@@ -1434,10 +1440,7 @@ public class MainActivity extends BaseActivity
         //String sCrashString = null;
         //Log.e("ACRA Test", sCrashString.toString() );
 
-        String password = Config.read("workername");
-        String address = Config.read("address");
-
-        if (!Utils.verifyAddress(address)) {
+        if (!Utils.verifyAddress(Config.read("address"))) {
             setStatusText(getString(R.string.invalid_address));
             return;
         }
@@ -1454,8 +1457,9 @@ public class MainActivity extends BaseActivity
 
         bForceMiningOnPause = false;
         bForceMiningNoTempSensor = false;
-
-        String username = address + Config.read("usernameparameters");
+        bMiningStoppedByUser = false;
+        clearMinerLog = true;
+        nAcceptedShares = 0;
 
         resetOptions();
 
@@ -1463,22 +1467,33 @@ public class MainActivity extends BaseActivity
 
         loadSettings();
 
-        MiningService s = binder.getService();
-        MiningService.MiningConfig cfg = s.newConfig(
-                username,
-                password,
-                nCores,
-                1,
-                1
-        );
-
-        s.startMining(cfg);
+        startMiningService();
 
         showNotification();
 
         setMinerStatus(Config.STATE_MINING);
 
+        startTimerMiningSanity();
+
         updateUI();
+    }
+
+    private void startMiningService() {
+        String password = Config.read("workername");
+        String address = Config.read("address");
+
+        String username = address + Config.read("usernameparameters");
+
+        MiningService s = binder.getService();
+        MiningService.MiningConfig cfg = s.newConfig(
+                username,
+                password,
+                nCores,
+                1, // Default
+                1 // Default
+        );
+
+        s.startMining(cfg);
     }
 
     private void askToForceMining() {
@@ -1525,6 +1540,8 @@ public class MainActivity extends BaseActivity
             return;
         }
 
+        bMiningStoppedByUser = true;
+
         setMinerStatus(Config.STATE_STOPPED);
 
         binder.getService().stopMining();
@@ -1532,6 +1549,8 @@ public class MainActivity extends BaseActivity
         resetOptions();
 
         resetAvgMaxHashrate();
+
+        stopTimerMiningSanity();
 
         updateUI();
     }
@@ -1574,7 +1593,6 @@ public class MainActivity extends BaseActivity
             return;
 
         if (binder.getService().getMiningServiceState()) {
-            clearMinerLog = true;
             MainActivity.this.stopMining();
         } else {
             MainActivity.this.startMining();
@@ -1702,8 +1720,45 @@ public class MainActivity extends BaseActivity
         updateNotification();
     }
 
+    public void startTimerMiningSanity() {
+        if(timerMiningSanity != null)
+            return;
+
+        timerTaskMiningSanity = new TimerTask() {
+            @Override
+            public void run() {
+                runOnUiThread(new Runnable() {
+                    public void run() {
+                        Boolean alive = binder.getService().isMiningProcessAlive();
+
+                        if(!alive && isDeviceMiningBackground() && !bMiningStoppedByUser) {
+                            clearMinerLog = false;
+                            appendLogOutputTextWithDate(getString(R.string.mining_aborted));
+                            appendLogOutputTextWithDate(getString(R.string.restarting_mining_process));
+                            appendLogOutputText(System.getProperty("line.separator"));
+
+                            startMiningService();
+                        }
+                    }
+                });
+            }
+        };
+
+        timerMiningSanity = new Timer();
+
+        timerMiningSanity.scheduleAtFixedRate(timerTaskMiningSanity, 5000, 5000);
+    }
+
+    public void stopTimerMiningSanity() {
+        if(timerMiningSanity != null) {
+            timerMiningSanity.cancel();
+            timerMiningSanity = null;
+            timerTaskMiningSanity = null;
+        }
+    }
+
     public void startTimerRefreshHashrate() {
-        if(timerRefreshHashrate != null || timerStatusHashrate != null)
+        if(timerRefreshHashrate != null)
             return;
 
         String refreshDelay = Config.read(Config.CONFIG_HASHRATE_REFRESH_DELAY);
@@ -2109,11 +2164,29 @@ public class MainActivity extends BaseActivity
             return textSpan;
         }
 
+        formatText = getResources().getString(R.string.mining_aborted);
+        if(text.contains(formatText)) {
+            int i = text.indexOf(formatText);
+            int imax = text.length();
+            textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_red)), i, imax, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            textSpan.setSpan(new StyleSpan(android.graphics.Typeface.NORMAL), i, imax, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+            return textSpan;
+        }
+
+        formatText = getResources().getString(R.string.restarting_mining_process);
+        if(text.contains(formatText)) {
+            int i = text.indexOf(formatText);
+            int imax = text.length();
+            textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_white)), i, imax, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            textSpan.setSpan(new StyleSpan(android.graphics.Typeface.NORMAL), i, imax, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+            return textSpan;
+        }
+
         formatText = "AMYAC error";
         if(text.contains(formatText)) {
             int i = text.indexOf(formatText);
             int imax = text.length();
-            textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_orange)), i, imax, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_yellow)), i, imax, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             textSpan.setSpan(new StyleSpan(android.graphics.Typeface.NORMAL), i, imax, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
             return textSpan;
         }
@@ -2122,7 +2195,7 @@ public class MainActivity extends BaseActivity
         if(text.contains(formatText)) {
             int i = text.indexOf(formatText);
             int imax = text.length();
-            textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_orange)), i, imax, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_yellow)), i, imax, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             textSpan.setSpan(new StyleSpan(android.graphics.Typeface.NORMAL), i, imax, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
             return textSpan;
         }
@@ -2131,7 +2204,7 @@ public class MainActivity extends BaseActivity
         if(text.contains(formatText)) {
             int i = text.indexOf(formatText);
             int imax = text.length();
-            textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_orange)), i, imax, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_yellow)), i, imax, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             textSpan.setSpan(new StyleSpan(android.graphics.Typeface.NORMAL), i, imax, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
             return textSpan;
         }
@@ -2245,10 +2318,9 @@ public class MainActivity extends BaseActivity
 
                                     updateHashrate(-1.0f, -1.0f);
                                 }
-                                clearMinerLog = true;
+
                                 setStatusText("Miner Started.");
                             } else {
-
                                 setStatusText("Miner Stopped.");
                             }
 
@@ -2262,7 +2334,9 @@ public class MainActivity extends BaseActivity
                         runOnUiThread(() -> {
                             appendLogOutputText(status);
 
-                            String sAccepted = Integer.toString(accepted);
+                            nAcceptedShares += accepted;
+                            String sAccepted = Integer.toString(nAcceptedShares);
+
                             if(!tvAcceptedShares.getText().equals(sAccepted)) {
                                 tvAcceptedShares.setText(sAccepted);
                                 tvAcceptedShares.startAnimation(getBlinkAnimation());
@@ -2451,10 +2525,10 @@ public class MainActivity extends BaseActivity
                                     int batterypred = (int)Math.round(predictedNext.getDouble(1));
 
                                     if (cpupred >= nMaxCPUTemp || batterypred >= nMaxBatteryTemp) {
-                                        appendLogOutputFormattedText(getString(R.string.amayc_too_hot));
+                                        appendLogOutputTextWithDate(getString(R.string.amayc_too_hot));
                                         enableCooling(true);
                                     } else {
-                                        appendLogOutputFormattedText(getString(R.string.amayc_ok));
+                                        appendLogOutputTextWithDate(getString(R.string.amayc_ok));
                                     }
                                 }
                             }
@@ -2465,18 +2539,18 @@ public class MainActivity extends BaseActivity
                                 if (!listCPUTemp.isEmpty()) {
                                     int cpupred = (int)Math.round(predictedNext);
                                     if (cpupred >= nMaxCPUTemp) {
-                                        appendLogOutputFormattedText(getString(R.string.amayc_too_hot));
+                                        appendLogOutputTextWithDate(getString(R.string.amayc_too_hot));
                                         enableCooling(true);
                                     } else {
-                                        appendLogOutputFormattedText("AMAYC temperature check: OK");
+                                        appendLogOutputTextWithDate("AMAYC temperature check: OK");
                                     }
                                 } else if (!listBatteryTemp.isEmpty()) {
                                     int batterypred = (int)Math.round(predictedNext);
                                     if (batterypred >= nMaxBatteryTemp) {
-                                        appendLogOutputFormattedText(getString(R.string.amayc_too_hot));
+                                        appendLogOutputTextWithDate(getString(R.string.amayc_too_hot));
                                         enableCooling(true);
                                     } else {
-                                        appendLogOutputFormattedText("AMAYC temperature check: OK");
+                                        appendLogOutputTextWithDate("AMAYC temperature check: OK");
                                     }
                                 }
                             }
@@ -2513,11 +2587,11 @@ public class MainActivity extends BaseActivity
 
     private void disableAmaycOnError(String error) {
         bDisableAmayc = true;
-        appendLogOutputFormattedText(error);
-        appendLogOutputFormattedText(getResources().getString(R.string.statictempcontrol));
+        appendLogOutputTextWithDate(error);
+        appendLogOutputTextWithDate(getResources().getString(R.string.statictempcontrol));
     }
 
-    private void appendLogOutputFormattedText(String text) {
+    private void appendLogOutputTextWithDate(String text) {
         appendLogOutputText("[" + Utils.getDateTime() + "] " + text);
     }
 
@@ -2527,7 +2601,7 @@ public class MainActivity extends BaseActivity
 
             pauseMiner();
 
-            appendLogOutputFormattedText(getResources().getString(R.string.maxtemperaturereached));
+            appendLogOutputTextWithDate(getResources().getString(R.string.maxtemperaturereached));
         }
         else {
             if (Config.read("pauseonbattery").equals("1") && !isCharging) {
