@@ -232,4 +232,5 @@
     <string name="hashrate_refresh_delay_seconds">Hashrate Refresh Delay</string>
     <string name="amayc_too_hot">AMAYC temperature check: Too hot</string>
     <string name="amayc_ok">AMAYC temperature check: OK</string>
+    <string name="send_debug_information">Send Debug Information</string>
 </resources>

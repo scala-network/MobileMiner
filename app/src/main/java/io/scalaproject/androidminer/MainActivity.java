@@ -123,6 +123,7 @@ import com.github.mikephil.charting.data.LineDataSet;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
+import org.acra.ACRA;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -349,21 +350,6 @@ public class MainActivity extends BaseActivity
         // Leave this here to avoid a crash when app is restored from idle state
         SharedPreferences preferences = getSharedPreferences(getPackageName() + "_preferences", MODE_PRIVATE);
         Config.initialize(preferences);
-
-        // Open Settings the first time the app is launched
-        /*String minersaddress =  Config.read("address");
-
-        if (minersaddress.equals("") || minersaddress.isEmpty()) {
-            navigationView.getMenu().getItem(2).setChecked(true);
-
-            SettingsFragment fragment = (SettingsFragment) getSupportFragmentManager().findFragmentByTag("settings_fragment");
-            if(fragment != null) {
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment,"settings_fragment").commit();
-            }
-            else {
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new SettingsFragment(),"settings_fragment").commit();
-            }
-        }*/
 
         pullToRefreshHr = findViewById(R.id.pullToRefreshHr);
         pullToRefreshHr.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -1401,6 +1387,9 @@ public class MainActivity extends BaseActivity
         bIsCelsius = Config.read(Config.CONFIG_TEMPERATURE_UNIT, "C").equals("C");
         tvCPUTemperatureUnit.setText(bIsCelsius ? getString(R.string.celsius) : getString(R.string.fahrenheit));
         tvBatteryTemperatureUnit.setText(bIsCelsius ? getString(R.string.celsius) : getString(R.string.fahrenheit));
+
+        // Disable ACRA Debug Reporting
+        ACRA.getErrorReporter().setEnabled(Config.read(Config.CONFIG_SEND_DEBUG_INFO, "0").equals("1"));
     }
 
     private void showDisclaimerTemperatureSensors() {
@@ -1436,14 +1425,14 @@ public class MainActivity extends BaseActivity
     private void startMining() {
         if (binder == null) return;
 
-        // cause a crash...
-        //String sCrashString = null;
-        //Log.e("MyApp", sCrashString.toString() );
-
         if (!Config.read("init").equals("1")) {
             setStatusText(getString(R.string.save_settings_first));
             return;
         }
+
+        // Cause a crash to test ACRA
+        //String sCrashString = null;
+        //Log.e("ACRA Test", sCrashString.toString() );
 
         String password = Config.read("workername");
         String address = Config.read("address");

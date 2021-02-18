@@ -61,7 +61,7 @@ public class SettingsFragment extends Fragment {
 
     private SeekBar sbCPUTemp, sbBatteryTemp, sbCooldown, sbCores;
     private TextView tvCPUMaxTemp, tvBatteryMaxTemp, tvCooldown, tvCPUTempUnit, tvBatteryTempUnit, tvRefreshHashrateDelay;
-    private Switch swDisableTempControl, swPauseOnBattery, swKeepScreenOnWhenMining;
+    private Switch swDisableTempControl, swPauseOnBattery, swKeepScreenOnWhenMining, swSendDebugInformation;
     private ImageView ivDecreaseRefreshHashrateDelay, ivIncreaseRefreshHashrateDelay;
     private MaterialButtonToggleGroup tgTemperatureUnit;
 
@@ -134,6 +134,7 @@ public class SettingsFragment extends Fragment {
         swPauseOnBattery = view.findViewById(R.id.chkPauseOnBattery);
         swKeepScreenOnWhenMining = view.findViewById(R.id.chkKeepScreenOnWhenMining);
         swDisableTempControl = view.findViewById(R.id.chkAmaycOff);
+        swSendDebugInformation = view.findViewById(R.id.chkSendDebugInformation);
 
         tgTemperatureUnit = view.findViewById(R.id.tgTemperatureUnit);
         tgTemperatureUnit.addOnButtonCheckedListener(new MaterialButtonToggleGroup.OnButtonCheckedListener() {
@@ -220,6 +221,11 @@ public class SettingsFragment extends Fragment {
         boolean checkStatusScreenOn = Config.read("keepscreenonwhenmining").equals("1");
         if(checkStatusScreenOn) {
             swKeepScreenOnWhenMining.setChecked(true);
+        }
+
+        boolean checkSendDebugInformation = Config.read(Config.CONFIG_SEND_DEBUG_INFO).equals("1");
+        if(checkSendDebugInformation) {
+            swSendDebugInformation.setChecked(true);
         }
 
         if (!Config.read("address").isEmpty()) {
@@ -526,6 +532,8 @@ public class SettingsFragment extends Fragment {
         Config.write("keepscreenonwhenmining", swKeepScreenOnWhenMining.isChecked() ? "1" : "0");
 
         Config.write(Config.CONFIG_TEMPERATURE_UNIT, tgTemperatureUnit.getCheckedButtonId() == R.id.btnFarehnheit ? "F" : "C");
+
+        Config.write(Config.CONFIG_SEND_DEBUG_INFO, swSendDebugInformation.isChecked() ? "1" : "0");
 
         Config.write("init", "1");
 
