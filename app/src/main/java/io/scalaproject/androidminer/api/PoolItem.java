@@ -290,8 +290,6 @@ public class PoolItem {
 
     public String getPoolTypeName() {
         switch (this.mPoolType) {
-//            case 0:
-//                return "custom";
             case 1:
                 return "nodejs-pool";
             case 2:
@@ -300,6 +298,19 @@ public class PoolItem {
                 return "scala-pool";
             default:
                 return "unknown";
+        }
+    }
+
+    public String getWalletURL(String walletAddress) {
+        switch (this.mPoolType) {
+            case 1: // nodejs-pool
+                return this.mPoolUrl;
+            case 2: // cryptonote-nodejs-pool
+                return this.mPoolUrl;
+            case 3: // scala-pool
+                return this.mPoolUrl + "?wallet=" + walletAddress + "#worker_stats";
+            default:
+                return this.mPoolUrl;
         }
     }
 

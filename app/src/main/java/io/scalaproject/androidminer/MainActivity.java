@@ -331,11 +331,14 @@ public class MainActivity extends BaseActivity
                     case Toolbar.BUTTON_OPTIONS_STATS: {
                         PoolItem selectedPool = ProviderManager.getSelectedPool();
 
-                        if(selectedPool.getPoolType() != 0) {
-                            String statsUrlWallet = selectedPool.getStatsURL() + "?wallet=" + Config.read("address");
-                            Uri uri = Uri.parse(statsUrlWallet);
-                            startActivity(new Intent(Intent.ACTION_VIEW, uri));
-                        }
+                        String walletAddress = Config.read("address");
+                        String poolUrl = walletAddress.isEmpty() ? selectedPool.getPoolUrl() : selectedPool.getWalletURL(Config.read("address"));
+
+                        if(!poolUrl.startsWith("http"))
+                            poolUrl = "https://" + poolUrl;
+
+                        Uri uri = Uri.parse(poolUrl);
+                        startActivity(new Intent(Intent.ACTION_VIEW, uri));
 
                         break;
                     }
@@ -1242,7 +1245,7 @@ public class MainActivity extends BaseActivity
 
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment_stats, "fragment_stats").commit();
 
-                toolbar.setButtonOptions(ProviderManager.getSelectedPool().getPoolType() != 0 ? Toolbar.BUTTON_OPTIONS_STATS : Toolbar.BUTTON_OPTIONS_NONE);
+                toolbar.setButtonOptions(Toolbar.BUTTON_OPTIONS_STATS);
                 toolbar.setTitle(getResources().getString(R.string.stats), true);
 
                 llMain.setVisibility(View.VISIBLE);

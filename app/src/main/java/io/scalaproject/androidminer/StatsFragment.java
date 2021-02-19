@@ -130,14 +130,21 @@ public class StatsFragment extends Fragment {
         TextView tvPoolMiners = view.findViewById(R.id.miners);
         tvPoolMiners.setText(String.format(Locale.getDefault(), "%,d", Integer.parseInt(d.pool.miners)));
 
-        LinearLayout llPoolBlocks = view.findViewById(R.id.llBlocksPool);
-        llPoolBlocks.setVisibility(pi.getPoolType() == 2 || pi.getPoolType() == 0 ? View.GONE : View.VISIBLE);
-
         TextView tvPoolLastBlock = view.findViewById(R.id.lastblockpool);
         tvPoolLastBlock.setText(d.pool.lastBlockTime.isEmpty() ? "n/a" : d.pool.lastBlockTime);
 
+        // Pool Blocks
+        LinearLayout llPoolBlocks = view.findViewById(R.id.llBlocksPool);
         TextView tvPoolLBlocks = view.findViewById(R.id.blockspool);
-        tvPoolLBlocks.setText(d.pool.blocks.isEmpty() ? "n/a" : String.format(Locale.getDefault(), "%,d", Integer.parseInt(d.pool.blocks)));
+
+        // Not available for cryptonote-nodejs-pool and custom pools
+        if(pi.getPoolType() == 2 || pi.getPoolType() == 0) {
+            tvPoolLBlocks.setText("n/a");
+            llPoolBlocks.setVisibility(View.GONE);
+        } else {
+            tvPoolLBlocks.setText(d.pool.blocks.isEmpty() ? "n/a" : String.format(Locale.getDefault(), "%,d", Long.parseLong(d.pool.blocks)));
+            llPoolBlocks.setVisibility(View.VISIBLE);
+        }
 
         // Address
 
@@ -162,6 +169,8 @@ public class StatsFragment extends Fragment {
             tvAddressHashrate.setText(pi.getPoolType() == 0 ? "n/a" : "0");
             tvAddressHashrateUnit.setText("H/s");
         }
+
+        tvAddressHashrate.setTextColor(tvAddressHashrate.getText().equals("0") || tvAddressHashrate.getText().equals("n/a") ? view.getResources().getColor(R.color.txt_main) : view.getResources().getColor(R.color.c_green));
 
         TextView tvAddressLastShare = view.findViewById(R.id.lastshareminer);
         tvAddressLastShare.setText(d.miner.lastShare.isEmpty() ? "n/a" : d.miner.lastShare);
@@ -192,28 +201,25 @@ public class StatsFragment extends Fragment {
             startActivity(new Intent(getActivity(), PaymentsActivity.class));
     }
 
-    public boolean checkValidState() {
+    public void checkValidState() {
         if(getContext() == null)
-            return false;
+            return;
 
         if(Config.read("address").equals("")) {
             Utils.showToast(getContext(),"Wallet address is empty.", Toast.LENGTH_LONG);
-            return false;
+            return;
         }
 
         PoolItem pi = ProviderManager.getSelectedPool();
 
         if (!Config.read("init").equals("1") || pi == null) {
             Utils.showToast(getContext(),"Start mining to view statistics.", Toast.LENGTH_LONG);
-            return false;
+            return;
         }
 
         if (pi.getPoolType() == 0) {
             Utils.showToast(getContext(),"Statistics are not available for custom pools.", Toast.LENGTH_LONG);
-            return false;
         }
-
-        return true;
     }
 
     @Override
