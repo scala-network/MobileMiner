@@ -2594,6 +2594,9 @@ public class MainActivity extends BaseActivity
                 }
             }
 
+            if(error != null)
+                jsonMessage = error.getMessage();
+
             if(jsonMessage.isEmpty())
                 jsonMessage = "Unknown";
 
