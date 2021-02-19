@@ -2581,16 +2581,21 @@ public class MainActivity extends BaseActivity
     private void parseVolleyError(VolleyError error) {
         String message = "";
         try {
-            String responseBody = new String(error.networkResponse.data, StandardCharsets.UTF_8);
+            String jsonMessage = "";
+            if(error != null && error.networkResponse != null && error.networkResponse.data != null) {
+                String responseBody = new String(error.networkResponse.data, StandardCharsets.UTF_8);
 
-            String jsonMessage;
-            if(!responseBody.isEmpty()) {
-                JSONObject data = new JSONObject(responseBody);
-                JSONArray errors = data.getJSONArray("errors");
-                jsonMessage = errors.getJSONObject(0).getString("message");
-            } else {
-                jsonMessage = error.getMessage();
+                if (!responseBody.isEmpty()) {
+                    JSONObject data = new JSONObject(responseBody);
+                    JSONArray errors = data.getJSONArray("errors");
+                    jsonMessage = errors.getJSONObject(0).getString("message");
+                } else {
+                    jsonMessage = error.getMessage();
+                }
             }
+
+            if(jsonMessage.isEmpty())
+                jsonMessage = "Unknown";
 
             message = "AMYAC error: " + jsonMessage;
         } catch (JSONException e) {
