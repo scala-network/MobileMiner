@@ -228,7 +228,6 @@ public class PoolActivity extends BaseActivity
                 break;
             case R.id.action_delete_pool:
                 onDeletePool(poolItem);
-
                 break;
             default:
                 return super.onContextItemSelected(item);
@@ -325,7 +324,7 @@ public class PoolActivity extends BaseActivity
             return true;
         }
 
-        private boolean applyChangesTmp() {
+        private void applyChangesTmp() {
             final String poolName = etPoolName.getEditText().getText().toString().trim();
             poolEdit.setKey(poolName);
 
@@ -334,8 +333,6 @@ public class PoolActivity extends BaseActivity
 
             final String poolPort = etPoolPort.getEditText().getText().toString().trim();
             poolEdit.setPort(poolPort);
-
-            return true;
         }
 
         private void apply() {
@@ -345,7 +342,6 @@ public class PoolActivity extends BaseActivity
                 closeDialog();
 
                 if (newPool) {
-                    //allPools.add(poolEdit);
                     userdefinedPools.add(poolEdit); // just used when saving
                     poolsAdapter.addPool(poolEdit);
                     ProviderManager.add(poolEdit);
@@ -365,8 +361,6 @@ public class PoolActivity extends BaseActivity
 
             editDialog.dismiss();
             editDialog = null;
-
-            this.editDialog = null;
         }
 
         private void undoChanges() {

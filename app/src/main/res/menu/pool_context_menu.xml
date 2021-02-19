@@ -4,11 +4,11 @@
     <item
         android:id="@+id/action_edit_pool"
         android:orderInCategory="50"
-        android:title="Modifier" />
+        android:title="@string/edit" />
 
     <item
         android:id="@+id/action_delete_pool"
         android:orderInCategory="100"
-        android:title="Supprimer" />
+        android:title="@string/delete" />
 
 </menu>

@@ -47,7 +47,7 @@ public class PoolInfoAdapter extends RecyclerView.Adapter<PoolInfoAdapter.ViewHo
     private final OnMenuPoolListener onMenuPoolListener;
     private final OnSelectPoolListener onSelectPoolListener;
 
-    private Context context;
+    private final Context context;
 
     public PoolInfoAdapter(Context context, OnSelectPoolListener onSelectPoolListener, OnMenuPoolListener onMenuPoolListener) {
         this.context = context;
@@ -81,9 +81,7 @@ public class PoolInfoAdapter extends RecyclerView.Adapter<PoolInfoAdapter.ViewHo
     }
 
     public void deletePool(PoolItem pool) {
-        if (poolItems.contains(pool)) {
-            poolItems.remove(pool);
-        }
+        poolItems.remove(pool);
 
         dataSetChanged(); // in case the poolitem has changed
     }
@@ -99,9 +97,7 @@ public class PoolInfoAdapter extends RecyclerView.Adapter<PoolInfoAdapter.ViewHo
     public void setPools(Collection<PoolItem> data) {
         poolItems.clear();
         if (data != null) {
-            for (PoolItem pool : data) {
-                poolItems.add(pool);
-            }
+            poolItems.addAll(data);
         }
 
         Collections.sort(poolItems, PoolItem.PoolComparator);
@@ -136,13 +132,19 @@ public class PoolInfoAdapter extends RecyclerView.Adapter<PoolInfoAdapter.ViewHo
             ibOptions.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if (popupOpen) return;
-                    //creating a popup menu
+                    if (popupOpen)
+                        return;
+
                     PopupMenu popup = new PopupMenu(context, ibOptions);
-                    //inflating menu from xml resource
                     popup.inflate(R.menu.pool_context_menu);
                     popupOpen = true;
-                    //adding click listener
+
+                    MenuItem itemEdit = popup.getMenu().findItem(R.id.action_edit_pool);
+                    itemEdit.setTitle(poolItem.getPoolType() == 0 ? context.getResources().getString(R.string.edit) : context.getResources().getString(R.string.details));
+
+                    MenuItem itemDelete = popup.getMenu().findItem(R.id.action_delete_pool);
+                    itemDelete.setVisible(poolItem.getPoolType() == 0);
+
                     popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                         @Override
                         public boolean onMenuItemClick(MenuItem item) {
@@ -152,7 +154,7 @@ public class PoolInfoAdapter extends RecyclerView.Adapter<PoolInfoAdapter.ViewHo
                             return false;
                         }
                     });
-                    //displaying the popup
+
                     popup.show();
                     popup.setOnDismissListener(new PopupMenu.OnDismissListener() {
                         @Override
@@ -160,7 +162,6 @@ public class PoolInfoAdapter extends RecyclerView.Adapter<PoolInfoAdapter.ViewHo
                             popupOpen = false;
                         }
                     });
-
                 }
             });
         }
@@ -168,7 +169,6 @@ public class PoolInfoAdapter extends RecyclerView.Adapter<PoolInfoAdapter.ViewHo
         void bind(final int position) {
             poolItem = poolItems.get(position);
 
-            // Name
             tvName.setText(poolItem.getKey());
 
             // Stats

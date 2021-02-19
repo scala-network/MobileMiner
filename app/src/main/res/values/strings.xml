@@ -238,4 +238,7 @@
     <string name="restarting_mining_process">Restarting mining process...</string>
     <string name="disable_restart_process">Do not restart mining process</string>
     <string name="disable_restart_process_help">When the application goes in standby while mining, sometimes the mining process is killed by Android. By default, the application will restart the process automatically, except when this option is actived.</string>
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
+    <string name="details">Details</string>
 </resources>

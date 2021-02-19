@@ -48,7 +48,7 @@ public class StatsFragment extends Fragment {
 
             @Override
             public boolean onEnabledRequest() {
-                return checkValidState();
+                return true;
             }
         };
 
@@ -63,6 +63,13 @@ public class StatsFragment extends Fragment {
         ProviderManager.afterSave();
 
         updateFields(ProviderManager.data, view);
+
+        checkValidState();
+
+        PoolItem pi = ProviderManager.getSelectedPool();
+
+        ImageView ivShowPayments = view.findViewById(R.id.ivShowPayments);
+        ivShowPayments.setVisibility(pi.getPoolType() == 0 ? View.GONE : View.VISIBLE);
 
         return view;
     }

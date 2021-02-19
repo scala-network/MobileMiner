@@ -26,6 +26,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:hint="Name"
+                android:textColor="@color/txt_main"
+                android:textStyle="normal"
                 android:imeOptions="actionNext"
                 android:textAlignment="textStart" />
         </com.google.android.material.textfield.TextInputLayout>
@@ -42,6 +44,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:hint="URL"
+                android:textColor="@color/txt_main"
+                android:textStyle="normal"
                 android:imeOptions="actionNext"
                 android:layout_weight="1"
                 android:textAlignment="textStart" />
@@ -59,6 +63,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:hint="Port"
+                android:textColor="@color/txt_main"
+                android:textStyle="normal"
                 android:imeOptions="actionNext"
                 android:layout_weight="1"
                 android:inputType="number"
