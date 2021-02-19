@@ -23,16 +23,11 @@ import javax.net.ssl.SSLContext;
 public class SplashActivity extends BaseActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        SharedPreferences preferences = getSharedPreferences(getPackageName() + "_preferences", MODE_PRIVATE);
-        Config.initialize(preferences);
-
         String configversion = Config.read(Config.CONFIG_KEY_CONFIG_VERSION);
         if(!configversion.equals(Config.version)) {
             Config.clear();
             Config.write(Config.CONFIG_KEY_CONFIG_VERSION, Config.version);
         }
-
-        ACRA.getErrorReporter().setEnabled(Config.read(Config.CONFIG_SEND_DEBUG_INFO, "0").equals("1"));
 
         super.onCreate(savedInstanceState);
         if ((getIntent().getFlags() & Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT) != 0) {

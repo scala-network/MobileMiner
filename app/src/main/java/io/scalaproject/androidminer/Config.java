@@ -29,8 +29,12 @@ public class Config {
     public final static String CONFIG_TEMPERATURE_SENSOR_SHOW_WARNING = "temp_sensor_warning";
     public final static String CONFIG_HASHRATE_REFRESH_DELAY = "hashrate_refresh_delay";
     public final static String CONFIG_SEND_DEBUG_INFO = "send_debug_info";
+    public final static String CONFIG_DISABLE_RESTART_MINING_ABORTED = "disable_restart_mining_aborted";
 
     public final static int DefaultRefreshDelay = 30; // In seconds
+
+    public final static int CHECK_TEMPERATURE_DELAY = 10000; // In milliseconds
+    public final static int CHECK_MINING_SANITY_DELAY = 10000; // In milliseconds
 
     private static Config mSettings;
     private SharedPreferences preferences;

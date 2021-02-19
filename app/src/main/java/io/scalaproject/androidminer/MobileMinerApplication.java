@@ -7,11 +7,11 @@ package io.scalaproject.androidminer;
 import android.app.Application;
 import android.app.job.JobInfo;
 import android.content.Context;
+import android.content.SharedPreferences;
 
 import org.acra.*;
 import org.acra.annotation.*;
 import org.acra.data.StringFormat;
-
 
 @AcraCore(buildConfigClass = BuildConfig.class)
 @AcraMailSender(mailTo = "hello@scalaproject.io")
@@ -25,7 +25,11 @@ public class MobileMinerApplication extends Application {
     protected void attachBaseContext(Context context) {
         super.attachBaseContext(context);
 
-        // The following line triggers the initialization of ACRA
         ACRA.init(this);
+
+        SharedPreferences preferences = getSharedPreferences(getPackageName() + "_preferences", MODE_PRIVATE);
+        Config.initialize(preferences);
+
+        ACRA.getErrorReporter().setEnabled(Config.read(Config.CONFIG_SEND_DEBUG_INFO, "0").equals("1"));
     }
 }

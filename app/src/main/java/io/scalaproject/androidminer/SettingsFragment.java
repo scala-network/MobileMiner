@@ -61,7 +61,7 @@ public class SettingsFragment extends Fragment {
 
     private SeekBar sbCPUTemp, sbBatteryTemp, sbCooldown, sbCores;
     private TextView tvCPUMaxTemp, tvBatteryMaxTemp, tvCooldown, tvCPUTempUnit, tvBatteryTempUnit, tvRefreshHashrateDelay;
-    private Switch swDisableTempControl, swPauseOnBattery, swKeepScreenOnWhenMining, swSendDebugInformation;
+    private Switch swDisableTempControl, swPauseOnBattery, swKeepScreenOnWhenMining, swSendDebugInformation, swDoNotRestartOnCrash;
     private ImageView ivDecreaseRefreshHashrateDelay, ivIncreaseRefreshHashrateDelay;
     private MaterialButtonToggleGroup tgTemperatureUnit;
 
@@ -135,6 +135,7 @@ public class SettingsFragment extends Fragment {
         swKeepScreenOnWhenMining = view.findViewById(R.id.chkKeepScreenOnWhenMining);
         swDisableTempControl = view.findViewById(R.id.chkAmaycOff);
         swSendDebugInformation = view.findViewById(R.id.chkSendDebugInformation);
+        swDoNotRestartOnCrash = view.findViewById(R.id.chkDoNotRestartOnCrash);
 
         tgTemperatureUnit = view.findViewById(R.id.tgTemperatureUnit);
         tgTemperatureUnit.addOnButtonCheckedListener(new MaterialButtonToggleGroup.OnButtonCheckedListener() {
@@ -226,6 +227,11 @@ public class SettingsFragment extends Fragment {
         boolean checkSendDebugInformation = Config.read(Config.CONFIG_SEND_DEBUG_INFO).equals("1");
         if(checkSendDebugInformation) {
             swSendDebugInformation.setChecked(true);
+        }
+
+        boolean checkDoNotRestartOnCrash = Config.read(Config.CONFIG_DISABLE_RESTART_MINING_ABORTED).equals("1");
+        if(checkDoNotRestartOnCrash) {
+            swDoNotRestartOnCrash.setChecked(true);
         }
 
         if (!Config.read("address").isEmpty()) {
@@ -460,6 +466,16 @@ public class SettingsFragment extends Fragment {
             }
         });
 
+        Button btnDoNotRestartOnCrashHelp = view.findViewById(R.id.btnDoNotRestartOnCrashHelp);
+        btnDoNotRestartOnCrashHelp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // inflate the layout of the popup window
+                View popupView = inflater.inflate(R.layout.helper_do_not_restart_process, null);
+                Utils.showPopup(v, inflater, popupView);
+            }
+        });
+
         return view;
     }
 
@@ -542,8 +558,8 @@ public class SettingsFragment extends Fragment {
         Config.write("keepscreenonwhenmining", swKeepScreenOnWhenMining.isChecked() ? "1" : "0");
 
         Config.write(Config.CONFIG_TEMPERATURE_UNIT, tgTemperatureUnit.getCheckedButtonId() == R.id.btnFarehnheit ? "F" : "C");
-
         Config.write(Config.CONFIG_SEND_DEBUG_INFO, swSendDebugInformation.isChecked() ? "1" : "0");
+        Config.write(Config.CONFIG_DISABLE_RESTART_MINING_ABORTED, swDoNotRestartOnCrash.isChecked() ? "1" : "0");
 
         Config.write("init", "1");
 

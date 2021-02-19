@@ -151,7 +151,6 @@ public class MainActivity extends BaseActivity
     private NestedScrollView svLog, svLog2;
 
     private LinearLayout llMain, llLog, llHashrate, llStatus;
-    private RelativeLayout rlWarningCPUTemperature, rlWarningBatteryTemperature;
 
     private ProgressBar pbPayout;
     private boolean payoutEnabled;
@@ -171,7 +170,6 @@ public class MainActivity extends BaseActivity
 
     private MiningService.MiningServiceBinder binder;
     private boolean bPayoutDataReceived = false;
-    private float fMinPoolPayout = -1.0f;
 
     private boolean bIgnoreCPUCoresEvent = false;
     private boolean bIsRestartEvent = false;
@@ -211,7 +209,7 @@ public class MainActivity extends BaseActivity
     private Integer nHrCount = 0;
     private float fMaxHr = 0.0f;
 
-    private int nAcceptedShares = 0;
+    private int nSharesCount = 0;
 
     // Temperature Control
     private Timer timerTemperatures = null;
@@ -219,6 +217,7 @@ public class MainActivity extends BaseActivity
     private final List<String> listCPUTemp = new ArrayList<>();
     private final List<String> listBatteryTemp = new ArrayList<>();
     private boolean isCharging = false;
+
     private final int MAX_HR_VALUES = 100;
     private final int MAX_TEMP_VALUES = 50;
 
@@ -353,7 +352,7 @@ public class MainActivity extends BaseActivity
         toolbar.setButtonMain(Toolbar.BUTTON_MAIN_LOGO);
         toolbar.setButtonOptions(Toolbar.BUTTON_OPTIONS_SHARE);
 
-        // Leave this here to avoid a crash when app is restored from idle state
+        // Leave this here to prevent a crash when app is restored from idle state
         SharedPreferences preferences = getSharedPreferences(getPackageName() + "_preferences", MODE_PRIVATE);
         Config.initialize(preferences);
 
@@ -473,7 +472,7 @@ public class MainActivity extends BaseActivity
 
         tvCPUTemperature = findViewById(R.id.cputemp);
         tvCPUTemperatureUnit = findViewById(R.id.cputempunit);
-        rlWarningCPUTemperature = findViewById(R.id.rlWarningCPUTemp);
+        RelativeLayout rlWarningCPUTemperature = findViewById(R.id.rlWarningCPUTemp);
         rlWarningCPUTemperature.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -487,7 +486,7 @@ public class MainActivity extends BaseActivity
 
         tvBatteryTemperature = findViewById(R.id.batterytemp);
         tvBatteryTemperatureUnit = findViewById(R.id.batterytempunit);
-        rlWarningBatteryTemperature = findViewById(R.id.rlWarningBatteryTemp);
+        RelativeLayout rlWarningBatteryTemperature = findViewById(R.id.rlWarningBatteryTemp);
         rlWarningBatteryTemperature.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -939,7 +938,7 @@ public class MainActivity extends BaseActivity
         };
 
         timerTemperatures = new Timer();
-        timerTemperatures.scheduleAtFixedRate(timerTaskTemperatures, 0, 10000);
+        timerTemperatures.scheduleAtFixedRate(timerTaskTemperatures, 0, Config.CHECK_TEMPERATURE_DELAY);
     }
 
     public void stopTimerTemperatures() {
@@ -1459,7 +1458,7 @@ public class MainActivity extends BaseActivity
         bForceMiningNoTempSensor = false;
         bMiningStoppedByUser = false;
         clearMinerLog = true;
-        nAcceptedShares = 0;
+        nSharesCount = 0;
 
         resetOptions();
 
@@ -1729,15 +1728,25 @@ public class MainActivity extends BaseActivity
             public void run() {
                 runOnUiThread(new Runnable() {
                     public void run() {
-                        Boolean alive = binder.getService().isMiningProcessAlive();
+                        boolean isAlive = binder.getService().isMiningProcessAlive();
 
-                        if(!alive && isDeviceMiningBackground() && !bMiningStoppedByUser) {
-                            clearMinerLog = false;
+                        if(!isAlive && isDeviceMiningBackground() && !bMiningStoppedByUser) {
                             appendLogOutputTextWithDate(getString(R.string.mining_aborted));
-                            appendLogOutputTextWithDate(getString(R.string.restarting_mining_process));
-                            appendLogOutputText(System.getProperty("line.separator"));
 
-                            startMiningService();
+                            boolean bRestartOnProcessAborted = Config.read(Config.CONFIG_DISABLE_RESTART_MINING_ABORTED, "0").equals("0");
+
+                            if(bRestartOnProcessAborted) {
+                                clearMinerLog = false;
+                                appendLogOutputTextWithDate(getString(R.string.restarting_mining_process));
+                                appendLogOutputText(System.getProperty("line.separator"));
+
+                                nSharesCount = Integer.parseInt(tvAcceptedShares.getText().toString());
+
+                                startMiningService();
+                            } else {
+                                stopMining();
+                                updateMiningButtonState();
+                            }
                         }
                     }
                 });
@@ -1746,7 +1755,7 @@ public class MainActivity extends BaseActivity
 
         timerMiningSanity = new Timer();
 
-        timerMiningSanity.scheduleAtFixedRate(timerTaskMiningSanity, 5000, 5000);
+        timerMiningSanity.scheduleAtFixedRate(timerTaskMiningSanity, 5000, Config.CHECK_MINING_SANITY_DELAY);
     }
 
     public void stopTimerMiningSanity() {
@@ -2334,8 +2343,8 @@ public class MainActivity extends BaseActivity
                         runOnUiThread(() -> {
                             appendLogOutputText(status);
 
-                            nAcceptedShares += accepted;
-                            String sAccepted = Integer.toString(nAcceptedShares);
+                            int nShares = nSharesCount + accepted;
+                            String sAccepted = Integer.toString(nShares);
 
                             if(!tvAcceptedShares.getText().equals(sAccepted)) {
                                 tvAcceptedShares.setText(sAccepted);

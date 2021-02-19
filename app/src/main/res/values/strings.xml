@@ -222,18 +222,20 @@
     <string name="warning_cpu_temp_sensor">Your device does not have a sensor to read the processor temperature, or it is impossible to retrieve it. You should mine with caution and monitor your device to check if it\'s overheating.</string>
     <string name="warning_battery_temp_sensor">Your device does not have a sensor to read the battery temperature, or it is impossible to retrieve it. You should mine with caution and monitor your device to check if it\'s overheating.</string>
     <string name="fahrenheit">°F</string>
-    <string name="temperature_unit">Temperature Unit</string>
+    <string name="temperature_unit">Temperature unit</string>
     <string name="intensity">Intensity</string>
     <string name="temperature_control">Temperature Control</string>
     <string name="community">Community</string>
     <string name="blocks_found">Blocks Found</string>
     <string name="submitted_hashes">Submitted Hashes</string>
     <string name="submitted_shares">Submitted Shares</string>
-    <string name="hashrate_refresh_delay_seconds">Hashrate Refresh Delay</string>
+    <string name="hashrate_refresh_delay">Hashrate refresh delay</string>
     <string name="amayc_too_hot">AMAYC temperature check: Too hot</string>
     <string name="amayc_ok">AMAYC temperature check: OK</string>
-    <string name="send_debug_information">Send Debug Information</string>
+    <string name="send_debug_information">Send debug information</string>
     <string name="send_debug_information_help">When this option is enabled and the application encounters a fatal error, your default email client will be opened to let you send the detailed debug and stack trace report to our team.</string>
     <string name="mining_aborted">Mining process has been abruptly aborted.</string>
     <string name="restarting_mining_process">Restarting mining process...</string>
+    <string name="disable_restart_process">Do not restart mining process</string>
+    <string name="disable_restart_process_help">When the application goes in standby while mining, sometimes the mining process is killed by Android. By default, the application will restart the process automatically, except when this option is actived.</string>
 </resources>

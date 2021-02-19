@@ -698,7 +698,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:text="@string/hashrate_refresh_delay_seconds"
+                        android:text="@string/hashrate_refresh_delay"
                         android:textColor="@color/c_grey"
                         android:textSize="14sp"
                         android:checked="false"
@@ -878,6 +878,58 @@
 
                     <Switch
                         android:id="@+id/chkSendDebugInformation"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:theme="@style/SwitchTheme" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_width="fill_parent"
+                    android:layout_height="0.7dp"
+                    android:background="@color/txt_inactive"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    android:layout_weight="0"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:text="@string/disable_restart_process"
+                        android:textColor="@color/txt_main"
+                        android:textSize="14sp"
+                        android:checked="false" />
+
+                    <Button
+                        android:id="@+id/btnDoNotRestartOnCrashHelp"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_gravity="center_vertical"
+                        app:backgroundTint="@android:color/transparent"
+                        app:cornerRadius="5dp"
+                        app:icon="@drawable/ic_help"
+                        app:iconGravity="textStart"
+                        app:iconPadding="0dp"
+                        app:iconTint="@color/txt_main"
+                        android:visibility="visible"
+                        tools:ignore="UnusedAttribute" />
+
+                    <Space
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        tools:ignore="NestedWeights" />
+
+                    <Switch
+                        android:id="@+id/chkDoNotRestartOnCrash"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:theme="@style/SwitchTheme" />
