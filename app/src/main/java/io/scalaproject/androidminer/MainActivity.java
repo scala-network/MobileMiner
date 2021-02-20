@@ -43,8 +43,6 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.graphics.PorterDuff;
-import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.BatteryManager;
@@ -71,7 +69,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
-import android.widget.SeekBar;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -252,7 +249,7 @@ public class MainActivity extends BaseActivity
     private boolean isFromLogView = false;
 
     public static boolean isDeviceMiningBackground() {
-        return (m_nCurrentState == Config.STATE_CALCULATING || m_nCurrentState == Config.STATE_MINING || m_nCurrentState == Config.STATE_COOLING);
+        return (m_nCurrentState == Config.STATE_CALCULATING || m_nCurrentState == Config.STATE_MINING || m_nCurrentState == Config.STATE_COOLING || m_nCurrentState == Config.STATE_PAUSED);
     }
 
     private final static int MAX_HASHRATE_TIMER = 34;
@@ -1483,7 +1480,7 @@ public class MainActivity extends BaseActivity
 
         startMiningService();
 
-        showNotification();
+        showNotificationPause();
 
         setMinerStatus(Config.STATE_MINING);
 
@@ -1522,7 +1519,7 @@ public class MainActivity extends BaseActivity
 
                         if(isDevicePaused()) {
                             clearMinerLog = false;
-                            resumeMiner();
+                            resumeMining();
                         }
                         else
                             startMining();
@@ -2294,7 +2291,7 @@ public class MainActivity extends BaseActivity
                             }
 
                             clearMinerLog = false;
-                            resumeMiner();
+                            resumeMining();
                         }
                         else {
                             toggleMiningState();
@@ -2617,7 +2614,7 @@ public class MainActivity extends BaseActivity
         if(enable) {
             setMinerStatus(Config.STATE_COOLING);
 
-            pauseMiner();
+            pauseMining();
 
             appendLogOutputTextWithDate(getResources().getString(R.string.maxtemperaturereached));
         }
@@ -2627,7 +2624,7 @@ public class MainActivity extends BaseActivity
                 return;
             }
 
-            resumeMiner();
+            resumeMining();
 
             listCPUTemp.clear();
             listBatteryTemp.clear();
@@ -2651,7 +2648,7 @@ public class MainActivity extends BaseActivity
         btnStart.setEnabled(enabled);
     }
 
-    private void pauseMiner() {
+    public void pauseMining() {
         if (!isDevicePaused()) {
             if(!isDeviceCooling()) {
                 setMinerStatus(Config.STATE_PAUSED);
@@ -2663,10 +2660,14 @@ public class MainActivity extends BaseActivity
             if (binder != null) {
                 binder.getService().sendInput("p");
             }
+
+            showNotificationResume();
+
+            updateNotification();
         }
     }
 
-    private void resumeMiner() {
+    public void resumeMining() {
         if (isDevicePaused() || isDeviceCooling()) {
             setMinerStatus(Config.STATE_MINING);
 
@@ -2676,12 +2677,18 @@ public class MainActivity extends BaseActivity
 
             updateMiningButtonState();
             bForceMiningOnPause = false;
+
+            showNotificationPause();
+
+            updateNotification();
+
+            refreshHashrate();
         }
     }
 
     private void sendInput(String s) {
         if (s.equals("p")) {
-            pauseMiner();
+            pauseMining();
         }
         else if (s.equals("r")) {
             if(isDeviceCooling()) {
@@ -2689,7 +2696,7 @@ public class MainActivity extends BaseActivity
                 return;
             }
 
-            resumeMiner();
+            resumeMining();
         }
         else {
             if (binder != null) {
@@ -2699,6 +2706,8 @@ public class MainActivity extends BaseActivity
     }
 
     public static final String OPEN_ACTION = "OPEN_ACTION";
+    public static final String PAUSE_ACTION = "PAUSE_ACTION";
+    public static final String RESUME_ACTION = "RESUME_ACTION";
     public static final String STOP_ACTION = "STOP_ACTION";
 
     private void createNotificationManager() {
@@ -2717,7 +2726,7 @@ public class MainActivity extends BaseActivity
         notificationBuilder = new NotificationCompat.Builder(contextOfApplication, CHANNEL_ID);
     }
 
-    private void showNotification() {
+    private void showNotificationPause() {
         createNotificationManager();
 
         NotificationsReceiver.activity = this;
@@ -2727,15 +2736,53 @@ public class MainActivity extends BaseActivity
         openIntent.setAction(OPEN_ACTION);
         PendingIntent pendingIntentOpen = PendingIntent.getActivity(contextOfApplication, 1, openIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
+        // Pause intent
+        Intent pauseIntent = new Intent(this, NotificationsReceiver.class);
+        pauseIntent.setAction(PAUSE_ACTION);
+        PendingIntent pendingIntentPause = PendingIntent.getBroadcast(contextOfApplication, 2, pauseIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
         // Stop intent
         Intent stopIntent = new Intent(this, NotificationsReceiver.class);
         stopIntent.setAction(STOP_ACTION);
-        PendingIntent pendingIntentStop = PendingIntent.getBroadcast(contextOfApplication, 2, stopIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingIntentStop = PendingIntent.getBroadcast(contextOfApplication, 3, stopIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         notificationBuilder.setContentTitle(getResources().getString(R.string.devicemining));
         notificationBuilder.setContentIntent(pendingIntentOpen);
-        notificationBuilder.addAction(R.mipmap.ic_open_app,"Open", pendingIntentOpen);
+        notificationBuilder.addAction(R.mipmap.ic_pause_miner,"Pause", pendingIntentPause);
         notificationBuilder.addAction(R.mipmap.ic_stop_miner,"Stop", pendingIntentStop);
+        notificationBuilder.setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher_round));
+        notificationBuilder.setSmallIcon(R.mipmap.ic_notification);
+        notificationBuilder.setOngoing(true);
+        notificationBuilder.setOnlyAlertOnce(true);
+        notificationBuilder.build();
+
+        notificationManager.notify(1, notificationBuilder.build());
+    }
+
+    private void showNotificationResume() {
+        createNotificationManager();
+
+        NotificationsReceiver.activity = this;
+
+        // Open intent
+        Intent openIntent = new Intent(this, MainActivity.class);
+        openIntent.setAction(OPEN_ACTION);
+        PendingIntent pendingIntentOpen = PendingIntent.getActivity(contextOfApplication, 1, openIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        // Resume intent
+        Intent resumeIntent = new Intent(this, NotificationsReceiver.class);
+        resumeIntent.setAction(RESUME_ACTION);
+        PendingIntent pendingIntentResume = PendingIntent.getBroadcast(contextOfApplication, 2, resumeIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        // Stop intent
+        Intent stopIntent = new Intent(this, NotificationsReceiver.class);
+        stopIntent.setAction(STOP_ACTION);
+        PendingIntent pendingIntentStop = PendingIntent.getBroadcast(contextOfApplication, 3, stopIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        notificationBuilder.setContentTitle(getResources().getString(R.string.devicemining));
+        notificationBuilder.setContentIntent(pendingIntentOpen);
+        notificationBuilder.addAction(R.mipmap.ic_start_miner, getResources().getString(R.string.resume), pendingIntentResume);
+        notificationBuilder.addAction(R.mipmap.ic_stop_miner, getResources().getString(R.string.stop), pendingIntentStop);
         notificationBuilder.setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher_round));
         notificationBuilder.setSmallIcon(R.mipmap.ic_notification);
         notificationBuilder.setOngoing(true);
@@ -2841,9 +2888,9 @@ public class MainActivity extends BaseActivity
                 }
 
                 if (isCharging) {
-                    resumeMiner();
+                    resumeMining();
                 } else if (state) {
-                    pauseMiner();
+                    pauseMining();
                 }
             }
         }

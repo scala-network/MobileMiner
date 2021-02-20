@@ -22,6 +22,12 @@ public class NotificationsReceiver extends BroadcastReceiver {
         } else if(MainActivity.STOP_ACTION.equals(action)) {
             Log.v(LOG_TAG,"STOP_ACTION");
             activity.stopMining();
+        } else if(MainActivity.PAUSE_ACTION.equals(action)) {
+            Log.v(LOG_TAG,"PAUSE_ACTION");
+            activity.pauseMining();
+        } else if(MainActivity.RESUME_ACTION.equals(action)) {
+            Log.v(LOG_TAG,"RESUME_ACTION");
+            activity.resumeMining();
         }
     }
 }
