@@ -1474,6 +1474,8 @@ public class MainActivity extends BaseActivity
 
         resetOptions();
 
+        resetAvgMaxHashrate();
+
         resetCharts();
 
         loadSettings();
@@ -1558,8 +1560,6 @@ public class MainActivity extends BaseActivity
         binder.getService().stopMining();
 
         resetOptions();
-
-        resetAvgMaxHashrate();
 
         stopTimerMiningSanity();
 

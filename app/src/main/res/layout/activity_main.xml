@@ -519,6 +519,7 @@
                                         android:id="@+id/innerLay"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
+                                        android:layout_marginBottom="5dp"
                                         android:gravity="center_vertical"
                                         android:orientation="horizontal" >
 
@@ -806,7 +807,7 @@
                                 android:id="@+id/payout"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="25dp"
+                                android:layout_marginTop="20dp"
                                 android:gravity="start"
                                 android:text="@string/payout"
                                 android:textSize="14sp"
