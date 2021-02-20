@@ -241,4 +241,10 @@
     <string name="edit">Edit</string>
     <string name="delete">Delete</string>
     <string name="details">Details</string>
+    <string name="temperature">Temperature</string>
+    <string name="more">More</string>
+    <string name="activity">Activity</string>
+    <string name="payout">Payout</string>
+    <string name="performance_mode">Performance Mode</string>
+    <string name="performance_mode_text">Are you sure you want to enable Performance Mode?\n\nThe following features will be disabled:\n- Hashrate Meter\n- Hashrate Chart\n- Temperature Chart\n- Hashrate refresh delay\n- Restart mining process</string>
 </resources>

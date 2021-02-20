@@ -122,6 +122,7 @@ import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.polyak.iconswitch.IconSwitch;
 
 import org.acra.ACRA;
 import org.json.JSONArray;
@@ -145,10 +146,14 @@ public class MainActivity extends BaseActivity
     private Toolbar toolbar;
 
     private TextView tvHashrate, tvStatus, tvNbCores, tvCPUTemperature, tvCPUTemperatureUnit, tvBatteryTemperature, tvBatteryTemperatureUnit, tvAcceptedShares, tvDifficulty, tvConnection, tvLog, tvLog2, tvStatusProgess;
-    private TubeSpeedometer meterCores, meterHashrate, meterHashrate_avg, meterHashrate_max;
-    private SeekBar sbCores = null;
+    private TubeSpeedometer meterCores, meterHashrate, meterHashrate_avg, meterHashrate_max, meterCoresGap;
+    private SpeedView meterTicks;
+
     private SwipeRefreshLayout pullToRefreshHr;
     private NestedScrollView svLog, svLog2;
+
+    IconSwitch isPerformanceMode;
+    private boolean bIsPerformanceMode = false;
 
     private LinearLayout llMain, llLog, llHashrate, llStatus;
 
@@ -171,9 +176,7 @@ public class MainActivity extends BaseActivity
     private MiningService.MiningServiceBinder binder;
     private boolean bPayoutDataReceived = false;
 
-    private boolean bIgnoreCPUCoresEvent = false;
     private boolean bIsRestartEvent = false;
-    private boolean bIsRestartDialogShown = false;
     private boolean bForceMiningOnPause = false;
 
     private boolean bValidCPUTemperatureSensor = true;
@@ -401,6 +404,24 @@ public class MainActivity extends BaseActivity
 
         // Controls
 
+        isPerformanceMode = findViewById(R.id.isPerformanceMode);
+        isPerformanceMode.setCheckedChangeListener(new IconSwitch.CheckedChangeListener()
+        {
+            @Override
+            public void onCheckChanged(IconSwitch.Checked current) {
+                switch (current) {
+                    case LEFT:
+                        bIsPerformanceMode = false;
+                        break;
+                    case RIGHT:
+                        bIsPerformanceMode = true;
+                        break;
+                }
+
+                updatePerformanceMode();
+            }
+        });
+
         payoutEnabled = true;
         pbPayout = findViewById(R.id.progresspayout);
         pbStatus = findViewById(R.id.progress_status);
@@ -425,7 +446,7 @@ public class MainActivity extends BaseActivity
         nCores = core_config.isEmpty() ? nNbMaxCores : Integer.parseInt(core_config);
 
         // Create a dummy meter to add "gaps" to the Cores meter, to separate every core value
-        TubeSpeedometer meterCoresGap = findViewById(R.id.meter_cores_gap);
+        meterCoresGap = findViewById(R.id.meter_cores_gap);
         meterCoresGap.setMaxSpeed(nNbMaxCores);
         meterCoresGap.setTickNumber(nNbMaxCores + 1); // Keep this line to patch a bug in the meter implementation
         meterCoresGap.setOnPrintTickLabel((integer, aFloat) -> {
@@ -441,6 +462,8 @@ public class MainActivity extends BaseActivity
         meterCores.makeSections(1, getResources().getColor(R.color.c_yellow), Section.Style.SQUARE);
         meterCores.setMaxSpeed(nNbMaxCores);
         meterCores.speedTo(0, 0);
+
+        meterTicks = findViewById(R.id.meter_hashrate_ticks);
 
         tvNbCores = findViewById(R.id.nbcores);
 
@@ -509,85 +532,6 @@ public class MainActivity extends BaseActivity
         tvConnection  = findViewById(R.id.connection);
 
         btnStart = findViewById(R.id.start);
-        //enableStartBtn(false);
-
-        // Cores seekbar
-        sbCores = findViewById(R.id.seekbarcores);
-        sbCores.setMax(nNbMaxCores);
-        sbCores.setProgress(nCores);
-
-        sbCores.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                // Auto-generated method stub
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-                // Auto-generated method stub
-            }
-
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                if (bIgnoreCPUCoresEvent)
-                    return;
-
-                if(isDeviceMining()) {
-                    if(bIsRestartDialogShown)
-                        return;
-
-                    MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(contextOfApplication, R.style.MaterialAlertDialogCustom);
-                    builder.setTitle(getString(R.string.stopmining))
-                            .setMessage(getString(R.string.newparametersapplied))
-                            .setCancelable(true)
-                            .setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    nCores = sbCores.getProgress();
-                                    Config.write("cores", Integer.toString(nCores));
-
-                                    bIsRestartEvent = true;
-
-                                    MainActivity.this.stopMining(); // Stop mining
-
-                                    // Start miner with small delay
-                                    new Handler().postDelayed(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            MainActivity.this.startMining(); // Start mining
-                                        }
-                                    }, 1000);
-
-                                    updateCores();
-
-                                    bIsRestartDialogShown = false;
-                                }
-                            })
-                            .setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    runOnUiThread(new Runnable() {
-                                        public void run() {
-                                            bIgnoreCPUCoresEvent = true;
-                                            sbCores.setProgress(nCores);
-                                            bIgnoreCPUCoresEvent = false;
-                                        }
-                                    });
-
-                                    bIsRestartDialogShown = false;
-                                }
-                            })
-                            .show();
-
-                    bIsRestartDialogShown = true;
-                }
-                else {
-                    nCores = sbCores.getProgress();
-                    Config.write("cores", Integer.toString(nCores));
-                    updateCores();
-                }
-            }
-        });
 
         if (!Arrays.asList(Config.SUPPORTED_ARCHITECTURES).contains(Tools.getABI())) {
             String sArchError = "Your architecture is not supported: " + Tools.getABI();
@@ -629,8 +573,8 @@ public class MainActivity extends BaseActivity
         ProviderManager.request.setListener(payoutListener).start();
         ProviderManager.afterSave();
 
-        chartHashrate = findViewById(R.id.chart_hashrate);
-        chartTemperature = findViewById(R.id.chart_temprature);
+        chartHashrate = findViewById(R.id.chartHashrate);
+        chartTemperature = findViewById(R.id.chartTemperature);
 
         initChartHashrate();
         initChartTemperature();
@@ -658,6 +602,87 @@ public class MainActivity extends BaseActivity
         }
 
         super.onDestroy();
+    }
+
+    private void updatePerformanceMode() {
+        if(bIsPerformanceMode) {
+            MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this, R.style.MaterialAlertDialogCustom);
+            builder.setTitle(getString(R.string.performance_mode))
+                    .setMessage(getString(R.string.performance_mode_text))
+                    .setCancelable(true)
+                    .setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            enablePerformanceMode(true);
+                        }
+                    })
+                    .setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            isPerformanceMode.setChecked(IconSwitch.Checked.LEFT);
+                        }
+                    })
+                    .show();
+        } else {
+            enablePerformanceMode(false);
+        }
+    }
+
+    private void enablePerformanceMode(boolean enable) {
+        LinearLayout llTitleHashrate = findViewById(R.id.llTitleHashrate);
+        LinearLayout llChartHashrate = findViewById(R.id.llChartHashrate);
+
+        TextView tvTemperature = findViewById(R.id.tvTemperature);
+        LinearLayout llChartTemperature = findViewById(R.id.llChartTemperature);
+
+        if(enable) {
+            meterHashrate.setVisibility(View.INVISIBLE);
+            meterCores.setVisibility(View.INVISIBLE);
+            meterCoresGap.setVisibility(View.INVISIBLE);
+            meterHashrate_avg.setVisibility(View.INVISIBLE);
+            meterHashrate_max.setVisibility(View.INVISIBLE);
+            meterTicks.setVisibility(View.INVISIBLE);
+
+            llTitleHashrate.setVisibility(View.GONE);
+            llChartHashrate.setVisibility(View.GONE);
+
+            tvTemperature.setVisibility(View.GONE);
+            llChartTemperature.setVisibility(View.GONE);
+
+            ProviderManager.request.setListener(payoutListener).stop();
+
+            stopTimerRefreshHashrate();
+
+            stopTimerMiningSanity();
+
+            chartHashrate.clear();
+            chartTemperature.clear();
+        } else {
+            meterHashrate.setVisibility(View.VISIBLE);
+            meterCores.setVisibility(View.VISIBLE);
+            meterCoresGap.setVisibility(View.VISIBLE);
+            meterHashrate_avg.setVisibility(View.VISIBLE);
+            meterHashrate_max.setVisibility(View.VISIBLE);
+            meterTicks.setVisibility(View.VISIBLE);
+
+            llTitleHashrate.setVisibility(View.VISIBLE);
+            llChartHashrate.setVisibility(View.VISIBLE);
+
+            tvTemperature.setVisibility(View.VISIBLE);
+            llChartTemperature.setVisibility(View.VISIBLE);
+
+            refreshHashrate();
+
+            updateTemperaturesChart();
+
+            ProviderManager.request.setListener(payoutListener).start();
+
+            startTimerRefreshHashrate();
+
+            startTimerMiningSanity();
+        }
+
+        updatePayoutWidgetStatus();
     }
 
     private void backHomeMenu() {
@@ -696,29 +721,6 @@ public class MainActivity extends BaseActivity
         leftAxis.setGranularityEnabled(false);
 
         chartHashrate.setDragDecelerationFrictionCoef(0.9f);
-    }
-
-    private void setHashrateChartLimits() {
-        float avgHr = meterHashrate_avg.getSpeed();
-
-        LimitLine ll1 = new LimitLine(avgHr);
-        ll1.setLineWidth(1f);
-        ll1.enableDashedLine(10f, 10f, 0f);
-        ll1.setLabelPosition(LimitLine.LimitLabelPosition.RIGHT_TOP);
-        ll1.setLineColor(getResources().getColor(R.color.txt_main));
-
-        float maxHr = meterHashrate_max.getSpeed();
-        LimitLine ll2 = new LimitLine(maxHr);
-        ll2.setLineWidth(1f);
-        ll2.enableDashedLine(10f, 10f, 0f);
-        ll2.setLabelPosition(LimitLine.LimitLabelPosition.RIGHT_TOP);
-        ll2.setTextSize(0f);
-        ll2.setLineColor(getResources().getColor(R.color.c_orange));
-
-        YAxis leftAxis = chartHashrate.getAxisLeft();
-        leftAxis.removeAllLimitLines(); // reset all limit lines to avoid overlapping lines
-        leftAxis.addLimitLine(ll1);
-        leftAxis.addLimitLine(ll2);
     }
 
     private void initChartTemperature() {
@@ -777,6 +779,9 @@ public class MainActivity extends BaseActivity
         // Only keep 100 last values to avoid overflow
         if(lValuesHr.size() > MAX_HR_VALUES)
             lValuesHr.remove(0);
+
+        if(bIsPerformanceMode)
+            return;
 
         LineDataSet set1;
         LineData data = chartHashrate.getData();
@@ -855,24 +860,7 @@ public class MainActivity extends BaseActivity
         }
     }
 
-    private void addTemperaturesValue(float cpu, float battery) {
-        if(!isDeviceMining())
-            return;
-
-        float cpu_temp = bIsCelsius ? cpu : Utils.convertCelciusToFahrenheit(Math.round(cpu));
-        float battery_temp = bIsCelsius ? battery : Utils.convertCelciusToFahrenheit(Math.round(battery));
-
-        lValuesTempCPU.add(new BarEntry(xTemp, cpu_temp));
-        lValuesTempBattery.add(new BarEntry(xTemp, battery_temp));
-        xTemp++;
-
-        // Only keep 100 last values to avoid overflow
-        if(lValuesTempCPU.size() > MAX_TEMP_VALUES)
-            lValuesTempCPU.remove(0);
-
-        if(lValuesTempBattery.size() > MAX_TEMP_VALUES)
-            lValuesTempBattery.remove(0);
-
+    private void updateTemperaturesChart() {
         BarDataSet set1, set2;
         BarData data = chartTemperature.getBarData();
         if (data != null && data.getDataSetCount() > 0) {
@@ -907,9 +895,6 @@ public class MainActivity extends BaseActivity
         data.setDrawValues(false);
         data.setHighlightEnabled(false);
 
-        // restrict the x-axis range
-        //chartTemperature.getXAxis().setAxisMinimum(0);
-
         // barData.getGroupWith(...) is a helper that calculates the width each group needs based on the provided parameters
         chartTemperature.getXAxis().setAxisMaximum(0 + chartTemperature.getBarData().getGroupWidth(groupSpace, barSpace) * set1.getEntryCount());
         chartTemperature.groupBars(0, groupSpace, barSpace);
@@ -921,6 +906,30 @@ public class MainActivity extends BaseActivity
         chartTemperature.moveViewToX(data.getEntryCount());
 
         chartTemperature.invalidate();
+    }
+
+    private void addTemperaturesValue(float cpu, float battery) {
+        if(!isDeviceMining())
+            return;
+
+        float cpu_temp = bIsCelsius ? cpu : Utils.convertCelciusToFahrenheit(Math.round(cpu));
+        float battery_temp = bIsCelsius ? battery : Utils.convertCelciusToFahrenheit(Math.round(battery));
+
+        lValuesTempCPU.add(new BarEntry(xTemp, cpu_temp));
+        lValuesTempBattery.add(new BarEntry(xTemp, battery_temp));
+        xTemp++;
+
+        // Only keep 100 last values to avoid overflow
+        if(lValuesTempCPU.size() > MAX_TEMP_VALUES)
+            lValuesTempCPU.remove(0);
+
+        if(lValuesTempBattery.size() > MAX_TEMP_VALUES)
+            lValuesTempBattery.remove(0);
+
+        if(bIsPerformanceMode)
+            return;
+
+        updateTemperaturesChart();
     }
 
     public void refreshHashrate() {
@@ -1116,7 +1125,7 @@ public class MainActivity extends BaseActivity
 
         payoutEnabled = false;
 
-        if(doesPoolSupportAPI()) {
+        if(doesPoolSupportAPI() && !bIsPerformanceMode) {
             tvPayout.setVisibility(View.VISIBLE);
             llPayoutWidget.setVisibility(View.VISIBLE);
         }
@@ -1630,24 +1639,6 @@ public class MainActivity extends BaseActivity
         }
     }
 
-    private void enableSliderCores(boolean enable) {
-        if(bIsRestartEvent)
-            return;
-
-        Rect bounds = sbCores.getProgressDrawable().getBounds();
-
-        if(enable) {
-            sbCores.setProgressDrawable(getResources().getDrawable(R.drawable.seekbar_ruler_yellow));
-            sbCores.getThumb().setColorFilter(getResources().getColor(R.color.c_white), PorterDuff.Mode.SRC_IN);
-        }
-        else {
-            sbCores.setProgressDrawable(getResources().getDrawable(R.drawable.seekbar_ruler_inactive));
-            sbCores.getThumb().setColorFilter(getResources().getColor(R.color.c_light_grey), PorterDuff.Mode.SRC_IN);
-        }
-
-        sbCores.getProgressDrawable().setBounds(bounds);
-    }
-
     private void setMinerStatus(Integer status) {
         pbStatus.setScaleY(1f);
 
@@ -1668,7 +1659,6 @@ public class MainActivity extends BaseActivity
 
             stopTimerStatusHashrate();
             resetHashrateTicks();
-            enableSliderCores(true);
         }
         else if(status ==Config.STATE_MINING) {
             if(tvHashrate.getText().equals("0")) {
@@ -1686,8 +1676,6 @@ public class MainActivity extends BaseActivity
                 View v = findViewById(R.id.main_navigation);
                 v.setKeepScreenOn(true);
             }
-
-            enableSliderCores(false);
         }
         else {
             llStatus.setVisibility(View.VISIBLE);
@@ -1843,7 +1831,6 @@ public class MainActivity extends BaseActivity
     }
 
     private void resetHashrateTicks() {
-        SpeedView meterTicks = findViewById(R.id.meter_hashrate_ticks);
         meterTicks.setMaxSpeed(500);
         meterTicks.setTickNumber(0);
         meterTicks.setTextColor(getResources().getColor(android.R.color.transparent));
@@ -1858,6 +1845,9 @@ public class MainActivity extends BaseActivity
     }
 
     private void updateHashrateTicks(float fHr, float fMaxHr) {
+        if(bIsPerformanceMode)
+            return;
+
         SpeedView meterTicks = findViewById(R.id.meter_hashrate_ticks);
         float fCurrentMax = meterTicks.getMaxSpeed();
 
@@ -1926,7 +1916,8 @@ public class MainActivity extends BaseActivity
     }
 
     private void updateHashrateMeter(float fSpeed, float fMax) {
-        meterHashrate.speedTo(Math.round(fSpeed));
+        if(!bIsPerformanceMode)
+            meterHashrate.speedTo(Math.round(fSpeed));
 
         tvHashrate.setText(String.format(Locale.getDefault(), "%.1f", fSpeed));
         tvHashrate.setTextSize(fSpeed > 999f ? 44: 55);
@@ -1956,9 +1947,11 @@ public class MainActivity extends BaseActivity
             float fAvgHr = fSumHr / (float) nHrCount;
             tvAvgHr.setText(String.format(Locale.getDefault(), "%.1f", fAvgHr));
 
-            if (meterHashrate_avg.getVisibility() == View.GONE)
-                meterHashrate_avg.setVisibility(View.VISIBLE);
-            meterHashrate_avg.setSpeedAt(fAvgHr);
+            if(!bIsPerformanceMode) {
+                if (meterHashrate_avg.getVisibility() == View.GONE)
+                    meterHashrate_avg.setVisibility(View.VISIBLE);
+                meterHashrate_avg.setSpeedAt(fAvgHr);
+            }
         }
         else {
             tvAvgHr.setText(String.format(Locale.getDefault(), "%.1f", 0.0f));
@@ -1972,9 +1965,11 @@ public class MainActivity extends BaseActivity
 
             tvMaxHr.setText(String.format(Locale.getDefault(), "%.1f", fMaxHr));
 
-            if(meterHashrate_max.getVisibility() == View.GONE)
-                meterHashrate_max.setVisibility(View.VISIBLE);
-            meterHashrate_max.setSpeedAt(fMaxHr);
+            if(!bIsPerformanceMode) {
+                if (meterHashrate_max.getVisibility() == View.GONE)
+                    meterHashrate_max.setVisibility(View.VISIBLE);
+                meterHashrate_max.setSpeedAt(fMaxHr);
+            }
         }
         else {
             tvMaxHr.setText(String.format(Locale.getDefault(), "%.1f", 0.0f));

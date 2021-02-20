@@ -54,6 +54,34 @@
                             android:background="@color/bg_body"
                             android:orientation="vertical">
 
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:orientation="horizontal"
+                                android:gravity="center">
+
+                                <Space
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight="1" />
+
+                                <com.polyak.iconswitch.IconSwitch
+                                    android:id="@+id/isPerformanceMode"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    app:isw_background_color="@color/bg_lighter"
+                                    app:isw_thumb_color_left="@color/c_blue"
+                                    app:isw_thumb_color_right="@color/c_blue"
+                                    app:isw_inactive_tint_icon_left="@color/c_blue"
+                                    app:isw_inactive_tint_icon_right="@color/c_blue"
+                                    app:isw_active_tint_icon_left="@color/c_white"
+                                    app:isw_active_tint_icon_right="@color/c_white"
+                                    app:isw_default_selection="left"
+                                    app:isw_icon_left="@drawable/ic_hrcores"
+                                    app:isw_icon_right="@drawable/ic_rocket_resize" />
+
+                            </LinearLayout>
+
                             <FrameLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -774,53 +802,13 @@
                                 android:layout_height="match_parent"
                                 android:layout_weight="1" />
 
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="horizontal"
-                                android:visibility="gone">
-
-                                <SeekBar
-                                    android:id="@+id/seekbarcores"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center"
-                                    android:layout_marginEnd="10dp"
-                                    android:layout_weight="0.75"
-                                    android:max="8"
-                                    android:maxHeight="5dp"
-                                    android:min="1"
-                                    android:minHeight="5dp"
-                                    android:paddingStart="0dp"
-                                    android:paddingEnd="0dp"
-                                    android:progress="4"
-                                    android:progressDrawable="@drawable/seekbar_ruler_yellow"
-                                    android:thumbOffset="0dp"
-                                    android:thumbTint="@color/c_white"
-                                    tools:ignore="UnusedAttribute" />
-
-                                <Button
-                                    android:id="@+id/start2"
-                                    android:layout_width="50dp"
-                                    android:layout_height="55dp"
-                                    android:layout_weight="0.25"
-                                    app:backgroundTint="@color/bg_green"
-                                    android:text="@string/start"
-                                    android:textAllCaps="false"
-                                    android:textColor="@color/txt_button_filled"
-                                    android:textSize="14sp"
-                                    app:cornerRadius="7.5dp" />
-
-                            </LinearLayout>
-
-
                             <TextView
                                 android:id="@+id/payout"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="25dp"
                                 android:gravity="start"
-                                android:text="Payout"
+                                android:text="@string/payout"
                                 android:textSize="14sp"
                                 android:textStyle="bold"
                                 android:textAllCaps="true"
@@ -954,6 +942,7 @@
                             </LinearLayout>
 
                         <LinearLayout
+                            android:id="@+id/llTitleActivity"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="20dp"
@@ -964,7 +953,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="start"
                                 android:gravity="center"
-                                android:text="Activity"
+                                android:text="@string/activity"
                                 android:textAllCaps="true"
                                 android:textColor="@color/txt_headline"
                                 android:textSize="14sp"
@@ -985,7 +974,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="center"
-                                    android:text="More"
+                                    android:text="@string/more"
                                     android:textColor="@color/c_blue"
                                     android:textSize="14sp"
                                     android:textAllCaps="true"
@@ -1003,9 +992,11 @@
                         </LinearLayout>
 
                         <RelativeLayout
+                            android:id="@+id/rlLog"
                             android:layout_width="match_parent"
                             android:layout_height="125dp"
                             android:layout_marginTop="15dp"
+                            android:layout_marginBottom="20dp"
                             android:background="@drawable/corner_radius_black"
                             android:orientation="vertical">
 
@@ -1042,9 +1033,9 @@
                         </RelativeLayout>
 
                         <LinearLayout
+                            android:id="@+id/llTitleHashrate"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="20dp"
                             android:layout_marginBottom="15dp"
                             android:orientation="horizontal">
 
@@ -1053,7 +1044,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="start"
                                 android:gravity="center"
-                                android:text="Hashrate"
+                                android:text="@string/hashrate"
                                 android:textColor="@color/txt_headline"
                                 android:textSize="14sp"
                                 android:textAllCaps="true"
@@ -1095,6 +1086,7 @@
                         </LinearLayout>
 
                         <LinearLayout
+                            android:id="@+id/llChartHashrate"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:paddingTop="10dp"
@@ -1105,26 +1097,28 @@
                             android:orientation="vertical">
 
                             <com.github.mikephil.charting.charts.LineChart
-                                android:id="@+id/chart_hashrate"
+                                android:id="@+id/chartHashrate"
                                 android:layout_width="match_parent"
                                 android:layout_height="250dp" />
 
                         </LinearLayout>
 
                             <TextView
+                                android:id="@+id/tvTemperature"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="20dp"
                                 android:layout_marginBottom="15dp"
                                 android:layout_gravity="start"
                                 android:gravity="center"
-                                android:text="Temperature"
+                                android:text="@string/temperature"
                                 android:textAllCaps="true"
                                 android:textColor="@color/txt_headline"
                                 android:textSize="14sp"
                                 android:textStyle="bold" />
 
                         <LinearLayout
+                            android:id="@+id/llChartTemperature"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="25dp"
@@ -1136,7 +1130,7 @@
                             android:orientation="vertical">
 
                             <com.github.mikephil.charting.charts.BarChart
-                                android:id="@+id/chart_temprature"
+                                android:id="@+id/chartTemperature"
                                 android:layout_width="match_parent"
                                 android:layout_height="250dp" />
 
