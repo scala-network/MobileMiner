@@ -14,6 +14,8 @@ import android.widget.TextView;
 
 import com.google.android.material.button.MaterialButtonToggleGroup;
 
+import java.util.Objects;
+
 import io.scalaproject.androidminer.widgets.Toolbar;
 
 public class WizardSettingsActivity extends BaseActivity {
@@ -23,8 +25,6 @@ public class WizardSettingsActivity extends BaseActivity {
     private Integer nMaxCPUTemp = Config.DefaultMaxCPUTemp; // 60,65,70,75,80
     private Integer nMaxBatteryTemp = Config.DefaultMaxBatteryTemp; // 30,35,40,45,50
     private Integer nCooldownTheshold = Config.DefaultCooldownTheshold; // 5,10,15,20,25
-
-    private Toolbar toolbar;
 
     private MaterialButtonToggleGroup tgTemperatureUnit;
 
@@ -43,27 +43,22 @@ public class WizardSettingsActivity extends BaseActivity {
         View view = findViewById(android.R.id.content).getRootView();
 
         // Toolbar
-        toolbar = findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(false);
 
         toolbar.setOnButtonListener(new Toolbar.OnButtonListener() {
             @Override
             public void onButtonMain(int type) {
-                switch (type) {
-                    case Toolbar.BUTTON_MAIN_BACK:
-                        //onBackPressed();
-                        //startActivity(new Intent(WizardSettingsActivity.this, PoolActivity.class));
-                        finish();
-                        break;
+                if (type == Toolbar.BUTTON_MAIN_BACK) {//onBackPressed();
+                    //startActivity(new Intent(WizardSettingsActivity.this, PoolActivity.class));
+                    finish();
                 }
             }
 
             @Override
             public void onButtonOptions(int type) {
-                switch (type) {
-                    // Do nothing
-                }
+                // Do nothing
             }
         });
 

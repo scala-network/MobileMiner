@@ -29,6 +29,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.util.Objects;
+
 import io.scalaproject.androidminer.dialogs.CreditsFragment;
 import io.scalaproject.androidminer.dialogs.DonationsFragment;
 
@@ -173,11 +175,11 @@ public class AboutFragment extends Fragment {
     }
 
     private void onShowCredits() {
-        CreditsFragment.display(getActivity().getSupportFragmentManager());
+        CreditsFragment.display(Objects.requireNonNull(getActivity()).getSupportFragmentManager());
     }
 
     private void onShowDonations() {
-        DonationsFragment.display(getActivity().getSupportFragmentManager());
+        DonationsFragment.display(Objects.requireNonNull(getActivity()).getSupportFragmentManager());
     }
 
     private void onShareApp() {

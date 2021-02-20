@@ -44,9 +44,8 @@ public class PaymentsActivity extends BaseActivity implements PaymentInfoAdapter
         toolbar.setOnButtonListener(new Toolbar.OnButtonListener() {
             @Override
             public void onButtonMain(int type) {
-                switch (type) {
-                    case Toolbar.BUTTON_MAIN_CLOSE:
-                        onBackPressed();
+                if (type == Toolbar.BUTTON_MAIN_CLOSE) {
+                    onBackPressed();
                 }
             }
 

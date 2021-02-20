@@ -25,8 +25,6 @@ import io.scalaproject.androidminer.widgets.Toolbar;
 public class SupportActivity extends BaseActivity {
     private static final String LOG_TAG = "SupportActivity";
 
-    private Toolbar toolbar;
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,16 +38,15 @@ public class SupportActivity extends BaseActivity {
         setContentView(R.layout.fragment_support);
 
         // Toolbar
-        toolbar = findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(false);
 
         toolbar.setOnButtonListener(new Toolbar.OnButtonListener() {
             @Override
             public void onButtonMain(int type) {
-                switch (type) {
-                    case Toolbar.BUTTON_MAIN_CLOSE:
-                        onBackPressed();
+                if (type == Toolbar.BUTTON_MAIN_CLOSE) {
+                    onBackPressed();
                 }
             }
 

@@ -12,7 +12,6 @@ import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.Build;
 import android.content.Context;
 import android.os.Bundle;
@@ -38,6 +37,10 @@ import androidx.fragment.app.Fragment;
 import com.google.android.material.button.MaterialButtonToggleGroup;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputLayout;
+
+import org.jetbrains.annotations.NotNull;
+
+import java.util.Objects;
 
 import io.scalaproject.androidminer.api.PoolItem;
 import io.scalaproject.androidminer.api.ProviderManager;
@@ -75,7 +78,6 @@ public class SettingsFragment extends Fragment {
         TextView tvCoresNb, tvCoresMax;
 
         View view = inflater.inflate(R.layout.fragment_settings, container, false);
-        Context appContext = MainActivity.getContextOfApplication();
         bSave = view.findViewById(R.id.saveSettings);
 
         ViewGroup llNotice = view.findViewById(R.id.llNotice);
@@ -344,7 +346,7 @@ public class SettingsFragment extends Fragment {
             public void onClick(View v) {
                 boolean checked = ((Switch)v).isChecked();
                 if (checked) {
-                    MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getActivity(), R.style.MaterialAlertDialogCustom);
+                    MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(Objects.requireNonNull(getActivity()), R.style.MaterialAlertDialogCustom);
                     builder.setTitle("Warning")
                             .setMessage(Html.fromHtml(getString(R.string.warning_temperature_control_prompt)))
                             .setCancelable(false)
@@ -370,7 +372,7 @@ public class SettingsFragment extends Fragment {
             public void onClick(View view) {
                 // if mining, ask to restart
                 if(MainActivity.isDeviceMiningBackground()) {
-                    MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getContext(), R.style.MaterialAlertDialogCustom);
+                    MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(Objects.requireNonNull(getContext()), R.style.MaterialAlertDialogCustom);
                     builder.setTitle(getString(R.string.stopmining))
                             .setMessage(getString(R.string.newparametersapplied))
                             .setCancelable(true)
@@ -418,7 +420,7 @@ public class SettingsFragment extends Fragment {
         btnMineScala.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getContext(), R.style.MaterialAlertDialogCustom);
+                MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(Objects.requireNonNull(getContext()), R.style.MaterialAlertDialogCustom);
                 builder.setTitle(getString(R.string.supporttheproject))
                         .setMessage(getString(R.string.minetoscala))
                         .setCancelable(true)
@@ -570,7 +572,6 @@ public class SettingsFragment extends Fragment {
         main.stopMining();
         main.loadSettings();
 
-        main.updateStartButton();
         main.updateStatsListener();
         main.updateUI();
 
@@ -626,7 +627,7 @@ public class SettingsFragment extends Fragment {
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NotNull String[] permissions, @NotNull int[] grantResults) {
         Context appContext = MainActivity.getContextOfApplication();
         if (requestCode == 100) {
             if (permissions[0].equals(Manifest.permission.CAMERA) && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
@@ -649,7 +650,7 @@ public class SettingsFragment extends Fragment {
 
     private void requestFocus(View view) {
         if (view.requestFocus()) {
-            getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+            Objects.requireNonNull(getActivity()).getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
         }
     }
 

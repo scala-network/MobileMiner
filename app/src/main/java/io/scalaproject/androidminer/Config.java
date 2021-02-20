@@ -11,6 +11,7 @@ package io.scalaproject.androidminer;
 import android.content.SharedPreferences;
 
 import java.util.HashMap;
+import java.util.Objects;
 
 public class Config {
 
@@ -55,7 +56,7 @@ public class Config {
     static final Integer logPruneLength = 1000;
     static final String debugAddress = "Ssy2HXpWZ9RhXbb9uNFTeHjaYfexa3suDbGJDSfUWSEpSajSmjQXwLh2xqCAAUQfZrdiRkvpUZvBceT8d6zKc6aV9NaZVYXFsY";
 
-    private HashMap<String,String> mConfigs = new HashMap<String, String>();
+    private final HashMap<String,String> mConfigs = new HashMap<String, String>();
 
     static void initialize(SharedPreferences preferences) {
         mSettings = new Config();
@@ -88,7 +89,7 @@ public class Config {
             return mSettings.preferences.getString(key, fallback);
         }
 
-        if(!mSettings.mConfigs.containsKey(key) || mSettings.mConfigs.get(key).isEmpty()) {
+        if(!mSettings.mConfigs.containsKey(key) || Objects.requireNonNull(mSettings.mConfigs.get(key)).isEmpty()) {
             return fallback;
         }
 

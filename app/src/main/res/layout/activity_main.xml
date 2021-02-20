@@ -238,16 +238,6 @@
                                         android:textStyle="bold"
                                         android:visibility="visible" />
 
-                                    <View
-                                        android:id="@+id/view_separator"
-                                        android:layout_width="150dp"
-                                        android:layout_height="0.7dp"
-                                        android:layout_gravity="center"
-                                        android:layout_marginTop="5dp"
-                                        android:layout_marginBottom="5dp"
-                                        android:background="@color/txt_main"
-                                        android:visibility="gone"/>
-
                                     <LinearLayout
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
@@ -383,118 +373,6 @@
                                         android:textColor="@color/txt_button_filled"
                                         android:textSize="14sp"
                                         app:cornerRadius="7.5dp" />
-
-                                    <LinearLayout
-                                        android:layout_width="0dp"
-                                        android:layout_height="wrap_content"
-                                        android:layout_gravity="center"
-                                        android:layout_weight="1"
-                                        android:orientation="vertical"
-                                        android:visibility="gone">
-
-                                        <ImageView
-                                            android:layout_width="20dp"
-                                            android:layout_height="20dp"
-                                            android:layout_gravity="center"
-                                            app:srcCompat="@drawable/ic_cores" />
-
-                                        <TextView
-                                            android:id="@+id/nbcores"
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:layout_gravity="center"
-                                            android:gravity="end"
-                                            android:text="-"
-                                            android:textColor="@color/c_yellow"
-                                            android:textSize="12sp" />
-
-                                    </LinearLayout>
-
-                                    <LinearLayout
-                                        android:layout_width="0dp"
-                                        android:layout_height="wrap_content"
-                                        android:layout_gravity="center"
-                                        android:layout_weight="1"
-                                        android:orientation="vertical"
-                                        android:visibility="gone">
-
-                                        <ImageView
-                                            android:layout_width="20dp"
-                                            android:layout_height="20dp"
-                                            android:layout_gravity="center"
-                                            app:srcCompat="@drawable/ic_miner" />
-
-                                        <LinearLayout
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:layout_gravity="center"
-                                            android:orientation="horizontal">
-
-                                            <TextView
-                                                android:id="@+id/cputemp2"
-                                                android:layout_width="wrap_content"
-                                                android:layout_height="wrap_content"
-                                                android:layout_gravity="center"
-                                                android:layout_marginEnd="3dp"
-                                                android:gravity="end"
-                                                android:text="-"
-                                                android:textColor="@color/txt_secondary"
-                                                android:textSize="12sp" />
-
-                                            <TextView
-                                                android:layout_width="wrap_content"
-                                                android:layout_height="wrap_content"
-                                                android:layout_gravity="center"
-                                                android:text="@string/celsius"
-                                                android:textColor="@color/txt_secondary"
-                                                android:textSize="12sp" />
-
-                                        </LinearLayout>
-
-                                    </LinearLayout>
-
-                                    <LinearLayout
-                                        android:layout_width="0dp"
-                                        android:layout_height="wrap_content"
-                                        android:layout_gravity="center"
-                                        android:layout_weight="1"
-                                        android:orientation="vertical"
-                                        android:visibility="gone">
-
-                                        <ImageView
-                                            android:layout_width="20dp"
-                                            android:layout_height="20dp"
-                                            android:layout_gravity="center"
-                                            app:srcCompat="@drawable/ic_battery" />
-
-                                        <LinearLayout
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:layout_gravity="center"
-                                            android:orientation="horizontal">
-
-                                            <TextView
-                                                android:id="@+id/batterytemp2"
-                                                android:layout_width="wrap_content"
-                                                android:layout_height="wrap_content"
-                                                android:layout_gravity="center"
-                                                android:layout_marginEnd="3dp"
-                                                android:gravity="end"
-                                                android:text="-"
-                                                android:textColor="@color/txt_secondary"
-                                                android:textSize="12sp" />
-
-                                            <TextView
-                                                android:layout_width="wrap_content"
-                                                android:layout_height="wrap_content"
-                                                android:layout_gravity="center"
-                                                android:text="@string/celsius"
-                                                android:textColor="@color/txt_secondary"
-                                                android:textSize="12sp" />
-
-                                        </LinearLayout>
-
-                                    </LinearLayout>
 
                                 </LinearLayout>
 
@@ -699,103 +577,9 @@
 
                                         </LinearLayout>
 
-                                        <LinearLayout
-                                            android:layout_width="75dp"
-                                            android:layout_height="wrap_content"
-                                            android:layout_marginEnd="15dp"
-                                            android:layout_weight="1"
-                                            android:orientation="vertical"
-                                            android:background="@drawable/corner_radius_lighter"
-                                            android:padding="5dp"
-                                            android:visibility="gone">
-
-                                            <ImageView
-                                                android:id="@+id/imgdifficulty"
-                                                android:layout_width="24dp"
-                                                android:layout_height="24dp"
-                                                android:layout_gravity="center"
-                                                android:layout_marginBottom="10dp"
-                                                app:srcCompat="@drawable/ic_difficulty" />
-
-                                            <TextView
-                                                android:id="@+id/difficulty"
-                                                android:layout_width="wrap_content"
-                                                android:layout_height="wrap_content"
-                                                android:layout_gravity="center"
-                                                android:gravity="end"
-                                                android:text="0"
-                                                android:textColor="@color/txt_inactive"
-                                                android:textSize="18sp"
-                                                android:textStyle="normal" />
-
-                                            <TextView
-                                                android:layout_width="wrap_content"
-                                                android:layout_height="wrap_content"
-                                                android:layout_gravity="center"
-                                                android:gravity="end"
-                                                android:text="@string/difficulty"
-                                                android:textColor="@color/txt_main"
-                                                android:textSize="12sp" />
-
-                                        </LinearLayout>
-
-                                        <LinearLayout
-                                            android:layout_width="75dp"
-                                            android:layout_height="wrap_content"
-                                            android:layout_weight="1"
-                                            android:orientation="vertical"
-                                            android:background="@drawable/corner_radius_lighter"
-                                            android:padding="5dp"
-                                            android:visibility="gone">
-
-                                            <ImageView
-                                                android:id="@+id/imgconnection2"
-                                                android:layout_width="24dp"
-                                                android:layout_height="24dp"
-                                                android:layout_gravity="center"
-                                                android:layout_marginBottom="10dp"
-                                                app:srcCompat="@drawable/ic_connection" />
-
-                                            <LinearLayout
-                                                android:layout_width="wrap_content"
-                                                android:layout_height="wrap_content"
-                                                android:layout_gravity="center"
-                                                android:orientation="horizontal">
-
-                                                <TextView
-                                                    android:id="@+id/connection"
-                                                    android:layout_width="wrap_content"
-                                                    android:layout_height="wrap_content"
-                                                    android:text="0"
-                                                    android:textColor="@color/txt_inactive"
-                                                    android:textSize="18sp"
-                                                    android:textStyle="normal" />
-
-                                                <TextView
-                                                    android:layout_width="wrap_content"
-                                                    android:layout_height="wrap_content"
-                                                    android:layout_marginStart="3dp"
-                                                    android:text="ms"
-                                                    android:textColor="@color/txt_inactive"
-                                                    android:textSize="12sp" />
-
-                                            </LinearLayout>
-
-                                            <TextView
-                                                android:layout_width="wrap_content"
-                                                android:layout_height="wrap_content"
-                                                android:layout_gravity="center"
-                                                android:gravity="end"
-                                                android:text="@string/connection"
-                                                android:textColor="@color/txt_main"
-                                                android:textSize="12sp" />
-
-                                        </LinearLayout>
-
                                     </LinearLayout>
 
                                 </HorizontalScrollView>
-
 
                             <Space
                                 android:id="@+id/space_metrics_below"
@@ -1066,7 +850,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="center"
-                                    android:text="Refresh"
+                                    android:text="@string/refresh"
                                     android:textColor="@color/c_blue"
                                     android:textSize="14sp"
                                     android:textAllCaps="true"
