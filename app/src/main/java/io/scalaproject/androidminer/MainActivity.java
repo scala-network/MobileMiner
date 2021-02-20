@@ -1563,6 +1563,8 @@ public class MainActivity extends BaseActivity
 
         stopTimerMiningSanity();
 
+        appendLogOutputTextWithDate(getResources().getString(R.string.stopped));
+
         updateUI();
     }
 
@@ -1856,7 +1858,9 @@ public class MainActivity extends BaseActivity
                 hrMax = getMaxHr(fHr);
             }
 
+            Log.i(LOG_TAG, "hrMax: " + Float.toString(hrMax));
             meterTicks.setMaxSpeed(hrMax);
+
             meterTicks.setTickNumber(10);
             meterTicks.setTextColor(getResources().getColor(R.color.txt_main));
 
@@ -1985,10 +1989,16 @@ public class MainActivity extends BaseActivity
             text = sb.delete(i-4, i).toString();
         }
 
-        if(isDeviceCooling() && text.contains("paused, press")) {
-            text = text.replace("paused, press", getResources().getString(R.string.miningpaused));
-            text = text.replace("to resume", "");
-            text = text.replace("r ", "");
+        if(text.contains("paused, press")) {
+            if(isDeviceCooling()) {
+                text = text.replace("paused, press", getResources().getString(R.string.miningpaused));
+                text = text.replace("to resume", "");
+                text = text.replace("r ", "");
+            } else {
+                text = text.replace(", press", "");
+                text = text.replace("to resume", "");
+                text = text.replace("r ", "");
+            }
         }
 
         if(m_nLastCurrentState == Config.STATE_COOLING && text.contains("resumed")) {
@@ -2000,6 +2010,16 @@ public class MainActivity extends BaseActivity
         }
 
         if (text.contains("COMMANDS")) {
+            //text = text + System.getProperty("line.separator");
+            return null;
+        }
+
+        if (text.contains("POOL")) {
+            PoolItem selectedPool = ProviderManager.getSelectedPool();
+            if(selectedPool != null) {
+                text = text + " POOL URL " + selectedPool.getPoolUrl() + ":" + selectedPool.getPort() + System.getProperty("line.separator");
+            }
+
             text = text + System.getProperty("line.separator");
         }
 
@@ -2031,6 +2051,14 @@ public class MainActivity extends BaseActivity
                     int imax = i + tmpFormat.length();
                     textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_white)), i, imax, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                     textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_grey)), imax, text.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+                    String tmpFormat2 = "POOL URL";
+                    if(tmpFormat.equals("POOL") && text.contains(tmpFormat2)) {
+                        i = text.indexOf(tmpFormat2);
+                        imax = i + tmpFormat2.length();
+                        textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_white)), i, imax, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                        textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_grey)), imax, text.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    }
 
                     return textSpan;
                 }
@@ -2171,6 +2199,33 @@ public class MainActivity extends BaseActivity
             return textSpan;
         }
 
+        formatText = "paused";
+        if(text.contains(formatText)) {
+            int i = text.indexOf(formatText);
+            int imax = text.length();
+            textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_white)), i, imax, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            textSpan.setSpan(new StyleSpan(android.graphics.Typeface.NORMAL), i, imax, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+            return textSpan;
+        }
+
+        formatText = getResources().getString(R.string.stopped);
+        if(text.contains(formatText)) {
+            int i = text.indexOf(formatText);
+            int imax = text.length();
+            textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_white)), i, imax, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            textSpan.setSpan(new StyleSpan(android.graphics.Typeface.NORMAL), i, imax, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+            return textSpan;
+        }
+
+        formatText = "resumed";
+        if(text.contains(formatText)) {
+            int i = text.indexOf(formatText);
+            int imax = text.length();
+            textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_white)), i, imax, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            textSpan.setSpan(new StyleSpan(android.graphics.Typeface.NORMAL), i, imax, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+            return textSpan;
+        }
+
         formatText = getResources().getString(R.string.mining_aborted);
         if(text.contains(formatText)) {
             int i = text.indexOf(formatText);
@@ -2260,15 +2315,23 @@ public class MainActivity extends BaseActivity
         if(binder != null) {
             if (tvLog.getText().length() > Config.logMaxLength ){
                 String outputLog = binder.getService().getOutput();
-                tvLog.setText(formatLogOutputText(outputLog));
-                tvLog2.setText(formatLogOutputText(outputLog));
+
+                Spannable sText = formatLogOutputText(outputLog);
+                if(sText != null) {
+                    tvLog.setText(sText);
+                    tvLog2.setText(sText);
+                }
             }
         }
 
         if(!line.equals("")) {
             String outputLog = line + System.getProperty("line.separator");
-            tvLog.append(formatLogOutputText(outputLog));
-            tvLog2.append(formatLogOutputText(outputLog));
+
+            Spannable sText = formatLogOutputText(outputLog);
+            if(sText != null) {
+                tvLog.append(sText);
+                tvLog2.append(sText);
+            }
         }
 
         refreshLogOutputView();
