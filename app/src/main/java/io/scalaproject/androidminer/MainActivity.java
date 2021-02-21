@@ -763,13 +763,19 @@ public class MainActivity extends BaseActivity
 
     private void updateChartTemperatureAxis() {
         BarChart chartTemperature = findViewById(R.id.chartTemperature);
+
         YAxis leftAxis = chartTemperature.getAxisLeft();
         leftAxis.setAxisMaximum(bIsCelsius ? 90f : Utils.convertCelciusToFahrenheit(90));
+
+        chartTemperature.invalidate();
     }
 
     private void resetCharts() {
         lValuesHr.clear();
         xHr = 0;
+
+        LineChart chartHashrate = findViewById(R.id.chartHashrate);
+        chartHashrate.invalidate();
 
         lValuesTempBattery.clear();
         lValuesTempCPU.clear();
@@ -795,7 +801,7 @@ public class MainActivity extends BaseActivity
         LineData data = chartHashrate.getData();
         YAxis leftAxis = chartHashrate.getAxisLeft();
 
-        if (data != null && data.getDataSetCount() > 0) {
+        if (data != null && data.getDataSetCount() > 0 && lValuesHr.size() > 1) {
             set1 = (LineDataSet) data.getDataSetByIndex(0);
             set1.setValues(lValuesHr);
             data.notifyDataChanged();
@@ -881,7 +887,6 @@ public class MainActivity extends BaseActivity
             set1.setValues(lValuesTempCPU);
             set2.setValues(lValuesTempBattery);
             data.notifyDataChanged();
-            chartTemperature.notifyDataSetChanged();
         } else {
             set1 = new BarDataSet(lValuesTempCPU, "CPU");
             set1.setColor(getResources().getColor(R.color.c_blue));
@@ -1500,7 +1505,7 @@ public class MainActivity extends BaseActivity
         miningMinutes = 0;
 
         resetOptions();
-        
+
         resetHashrateTicks();
         resetAvgMaxHashrate();
 
