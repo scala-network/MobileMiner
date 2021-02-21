@@ -156,6 +156,9 @@ public class MainActivity extends BaseActivity
     private Timer timerMiningSanity = null;
     private TimerTask timerTaskMiningSanity = null;
 
+    private Timer timerMiningTime = null;
+    private TimerTask timerTaskMiningTime = null;
+
     private boolean validArchitecture = true;
 
     private MiningService.MiningServiceBinder binder;
@@ -230,6 +233,8 @@ public class MainActivity extends BaseActivity
     private File imagePath = null;
 
     private boolean isFromLogView = false;
+
+    private int miningMinutes = 0;
 
     public static boolean isDeviceMiningBackground() {
         return (m_nCurrentState == Config.STATE_CALCULATING || m_nCurrentState == Config.STATE_MINING || m_nCurrentState == Config.STATE_COOLING || m_nCurrentState == Config.STATE_PAUSED);
@@ -1480,6 +1485,7 @@ public class MainActivity extends BaseActivity
         bMiningStoppedByUser = false;
         clearMinerLog = true;
         nSharesCount = 0;
+        miningMinutes = 0;
 
         resetOptions();
 
@@ -1490,6 +1496,14 @@ public class MainActivity extends BaseActivity
         loadSettings();
 
         startMiningService();
+
+        startTimerMiningTime();
+
+        TextView tvAcceptedShares = findViewById(R.id.acceptedshare);
+        tvAcceptedShares.setText("0");
+        tvAcceptedShares.setTextColor(getResources().getColor(R.color.txt_inactive));
+
+        updateMiningTime();
 
         showNotificationPause();
 
@@ -1599,6 +1613,8 @@ public class MainActivity extends BaseActivity
 
         stopTimerMiningSanity();
 
+        stopTimerMiningTime();
+
         appendLogOutputTextWithDate(getResources().getString(R.string.stopped));
 
         updateUI();
@@ -1649,9 +1665,9 @@ public class MainActivity extends BaseActivity
             return;
 
         if (binder.getService().getMiningServiceState()) {
-            MainActivity.this.stopMining();
+            stopMining();
         } else {
-            MainActivity.this.startMining();
+            startMining();
         }
     }
 
@@ -1679,6 +1695,29 @@ public class MainActivity extends BaseActivity
             btnStart.setBackground(buttonDrawableStart);
             btnStart.setText(R.string.stop);
         }
+    }
+
+    private void updateMiningTime() {
+        int days =  miningMinutes/24/60;
+        int hours = miningMinutes/60%24;
+        int minutes = miningMinutes%60;
+
+        String miningTime = "";
+        if(days > 0)
+            miningTime += days + "d";
+
+        if(hours > 0)
+            miningTime += hours + "h";
+
+        if(minutes > 0)
+            miningTime += minutes + "m";
+
+        if(miningTime.isEmpty())
+            miningTime = "0m";
+
+        TextView tvMiningTime = findViewById(R.id.miningtime);
+        tvMiningTime.setTextColor(miningTime.equals("0m") ? getResources().getColor(R.color.txt_inactive) : getResources().getColor(R.color.txt_main));
+        tvMiningTime.setText(miningTime);
     }
 
     private void setMinerStatus(Integer status) {
@@ -1889,6 +1928,35 @@ public class MainActivity extends BaseActivity
         }
     }
 
+    public void startTimerMiningTime() {
+        if(timerMiningTime != null)
+            return;
+
+        timerTaskMiningTime = new TimerTask() {
+            @Override
+            public void run() {
+                runOnUiThread(new Runnable() {
+                    public void run() {
+                        miningMinutes++;
+                        updateMiningTime();
+                    }
+                });
+            }
+        };
+
+        timerMiningTime = new Timer();
+
+        timerMiningTime.scheduleAtFixedRate(timerTaskMiningTime, 60000, Config.CHECK_MINING_TIME_DELAY);
+    }
+
+    public void stopTimerMiningTime() {
+        if(timerMiningTime != null) {
+            timerMiningTime.cancel();
+            timerMiningTime = null;
+            timerTaskMiningTime = null;
+        }
+    }
+
     private void resetHashrateTicks() {
         SpeedView meterTicks = findViewById(R.id.meter_hashrate_ticks);
         TubeSpeedometer meterHashrate = findViewById(R.id.meter_hashrate);
@@ -2053,7 +2121,7 @@ public class MainActivity extends BaseActivity
             tvMaxHr.setText(String.format(Locale.getDefault(), "%.1f", fMaxHr));
 
             if(!bIsPerformanceMode) {
-                if (meterHashrate_max.getVisibility() == View.GONE)
+                if (meterHashrate_max.getVisibility() == View.INVISIBLE)
                     meterHashrate_max.setVisibility(View.VISIBLE);
                 meterHashrate_max.setSpeedAt(fMaxHr);
             }

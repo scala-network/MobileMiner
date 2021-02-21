@@ -54,6 +54,7 @@ public class Config {
 
     public final static int CHECK_TEMPERATURE_DELAY = 10000; // In milliseconds
     public final static int CHECK_MINING_SANITY_DELAY = 10000; // In milliseconds
+    public final static int CHECK_MINING_TIME_DELAY = 60000; // In milliseconds
 
     private static Config mSettings;
     private SharedPreferences preferences;
