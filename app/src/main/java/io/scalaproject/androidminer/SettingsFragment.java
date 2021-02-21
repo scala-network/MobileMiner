@@ -64,7 +64,7 @@ public class SettingsFragment extends Fragment {
 
     private SeekBar sbCPUTemp, sbBatteryTemp, sbCooldown, sbCores;
     private TextView tvCPUMaxTemp, tvBatteryMaxTemp, tvCooldown, tvCPUTempUnit, tvBatteryTempUnit, tvRefreshHashrateDelay;
-    private Switch swDisableTempControl, swPauseOnBattery, swKeepScreenOnWhenMining, swSendDebugInformation, swDoNotRestartOnCrash;
+    private Switch swDisableTempControl, swPauseOnBattery, swPauseOnNetwork, swKeepScreenOnWhenMining, swSendDebugInformation, swDoNotRestartOnCrash;
     private ImageView ivDecreaseRefreshHashrateDelay, ivIncreaseRefreshHashrateDelay;
     private MaterialButtonToggleGroup tgTemperatureUnit;
 
@@ -134,6 +134,7 @@ public class SettingsFragment extends Fragment {
         tvRefreshHashrateDelay = view.findViewById(R.id.tvRefreshHashrateDelay);
 
         swPauseOnBattery = view.findViewById(R.id.chkPauseOnBattery);
+        swPauseOnNetwork = view.findViewById(R.id.chkPauseOnNetwork);
         swKeepScreenOnWhenMining = view.findViewById(R.id.chkKeepScreenOnWhenMining);
         swDisableTempControl = view.findViewById(R.id.chkAmaycOff);
         swSendDebugInformation = view.findViewById(R.id.chkSendDebugInformation);
@@ -165,11 +166,11 @@ public class SettingsFragment extends Fragment {
         sbCores.setMax(cores-1);
         tvCoresMax.setText(Integer.toString(cores));
 
-        if (Config.read("cores").isEmpty()) {
+        if (Config.read(Config.CONFIG_CORES).isEmpty()) {
             sbCores.setProgress(suggested-1);
             tvCoresNb.setText(Integer.toString(suggested));
         } else {
-            int corenb = Integer.parseInt(Config.read("cores"));
+            int corenb = Integer.parseInt(Config.read(Config.CONFIG_CORES));
             sbCores.setProgress(corenb-1);
             tvCoresNb.setText(Integer.toString(corenb));
         }
@@ -185,43 +186,48 @@ public class SettingsFragment extends Fragment {
             tvBatteryTempUnit.setText(getString(R.string.fahrenheit));
         }
 
-        if (!Config.read("maxcputemp").isEmpty()) {
-            nMaxCPUTemp = Integer.parseInt(Config.read("maxcputemp"));
+        if (!Config.read(Config.CONFIG_MAX_CPU_TEMP).isEmpty()) {
+            nMaxCPUTemp = Integer.parseInt(Config.read(Config.CONFIG_MAX_CPU_TEMP));
         }
         int nProgress = ((nMaxCPUTemp-Utils.MIN_CPU_TEMP)/Utils.INCREMENT);
         sbCPUTemp.setProgress(nProgress);
         updateCPUTemp();
 
-        if (!Config.read("maxbatterytemp").isEmpty()) {
-            nMaxBatteryTemp = Integer.parseInt(Config.read("maxbatterytemp"));
+        if (!Config.read(Config.CONFIG_MAX_BATTERY_TEMP).isEmpty()) {
+            nMaxBatteryTemp = Integer.parseInt(Config.read(Config.CONFIG_MAX_BATTERY_TEMP));
         }
         nProgress = ((nMaxBatteryTemp-Utils.MIN_BATTERY_TEMP)/Utils.INCREMENT);
         sbBatteryTemp.setProgress(nProgress);
         updateBatteryTemp();
 
-        if (!Config.read("cooldownthreshold").isEmpty()) {
-            nCooldownTheshold = Integer.parseInt(Config.read("cooldownthreshold"));
+        if (!Config.read(Config.CONFIG_COOLDOWN_THRESHOLD).isEmpty()) {
+            nCooldownTheshold = Integer.parseInt(Config.read(Config.CONFIG_COOLDOWN_THRESHOLD));
         }
         nProgress = ((nCooldownTheshold-Utils.MIN_COOLDOWN)/Utils.INCREMENT);
         sbCooldown.setProgress(nProgress);
         updateCooldownThreshold();
 
-        boolean disableAmayc = (Config.read("disableamayc").equals("1"));
-        if(disableAmayc){
+        boolean disableTempControl = (Config.read(Config.CONFIG_DISABLE_TEMPERATURE_CONTROL).equals("1"));
+        if(disableTempControl){
             swDisableTempControl.setChecked(true);
         }
-        enableAmaycControl(!disableAmayc);
+        enableTemperatureControl(!disableTempControl);
 
-        if (!Config.read("mininggoal").isEmpty()) {
-            edMiningGoal.setText(Config.read("mininggoal"));
+        if (!Config.read(Config.CONFIG_MINING_GOAL).isEmpty()) {
+            edMiningGoal.setText(Config.read(Config.CONFIG_MINING_GOAL));
         }
 
-        boolean checkStatus = Config.read("pauseonbattery").equals("1");
-        if(checkStatus) {
+        boolean checkPauseOnBattery = Config.read(Config.CONFIG_PAUSE_ON_BATTERY).equals("1");
+        if(checkPauseOnBattery) {
             swPauseOnBattery.setChecked(true);
         }
 
-        boolean checkStatusScreenOn = Config.read("keepscreenonwhenmining").equals("1");
+        boolean checkPauseOnNetwork = Config.read(Config.CONFIG_PAUSE_ON_NETWORK).equals("1");
+        if(checkPauseOnNetwork) {
+            swPauseOnNetwork.setChecked(true);
+        }
+
+        boolean checkStatusScreenOn = Config.read(Config.CONFIG_KEEP_SCREEN_ON_WHEN_MINING).equals("1");
         if(checkStatusScreenOn) {
             swKeepScreenOnWhenMining.setChecked(true);
         }
@@ -236,16 +242,16 @@ public class SettingsFragment extends Fragment {
             swDoNotRestartOnCrash.setChecked(true);
         }
 
-        if (!Config.read("address").isEmpty()) {
-            edAddress.setText(Config.read("address"));
+        if (!Config.read(Config.CONFIG_ADDRESS).isEmpty()) {
+            edAddress.setText(Config.read(Config.CONFIG_ADDRESS));
         }
 
-        if (!Config.read("usernameparameters").isEmpty()) {
-            edUsernameparameters.setText(Config.read("usernameparameters"));
+        if (!Config.read(Config.CONFIG_USERNAME_PARAMETERS).isEmpty()) {
+            edUsernameparameters.setText(Config.read(Config.CONFIG_USERNAME_PARAMETERS));
         }
 
-        if (!Config.read("workername").isEmpty()) {
-            edWorkerName.setText(Config.read("workername"));
+        if (!Config.read(Config.CONFIG_WORKERNAME).isEmpty()) {
+            edWorkerName.setText(Config.read(Config.CONFIG_WORKERNAME));
         }
 
         if (!Config.read(Config.CONFIG_HASHRATE_REFRESH_DELAY).isEmpty()) {
@@ -360,7 +366,7 @@ public class SettingsFragment extends Fragment {
                             .show();
                 }
 
-                enableAmaycControl(!checked);
+                enableTemperatureControl(!checked);
             }
         });
 
@@ -524,11 +530,11 @@ public class SettingsFragment extends Fragment {
         PoolItem selectedPoolItem = getSelectedPoolItem();
 
         Config.write(Config.CONFIG_SELECTED_POOL, selectedPoolItem.getKey().trim());
-        Config.write(Config.CONFIG_POOL_PORT, selectedPoolItem.getDefaultPort().trim());
+        Config.write(Config.CONFIG_CUSTOM_PORT, selectedPoolItem.getDefaultPort().trim());
 
-        Config.write("address", address);
+        Config.write(Config.CONFIG_ADDRESS, address);
 
-        Config.write("usernameparameters", edUsernameparameters.getText().toString().trim());
+        Config.write(Config.CONFIG_USERNAME_PARAMETERS, edUsernameparameters.getText().toString().trim());
 
         String workername = edWorkerName.getText().toString().trim();
         if(workername.isEmpty()) {
@@ -536,34 +542,35 @@ public class SettingsFragment extends Fragment {
         }
 
         Log.i(LOG_TAG,"Worker Name : " + workername);
-        Config.write("workername", workername);
+        Config.write(Config.CONFIG_WORKERNAME, workername);
         edWorkerName.setText(workername);
 
-        Config.write("custom_port", edPort.getText().toString().trim());
+        Config.write(Config.CONFIG_CUSTOM_PORT, edPort.getText().toString().trim());
 
-        Config.write("cores", Integer.toString(sbCores.getProgress()+1));
+        Config.write(Config.CONFIG_CORES, Integer.toString(sbCores.getProgress()+1));
 
-        Config.write("maxcputemp", Integer.toString(getCPUTemp()));
-        Config.write("maxbatterytemp", Integer.toString(getBatteryTemp()));
-        Config.write("cooldownthreshold", Integer.toString(getCooldownTheshold()));
+        Config.write(Config.CONFIG_MAX_CPU_TEMP, Integer.toString(getCPUTemp()));
+        Config.write(Config.CONFIG_MAX_BATTERY_TEMP, Integer.toString(getBatteryTemp()));
+        Config.write(Config.CONFIG_COOLDOWN_THRESHOLD, Integer.toString(getCooldownTheshold()));
 
         Config.write(Config.CONFIG_HASHRATE_REFRESH_DELAY, tvRefreshHashrateDelay.getText().toString());
 
-        Config.write("disableamayc", (swDisableTempControl.isChecked() ? "1" : "0"));
+        Config.write(Config.CONFIG_DISABLE_TEMPERATURE_CONTROL, (swDisableTempControl.isChecked() ? "1" : "0"));
 
         String mininggoal = edMiningGoal.getText().toString().trim();
         if(!mininggoal.isEmpty()) {
-            Config.write("mininggoal", mininggoal);
+            Config.write(Config.CONFIG_MINING_GOAL, mininggoal);
         }
 
-        Config.write("pauseonbattery", swPauseOnBattery.isChecked() ? "1" : "0");
-        Config.write("keepscreenonwhenmining", swKeepScreenOnWhenMining.isChecked() ? "1" : "0");
+        Config.write(Config.CONFIG_PAUSE_ON_BATTERY, swPauseOnBattery.isChecked() ? "1" : "0");
+        Config.write(Config.CONFIG_PAUSE_ON_NETWORK, swPauseOnNetwork.isChecked() ? "1" : "0");
+        Config.write(Config.CONFIG_KEEP_SCREEN_ON_WHEN_MINING, swKeepScreenOnWhenMining.isChecked() ? "1" : "0");
 
         Config.write(Config.CONFIG_TEMPERATURE_UNIT, tgTemperatureUnit.getCheckedButtonId() == R.id.btnFarehnheit ? "F" : "C");
         Config.write(Config.CONFIG_SEND_DEBUG_INFO, swSendDebugInformation.isChecked() ? "1" : "0");
         Config.write(Config.CONFIG_DISABLE_RESTART_MINING_ABORTED, swDoNotRestartOnCrash.isChecked() ? "1" : "0");
 
-        Config.write("init", "1");
+        Config.write(Config.CONFIG_INIT, "1");
 
         Utils.showToast(getContext(), "Settings Saved.", Toast.LENGTH_SHORT);
 
@@ -610,7 +617,7 @@ public class SettingsFragment extends Fragment {
         tvCooldown.setText(Integer.toString(getCooldownTheshold()));
     }
 
-    private void enableAmaycControl(boolean enable) {
+    private void enableTemperatureControl(boolean enable) {
         sbCPUTemp.setEnabled(enable);
         sbBatteryTemp.setEnabled(enable);
         sbCooldown.setEnabled(enable);
@@ -640,7 +647,7 @@ public class SettingsFragment extends Fragment {
     }
 
     public void updateAddress() {
-        String address =  Config.read("address");
+        String address =  Config.read(Config.CONFIG_ADDRESS);
         if (edAddress == null || address.isEmpty()) {
             return;
         }
@@ -675,5 +682,10 @@ public class SettingsFragment extends Fragment {
 
         pvSelectedPool.onFinishInflate();
         updatePort();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
     }
 }

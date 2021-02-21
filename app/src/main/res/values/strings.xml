@@ -81,8 +81,10 @@
     <string name="maxtemperaturereached">Temperature threshold reached!</string>
     <string name="resumedmining">Temperatures have reached safe levels. Resumed mining.</string>
     <string name="pauseonmining">Put device on charge to enable mining.</string>
+    <string name="pauseonnetwork">Connect to a Wi-Fi network to enable mining.</string>
     <string name="confirmstartmining">Are you sure you want to start mining?</string>
     <string name="deviceonbattery">Your device is currently on battery power.</string>
+    <string name="devicenotonwifi">Your device is currently not connected to a Wi-Fi network.</string>
     <string name="mininggoalhint">Mining goal or pool payout</string>
     <string name="hardwaresettings">Hardware</string>
     <string name="max">Max</string>
@@ -91,6 +93,7 @@
     <string name="cooldownthreshold">Cooldown Threshold</string>
     <string name="degreecelsius">°C</string>
     <string name="pauseminingonbattery">Pause mining on battery power</string>
+    <string name="pauseminingonmobile">Pause mining on mobile data</string>
     <string name="keepscreenonwhenmining">Keep screen ON when mining</string>
     <string name="turnoffamayccontrol">Disable Temperature Control</string>
     <string name="warning">Warning!</string>
@@ -249,4 +252,8 @@
     <string name="performance_mode">Performance Mode</string>
     <string name="performance_mode_text">Are you sure you want to enable Performance Mode?\n\nThe following features will be disabled:\n- Hashrate meter and chart\n- Temperature chart\n- Payout widget\n- Statistics refresh\n- Hashrate refresh delay\n- Restart mining process</string>
     <string name="refresh">Refresh</string>
+    <string name="devicecharging">Device charging.</string>
+    <string name="deviceonbatterypower">Device on battery power.</string>
+    <string name="connectedwifi">Connected to a Wi-Fi network.</string>
+    <string name="disconnectedwifi">Disconnected from a Wi-Fi network.</string>
 </resources>

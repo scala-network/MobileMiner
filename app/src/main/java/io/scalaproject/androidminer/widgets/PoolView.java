@@ -36,8 +36,6 @@ public class PoolView extends LinearLayout {
     TextView tvPoolURL;
     ImageView ivOptions;
 
-    Context mContext = null;
-
     public PoolView(Context context) {
         super(context);
         initializeViews(context);

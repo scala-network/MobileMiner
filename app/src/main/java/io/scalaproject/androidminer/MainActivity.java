@@ -45,6 +45,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.net.wifi.WifiManager;
 import android.os.BatteryManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -139,9 +140,7 @@ public class MainActivity extends BaseActivity
 {
     private static final String LOG_TAG = "MainActivity";
 
-    private TextView tvHashrate, tvStatus, tvCPUTemperature, tvCPUTemperatureUnit, tvBatteryTemperature, tvBatteryTemperatureUnit, tvAcceptedShares, tvLog, tvLog2, tvStatusProgess;
-
-    private NestedScrollView svLog, svLog2;
+    private TextView tvCPUTemperature, tvBatteryTemperature, tvLog, tvLog2;
 
     private boolean bIsPerformanceMode = false;
 
@@ -163,7 +162,8 @@ public class MainActivity extends BaseActivity
     private boolean bPayoutDataReceived = false;
 
     private boolean bIsRestartEvent = false;
-    private boolean bForceMiningOnPause = false;
+    private boolean bForceMiningOnPauseBattery = false;
+    private boolean bForceMiningOnPauseNetwork = false;
 
     private boolean bValidCPUTemperatureSensor = true;
     private boolean bValidBatteryTemperatureSensor = true;
@@ -181,13 +181,14 @@ public class MainActivity extends BaseActivity
 
     // Settings
     private boolean bDisableTemperatureControl = false;
-    private boolean bDisableAmayc = false;
+    private boolean bDisableAMAYC = false;
     private int nMaxCPUTemp = Config.DefaultMaxCPUTemp;
     private int nMaxBatteryTemp = Config.DefaultMaxBatteryTemp;
     private int nSafeCPUTemp = 0;
     private int nSafeBatteryTemp = 0;
     private int nCores = 0;
 
+    private int nSharesCount = 0;
     private int nLastShareCount = 0;
 
     private int nNbMaxCores = 0;
@@ -196,19 +197,20 @@ public class MainActivity extends BaseActivity
     private int nHrCount = 0;
     private float fMaxHr = 0.0f;
 
-    private int nSharesCount = 0;
-
     // Temperature Control
     private Timer timerTemperatures = null;
     private TimerTask timerTaskTemperatures = null;
     private final List<String> listCPUTemp = new ArrayList<>();
     private final List<String> listBatteryTemp = new ArrayList<>();
+
     private boolean isCharging = false;
+    static boolean isOnWifi = false;
 
     public static Context contextOfApplication;
 
     private boolean isServerConnectionBound = false;
     private boolean isBatteryReceiverRegistered = false;
+    private boolean isNetworkReceiverRegistered = false;
 
     private PowerManager.WakeLock wl;
 
@@ -221,12 +223,9 @@ public class MainActivity extends BaseActivity
 
     private static int m_nLastCurrentState = Config.STATE_STOPPED;
     private static int m_nCurrentState = Config.STATE_STOPPED;
-    public int getCurrentState() { return m_nCurrentState; }
 
     private static NotificationManager notificationManager = null;
     private NotificationCompat.Builder notificationBuilder = null;
-
-    BottomNavigationView navigationView = null;
 
     private File imagePath = null;
 
@@ -260,11 +259,6 @@ public class MainActivity extends BaseActivity
         wl = pm.newWakeLock(PARTIAL_WAKE_LOCK, "app:sleeplock");
         wl.acquire(10*60*1000L /*10 minutes*/);
 
-        if(!isBatteryReceiverRegistered) {
-            registerReceiver(batteryInfoReceiver, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
-            isBatteryReceiverRegistered = true;
-        }
-
         if(!isServerConnectionBound) {
             Intent intent = new Intent(this, MiningService.class);
             bindService(intent, serverConnection, BIND_AUTO_CREATE);
@@ -272,9 +266,21 @@ public class MainActivity extends BaseActivity
             isServerConnectionBound = true;
         }
 
+        if(!isBatteryReceiverRegistered) {
+            registerReceiver(batteryInfoReceiver, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
+            isBatteryReceiverRegistered = true;
+        }
+
+        if(!isNetworkReceiverRegistered) {
+            IntentFilter intentFilter = new IntentFilter();
+            intentFilter.addAction(WifiManager.SUPPLICANT_CONNECTION_CHANGE_ACTION);
+            registerReceiver(networkInfoReceiver, intentFilter);
+            isNetworkReceiverRegistered = true;
+        }
+
         setContentView(R.layout.activity_main);
 
-        navigationView = findViewById(R.id.main_navigation);
+        BottomNavigationView navigationView = findViewById(R.id.main_navigation);
         navigationView.getMenu().getItem(0).setChecked(true);
         navigationView.setOnNavigationItemSelectedListener(this);
 
@@ -309,8 +315,8 @@ public class MainActivity extends BaseActivity
                     case Toolbar.BUTTON_OPTIONS_STATS: {
                         PoolItem selectedPool = ProviderManager.getSelectedPool();
 
-                        String walletAddress = Config.read("address");
-                        String poolUrl = walletAddress.isEmpty() ? selectedPool.getPoolUrl() : selectedPool.getWalletURL(Config.read("address"));
+                        String walletAddress = Config.read(Config.CONFIG_ADDRESS);
+                        String poolUrl = walletAddress.isEmpty() ? selectedPool.getPoolUrl() : selectedPool.getWalletURL(Config.read(Config.CONFIG_ADDRESS));
 
                         if(!poolUrl.startsWith("http"))
                             poolUrl = "https://" + poolUrl;
@@ -344,6 +350,7 @@ public class MainActivity extends BaseActivity
         pullToRefreshHr.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                BottomNavigationView navigationView = findViewById(R.id.main_navigation);
                 if(navigationView.getMenu().findItem(R.id.menu_home).isChecked()) {
                     refreshHashrate();
                 } else if (navigationView.getMenu().findItem(R.id.menu_stats).isChecked()){
@@ -399,19 +406,15 @@ public class MainActivity extends BaseActivity
         pbStatus.setMax(MAX_HASHRATE_TIMER * 2);
         pbStatus.setProgress(0);
 
-        tvStatusProgess = findViewById(R.id.hr_progress);
-
         // Log
         tvLog = findViewById(R.id.output);
-        svLog = findViewById(R.id.svLog);
 
         tvLog2 = findViewById(R.id.output2);
-        svLog2 = findViewById(R.id.svLog2);
 
         // CPU Cores
 
         nNbMaxCores = Runtime.getRuntime().availableProcessors();
-        String core_config = Config.read("cores");
+        String core_config = Config.read(Config.CONFIG_CORES);
 
         nCores = core_config.isEmpty() ? nNbMaxCores : Integer.parseInt(core_config);
 
@@ -463,13 +466,12 @@ public class MainActivity extends BaseActivity
         indicator_max.setColor(getResources().getColor(R.color.c_orange));
         meterHashrate_max.setIndicator(indicator_max);
 
-        tvHashrate = findViewById(R.id.hashrate);
-        tvStatus = findViewById(R.id.miner_status);
-
         LayoutInflater inflater = LayoutInflater.from(getApplicationContext());
 
+        // CPU Temperature
+
         tvCPUTemperature = findViewById(R.id.cputemp);
-        tvCPUTemperatureUnit = findViewById(R.id.cputempunit);
+
         RelativeLayout rlWarningCPUTemperature = findViewById(R.id.rlWarningCPUTemp);
         rlWarningCPUTemperature.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -482,8 +484,10 @@ public class MainActivity extends BaseActivity
             }
         });
 
+        // Battery Temperature
+
         tvBatteryTemperature = findViewById(R.id.batterytemp);
-        tvBatteryTemperatureUnit = findViewById(R.id.batterytempunit);
+
         RelativeLayout rlWarningBatteryTemperature = findViewById(R.id.rlWarningBatteryTemp);
         rlWarningBatteryTemperature.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -495,8 +499,6 @@ public class MainActivity extends BaseActivity
                 }
             }
         });
-
-        tvAcceptedShares = findViewById(R.id.acceptedshare);
 
         btnStart = findViewById(R.id.start);
 
@@ -564,6 +566,10 @@ public class MainActivity extends BaseActivity
 
         if(isBatteryReceiverRegistered) {
             unregisterReceiver(batteryInfoReceiver);
+        }
+
+        if(isNetworkReceiverRegistered) {
+            unregisterReceiver(networkInfoReceiver);
         }
 
         super.onDestroy();
@@ -665,6 +671,8 @@ public class MainActivity extends BaseActivity
         isFromLogView = false;
 
         showMenuHome();
+
+        BottomNavigationView navigationView = findViewById(R.id.main_navigation);
         navigationView.setVisibility(View.VISIBLE);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -969,8 +977,8 @@ public class MainActivity extends BaseActivity
 
         EditText edMiningGoal = promptsView.findViewById(R.id.mininggoal);
 
-        if (!Config.read("mininggoal").isEmpty()) {
-            edMiningGoal.setText(Config.read("mininggoal"));
+        if (!Config.read(Config.CONFIG_MINING_GOAL).isEmpty()) {
+            edMiningGoal.setText(Config.read(Config.CONFIG_MINING_GOAL));
         } else {
             TextView tvPayoutGoal = findViewById(R.id.tvPayoutGoal);
             edMiningGoal.setText(tvPayoutGoal.getText());
@@ -984,7 +992,7 @@ public class MainActivity extends BaseActivity
                     public void onClick(DialogInterface dialog, int id) {
                         String mininggoal = edMiningGoal.getText().toString().trim();
                         if(!mininggoal.isEmpty()) {
-                            Config.write("mininggoal", mininggoal);
+                            Config.write(Config.CONFIG_MINING_GOAL, mininggoal);
                         }
 
                         Utils.hideKeyboardFrom(contextOfApplication, promptsView);
@@ -1018,11 +1026,11 @@ public class MainActivity extends BaseActivity
             tvBalance.setText(sBalance.isEmpty() ? Tools.getLongValueString(0.0) : sBalance);
 
             float fMinPayout;
-            if(Config.read("mininggoal").equals("")) {
+            if(Config.read(Config.CONFIG_MINING_GOAL).equals("")) {
                 fMinPayout = Utils.convertStringToFloat(d.pool.minPayout);
             }
             else
-                fMinPayout = Utils.convertStringToFloat(Config.read("mininggoal").trim());
+                fMinPayout = Utils.convertStringToFloat(Config.read(Config.CONFIG_MINING_GOAL).trim());
 
             TextView tvPayoutGoal = findViewById(R.id.tvPayoutGoal);
             tvPayoutGoal.setText(String.valueOf(Math.round(fMinPayout)));
@@ -1119,7 +1127,7 @@ public class MainActivity extends BaseActivity
             return;
         }
 
-        if (Config.read("address").equals("")) {
+        if (Config.read(Config.CONFIG_ADDRESS).equals("")) {
             enablePayoutWidget(false, "");
             payoutEnabled = false;
             return;
@@ -1127,7 +1135,7 @@ public class MainActivity extends BaseActivity
 
         PoolItem pi = ProviderManager.getSelectedPool();
 
-        if (!Config.read("init").equals("1") || pi == null) {
+        if (!Config.read(Config.CONFIG_INIT).equals("1") || pi == null) {
             enablePayoutWidget(false, "");
             payoutEnabled = false;
             return;
@@ -1149,12 +1157,12 @@ public class MainActivity extends BaseActivity
     private boolean validateSettings() {
         PoolItem pi = ProviderManager.getSelectedPool();
 
-        if(!Config.read("init").equals("1")) {
+        if(!Config.read(Config.CONFIG_INIT).equals("1")) {
             Utils.showToast(contextOfApplication, getString(R.string.save_settings_first), Toast.LENGTH_SHORT);
             return false;
         }
 
-        String walletaddress = Config.read("address");
+        String walletaddress = Config.read(Config.CONFIG_ADDRESS);
         if(walletaddress.isEmpty()) {
             Utils.showToast(contextOfApplication, getString(R.string.no_wallet_defined), Toast.LENGTH_SHORT);
             return false;
@@ -1193,7 +1201,7 @@ public class MainActivity extends BaseActivity
     }
 
     private String getWorkerName() {
-        String workerName = Config.read("workername");
+        String workerName = Config.read(Config.CONFIG_WORKERNAME);
 
         if(workerName.isEmpty())
             return "Your device";
@@ -1381,18 +1389,22 @@ public class MainActivity extends BaseActivity
 
     public void loadSettings() {
         // Load AMAYC Settings
-        bDisableTemperatureControl = Config.read("disableamayc", "0").equals("1");
-        nMaxCPUTemp = Integer.parseInt(Config.read("maxcputemp", Integer.toString(Config.DefaultMaxCPUTemp)).trim());
-        nMaxBatteryTemp = Integer.parseInt(Config.read("maxbatterytemp", Integer.toString(Config.DefaultMaxBatteryTemp)).trim());
-        int nCooldownThreshold = Integer.parseInt(Config.read("cooldownthreshold", Integer.toString(Config.DefaultCooldownTheshold)).trim());
+        bDisableTemperatureControl = Config.read(Config.CONFIG_DISABLE_TEMPERATURE_CONTROL, "0").equals("1");
+        nMaxCPUTemp = Integer.parseInt(Config.read(Config.CONFIG_MAX_CPU_TEMP, Integer.toString(Config.DefaultMaxCPUTemp)).trim());
+        nMaxBatteryTemp = Integer.parseInt(Config.read(Config.CONFIG_MAX_BATTERY_TEMP, Integer.toString(Config.DefaultMaxBatteryTemp)).trim());
+        int nCooldownThreshold = Integer.parseInt(Config.read(Config.CONFIG_COOLDOWN_THRESHOLD, Integer.toString(Config.DefaultCooldownTheshold)).trim());
 
         nSafeCPUTemp = nMaxCPUTemp - Math.round((float)nMaxCPUTemp * (float)nCooldownThreshold / 100.0f);
         nSafeBatteryTemp = nMaxBatteryTemp - Math.round((float)nMaxBatteryTemp * (float)nCooldownThreshold / 100.0f);
 
-        nCores = Integer.parseInt(Config.read("cores", "0"));
+        nCores = Integer.parseInt(Config.read(Config.CONFIG_CORES, "0"));
 
         bIsCelsius = Config.read(Config.CONFIG_TEMPERATURE_UNIT, "C").equals("C");
+
+        TextView tvCPUTemperatureUnit = findViewById(R.id.cputempunit);
         tvCPUTemperatureUnit.setText(bIsCelsius ? getString(R.string.celsius) : getString(R.string.fahrenheit));
+
+        TextView tvBatteryTemperatureUnit = findViewById(R.id.batterytempunit);
         tvBatteryTemperatureUnit.setText(bIsCelsius ? getString(R.string.celsius) : getString(R.string.fahrenheit));
 
         // Disable ACRA Debug Reporting
@@ -1433,7 +1445,7 @@ public class MainActivity extends BaseActivity
     private void startMining() {
         if (binder == null) return;
 
-        if (!Config.read("init").equals("1")) {
+        if (!Config.read(Config.CONFIG_INIT).equals("1")) {
             setStatusText(getString(R.string.save_settings_first));
             return;
         }
@@ -1442,7 +1454,7 @@ public class MainActivity extends BaseActivity
         //String sCrashString = null;
         //Log.e("ACRA Test", sCrashString.toString() );
 
-        if (!Utils.verifyAddress(Config.read("address"))) {
+        if (!Utils.verifyAddress(Config.read(Config.CONFIG_ADDRESS))) {
             setStatusText(getString(R.string.invalid_address));
             return;
         }
@@ -1452,12 +1464,18 @@ public class MainActivity extends BaseActivity
             return;
         }
 
-        if (Config.read("pauseonbattery").equals("1") && !isCharging && !bForceMiningOnPause) {
-            askToForceMining();
+        if (Config.read(Config.CONFIG_PAUSE_ON_BATTERY).equals("1") && !isCharging && !bForceMiningOnPauseBattery) {
+            askToForceMiningBattery();
             return;
         }
 
-        bForceMiningOnPause = false;
+        if (Config.read(Config.CONFIG_PAUSE_ON_NETWORK).equals("1") && !isOnWifi && !bForceMiningOnPauseNetwork) {
+            askToForceMiningNetwork();
+            return;
+        }
+
+        bForceMiningOnPauseBattery = false;
+        bForceMiningOnPauseNetwork = false;
         bForceMiningNoTempSensor = false;
         bMiningStoppedByUser = false;
         clearMinerLog = true;
@@ -1483,10 +1501,10 @@ public class MainActivity extends BaseActivity
     }
 
     private void startMiningService() {
-        String password = Config.read("workername");
-        String address = Config.read("address");
+        String password = Config.read(Config.CONFIG_WORKERNAME);
+        String address = Config.read(Config.CONFIG_ADDRESS);
 
-        String username = address + Config.read("usernameparameters");
+        String username = address + Config.read(Config.CONFIG_USERNAME_PARAMETERS);
 
         MiningService s = binder.getService();
         MiningService.MiningConfig cfg = s.newConfig(
@@ -1500,15 +1518,15 @@ public class MainActivity extends BaseActivity
         s.startMining(cfg);
     }
 
-    private void askToForceMining() {
-        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(contextOfApplication, R.style.MaterialAlertDialogCustom);
+    private void askToForceMiningBattery() {
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this, R.style.MaterialAlertDialogCustom);
         builder.setTitle(getString(R.string.confirmstartmining))
                 .setMessage(getString(R.string.deviceonbattery))
                 .setCancelable(true)
                 .setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        bForceMiningOnPause = true;
+                        bForceMiningOnPauseBattery = true;
 
                         if(isDevicePaused()) {
                             clearMinerLog = false;
@@ -1521,14 +1539,41 @@ public class MainActivity extends BaseActivity
                 .setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        bForceMiningOnPause = false;
+                        bForceMiningOnPauseBattery = false;
+                    }
+                })
+                .show();
+    }
+
+    private void askToForceMiningNetwork() {
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this, R.style.MaterialAlertDialogCustom);
+        builder.setTitle(getString(R.string.confirmstartmining))
+                .setMessage(getString(R.string.devicenotonwifi))
+                .setCancelable(true)
+                .setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        bForceMiningOnPauseNetwork = true;
+
+                        if(isDevicePaused()) {
+                            clearMinerLog = false;
+                            resumeMining();
+                        }
+                        else
+                            startMining();
+                    }
+                })
+                .setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        bForceMiningOnPauseNetwork = false;
                     }
                 })
                 .show();
     }
 
     private void resetOptions() {
-        bDisableAmayc = false;
+        bDisableAMAYC = false;
         listCPUTemp.clear();
         listBatteryTemp.clear();
 
@@ -1567,16 +1612,23 @@ public class MainActivity extends BaseActivity
 
         ProviderManager.request.setListener(payoutListener).start();
 
-        if(!isBatteryReceiverRegistered) {
-            registerReceiver(batteryInfoReceiver, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
-            isBatteryReceiverRegistered = true;
-        }
-
         if(!isServerConnectionBound) {
             Intent intent = new Intent(this, MiningService.class);
             bindService(intent, serverConnection, BIND_AUTO_CREATE);
             startService(intent);
             isServerConnectionBound = true;
+        }
+
+        if(!isBatteryReceiverRegistered) {
+            registerReceiver(batteryInfoReceiver, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
+            isBatteryReceiverRegistered = true;
+        }
+
+        if(!isNetworkReceiverRegistered) {
+            IntentFilter intentFilter = new IntentFilter();
+            intentFilter.addAction(WifiManager.SUPPLICANT_CONNECTION_CHANGE_ACTION);
+            registerReceiver(networkInfoReceiver, intentFilter);
+            isNetworkReceiverRegistered = true;
         }
 
         SettingsFragment frag = (SettingsFragment) getSupportFragmentManager().findFragmentByTag("settings_fragment");
@@ -1641,6 +1693,7 @@ public class MainActivity extends BaseActivity
             llStatus.setVisibility(View.GONE);
             llHashrate.setVisibility(View.VISIBLE);
 
+            TextView tvHashrate = findViewById(R.id.hashrate);
             tvHashrate.setText("0");
             tvHashrate.setTextSize(55);
             tvHashrate.setTextColor(getResources().getColor(R.color.txt_inactive));
@@ -1656,6 +1709,8 @@ public class MainActivity extends BaseActivity
             resetHashrateTicks();
         }
         else if(status ==Config.STATE_MINING) {
+            TextView tvHashrate = findViewById(R.id.hashrate);
+
             if(tvHashrate.getText().equals("0")) {
                 setMinerStatus(Config.STATE_CALCULATING);
             } else {
@@ -1667,7 +1722,7 @@ public class MainActivity extends BaseActivity
                 stopTimerStatusHashrate();
             }
 
-            if (Config.read("keepscreenonwhenmining").equals("1")) {
+            if (Config.read(Config.CONFIG_KEEP_SCREEN_ON_WHEN_MINING).equals("1")) {
                 View v = findViewById(R.id.main_navigation);
                 v.setKeepScreenOn(true);
             }
@@ -1680,6 +1735,9 @@ public class MainActivity extends BaseActivity
             pbStatus.setScaleY(1f);
 
             meterHashrate.speedTo(0);
+
+            TextView tvStatus = findViewById(R.id.miner_status);
+            TextView tvStatusProgess = findViewById(R.id.hr_progress);
 
             if (status == Config.STATE_PAUSED && isDeviceMining()) {
                 tvStatus.setText(getResources().getString(R.string.paused));
@@ -1732,6 +1790,7 @@ public class MainActivity extends BaseActivity
                                 appendLogOutputTextWithDate(getString(R.string.restarting_mining_process));
                                 appendLogOutputText(System.getProperty("line.separator"));
 
+                                TextView tvAcceptedShares = findViewById(R.id.acceptedshare);
                                 nSharesCount = Integer.parseInt(tvAcceptedShares.getText().toString());
 
                                 startMiningService();
@@ -1822,6 +1881,7 @@ public class MainActivity extends BaseActivity
             ProgressBar pbStatus = findViewById(R.id.progress_status);
             pbStatus.setProgress(0);
 
+            TextView tvStatusProgess = findViewById(R.id.hr_progress);
             tvStatusProgess.setVisibility(View.VISIBLE);
             tvStatusProgess.setText("0%");
 
@@ -1891,6 +1951,8 @@ public class MainActivity extends BaseActivity
         pbStatus.setProgress(pbStatus.getProgress() + 1);
 
         String sProgessPercent = String.valueOf(Math.round((float)pbStatus.getProgress() / (float)pbStatus.getMax() *100.0f));
+
+        TextView tvStatusProgess = findViewById(R.id.hr_progress);
         tvStatusProgess.setText(String.format("%s%%", sProgessPercent));
     }
 
@@ -1936,8 +1998,10 @@ public class MainActivity extends BaseActivity
             meterHashrate.speedTo(Math.round(fSpeed));
         }
 
+        TextView tvHashrate = findViewById(R.id.hashrate);
         tvHashrate.setText(String.format(Locale.getDefault(), "%.1f", fSpeed));
         tvHashrate.setTextSize(fSpeed > 999f ? 44: 55);
+
         setMinerStatus(Config.STATE_MINING);
 
         if(fSpeed <= 0.0f) {
@@ -2309,6 +2373,9 @@ public class MainActivity extends BaseActivity
         LinearLayout llNoActivity = findViewById(R.id.llNoActivity);
         llNoActivity.setVisibility(tvLog.getText().toString().isEmpty() ? View.VISIBLE : View.GONE);
 
+        NestedScrollView svLog = findViewById(R.id.svLog);
+        NestedScrollView svLog2 = findViewById(R.id.svLog2);
+
         if(svLog != null) {
             svLog.post(new Runnable() {
                 @Override
@@ -2370,8 +2437,13 @@ public class MainActivity extends BaseActivity
                             return;
 
                         if (isDevicePaused()) {
-                            if (Config.read("pauseonbattery").equals("1") && !isCharging && !bForceMiningOnPause) {
-                                askToForceMining();
+                            if (Config.read(Config.CONFIG_PAUSE_ON_BATTERY).equals("1") && !isCharging && !bForceMiningOnPauseBattery) {
+                                askToForceMiningBattery();
+                                return;
+                            }
+
+                            if (Config.read(Config.CONFIG_PAUSE_ON_NETWORK).equals("1") && !isOnWifi && !bForceMiningOnPauseNetwork) {
+                                askToForceMiningNetwork();
                                 return;
                             }
 
@@ -2398,6 +2470,8 @@ public class MainActivity extends BaseActivity
                                 if (clearMinerLog) {
                                     tvLog.setText("");
                                     tvLog2.setText("");
+
+                                    TextView tvAcceptedShares = findViewById(R.id.acceptedshare);
                                     tvAcceptedShares.setText("0");
                                     tvAcceptedShares.setTextColor(getResources().getColor(R.color.txt_inactive));
 
@@ -2421,6 +2495,8 @@ public class MainActivity extends BaseActivity
 
                             int nShares = nSharesCount + accepted;
                             String sAccepted = Integer.toString(nShares);
+
+                            TextView tvAcceptedShares = findViewById(R.id.acceptedshare);
 
                             if(!tvAcceptedShares.getText().equals(sAccepted)) {
                                 tvAcceptedShares.setText(sAccepted);
@@ -2549,7 +2625,7 @@ public class MainActivity extends BaseActivity
             return;
         }
 
-        if(bDisableAmayc)
+        if(bDisableAMAYC)
             return;
 
         if(nCPUTemp != 0) {
@@ -2674,7 +2750,7 @@ public class MainActivity extends BaseActivity
     }
 
     private void disableAmaycOnError(String error) {
-        bDisableAmayc = true;
+        bDisableAMAYC = true;
         appendLogOutputTextWithDate(error);
         appendLogOutputTextWithDate(getResources().getString(R.string.statictempcontrol));
     }
@@ -2692,8 +2768,13 @@ public class MainActivity extends BaseActivity
             appendLogOutputTextWithDate(getResources().getString(R.string.maxtemperaturereached));
         }
         else {
-            if (Config.read("pauseonbattery").equals("1") && !isCharging) {
+            if (Config.read(Config.CONFIG_PAUSE_ON_BATTERY).equals("1") && !isCharging) {
                 setStatusText(getResources().getString(R.string.pauseonmining));
+                return;
+            }
+
+            if (Config.read(Config.CONFIG_PAUSE_ON_NETWORK).equals("1") && !isOnWifi) {
+                setStatusText(getResources().getString(R.string.pauseonnetwork));
                 return;
             }
 
@@ -2731,7 +2812,9 @@ public class MainActivity extends BaseActivity
             }
 
             updateMiningButtonState();
-            bForceMiningOnPause = false;
+
+            bForceMiningOnPauseBattery = false;
+            bForceMiningOnPauseNetwork = false;
 
             showNotificationPause();
 
@@ -2862,6 +2945,9 @@ public class MainActivity extends BaseActivity
         }
 
         LinearLayout llStatus = findViewById(R.id.layout_status);
+        TextView tvHashrate = findViewById(R.id.hashrate);
+        TextView tvStatus = findViewById(R.id.miner_status);
+
         String status = llStatus.getVisibility() == View.GONE ? "Hashrate: " + tvHashrate.getText().toString() + " H/s" : tvStatus.getText().toString();
 
         notificationBuilder.setSmallIcon(R.mipmap.ic_notification);
@@ -2931,9 +3017,9 @@ public class MainActivity extends BaseActivity
 
             lastIsCharging = isCharging;
 
-            setStatusText((isCharging ? "Device charging." : "Device on battery power."));
+            setStatusText((isCharging ? getResources().getString(R.string.devicecharging) : getResources().getString(R.string.deviceonbatterypower)));
 
-            if (Config.read("pauseonbattery").equals("0")) {
+            if (Config.read(Config.CONFIG_PAUSE_ON_BATTERY).equals("0")) {
                 clearMinerLog = true;
             } else {
                 boolean state = false;
@@ -2945,6 +3031,39 @@ public class MainActivity extends BaseActivity
                     resumeMining();
                 } else if (state) {
                     pauseMining();
+                }
+            }
+        }
+    };
+
+    static boolean lastIsOnWifi = false;
+    private final BroadcastReceiver networkInfoReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent networkStatusIntent) {
+            if (context == null || networkStatusIntent == null)
+                return;
+
+            final String action = networkStatusIntent.getAction();
+            if (action.equals(WifiManager.SUPPLICANT_CONNECTION_CHANGE_ACTION)) {
+                isOnWifi = networkStatusIntent.getBooleanExtra(WifiManager.EXTRA_SUPPLICANT_CONNECTED, false);
+            }
+
+            if (lastIsOnWifi == isOnWifi)
+                return;
+
+            lastIsOnWifi = isOnWifi;
+
+            boolean bPauseOnNetwork = Config.read(Config.CONFIG_PAUSE_ON_NETWORK).equals("1");
+            if(bPauseOnNetwork) {
+                if(isOnWifi) {
+                    setStatusText(getResources().getString(R.string.connectedwifi));
+                    resumeMining();
+                } else {
+                    boolean state = binder.getService().getMiningServiceState();
+                    if (state) {
+                        setStatusText(getResources().getString(R.string.disconnectedwifi));
+                        pauseMining();
+                    }
                 }
             }
         }

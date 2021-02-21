@@ -28,7 +28,7 @@ public abstract class ProviderAbstract extends AsyncTask<Void, Void, Void> {
     }
 
     final public String getWalletAddress(){
-        return Config.read("address");
+        return Config.read(Config.CONFIG_ADDRESS);
     }
 
     abstract public StringRequest getStringRequest(PoolInfoAdapter poolsAdapter);

@@ -148,7 +148,7 @@ public class StatsFragment extends Fragment {
 
         // Address
 
-        String wallet = Config.read("address");
+        String wallet = Config.read(Config.CONFIG_ADDRESS);
         String prettyaddress = "";
         if(!wallet.isEmpty())
             prettyaddress = wallet.substring(0, 7) + "..." + wallet.substring(wallet.length() - 7);
@@ -205,14 +205,14 @@ public class StatsFragment extends Fragment {
         if(getContext() == null)
             return;
 
-        if(Config.read("address").equals("")) {
+        if(Config.read(Config.CONFIG_ADDRESS).equals("")) {
             Utils.showToast(getContext(),"Wallet address is empty.", Toast.LENGTH_LONG);
             return;
         }
 
         PoolItem pi = ProviderManager.getSelectedPool();
 
-        if (!Config.read("init").equals("1") || pi == null) {
+        if (!Config.read(Config.CONFIG_INIT).equals("1") || pi == null) {
             Utils.showToast(getContext(),"Start mining to view statistics.", Toast.LENGTH_LONG);
             return;
         }

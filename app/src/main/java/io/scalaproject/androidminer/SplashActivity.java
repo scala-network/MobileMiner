@@ -53,7 +53,7 @@ public class SplashActivity extends BaseActivity {
         int millisecondsDelay = 2000;
         new Handler().postDelayed(new Runnable() {
             public void run() {
-                String hide_setup_wizard = Config.read("hide_setup_wizard");
+                String hide_setup_wizard = Config.read(Config.CONFIG_HIDE_SETUP_WIZARD);
 
                 if (hide_setup_wizard.equals("")) {
                     startActivity(new Intent(SplashActivity.this, WizardHomeActivity.class));

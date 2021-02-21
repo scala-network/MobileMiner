@@ -85,7 +85,7 @@ public class QrCodeScannerActivity extends AppCompatActivity implements BarcodeR
         if(Utils.verifyAddress(miner)) {
             Log.d("CONSOLE:QRCODE", "Barcode read: " + barcode.displayValue);
 
-            Config.write("address", miner);
+            Config.write(Config.CONFIG_ADDRESS, miner);
             try{
                 barcodeCapture.stopScanning();
                 finish();

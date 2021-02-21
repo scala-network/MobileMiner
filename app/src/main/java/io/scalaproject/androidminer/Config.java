@@ -23,14 +23,32 @@ public class Config {
 
     public final static String[] SUPPORTED_ARCHITECTURES = {"arm64-v8a", "armeabi-v7a", "x86_64"};
 
+    public final static String CONFIG_INIT = "init";
     public final static String CONFIG_USERDEFINED_POOLS = "userdefined_pools";
     public final static String CONFIG_SELECTED_POOL = "selected_pool";
-    public final static String CONFIG_POOL_PORT = "custom_port";
+    public final static String CONFIG_CORES = "cores";
+    public final static String CONFIG_CUSTOM_PORT = "custom_port";
     public final static String CONFIG_TEMPERATURE_UNIT = "temperature_unit";
     public final static String CONFIG_TEMPERATURE_SENSOR_SHOW_WARNING = "temp_sensor_warning";
     public final static String CONFIG_HASHRATE_REFRESH_DELAY = "hashrate_refresh_delay";
     public final static String CONFIG_SEND_DEBUG_INFO = "send_debug_info";
     public final static String CONFIG_DISABLE_RESTART_MINING_ABORTED = "disable_restart_mining_aborted";
+    public final static String CONFIG_ADDRESS = "address";
+    public final static String CONFIG_USERNAME_PARAMETERS = "usernameparameters";
+    public final static String CONFIG_WORKERNAME = "workername";
+    public final static String CONFIG_MAX_CPU_TEMP = "maxcputemp";
+    public final static String CONFIG_MAX_BATTERY_TEMP = "maxbatterytemp";
+    public final static String CONFIG_COOLDOWN_THRESHOLD = "cooldownthreshold";
+    public final static String CONFIG_DISABLE_TEMPERATURE_CONTROL = "disable_temperature_control";
+    public final static String CONFIG_MINING_GOAL = "mininggoal";
+    public final static String CONFIG_PAUSE_ON_BATTERY = "pauseonbattery";
+    public final static String CONFIG_PAUSE_ON_NETWORK = "pauseonnetwork";
+    public final static String CONFIG_KEEP_SCREEN_ON_WHEN_MINING = "keepscreenonwhenmining";
+    public final static String CONFIG_HIDE_SETUP_WIZARD = "hide_setup_wizard";
+    public final static String CONFIG_CPU_INFO = "cpu_info";
+    public final static String CONFIG_DISCLAIMER_AGREED = "disclaimer_agreed";
+    public final static String CONFIG_POOLS_REPOSITORY_LAST_FETCHED = "pools_respository_last_fetched";
+    public final static String CONFIG_POOLS_REPOSITORY_JSON = "pools_respository_json";
 
     public final static int DefaultRefreshDelay = 30; // In seconds
 

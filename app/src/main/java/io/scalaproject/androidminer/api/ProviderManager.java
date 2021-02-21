@@ -24,15 +24,14 @@ import io.scalaproject.androidminer.network.Json;
 
 public final class ProviderManager {
 
-    static private ArrayList<PoolItem> mPools = new ArrayList<PoolItem>();
+    static private final ArrayList<PoolItem> mPools = new ArrayList<PoolItem>();
 
     static public void add(PoolItem poolItem) {
         mPools.add(poolItem);
     }
 
     static public void delete(PoolItem poolItem) {
-        if(mPools.contains(poolItem))
-            mPools.remove(poolItem);
+        mPools.remove(poolItem);
     }
 
     static public PoolItem add(String key, String pool,String port, int poolType, String poolUrl, String poolIP) {
@@ -86,11 +85,11 @@ public final class ProviderManager {
 
         Collections.sort(mPools, PoolItem.PoolComparator);
 
-        return mPools.toArray(new PoolItem[mPools.size()]);
+        return mPools.toArray(new PoolItem[0]);
     }
 
     static public PoolItem[] getAllPools() {
-        return mPools.toArray(new PoolItem[mPools.size()]);
+        return mPools.toArray(new PoolItem[0]);
     }
 
     static final public ProviderData data = new ProviderData();
@@ -159,23 +158,20 @@ public final class ProviderManager {
         request.mPoolItem = null;
         mPools.clear();
 
-        if(!mPools.isEmpty())
-            return;
-
-        //String lastFetched = Config.read("RepositoryLastFetched");
-        String lastFetched = "";
-                String jsonString = "";
+        String lastFetched = Config.read(Config.CONFIG_POOLS_REPOSITORY_LAST_FETCHED);
+        String jsonString = "";
         long now = System.currentTimeMillis() / 1000L;
 
-        if(!lastFetched.isEmpty() && Long.parseLong(lastFetched) < now){
-            jsonString = Config.read("RepositoryJson");
+        // Use cached pools data
+        if(!lastFetched.isEmpty() && Long.parseLong(lastFetched) > now) {
+            jsonString = Config.read(Config.CONFIG_POOLS_REPOSITORY_JSON);
         }
 
         if(jsonString.isEmpty()) {
             String url = Config.githubAppJson;
             jsonString  = Json.fetch(url);
-            Config.write("RepositoryJson", jsonString);
-            Config.write("RepositoryLastFetched", String.valueOf(now + 3600));//Cached time is 1 hour for now
+            Config.write(Config.CONFIG_POOLS_REPOSITORY_JSON, jsonString);
+            Config.write(Config.CONFIG_POOLS_REPOSITORY_LAST_FETCHED, String.valueOf(now + 3600));//Cached time is 1 hour for now
         }
 
         try {

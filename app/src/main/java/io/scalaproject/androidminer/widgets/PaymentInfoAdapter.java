@@ -34,10 +34,7 @@ public class PaymentInfoAdapter extends RecyclerView.Adapter<PaymentInfoAdapter.
 
     private final List<PaymentItem> paymentItems = new ArrayList<>();
 
-    private Context context;
-
     public PaymentInfoAdapter(Context context, PaymentInfoAdapter.OnShowPaymentListener onShowPaymentListener) {
-        this.context = context;
         this.onShowPaymentListener = onShowPaymentListener;
     }
 
@@ -66,9 +63,7 @@ public class PaymentInfoAdapter extends RecyclerView.Adapter<PaymentInfoAdapter.
     public void setPayments(Collection<PaymentItem> data) {
         paymentItems.clear();
         if (data != null) {
-            for (PaymentItem payment : data) {
-                paymentItems.add(payment);
-            }
+            paymentItems.addAll(data);
         }
 
         Collections.sort(paymentItems, PaymentItem.PaymentComparator);
@@ -100,15 +95,6 @@ public class PaymentInfoAdapter extends RecyclerView.Adapter<PaymentInfoAdapter.
             tvFee.setText(paymentItem.mFee);
 
             tvHash.setText(Utils.getPrettyTx(paymentItem.mHash));
-            /*tvHash.setText(Html.fromHtml("<u>" + Utils.getPrettyTx(paymentItem.mHash) + "</u>"));
-            tvHash.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (onShowPaymentListener != null) {
-                        onShowPaymentListener.onShowPayment(v, paymentItem);
-                    }
-                }
-            });*/
 
             tvTimestamp.setText(Utils.formatTimestamp(paymentItem.mTimestamp));
 

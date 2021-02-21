@@ -101,7 +101,7 @@ public class SupportActivity extends BaseActivity {
         });
 
         // Set debug info
-        StringBuilder cpuinfo = new StringBuilder(Config.read("CPUINFO").trim());
+        StringBuilder cpuinfo = new StringBuilder(Config.read(Config.CONFIG_CPU_INFO).trim());
         if(cpuinfo.length() == 0) {
             try {
                 Map<String, String> m = Tools.getCPUInfo();
@@ -114,7 +114,7 @@ public class SupportActivity extends BaseActivity {
                 cpuinfo = new StringBuilder();
             }
 
-            Config.write("CPUINFO", cpuinfo.toString().trim());
+            Config.write(Config.CONFIG_CPU_INFO, cpuinfo.toString().trim());
         }
 
         // Convert build time to readable date

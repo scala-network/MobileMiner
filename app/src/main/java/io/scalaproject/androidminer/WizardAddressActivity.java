@@ -154,7 +154,7 @@ public class WizardAddressActivity extends BaseActivity {
         til.setErrorEnabled(false);
         til.setError(null);
 
-        Config.write("address", strAddress);
+        Config.write(Config.CONFIG_ADDRESS, strAddress);
 
         Intent intent = new Intent(WizardAddressActivity.this, PoolActivity.class);
         intent.putExtra(PoolActivity.RequesterType, PoolActivity.REQUESTER_WIZARD);
@@ -172,7 +172,7 @@ public class WizardAddressActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        tvAddress.setText(Config.read("address"));
+        tvAddress.setText(Config.read(Config.CONFIG_ADDRESS));
 
     }
 

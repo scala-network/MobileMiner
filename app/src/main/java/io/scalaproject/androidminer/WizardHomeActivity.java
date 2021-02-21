@@ -79,7 +79,7 @@ public class WizardHomeActivity extends BaseActivity {
         btnOK.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Config.write("disclaimer_agreed", "1");
+                Config.write(Config.CONFIG_DISCLAIMER_AGREED, "1");
                 dialog.dismiss();
             }
         });

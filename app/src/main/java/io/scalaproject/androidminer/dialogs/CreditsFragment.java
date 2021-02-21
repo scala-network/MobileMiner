@@ -19,6 +19,10 @@ import android.widget.TextView;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
+import org.jetbrains.annotations.NotNull;
+
+import java.util.Objects;
+
 import io.scalaproject.androidminer.R;
 
 public class CreditsFragment extends DialogFragment {
@@ -38,6 +42,7 @@ public class CreditsFragment extends DialogFragment {
         CreditsFragment.newInstance().show(ft, TAG);
     }
 
+    @NotNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         final View view = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_credits, null);
@@ -62,7 +67,7 @@ public class CreditsFragment extends DialogFragment {
         tvFontAwesome.setText(Html.fromHtml(getString(R.string.FontAwesomeLink)));
         tvFontAwesome.setMovementMethod(LinkMovementMethod.getInstance());
 
-        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getActivity(), R.style.MaterialAlertDialogCustom);
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(Objects.requireNonNull(getActivity()), R.style.MaterialAlertDialogCustom);
         builder.setView(view);
         builder.setPositiveButton(R.string.ok,
                 new DialogInterface.OnClickListener() {

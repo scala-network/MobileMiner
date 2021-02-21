@@ -119,11 +119,11 @@ public class WizardSettingsActivity extends BaseActivity {
         sbCores.setMax(cores-1);
         tvCoresMax.setText(Integer.toString(cores));
 
-        if (Config.read("cores").equals("")) {
+        if (Config.read(Config.CONFIG_CORES).equals("")) {
             sbCores.setProgress(suggested-1);
             tvCoresNb.setText(Integer.toString(suggested));
         } else {
-            int corenb = Integer.parseInt(Config.read("cores"));
+            int corenb = Integer.parseInt(Config.read(Config.CONFIG_CORES));
             sbCores.setProgress(corenb-1);
             tvCoresNb.setText(Integer.toString(corenb));
         }
@@ -140,16 +140,16 @@ public class WizardSettingsActivity extends BaseActivity {
         }
 
         // CPU Temp
-        if (!Config.read("maxcputemp").equals("")) {
-            nMaxCPUTemp = Integer.parseInt(Config.read("maxcputemp"));
+        if (!Config.read(Config.CONFIG_MAX_CPU_TEMP).equals("")) {
+            nMaxCPUTemp = Integer.parseInt(Config.read(Config.CONFIG_MAX_CPU_TEMP));
         }
 
         int nProgress = ((nMaxCPUTemp - Utils.MIN_CPU_TEMP)/Utils.INCREMENT);
         sbCPUTemp.setProgress(nProgress);
         updateCPUTemp();
 
-        if (!Config.read("maxbatterytemp").equals("")) {
-            nMaxBatteryTemp = Integer.parseInt(Config.read("maxbatterytemp"));
+        if (!Config.read(Config.CONFIG_MAX_BATTERY_TEMP).equals("")) {
+            nMaxBatteryTemp = Integer.parseInt(Config.read(Config.CONFIG_MAX_BATTERY_TEMP));
         }
 
         // Battery Temp
@@ -157,8 +157,8 @@ public class WizardSettingsActivity extends BaseActivity {
         sbBatteryTemp.setProgress(nProgress);
         updateBatteryTemp();
 
-        if (!Config.read("cooldownthreshold").equals("")) {
-            nCooldownTheshold = Integer.parseInt(Config.read("cooldownthreshold"));
+        if (!Config.read(Config.CONFIG_COOLDOWN_THRESHOLD).equals("")) {
+            nCooldownTheshold = Integer.parseInt(Config.read(Config.CONFIG_COOLDOWN_THRESHOLD));
         }
 
         // Cooldown
@@ -262,20 +262,20 @@ public class WizardSettingsActivity extends BaseActivity {
     }
 
     public void onStart(View view) {
-        Config.write("workername", Tools.getDeviceName());
+        Config.write(Config.CONFIG_WORKERNAME, Tools.getDeviceName());
 
-        Config.write("cores", Integer.toString(sbCores.getProgress()+1));
-        Config.write("maxcputemp", Integer.toString(getCPUTemp()));
-        Config.write("maxbatterytemp", Integer.toString(getBatteryTemp()));
-        Config.write("cooldownthreshold", Integer.toString(getCooldownTheshold()));
+        Config.write(Config.CONFIG_CORES, Integer.toString(sbCores.getProgress()+1));
+        Config.write(Config.CONFIG_MAX_CPU_TEMP, Integer.toString(getCPUTemp()));
+        Config.write(Config.CONFIG_MAX_BATTERY_TEMP, Integer.toString(getBatteryTemp()));
+        Config.write(Config.CONFIG_COOLDOWN_THRESHOLD, Integer.toString(getCooldownTheshold()));
 
-        Config.write("disableamayc", "0");
+        Config.write(Config.CONFIG_DISABLE_TEMPERATURE_CONTROL, "0");
 
         Config.write(Config.CONFIG_TEMPERATURE_UNIT, tgTemperatureUnit.getCheckedButtonId() == R.id.btnFarehnheit ? "F" : "C");
 
-        Config.write("init", "1");
+        Config.write(Config.CONFIG_INIT, "1");
 
-        Config.write("hide_setup_wizard", "1");
+        Config.write(Config.CONFIG_HIDE_SETUP_WIZARD, "1");
 
         Intent intent = new Intent(WizardSettingsActivity.this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|
