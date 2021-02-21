@@ -135,7 +135,7 @@
                     <ImageView
                         android:layout_width="24dp"
                         android:layout_height="24dp"
-                        app:srcCompat="@drawable/ic_arrow_right" />
+                        app:srcCompat="@drawable/ic_right" />
 
                 </LinearLayout>
 
@@ -172,7 +172,7 @@
                     <ImageView
                         android:layout_width="24dp"
                         android:layout_height="24dp"
-                        app:srcCompat="@drawable/ic_arrow_right" />
+                        app:srcCompat="@drawable/ic_right" />
 
                 </LinearLayout>
 
@@ -209,7 +209,7 @@
                     <ImageView
                         android:layout_width="24dp"
                         android:layout_height="24dp"
-                        app:srcCompat="@drawable/ic_arrow_right" />
+                        app:srcCompat="@drawable/ic_right" />
 
                 </LinearLayout>
 
@@ -247,7 +247,7 @@
                     <ImageView
                         android:layout_width="24dp"
                         android:layout_height="24dp"
-                        app:srcCompat="@drawable/ic_arrow_right" />
+                        app:srcCompat="@drawable/ic_right" />
 
                 </LinearLayout>
 
@@ -285,7 +285,7 @@
                     <ImageView
                         android:layout_width="24dp"
                         android:layout_height="24dp"
-                        app:srcCompat="@drawable/ic_arrow_right" />
+                        app:srcCompat="@drawable/ic_right" />
 
                 </LinearLayout>
 
@@ -321,7 +321,7 @@
                         android:layout_width="42dp"
                         android:layout_height="42dp"
                         android:layout_marginEnd="15dp"
-                        app:srcCompat="@drawable/ic_discord1" />
+                        app:srcCompat="@drawable/ic_discord" />
 
                     <ImageView
                         android:id="@+id/ivTelegram"
@@ -335,20 +335,20 @@
                         android:layout_width="42dp"
                         android:layout_height="42dp"
                         android:layout_marginEnd="15dp"
-                        app:srcCompat="@drawable/ic_medium1" />
+                        app:srcCompat="@drawable/ic_medium" />
 
                     <ImageView
                         android:id="@+id/ivTwitter"
                         android:layout_width="42dp"
                         android:layout_height="42dp"
                         android:layout_marginEnd="15dp"
-                        app:srcCompat="@drawable/ic_twitter1" />
+                        app:srcCompat="@drawable/ic_twitter" />
 
                     <ImageView
                         android:id="@+id/ivReddit"
                         android:layout_width="42dp"
                         android:layout_height="42dp"
-                        app:srcCompat="@drawable/ic_reddit1" />
+                        app:srcCompat="@drawable/ic_reddit" />
 
                 </LinearLayout>
 

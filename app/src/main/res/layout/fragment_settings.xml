@@ -721,7 +721,7 @@
                             android:layout_height="24dp"
                             android:layout_gravity="center"
                             app:tint="@color/c_blue"
-                            app:srcCompat="@drawable/ic_arrow_left" />
+                            app:srcCompat="@drawable/ic_left" />
 
                         <TextView
                             android:id="@+id/tvRefreshHashrateDelay"
@@ -750,7 +750,7 @@
                             android:layout_height="24dp"
                             android:layout_gravity="center"
                             app:tint="@color/c_blue"
-                            app:srcCompat="@drawable/ic_arrow_right" />
+                            app:srcCompat="@drawable/ic_right" />
 
                     </LinearLayout>
 

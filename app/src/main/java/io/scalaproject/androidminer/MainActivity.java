@@ -556,6 +556,8 @@ public class MainActivity extends BaseActivity
 
         resetAvgMaxHashrate();
 
+        updateMeterHashrate(0.0f);
+
         updateUI();
 
         updateCores();
@@ -580,7 +582,13 @@ public class MainActivity extends BaseActivity
         super.onDestroy();
     }
 
+    private boolean ignorePerformanceModeEvent = false;
     private void updatePerformanceMode() {
+        if(ignorePerformanceModeEvent) {
+            ignorePerformanceModeEvent = false;
+            return;
+        }
+
         if(bIsPerformanceMode) {
             MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this, R.style.MaterialAlertDialogCustom);
             builder.setTitle(getString(R.string.performance_mode))
@@ -595,6 +603,8 @@ public class MainActivity extends BaseActivity
                     .setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
+                            ignorePerformanceModeEvent = true;
+
                             IconSwitch isPerformanceMode = findViewById(R.id.isPerformanceMode);
                             isPerformanceMode.setChecked(IconSwitch.Checked.LEFT);
                         }
@@ -670,6 +680,8 @@ public class MainActivity extends BaseActivity
         }
 
         updatePayoutWidgetStatus();
+
+        setMinerStatus(m_nCurrentState);
     }
 
     private void backHomeMenu() {
@@ -1716,17 +1728,13 @@ public class MainActivity extends BaseActivity
             miningTime = "0m";
 
         TextView tvMiningTime = findViewById(R.id.miningtime);
-        tvMiningTime.setTextColor(miningTime.equals("0m") ? getResources().getColor(R.color.txt_inactive) : getResources().getColor(R.color.txt_main));
+        tvMiningTime.setTextColor(miningTime.equals("0m") ? getResources().getColor(R.color.txt_inactive) : getResources().getColor(R.color.c_white));
         tvMiningTime.setText(miningTime);
     }
 
     private void setMinerStatus(Integer status) {
         LinearLayout llHashrate = findViewById(R.id.layout_hashrate);
         LinearLayout llStatus = findViewById(R.id.layout_status);
-
-        TubeSpeedometer meterHashrate = findViewById(R.id.meter_hashrate);
-        TubeSpeedometer meterHashrate_avg = findViewById(R.id.meter_hashrate_avg);
-        TubeSpeedometer meterHashrate_max = findViewById(R.id.meter_hashrate_max);
 
         if(status == Config.STATE_STOPPED) {
             llStatus.setVisibility(View.GONE);
@@ -1740,7 +1748,10 @@ public class MainActivity extends BaseActivity
             View v = findViewById(R.id.main_navigation);
             v.setKeepScreenOn(false);
 
-            meterHashrate.speedTo(0);
+            updateMeterHashrate(0.0f);
+
+            TubeSpeedometer meterHashrate_avg = findViewById(R.id.meter_hashrate_avg);
+            TubeSpeedometer meterHashrate_max = findViewById(R.id.meter_hashrate_max);
             meterHashrate_avg.setVisibility(View.GONE);
             meterHashrate_max.setVisibility(View.GONE);
 
@@ -1773,7 +1784,7 @@ public class MainActivity extends BaseActivity
             ProgressBar pbStatus = findViewById(R.id.progress_status);
             pbStatus.setScaleY(1f);
 
-            meterHashrate.speedTo(0);
+            updateMeterHashrate(0.0f);
 
             TextView tvStatus = findViewById(R.id.miner_status);
             TextView tvStatusProgess = findViewById(R.id.hr_progress);
@@ -2014,6 +2025,18 @@ public class MainActivity extends BaseActivity
         }
     }
 
+    private void updateMeterHashrate(float fHr) {
+        if(bIsPerformanceMode)
+            return;
+
+        TubeSpeedometer meterHashrate = findViewById(R.id.meter_hashrate);
+
+        float hrMax = meterHashrate.getMaxSpeed();
+        meterHashrate.setWithTremble(!(hrMax < 15) && fHr > 0.0f);
+
+        meterHashrate.speedTo(fHr, 2000);
+    }
+
     private void incrementProgressHashrate() {
         ProgressBar pbStatus = findViewById(R.id.progress_status);
         pbStatus.setProgress(pbStatus.getProgress() + 1);
@@ -2061,10 +2084,7 @@ public class MainActivity extends BaseActivity
     }
 
     private void updateHashrateMeter(float fSpeed, float fMax) {
-        if(!bIsPerformanceMode) {
-            TubeSpeedometer meterHashrate = findViewById(R.id.meter_hashrate);
-            meterHashrate.speedTo(Math.round(fSpeed));
-        }
+        updateMeterHashrate(Math.round(fSpeed));
 
         TextView tvHashrate = findViewById(R.id.hashrate);
         tvHashrate.setText(String.format(Locale.getDefault(), "%.1f", fSpeed));
@@ -2121,7 +2141,7 @@ public class MainActivity extends BaseActivity
             tvMaxHr.setText(String.format(Locale.getDefault(), "%.1f", fMaxHr));
 
             if(!bIsPerformanceMode) {
-                if (meterHashrate_max.getVisibility() == View.INVISIBLE)
+                if (meterHashrate_max.getVisibility() == View.GONE)
                     meterHashrate_max.setVisibility(View.VISIBLE);
                 meterHashrate_max.setSpeedAt(fMaxHr);
             }
@@ -2622,7 +2642,7 @@ public class MainActivity extends BaseActivity
                     tvCPUTemperature.setTextColor(getResources().getColor(R.color.c_red));
                 }
             } else {
-                tvCPUTemperature.setTextColor(getResources().getColor(R.color.txt_main));
+                tvCPUTemperature.setTextColor(getResources().getColor(R.color.c_white));
             }
         }
         else {
@@ -2649,7 +2669,7 @@ public class MainActivity extends BaseActivity
                     tvBatteryTemperature.setTextColor(getResources().getColor(R.color.c_red));
                 }
             } else {
-                tvBatteryTemperature.setTextColor(getResources().getColor(R.color.txt_main));
+                tvBatteryTemperature.setTextColor(getResources().getColor(R.color.c_white));
             }
         }
         else {

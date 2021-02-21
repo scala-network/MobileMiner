@@ -77,8 +77,8 @@
                                     app:isw_active_tint_icon_left="@color/c_white"
                                     app:isw_active_tint_icon_right="@color/c_white"
                                     app:isw_default_selection="left"
-                                    app:isw_icon_left="@drawable/ic_hrcores"
-                                    app:isw_icon_right="@drawable/ic_rocket_resize" />
+                                    app:isw_icon_left="@drawable/ic_meter"
+                                    app:isw_icon_right="@drawable/ic_rocket_resized" />
 
                             </LinearLayout>
 
@@ -451,7 +451,7 @@
                                                 android:layout_gravity="center"
                                                 android:layout_marginBottom="10dp"
                                                 app:tint="@color/btn_icon_default"
-                                                app:srcCompat="@drawable/ic_timer" />
+                                                app:srcCompat="@drawable/ic_timer_resized" />
 
                                             <TextView
                                                 android:id="@+id/miningtime"
@@ -493,7 +493,7 @@
                                                     android:layout_height="24dp"
                                                     android:layout_marginBottom="10dp"
                                                     app:tint="@color/btn_icon_default"
-                                                    app:srcCompat="@drawable/ic_miner" />
+                                                    app:srcCompat="@drawable/ic_cpu_resized" />
 
                                                 <ImageView
                                                     android:id="@+id/ivWarningCPUTemp"
@@ -528,7 +528,7 @@
                                                     android:layout_height="wrap_content"
                                                     android:layout_marginStart="3dp"
                                                     android:text="°C"
-                                                    android:textColor="@color/txt_inactive"
+                                                    android:textColor="@color/txt_secondary"
                                                     android:textSize="14sp" />
 
                                             </LinearLayout>
@@ -598,7 +598,7 @@
                                                     android:layout_height="wrap_content"
                                                     android:layout_marginStart="3dp"
                                                     android:text="°C"
-                                                    android:textColor="@color/txt_inactive"
+                                                    android:textColor="@color/txt_secondary"
                                                     android:textSize="14sp" />
 
                                             </LinearLayout>
@@ -807,7 +807,7 @@
                                     android:layout_height="22dp"
                                     android:layout_gravity="center"
                                     app:tint="@color/c_blue"
-                                    app:srcCompat="@drawable/ic_arrow_right" />
+                                    app:srcCompat="@drawable/ic_right" />
 
                             </LinearLayout>
 
@@ -995,7 +995,7 @@
                             android:layout_height="42dp"
                             android:layout_gravity="center"
                             android:tint="@color/txt_inactive"
-                            app:srcCompat="@drawable/ic_log4" />
+                            app:srcCompat="@drawable/ic_log" />
 
                         <TextView
                             android:layout_width="wrap_content"
