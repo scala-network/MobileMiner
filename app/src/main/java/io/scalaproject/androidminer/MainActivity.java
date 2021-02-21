@@ -1500,7 +1500,8 @@ public class MainActivity extends BaseActivity
         miningMinutes = 0;
 
         resetOptions();
-
+        
+        resetHashrateTicks();
         resetAvgMaxHashrate();
 
         resetCharts();
@@ -1756,7 +1757,6 @@ public class MainActivity extends BaseActivity
             meterHashrate_max.setVisibility(View.GONE);
 
             stopTimerStatusHashrate();
-            resetHashrateTicks();
         }
         else if(status ==Config.STATE_MINING) {
             TextView tvHashrate = findViewById(R.id.hashrate);
