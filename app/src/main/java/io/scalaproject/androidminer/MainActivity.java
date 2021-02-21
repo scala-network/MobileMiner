@@ -44,6 +44,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.net.wifi.WifiManager;
 import android.os.BatteryManager;
@@ -1491,7 +1493,7 @@ public class MainActivity extends BaseActivity
             return;
         }
 
-        if (Config.read(Config.CONFIG_PAUSE_ON_NETWORK).equals("1") && !isOnWifi && !bForceMiningOnPauseNetwork) {
+        if (Config.read(Config.CONFIG_PAUSE_ON_NETWORK).equals("1") && !isOnWifi() && !bForceMiningOnPauseNetwork) {
             askToForceMiningNetwork();
             return;
         }
@@ -2535,7 +2537,7 @@ public class MainActivity extends BaseActivity
                                 return;
                             }
 
-                            if (Config.read(Config.CONFIG_PAUSE_ON_NETWORK).equals("1") && !isOnWifi && !bForceMiningOnPauseNetwork) {
+                            if (Config.read(Config.CONFIG_PAUSE_ON_NETWORK).equals("1") && !isOnWifi() && !bForceMiningOnPauseNetwork) {
                                 askToForceMiningNetwork();
                                 return;
                             }
@@ -2866,7 +2868,7 @@ public class MainActivity extends BaseActivity
                 return;
             }
 
-            if (Config.read(Config.CONFIG_PAUSE_ON_NETWORK).equals("1") && !isOnWifi) {
+            if (Config.read(Config.CONFIG_PAUSE_ON_NETWORK).equals("1") && !isOnWifi()) {
                 setStatusText(getResources().getString(R.string.pauseonnetwork));
                 return;
             }
@@ -3129,7 +3131,18 @@ public class MainActivity extends BaseActivity
         }
     };
 
+    private boolean isOnWifi() {
+        if(isOnWifiInit)
+            return isOnWifi;
+
+        ConnectivityManager connManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo mWifi = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+
+        return mWifi.isConnected();
+    }
+
     static boolean lastIsOnWifi = false;
+    static boolean isOnWifiInit = false;
     private final BroadcastReceiver networkInfoReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent networkStatusIntent) {
@@ -3140,6 +3153,8 @@ public class MainActivity extends BaseActivity
             if (action.equals(WifiManager.SUPPLICANT_CONNECTION_CHANGE_ACTION)) {
                 isOnWifi = networkStatusIntent.getBooleanExtra(WifiManager.EXTRA_SUPPLICANT_CONNECTED, false);
             }
+
+            isOnWifiInit = true;
 
             if (lastIsOnWifi == isOnWifi)
                 return;

@@ -96,6 +96,11 @@ public class MiningService extends Service {
     }
 
     @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        return START_STICKY;
+    }
+
+    @Override
     public void onTaskRemoved(Intent rootIntent) {
         super.onTaskRemoved(rootIntent);
 
@@ -213,6 +218,8 @@ public class MiningService extends Service {
 
     @Override
     public void onDestroy() {
+        Utils.showToast(MainActivity.getContextOfApplication(), "SERVICE ON DESTROY", Toast.LENGTH_LONG);
+
         stopMining();
         super.onDestroy();
     }
@@ -355,7 +362,6 @@ public class MiningService extends Service {
     }
 
     public String getOutput() {
-
         if (outputHandler != null && outputHandler.getOutput() != null) {
             lastOutput =  outputHandler.getOutput().toString();
         }
@@ -370,7 +376,6 @@ public class MiningService extends Service {
     }
 
     private class ProcessMonitor extends Thread {
-
         Process proc;
 
         ProcessMonitor(Process proc) {
@@ -484,7 +489,6 @@ public class MiningService extends Service {
     }
 
     private static class InputReaderThread extends Thread {
-
         private final OutputStream outputStream;
         private BufferedWriter writer;
 
@@ -515,7 +519,6 @@ public class MiningService extends Service {
         }
 
         public void sendInput(String s) {
-
             try {
                 writer.write(s);
                 writer.flush();
