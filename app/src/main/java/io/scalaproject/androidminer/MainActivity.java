@@ -1688,7 +1688,7 @@ public class MainActivity extends BaseActivity
             frag.updateAddress();
         }
 
-        refreshLogOutputView();
+        refreshHashrate();
     }
 
     @Override
