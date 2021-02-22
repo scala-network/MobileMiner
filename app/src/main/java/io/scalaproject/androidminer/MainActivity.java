@@ -142,7 +142,7 @@ public class MainActivity extends BaseActivity
 {
     private static final String LOG_TAG = "MainActivity";
 
-    private TextView tvCPUTemperature, tvBatteryTemperature, tvLog, tvLog2;
+    private TextView tvCPUTemperature, tvBatteryTemperature, tvLogWidget, tvLogLayout;
 
     private boolean bIsPerformanceMode = false;
 
@@ -155,8 +155,8 @@ public class MainActivity extends BaseActivity
     private Timer timerRefreshHashrate = null;
     private TimerTask timerTaskRefreshHashrate = null;
 
-    private Timer timerMiningSanity = null;
-    private TimerTask timerTaskMiningSanity = null;
+    //private Timer timerMiningSanity = null;
+    //private TimerTask timerTaskMiningSanity = null;
 
     private Timer timerMiningTime = null;
     private TimerTask timerTaskMiningTime = null;
@@ -334,7 +334,7 @@ public class MainActivity extends BaseActivity
                         break;
                     }
                     case Toolbar.BUTTON_OPTIONS_COPY: {
-                        Utils.copyToClipboard("Mining Log", tvLog.getText().toString());
+                        Utils.copyToClipboard("Mining Log", tvLogWidget.getText().toString());
                         Utils.showToast(contextOfApplication, "Mining Log copied.", Toast.LENGTH_SHORT, Tools.TOAST_YOFFSET_BOTTOM);
                         break;
                     }
@@ -413,13 +413,11 @@ public class MainActivity extends BaseActivity
         pbStatus.setMax(MAX_HASHRATE_TIMER * 2);
         pbStatus.setProgress(0);
 
-        // Log
-        tvLog = findViewById(R.id.output);
-
-        tvLog2 = findViewById(R.id.output2);
+        // Output log
+        tvLogWidget = findViewById(R.id.tvLogWidget);
+        tvLogLayout = findViewById(R.id.tvLogLayout);
 
         // CPU Cores
-
         nNbMaxCores = Runtime.getRuntime().availableProcessors();
         String core_config = Config.read(Config.CONFIG_CORES);
 
@@ -649,7 +647,7 @@ public class MainActivity extends BaseActivity
 
             stopTimerRefreshHashrate();
 
-            stopTimerMiningSanity();
+            //stopTimerMiningSanity();
 
             LineChart chartHashrate = findViewById(R.id.chartHashrate);
             chartHashrate.clear();
@@ -678,7 +676,7 @@ public class MainActivity extends BaseActivity
 
             startTimerRefreshHashrate();
 
-            startTimerMiningSanity();
+            //startTimerMiningSanity();
         }
 
         updatePayoutWidgetStatus();
@@ -1529,7 +1527,7 @@ public class MainActivity extends BaseActivity
 
         setMinerStatus(Config.STATE_MINING);
 
-        startTimerMiningSanity();
+        //startTimerMiningSanity();
 
         updateUI();
     }
@@ -1631,7 +1629,7 @@ public class MainActivity extends BaseActivity
 
         resetOptions();
 
-        stopTimerMiningSanity();
+        //stopTimerMiningSanity();
 
         stopTimerMiningTime();
 
@@ -1826,7 +1824,7 @@ public class MainActivity extends BaseActivity
         updateNotification();
     }
 
-    public void startTimerMiningSanity() {
+    /*public void startTimerMiningSanity() {
         if(timerMiningSanity != null)
             return;
 
@@ -1872,7 +1870,7 @@ public class MainActivity extends BaseActivity
             timerMiningSanity = null;
             timerTaskMiningSanity = null;
         }
-    }
+    }*/
 
     public void startTimerRefreshHashrate() {
         if(timerRefreshHashrate != null)
@@ -2466,7 +2464,7 @@ public class MainActivity extends BaseActivity
 
     private void refreshLogOutputView() {
         LinearLayout llNoActivity = findViewById(R.id.llNoActivity);
-        llNoActivity.setVisibility(tvLog.getText().toString().isEmpty() ? View.VISIBLE : View.GONE);
+        llNoActivity.setVisibility(tvLogWidget.getText().toString().isEmpty() ? View.VISIBLE : View.GONE);
 
         NestedScrollView svLog = findViewById(R.id.svLog);
         NestedScrollView svLog2 = findViewById(R.id.svLog2);
@@ -2480,9 +2478,9 @@ public class MainActivity extends BaseActivity
             });
         }
 
-        if(tvLog2 != null) {
+        if(tvLogLayout != null) {
             TextView tvNoActivity = findViewById(R.id.tvNoActivity);
-            tvNoActivity.setVisibility(tvLog2.getText().toString().isEmpty() ? View.VISIBLE : View.GONE);
+            tvNoActivity.setVisibility(tvLogLayout.getText().toString().isEmpty() ? View.VISIBLE : View.GONE);
 
             if(svLog2 != null) {
                 svLog2.post(new Runnable() {
@@ -2497,13 +2495,13 @@ public class MainActivity extends BaseActivity
 
     private void appendLogOutputText(String line) {
         if(binder != null) {
-            if (tvLog.getText().length() > Config.logMaxLength ){
+            if (tvLogWidget.getText().length() > Config.logMaxLength ){
                 String outputLog = binder.getService().getOutput();
 
                 Spannable sText = formatLogOutputText(outputLog);
                 if(sText != null) {
-                    tvLog.setText(sText);
-                    tvLog2.setText(sText);
+                    tvLogWidget.setText(sText);
+                    tvLogLayout.setText(sText);
                 }
             }
         }
@@ -2513,8 +2511,8 @@ public class MainActivity extends BaseActivity
 
             Spannable sText = formatLogOutputText(outputLog);
             if(sText != null) {
-                tvLog.append(sText);
-                tvLog2.append(sText);
+                tvLogWidget.append(sText);
+                tvLogLayout.append(sText);
             }
         }
 
@@ -2563,8 +2561,8 @@ public class MainActivity extends BaseActivity
                             updateMiningButtonState();
                             if (state) {
                                 if (clearMinerLog) {
-                                    tvLog.setText("");
-                                    tvLog2.setText("");
+                                    tvLogWidget.setText("");
+                                    tvLogLayout.setText("");
 
                                     TextView tvAcceptedShares = findViewById(R.id.acceptedshare);
                                     tvAcceptedShares.setText("0");

@@ -102,10 +102,22 @@ public class MiningService extends Service {
 
     @Override
     public void onTaskRemoved(Intent rootIntent) {
-        super.onTaskRemoved(rootIntent);
-
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.cancelAll();
+
+        stopMining();
+
+        super.onTaskRemoved(rootIntent);
+    }
+
+    @Override
+    public void onDestroy() {
+        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager.cancelAll();
+
+        stopMining();
+
+        super.onDestroy();
     }
 
     private MiningServiceStateListener listener = null;
@@ -214,14 +226,6 @@ public class MiningService extends Service {
         config.cpuConfig = createCpuConfig(cores, threads, intensity);
 
         return config;
-    }
-
-    @Override
-    public void onDestroy() {
-        Utils.showToast(MainActivity.getContextOfApplication(), "SERVICE ON DESTROY", Toast.LENGTH_LONG);
-
-        stopMining();
-        super.onDestroy();
     }
 
     @Override

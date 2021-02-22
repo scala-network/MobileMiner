@@ -64,7 +64,8 @@ public class SettingsFragment extends Fragment {
 
     private SeekBar sbCPUTemp, sbBatteryTemp, sbCooldown, sbCores;
     private TextView tvCPUMaxTemp, tvBatteryMaxTemp, tvCooldown, tvCPUTempUnit, tvBatteryTempUnit, tvRefreshHashrateDelay;
-    private Switch swDisableTempControl, swPauseOnBattery, swPauseOnNetwork, swKeepScreenOnWhenMining, swSendDebugInformation, swDoNotRestartOnCrash;
+    private Switch swDisableTempControl, swPauseOnBattery, swPauseOnNetwork, swKeepScreenOnWhenMining, swSendDebugInformation;
+    //private Switch swDoNotRestartOnCrash;
     private ImageView ivDecreaseRefreshHashrateDelay, ivIncreaseRefreshHashrateDelay;
     private MaterialButtonToggleGroup tgTemperatureUnit;
 
@@ -138,7 +139,7 @@ public class SettingsFragment extends Fragment {
         swKeepScreenOnWhenMining = view.findViewById(R.id.chkKeepScreenOnWhenMining);
         swDisableTempControl = view.findViewById(R.id.chkAmaycOff);
         swSendDebugInformation = view.findViewById(R.id.chkSendDebugInformation);
-        swDoNotRestartOnCrash = view.findViewById(R.id.chkDoNotRestartOnCrash);
+        //swDoNotRestartOnCrash = view.findViewById(R.id.chkDoNotRestartOnCrash);
 
         tgTemperatureUnit = view.findViewById(R.id.tgTemperatureUnit);
         tgTemperatureUnit.addOnButtonCheckedListener(new MaterialButtonToggleGroup.OnButtonCheckedListener() {
@@ -237,10 +238,10 @@ public class SettingsFragment extends Fragment {
             swSendDebugInformation.setChecked(true);
         }
 
-        boolean checkDoNotRestartOnCrash = Config.read(Config.CONFIG_DISABLE_RESTART_MINING_ABORTED).equals("1");
+        /*boolean checkDoNotRestartOnCrash = Config.read(Config.CONFIG_DISABLE_RESTART_MINING_ABORTED).equals("1");
         if(checkDoNotRestartOnCrash) {
             swDoNotRestartOnCrash.setChecked(true);
-        }
+        }*/
 
         if (!Config.read(Config.CONFIG_ADDRESS).isEmpty()) {
             edAddress.setText(Config.read(Config.CONFIG_ADDRESS));
@@ -568,7 +569,7 @@ public class SettingsFragment extends Fragment {
 
         Config.write(Config.CONFIG_TEMPERATURE_UNIT, tgTemperatureUnit.getCheckedButtonId() == R.id.btnFarehnheit ? "F" : "C");
         Config.write(Config.CONFIG_SEND_DEBUG_INFO, swSendDebugInformation.isChecked() ? "1" : "0");
-        Config.write(Config.CONFIG_DISABLE_RESTART_MINING_ABORTED, swDoNotRestartOnCrash.isChecked() ? "1" : "0");
+        //Config.write(Config.CONFIG_DISABLE_RESTART_MINING_ABORTED, swDoNotRestartOnCrash.isChecked() ? "1" : "0");
 
         Config.write(Config.CONFIG_INIT, "1");
 

@@ -250,7 +250,7 @@
     <string name="stopped">stopped</string>
     <string name="payout">Payout</string>
     <string name="performance_mode">Performance Mode</string>
-    <string name="performance_mode_text">Are you sure you want to enable Performance Mode?\n\nThe following features will be disabled:\n- Hashrate meter and chart\n- Temperature chart\n- Payout widget\n- Statistics refresh\n- Hashrate refresh delay\n- Restart mining process</string>
+    <string name="performance_mode_text">Are you sure you want to enable Performance Mode?\n\nThe following features will be disabled:\n- Hashrate meter and chart\n- Temperature chart\n- Payout widget\n- Statistics refresh\n- Hashrate refresh delay</string>
     <string name="refresh">Refresh</string>
     <string name="devicecharging">Device charging.</string>
     <string name="deviceonbatterypower">Device on battery power.</string>
