@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.polyak.iconswitch.IconSwitch xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/isPerformanceMode"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    app:isw_background_color="@color/bg_lighter"
+    app:isw_thumb_color_left="@color/c_blue"
+    app:isw_thumb_color_right="@color/c_blue"
+    app:isw_inactive_tint_icon_left="@color/c_blue"
+    app:isw_inactive_tint_icon_right="@color/c_blue"
+    app:isw_active_tint_icon_left="@color/c_white"
+    app:isw_active_tint_icon_right="@color/c_white"
+    app:isw_default_selection="left"
+    app:isw_icon_left="@drawable/ic_meter"
+    app:isw_icon_right="@drawable/ic_rocket_resized" />

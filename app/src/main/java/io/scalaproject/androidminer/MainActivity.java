@@ -143,6 +143,7 @@ public class MainActivity extends BaseActivity
     private static final String LOG_TAG = "MainActivity";
 
     private TextView tvCPUTemperature, tvBatteryTemperature, tvLogWidget, tvLogLayout;
+    IconSwitch isPerformanceMode;
 
     private boolean bIsPerformanceMode = false;
 
@@ -389,23 +390,34 @@ public class MainActivity extends BaseActivity
 
         // Controls
 
-        IconSwitch isPerformanceMode = findViewById(R.id.isPerformanceMode);
-        isPerformanceMode.setCheckedChangeListener(new IconSwitch.CheckedChangeListener()
-        {
-            @Override
-            public void onCheckChanged(IconSwitch.Checked current) {
-                switch (current) {
-                    case LEFT:
-                        bIsPerformanceMode = false;
-                        break;
-                    case RIGHT:
-                        bIsPerformanceMode = true;
-                        break;
-                }
+        LinearLayout llPerformanceMode = findViewById(R.id.llPerformanceMode);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
+            findViewById(R.id.ivPerformanceMode).setVisibility(View.GONE);
 
-                updatePerformanceMode();
-            }
-        });
+            Switch swPerformanceMode = findViewById(R.id.swPerformanceMode);
+            swPerformanceMode.setVisibility(View.GONE);
+
+            isPerformanceMode = (IconSwitch)getLayoutInflater().inflate(R.layout.control_iconswitch, null);
+
+            llPerformanceMode.addView(isPerformanceMode);
+
+            isPerformanceMode.setCheckedChangeListener(new IconSwitch.CheckedChangeListener() {
+                @Override
+                public void onCheckChanged(IconSwitch.Checked current) {
+                    bIsPerformanceMode = current == IconSwitch.Checked.RIGHT;
+                    updatePerformanceMode();
+                }
+            });
+        } else {
+            Switch swPerformanceMode = findViewById(R.id.swPerformanceMode);
+            swPerformanceMode.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    bIsPerformanceMode = ((Switch)v).isChecked();
+                    updatePerformanceMode();
+                }
+            });
+        }
 
         payoutEnabled = true;
         ProgressBar pbStatus = findViewById(R.id.progress_status);
@@ -605,8 +617,14 @@ public class MainActivity extends BaseActivity
                         public void onClick(DialogInterface dialogInterface, int i) {
                             ignorePerformanceModeEvent = true;
 
-                            IconSwitch isPerformanceMode = findViewById(R.id.isPerformanceMode);
-                            isPerformanceMode.setChecked(IconSwitch.Checked.LEFT);
+                            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
+                                isPerformanceMode.setChecked(IconSwitch.Checked.LEFT);
+                            }
+                            else {
+                                Switch swPerformanceMode = findViewById(R.id.swPerformanceMode);
+                                swPerformanceMode.setChecked(false);
+                            }
+
                         }
                     })
                     .show();
@@ -2007,7 +2025,7 @@ public class MainActivity extends BaseActivity
                 hrMax = getMaxHr(fHr);
             }
 
-            if(hrMax <= 10) { // in some case xlarig returns a weird hrMax, but it needs to be > tick number, so we use a dummy max number
+            if(hrMax <= 10) { // in some case xlarig returns a wrong low hrMax, but it needs to be > tick number, so we force a dummy max number
                 hrMax = 11;
             }
 

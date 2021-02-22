@@ -55,6 +55,7 @@
                             android:orientation="vertical">
 
                             <LinearLayout
+                                android:id="@+id/llPerformanceMode"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:orientation="horizontal"
@@ -65,20 +66,23 @@
                                     android:layout_height="match_parent"
                                     android:layout_weight="1" />
 
-                                <com.polyak.iconswitch.IconSwitch
-                                    android:id="@+id/isPerformanceMode"
+                                <!-- Only used for SDK < 22. For SDK >= 22 a IconSwitch
+                                     is created programmatically in MainActiviy. -->
+
+                                <ImageView
+                                    android:id="@+id/ivPerformanceMode"
+                                    android:layout_width="20dp"
+                                    android:layout_height="20dp"
+                                    android:layout_marginEnd="3dp"
+                                    app:tint="@color/c_blue"
+                                    app:srcCompat="@drawable/ic_rocket" />
+
+
+                                <Switch
+                                    android:id="@+id/swPerformanceMode"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    app:isw_background_color="@color/bg_lighter"
-                                    app:isw_thumb_color_left="@color/c_blue"
-                                    app:isw_thumb_color_right="@color/c_blue"
-                                    app:isw_inactive_tint_icon_left="@color/c_blue"
-                                    app:isw_inactive_tint_icon_right="@color/c_blue"
-                                    app:isw_active_tint_icon_left="@color/c_white"
-                                    app:isw_active_tint_icon_right="@color/c_white"
-                                    app:isw_default_selection="left"
-                                    app:isw_icon_left="@drawable/ic_meter"
-                                    app:isw_icon_right="@drawable/ic_rocket_resized" />
+                                    android:theme="@style/SwitchTheme" />
 
                             </LinearLayout>
 
