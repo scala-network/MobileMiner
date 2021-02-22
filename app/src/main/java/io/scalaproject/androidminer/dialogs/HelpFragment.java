@@ -21,7 +21,6 @@
 
 package io.scalaproject.androidminer.dialogs;
 
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -35,6 +34,10 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+
+import org.jetbrains.annotations.NotNull;
+
+import java.util.Objects;
 
 import io.scalaproject.androidminer.R;
 
@@ -60,6 +63,7 @@ public class HelpFragment extends DialogFragment {
         HelpFragment.newInstance(helpResourceId).show(ft, TAG);
     }
 
+    @NotNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         final View view = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_help, null);
@@ -72,7 +76,7 @@ public class HelpFragment extends DialogFragment {
         if (helpId > 0)
             ((TextView) view.findViewById(R.id.tvHelp)).setText(Html.fromHtml(getString(helpId)));
 
-        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getActivity(), R.style.MaterialAlertDialogCustom);
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(Objects.requireNonNull(getActivity()), R.style.MaterialAlertDialogCustom);
         builder.setView(view);
         builder.setNegativeButton(R.string.ok,
                 new DialogInterface.OnClickListener() {

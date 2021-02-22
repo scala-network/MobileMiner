@@ -12,9 +12,9 @@ import io.scalaproject.androidminer.Config;
 public class ProviderRequest {
 
     protected PoolItem mPoolItem;
-
     private ProviderTask current;
     private IProviderListener mListener;
+
     public ProviderRequest setListener(IProviderListener listener) {
         if(mListener == listener) {
             return this;
@@ -32,7 +32,7 @@ public class ProviderRequest {
 
     public class ProviderTask extends TimerTask {
 
-        private ProviderAbstract mProvider;
+        private final ProviderAbstract mProvider;
 
         public ProviderTask(ProviderAbstract abs) {
             mProvider = abs;
@@ -55,11 +55,6 @@ public class ProviderRequest {
             timer = null;
             current = null;
         }
-    }
-
-    public void execute() {
-        start();
-        repeat();
     }
 
     public void run() {
@@ -90,7 +85,7 @@ public class ProviderRequest {
         timer.schedule(current, Config.statsDelay);
     }
 
-    public class ProviderTimer extends Timer {
+    public static class ProviderTimer extends Timer {
         public ProviderTimer() {
             super("ProviderTimer");
         }

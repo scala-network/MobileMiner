@@ -54,6 +54,38 @@
                             android:background="@color/bg_body"
                             android:orientation="vertical">
 
+                            <LinearLayout
+                                android:id="@+id/llPerformanceMode"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:orientation="horizontal"
+                                android:gravity="center">
+
+                                <Space
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight="1" />
+
+                                <!-- Only used for SDK < 22. For SDK >= 22 a IconSwitch
+                                     is created programmatically in MainActiviy. -->
+
+                                <ImageView
+                                    android:id="@+id/ivPerformanceMode"
+                                    android:layout_width="20dp"
+                                    android:layout_height="20dp"
+                                    android:layout_marginEnd="3dp"
+                                    app:tint="@color/c_blue"
+                                    app:srcCompat="@drawable/ic_rocket" />
+
+
+                                <Switch
+                                    android:id="@+id/swPerformanceMode"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:theme="@style/SwitchTheme" />
+
+                            </LinearLayout>
+
                             <FrameLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -210,16 +242,6 @@
                                         android:textStyle="bold"
                                         android:visibility="visible" />
 
-                                    <View
-                                        android:id="@+id/view_separator"
-                                        android:layout_width="150dp"
-                                        android:layout_height="0.7dp"
-                                        android:layout_gravity="center"
-                                        android:layout_marginTop="5dp"
-                                        android:layout_marginBottom="5dp"
-                                        android:background="@color/txt_main"
-                                        android:visibility="gone"/>
-
                                     <LinearLayout
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
@@ -356,118 +378,6 @@
                                         android:textSize="14sp"
                                         app:cornerRadius="7.5dp" />
 
-                                    <LinearLayout
-                                        android:layout_width="0dp"
-                                        android:layout_height="wrap_content"
-                                        android:layout_gravity="center"
-                                        android:layout_weight="1"
-                                        android:orientation="vertical"
-                                        android:visibility="gone">
-
-                                        <ImageView
-                                            android:layout_width="20dp"
-                                            android:layout_height="20dp"
-                                            android:layout_gravity="center"
-                                            app:srcCompat="@drawable/ic_cores" />
-
-                                        <TextView
-                                            android:id="@+id/nbcores"
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:layout_gravity="center"
-                                            android:gravity="end"
-                                            android:text="-"
-                                            android:textColor="@color/c_yellow"
-                                            android:textSize="12sp" />
-
-                                    </LinearLayout>
-
-                                    <LinearLayout
-                                        android:layout_width="0dp"
-                                        android:layout_height="wrap_content"
-                                        android:layout_gravity="center"
-                                        android:layout_weight="1"
-                                        android:orientation="vertical"
-                                        android:visibility="gone">
-
-                                        <ImageView
-                                            android:layout_width="20dp"
-                                            android:layout_height="20dp"
-                                            android:layout_gravity="center"
-                                            app:srcCompat="@drawable/ic_miner" />
-
-                                        <LinearLayout
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:layout_gravity="center"
-                                            android:orientation="horizontal">
-
-                                            <TextView
-                                                android:id="@+id/cputemp2"
-                                                android:layout_width="wrap_content"
-                                                android:layout_height="wrap_content"
-                                                android:layout_gravity="center"
-                                                android:layout_marginEnd="3dp"
-                                                android:gravity="end"
-                                                android:text="-"
-                                                android:textColor="@color/txt_secondary"
-                                                android:textSize="12sp" />
-
-                                            <TextView
-                                                android:layout_width="wrap_content"
-                                                android:layout_height="wrap_content"
-                                                android:layout_gravity="center"
-                                                android:text="@string/celsius"
-                                                android:textColor="@color/txt_secondary"
-                                                android:textSize="12sp" />
-
-                                        </LinearLayout>
-
-                                    </LinearLayout>
-
-                                    <LinearLayout
-                                        android:layout_width="0dp"
-                                        android:layout_height="wrap_content"
-                                        android:layout_gravity="center"
-                                        android:layout_weight="1"
-                                        android:orientation="vertical"
-                                        android:visibility="gone">
-
-                                        <ImageView
-                                            android:layout_width="20dp"
-                                            android:layout_height="20dp"
-                                            android:layout_gravity="center"
-                                            app:srcCompat="@drawable/ic_battery" />
-
-                                        <LinearLayout
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:layout_gravity="center"
-                                            android:orientation="horizontal">
-
-                                            <TextView
-                                                android:id="@+id/batterytemp2"
-                                                android:layout_width="wrap_content"
-                                                android:layout_height="wrap_content"
-                                                android:layout_gravity="center"
-                                                android:layout_marginEnd="3dp"
-                                                android:gravity="end"
-                                                android:text="-"
-                                                android:textColor="@color/txt_secondary"
-                                                android:textSize="12sp" />
-
-                                            <TextView
-                                                android:layout_width="wrap_content"
-                                                android:layout_height="wrap_content"
-                                                android:layout_gravity="center"
-                                                android:text="@string/celsius"
-                                                android:textColor="@color/txt_secondary"
-                                                android:textSize="12sp" />
-
-                                        </LinearLayout>
-
-                                    </LinearLayout>
-
                                 </LinearLayout>
 
                             </FrameLayout>
@@ -491,6 +401,7 @@
                                         android:id="@+id/innerLay"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
+                                        android:layout_marginBottom="5dp"
                                         android:gravity="center_vertical"
                                         android:orientation="horizontal" >
 
@@ -538,6 +449,43 @@
                                             android:orientation="vertical"
                                             android:padding="5dp">
 
+                                            <ImageView
+                                                android:layout_width="24dp"
+                                                android:layout_height="24dp"
+                                                android:layout_gravity="center"
+                                                android:layout_marginBottom="10dp"
+                                                app:tint="@color/btn_icon_default"
+                                                app:srcCompat="@drawable/ic_timer_resized" />
+
+                                            <TextView
+                                                android:id="@+id/miningtime"
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:layout_gravity="center"
+                                                android:gravity="end"
+                                                android:text="0m"
+                                                android:textColor="@color/txt_inactive"
+                                                android:textSize="18sp"
+                                                android:textStyle="normal" />
+
+                                            <TextView
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:layout_gravity="center"
+                                                android:gravity="end"
+                                                android:text="Time"
+                                                android:textColor="@color/txt_main"
+                                                android:textSize="12sp" />
+
+                                        </LinearLayout>
+
+                                        <LinearLayout
+                                            android:layout_width="50dp"
+                                            android:layout_height="wrap_content"
+                                            android:layout_weight="1"
+                                            android:orientation="vertical"
+                                            android:padding="5dp">
+
                                             <RelativeLayout
                                                 android:id="@+id/rlWarningCPUTemp"
                                                 android:layout_width="wrap_content"
@@ -549,7 +497,7 @@
                                                     android:layout_height="24dp"
                                                     android:layout_marginBottom="10dp"
                                                     app:tint="@color/btn_icon_default"
-                                                    app:srcCompat="@drawable/ic_miner" />
+                                                    app:srcCompat="@drawable/ic_cpu_resized" />
 
                                                 <ImageView
                                                     android:id="@+id/ivWarningCPUTemp"
@@ -584,7 +532,7 @@
                                                     android:layout_height="wrap_content"
                                                     android:layout_marginStart="3dp"
                                                     android:text="°C"
-                                                    android:textColor="@color/txt_inactive"
+                                                    android:textColor="@color/txt_secondary"
                                                     android:textSize="14sp" />
 
                                             </LinearLayout>
@@ -654,7 +602,7 @@
                                                     android:layout_height="wrap_content"
                                                     android:layout_marginStart="3dp"
                                                     android:text="°C"
-                                                    android:textColor="@color/txt_inactive"
+                                                    android:textColor="@color/txt_secondary"
                                                     android:textSize="14sp" />
 
                                             </LinearLayout>
@@ -670,103 +618,9 @@
 
                                         </LinearLayout>
 
-                                        <LinearLayout
-                                            android:layout_width="75dp"
-                                            android:layout_height="wrap_content"
-                                            android:layout_marginEnd="15dp"
-                                            android:layout_weight="1"
-                                            android:orientation="vertical"
-                                            android:background="@drawable/corner_radius_lighter"
-                                            android:padding="5dp"
-                                            android:visibility="gone">
-
-                                            <ImageView
-                                                android:id="@+id/imgdifficulty"
-                                                android:layout_width="24dp"
-                                                android:layout_height="24dp"
-                                                android:layout_gravity="center"
-                                                android:layout_marginBottom="10dp"
-                                                app:srcCompat="@drawable/ic_difficulty" />
-
-                                            <TextView
-                                                android:id="@+id/difficulty"
-                                                android:layout_width="wrap_content"
-                                                android:layout_height="wrap_content"
-                                                android:layout_gravity="center"
-                                                android:gravity="end"
-                                                android:text="0"
-                                                android:textColor="@color/txt_inactive"
-                                                android:textSize="18sp"
-                                                android:textStyle="normal" />
-
-                                            <TextView
-                                                android:layout_width="wrap_content"
-                                                android:layout_height="wrap_content"
-                                                android:layout_gravity="center"
-                                                android:gravity="end"
-                                                android:text="@string/difficulty"
-                                                android:textColor="@color/txt_main"
-                                                android:textSize="12sp" />
-
-                                        </LinearLayout>
-
-                                        <LinearLayout
-                                            android:layout_width="75dp"
-                                            android:layout_height="wrap_content"
-                                            android:layout_weight="1"
-                                            android:orientation="vertical"
-                                            android:background="@drawable/corner_radius_lighter"
-                                            android:padding="5dp"
-                                            android:visibility="gone">
-
-                                            <ImageView
-                                                android:id="@+id/imgconnection2"
-                                                android:layout_width="24dp"
-                                                android:layout_height="24dp"
-                                                android:layout_gravity="center"
-                                                android:layout_marginBottom="10dp"
-                                                app:srcCompat="@drawable/ic_connection" />
-
-                                            <LinearLayout
-                                                android:layout_width="wrap_content"
-                                                android:layout_height="wrap_content"
-                                                android:layout_gravity="center"
-                                                android:orientation="horizontal">
-
-                                                <TextView
-                                                    android:id="@+id/connection"
-                                                    android:layout_width="wrap_content"
-                                                    android:layout_height="wrap_content"
-                                                    android:text="0"
-                                                    android:textColor="@color/txt_inactive"
-                                                    android:textSize="18sp"
-                                                    android:textStyle="normal" />
-
-                                                <TextView
-                                                    android:layout_width="wrap_content"
-                                                    android:layout_height="wrap_content"
-                                                    android:layout_marginStart="3dp"
-                                                    android:text="ms"
-                                                    android:textColor="@color/txt_inactive"
-                                                    android:textSize="12sp" />
-
-                                            </LinearLayout>
-
-                                            <TextView
-                                                android:layout_width="wrap_content"
-                                                android:layout_height="wrap_content"
-                                                android:layout_gravity="center"
-                                                android:gravity="end"
-                                                android:text="@string/connection"
-                                                android:textColor="@color/txt_main"
-                                                android:textSize="12sp" />
-
-                                        </LinearLayout>
-
                                     </LinearLayout>
 
                                 </HorizontalScrollView>
-
 
                             <Space
                                 android:id="@+id/space_metrics_below"
@@ -774,53 +628,13 @@
                                 android:layout_height="match_parent"
                                 android:layout_weight="1" />
 
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="horizontal"
-                                android:visibility="gone">
-
-                                <SeekBar
-                                    android:id="@+id/seekbarcores"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center"
-                                    android:layout_marginEnd="10dp"
-                                    android:layout_weight="0.75"
-                                    android:max="8"
-                                    android:maxHeight="5dp"
-                                    android:min="1"
-                                    android:minHeight="5dp"
-                                    android:paddingStart="0dp"
-                                    android:paddingEnd="0dp"
-                                    android:progress="4"
-                                    android:progressDrawable="@drawable/seekbar_ruler_yellow"
-                                    android:thumbOffset="0dp"
-                                    android:thumbTint="@color/c_white"
-                                    tools:ignore="UnusedAttribute" />
-
-                                <Button
-                                    android:id="@+id/start2"
-                                    android:layout_width="50dp"
-                                    android:layout_height="55dp"
-                                    android:layout_weight="0.25"
-                                    app:backgroundTint="@color/bg_green"
-                                    android:text="@string/start"
-                                    android:textAllCaps="false"
-                                    android:textColor="@color/txt_button_filled"
-                                    android:textSize="14sp"
-                                    app:cornerRadius="7.5dp" />
-
-                            </LinearLayout>
-
-
                             <TextView
                                 android:id="@+id/payout"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="25dp"
+                                android:layout_marginTop="20dp"
                                 android:gravity="start"
-                                android:text="Payout"
+                                android:text="@string/payout"
                                 android:textSize="14sp"
                                 android:textStyle="bold"
                                 android:textAllCaps="true"
@@ -954,6 +768,7 @@
                             </LinearLayout>
 
                         <LinearLayout
+                            android:id="@+id/llTitleActivity"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="20dp"
@@ -964,7 +779,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="start"
                                 android:gravity="center"
-                                android:text="Activity"
+                                android:text="@string/activity"
                                 android:textAllCaps="true"
                                 android:textColor="@color/txt_headline"
                                 android:textSize="14sp"
@@ -985,7 +800,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="center"
-                                    android:text="More"
+                                    android:text="@string/more"
                                     android:textColor="@color/c_blue"
                                     android:textSize="14sp"
                                     android:textAllCaps="true"
@@ -996,16 +811,18 @@
                                     android:layout_height="22dp"
                                     android:layout_gravity="center"
                                     app:tint="@color/c_blue"
-                                    app:srcCompat="@drawable/ic_arrow_right" />
+                                    app:srcCompat="@drawable/ic_right" />
 
                             </LinearLayout>
 
                         </LinearLayout>
 
                         <RelativeLayout
+                            android:id="@+id/rlLog"
                             android:layout_width="match_parent"
                             android:layout_height="125dp"
                             android:layout_marginTop="15dp"
+                            android:layout_marginBottom="20dp"
                             android:background="@drawable/corner_radius_black"
                             android:orientation="vertical">
 
@@ -1026,7 +843,7 @@
                                 android:layout_width="fill_parent">
 
                                 <TextView
-                                    android:id="@+id/output2"
+                                    android:id="@+id/tvLogLayout"
                                     android:layout_width="fill_parent"
                                     android:layout_height="fill_parent"
                                     android:layout_weight="1.0"
@@ -1042,9 +859,9 @@
                         </RelativeLayout>
 
                         <LinearLayout
+                            android:id="@+id/llTitleHashrate"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="20dp"
                             android:layout_marginBottom="15dp"
                             android:orientation="horizontal">
 
@@ -1053,7 +870,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="start"
                                 android:gravity="center"
-                                android:text="Hashrate"
+                                android:text="@string/hashrate"
                                 android:textColor="@color/txt_headline"
                                 android:textSize="14sp"
                                 android:textAllCaps="true"
@@ -1074,7 +891,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="center"
-                                    android:text="Refresh"
+                                    android:text="@string/refresh"
                                     android:textColor="@color/c_blue"
                                     android:textSize="14sp"
                                     android:textAllCaps="true"
@@ -1095,6 +912,7 @@
                         </LinearLayout>
 
                         <LinearLayout
+                            android:id="@+id/llChartHashrate"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:paddingTop="10dp"
@@ -1105,26 +923,28 @@
                             android:orientation="vertical">
 
                             <com.github.mikephil.charting.charts.LineChart
-                                android:id="@+id/chart_hashrate"
+                                android:id="@+id/chartHashrate"
                                 android:layout_width="match_parent"
                                 android:layout_height="250dp" />
 
                         </LinearLayout>
 
                             <TextView
+                                android:id="@+id/tvTemperature"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="20dp"
                                 android:layout_marginBottom="15dp"
                                 android:layout_gravity="start"
                                 android:gravity="center"
-                                android:text="Temperature"
+                                android:text="@string/temperature"
                                 android:textAllCaps="true"
                                 android:textColor="@color/txt_headline"
                                 android:textSize="14sp"
                                 android:textStyle="bold" />
 
                         <LinearLayout
+                            android:id="@+id/llChartTemperature"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="25dp"
@@ -1136,7 +956,7 @@
                             android:orientation="vertical">
 
                             <com.github.mikephil.charting.charts.BarChart
-                                android:id="@+id/chart_temprature"
+                                android:id="@+id/chartTemperature"
                                 android:layout_width="match_parent"
                                 android:layout_height="250dp" />
 
@@ -1179,7 +999,7 @@
                             android:layout_height="42dp"
                             android:layout_gravity="center"
                             android:tint="@color/txt_inactive"
-                            app:srcCompat="@drawable/ic_log4" />
+                            app:srcCompat="@drawable/ic_log" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -1199,7 +1019,7 @@
                         android:layout_width="fill_parent">
 
                         <TextView
-                            android:id="@+id/output"
+                            android:id="@+id/tvLogWidget"
                             android:layout_width="fill_parent"
                             android:layout_height="fill_parent"
                             android:layout_weight="1.0"

@@ -83,7 +83,7 @@ public class MiningService extends Service {
     private String lastOutput = "";
     private static RequestQueue reqQueue;
 
-    private static String API_IP = "https://json.geoiplookup.io/";
+    private final static String API_IP = "https://json.geoiplookup.io/";
 
     @Override
     public void onCreate()
@@ -96,18 +96,35 @@ public class MiningService extends Service {
     }
 
     @Override
-    public void onTaskRemoved(Intent rootIntent) {
-        super.onTaskRemoved(rootIntent);
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        return START_STICKY;
+    }
 
+    @Override
+    public void onTaskRemoved(Intent rootIntent) {
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.cancelAll();
+
+        stopMining();
+
+        super.onTaskRemoved(rootIntent);
+    }
+
+    @Override
+    public void onDestroy() {
+        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager.cancelAll();
+
+        stopMining();
+
+        super.onDestroy();
     }
 
     private MiningServiceStateListener listener = null;
 
     public interface MiningServiceStateListener {
         void onStateChange(Boolean state);
-        void onStatusChange(String status, float speed, float max, Integer accepted, Integer difficulty, Integer connection);
+        void onStatusChange(String status, float speed, float max, int accepted, int difficulty, int connection);
     }
 
     public void setMiningServiceStateListener(MiningServiceStateListener listener) {
@@ -117,12 +134,12 @@ public class MiningService extends Service {
 
     Boolean mMiningServiceState = false;
 
-    private void raiseMiningServiceStateChange(Boolean state) {
+    private void raiseMiningServiceStateChange(boolean state) {
         mMiningServiceState = state;
         if (listener != null) listener.onStateChange(state);
     }
 
-    private void raiseMiningServiceStatusChange(String status, float speed, float max, Integer accepted, Integer difficulty, Integer connection) {
+    private void raiseMiningServiceStatusChange(String status, float speed, float max, int accepted, int difficulty, int connection) {
         if (listener != null) listener.onStatusChange(status, speed, max, accepted, difficulty, connection);
     }
 
@@ -169,14 +186,14 @@ public class MiningService extends Service {
     }
 
     private static String createCpuConfig(int cores, int threads, int intensity) {
-        String cpuConfig = "";
+        StringBuilder cpuConfig = new StringBuilder();
 
         for (int i = 0; i < cores; i++) {
             for (int j = 0; j < threads; j++) {
-                if (!cpuConfig.equals("")) {
-                    cpuConfig += ",";
+                if (!cpuConfig.toString().equals("")) {
+                    cpuConfig.append(",");
                 }
-                cpuConfig += "[" + intensity + "," + i + "]";
+                cpuConfig.append("[").append(intensity).append(",").append(i).append("]");
             }
         }
 
@@ -209,12 +226,6 @@ public class MiningService extends Service {
         config.cpuConfig = createCpuConfig(cores, threads, intensity);
 
         return config;
-    }
-
-    @Override
-    public void onDestroy() {
-        stopMining();
-        super.onDestroy();
     }
 
     @Override
@@ -337,7 +348,7 @@ public class MiningService extends Service {
             outputHandler = new MiningService.OutputReaderThread(process.getInputStream(), Config.miner_xlarig);
             outputHandler.start();
 
-            inputHandler = new MiningService.InputReaderThread(process.getOutputStream());
+            inputHandler = new InputReaderThread(process.getOutputStream());
             inputHandler.start();
 
             if (procMon != null) {
@@ -354,16 +365,7 @@ public class MiningService extends Service {
         }
     }
 
-    public float getSpeed() {
-        return speed;
-    }
-
-    public int getAccepted() {
-        return accepted;
-    }
-
     public String getOutput() {
-
         if (outputHandler != null && outputHandler.getOutput() != null) {
             lastOutput =  outputHandler.getOutput().toString();
         }
@@ -378,7 +380,6 @@ public class MiningService extends Service {
     }
 
     private class ProcessMonitor extends Thread {
-
         Process proc;
 
         ProcessMonitor(Process proc) {
@@ -387,7 +388,6 @@ public class MiningService extends Service {
 
         public void run() {
             try {
-
                 raiseMiningServiceStateChange(true);
                 if (proc != null) {
                     proc.waitFor();
@@ -404,8 +404,8 @@ public class MiningService extends Service {
     }
 
     private class OutputReaderThread extends Thread {
-        private InputStream inputStream;
-        private StringBuilder output = new StringBuilder();
+        private final InputStream inputStream;
+        private final StringBuilder output = new StringBuilder();
 
         OutputReaderThread(InputStream inputStream, String miner) {
             this.inputStream = inputStream;
@@ -492,9 +492,8 @@ public class MiningService extends Service {
         }
     }
 
-    private class InputReaderThread extends Thread {
-
-        private OutputStream outputStream;
+    private static class InputReaderThread extends Thread {
+        private final OutputStream outputStream;
         private BufferedWriter writer;
 
         InputReaderThread(OutputStream outputStream) {
@@ -509,11 +508,13 @@ public class MiningService extends Service {
 
                     try {
                         Thread.sleep(250);
-                    } catch (InterruptedException e) {
+                    } catch (InterruptedException ignored) {
 
                     }
 
-                    if (currentThread().isInterrupted()) return;
+                    if (currentThread().isInterrupted()) {
+                        return;
+                    }
                 }
 
             } catch (Exception e) {
@@ -522,7 +523,6 @@ public class MiningService extends Service {
         }
 
         public void sendInput(String s) {
-
             try {
                 writer.write(s);
                 writer.flush();
@@ -530,5 +530,18 @@ public class MiningService extends Service {
                 Log.w(LOG_TAG, "exception", e);
             }
         }
+    }
+
+    public boolean isMiningProcessAlive() {
+        try {
+            if(process != null) {
+                process.exitValue();
+            }
+        } catch(IllegalThreadStateException ignored) {
+            // Mining process is alive
+            return true;
+        }
+
+        return false;
     }
 }

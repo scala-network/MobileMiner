@@ -89,7 +89,7 @@ public class ScalaPool extends ProviderAbstract {
             mBlockData.coin.symbol = joStatsConfig.optString("symbol").toUpperCase();
             mBlockData.coin.denominationUnit = tryParseLong(joStatsConfig.optString("denominationUnit"), 1L);
 
-            mBlockData.pool.lastBlockTime = pTime.format(new Date(joStatsPoolStats.optLong("lastblock_timestamp") * 1000));
+            mBlockData.pool.lastBlockTime = pTime.format(new Date(joStatsPoolStats.optLong("lastBlockFound")));
             mBlockData.pool.lastRewardAmount = parseCurrency(joStatsPoolStats.optString("lastblock_lastReward", "0"), mBlockData.coin.units, mBlockData.coin.denominationUnit, mBlockData.coin.symbol);
             mBlockData.pool.hashrate = getReadableHashRateString(joStatsPool.optLong("hashrate"));
             mBlockData.pool.blocks = joStatsPoolStats.optString("blocksFound", "0");

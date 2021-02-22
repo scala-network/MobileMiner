@@ -275,7 +275,7 @@ public class Tools {
         return abiString.toLowerCase().trim();
     }
 
-    static private String[] CPU_TEMP_SYS_FILE = {
+    static private final String[] CPU_TEMP_SYS_FILE = {
             "/sys/devices/virtual/thermal/thermal_zone0/temp",
             "/sys/devices/system/cpu/cpu0/cpufreq/cpu_temp",
             "/sys/devices/system/cpu/cpu0/cpufreq/FakeShmoo_cpu_temp",

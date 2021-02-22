@@ -126,7 +126,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginEnd="12dp"
-            app:srcCompat="@drawable/ic_arrow_right"
+            app:srcCompat="@drawable/ic_right"
             android:visibility="gone"/>
     </LinearLayout>
 

@@ -13,9 +13,7 @@ import android.graphics.BitmapFactory;
 import android.util.Base64;
 
 import java.io.ByteArrayOutputStream;
-import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.List;
 
 import io.scalaproject.androidminer.Config;
 import io.scalaproject.androidminer.Utils;
@@ -29,6 +27,11 @@ public class PoolItem {
     private Bitmap icon;
 
     private boolean mIsUserDefined = false;
+
+    public PoolItem() {
+
+    }
+
     public boolean isUserDefined() {
         return mIsUserDefined;
     }
@@ -52,9 +55,6 @@ public class PoolItem {
     private float mHr = -1.0f;
     public void setHr(float hr) { mHr = hr; }
     public float getHr() { return mHr; }
-
-    public PoolItem() {
-    }
 
     public PoolItem(PoolItem poolItem) {
         this.mKey = poolItem.getKey();
@@ -217,7 +217,7 @@ public class PoolItem {
 
     public String getPool() {
         if(this.mPoolType == 0) {
-            return Config.read("custom_pool");
+            return Config.read(Config.CONFIG_CUSTOM_PORT);
         }
 
         return this.mPool;
@@ -225,7 +225,7 @@ public class PoolItem {
 
     public void setPool(String pool) {
         if(this.mPoolType == 0) {
-            Config.write("custom_pool", pool);
+            Config.write(Config.CONFIG_CUSTOM_PORT, pool);
         } else
             this.mPool = pool;
     }
@@ -239,7 +239,7 @@ public class PoolItem {
     }
 
     public String getPort() {
-        String custom_port = Config.read("custom_port");
+        String custom_port = Config.read(Config.CONFIG_CUSTOM_PORT);
 
         if(this.mPoolType == 0) {
             return custom_port;
@@ -290,8 +290,6 @@ public class PoolItem {
 
     public String getPoolTypeName() {
         switch (this.mPoolType) {
-//            case 0:
-//                return "custom";
             case 1:
                 return "nodejs-pool";
             case 2:
@@ -300,6 +298,19 @@ public class PoolItem {
                 return "scala-pool";
             default:
                 return "unknown";
+        }
+    }
+
+    public String getWalletURL(String walletAddress) {
+        switch (this.mPoolType) {
+            case 1: // nodejs-pool
+                return this.mPoolUrl;
+            case 2: // cryptonote-nodejs-pool
+                return this.mPoolUrl;
+            case 3: // scala-pool
+                return this.mPoolUrl + "?wallet=" + walletAddress + "#worker_stats";
+            default:
+                return this.mPoolUrl;
         }
     }
 

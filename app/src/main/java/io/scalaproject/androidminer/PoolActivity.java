@@ -49,16 +49,10 @@ public class PoolActivity extends BaseActivity
         implements PoolInfoAdapter.OnSelectPoolListener, PoolInfoAdapter.OnMenuPoolListener, View.OnClickListener {
     private static final String LOG_TAG = "PoolActivity";
 
-    private Toolbar toolbar;
-
     private SwipeRefreshLayout pullToRefresh;
     private RecyclerView rvPools;
-    private View fabAddPool;
-    private LinearLayout llPoolsParent;
-    private RelativeLayout rlSaveSettings;
 
-    private Set<PoolItem> allPools = new HashSet<>();
-    private Set<PoolItem> userdefinedPools = new HashSet<>();
+    private final Set<PoolItem> allPools = new HashSet<>();
 
     private PoolInfoAdapter poolsAdapter;
 
@@ -87,26 +81,25 @@ public class PoolActivity extends BaseActivity
         Intent intent = getIntent();
         int requesterType = intent.getIntExtra(PoolActivity.RequesterType, PoolActivity.REQUESTER_NONE);
 
-        llPoolsParent = findViewById(R.id.llPoolsParent);
+        LinearLayout llPoolsParent = findViewById(R.id.llPoolsParent);
         int marginBottom = requesterType == PoolActivity.REQUESTER_WIZARD ? Utils.getDimPixels(llPoolsParent, 90) : Utils.getDimPixels(llPoolsParent, 15);
         int marginDefault = Utils.getDimPixels(llPoolsParent, 15);
         // Must use parent layout for some reason
         ((RelativeLayout.LayoutParams) llPoolsParent.getLayoutParams()).setMargins(marginDefault, marginDefault, marginDefault, marginBottom);
 
-        rlSaveSettings = findViewById(R.id.rlSaveSettings);
+        RelativeLayout rlSaveSettings = findViewById(R.id.rlSaveSettings);
         rlSaveSettings.setVisibility(requesterType == PoolActivity.REQUESTER_WIZARD ? View.VISIBLE : View.GONE);
 
         // Toolbar
-        toolbar = findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(false);
 
         toolbar.setOnButtonListener(new Toolbar.OnButtonListener() {
             @Override
             public void onButtonMain(int type) {
-                switch (type) {
-                    case Toolbar.BUTTON_MAIN_CLOSE:
-                        onBackPressed();
+                if (type == Toolbar.BUTTON_MAIN_CLOSE) {
+                    onBackPressed();
                 }
             }
 
@@ -123,7 +116,7 @@ public class PoolActivity extends BaseActivity
         mPoolQueue = Volley.newRequestQueue(this);
         View view = findViewById(android.R.id.content).getRootView();
 
-        fabAddPool = view.findViewById(R.id.fabAddPool);
+        View fabAddPool = view.findViewById(R.id.fabAddPool);
         fabAddPool.setOnClickListener(this);
         fabAddPool.setVisibility(requesterType == PoolActivity.REQUESTER_WIZARD ? View.GONE : View.VISIBLE);
 
@@ -159,9 +152,6 @@ public class PoolActivity extends BaseActivity
 
     @Override
     public void onBackPressed() {
-        //Config.write(Config.CONFIG_SELECTED_POOL, selectedPool.getKey().trim());
-        //Config.write(Config.CONFIG_POOL_PORT, selectedPool.getDefaultPort().trim());
-
         SettingsFragment.selectedPoolTmp = selectedPool;
 
         ProviderManager.saveUserDefinedPools(getApplicationContext());
@@ -171,7 +161,7 @@ public class PoolActivity extends BaseActivity
 
     private void updateSelectedPoolLayout() {
         // If recycler view has not been rendered yet
-        if(rvPools.getLayoutManager().getItemCount() <= 0)
+        if(Objects.requireNonNull(rvPools.getLayoutManager()).getItemCount() <= 0)
             return;
 
         String selectedPoolName = SettingsFragment.selectedPoolTmp == null ? Config.read(Config.CONFIG_SELECTED_POOL) : SettingsFragment.selectedPoolTmp.getKey();
@@ -183,10 +173,8 @@ public class PoolActivity extends BaseActivity
         }
 
         if(!selectedPoolName.isEmpty()) {
-            for (int i = 0; i < allPools.length; i++ ) {
-                PoolItem poolItem = allPools[i];
-
-                if(selectedPoolName.equals(poolItem.getKey())) {
+            for (PoolItem poolItem : allPools) {
+                if (selectedPoolName.equals(poolItem.getKey())) {
                     //selectedPoolView = rvPools.getChildAt(i);
                     selectedPool = poolItem;
                 }
@@ -228,7 +216,6 @@ public class PoolActivity extends BaseActivity
                 break;
             case R.id.action_delete_pool:
                 onDeletePool(poolItem);
-
                 break;
             default:
                 return super.onContextItemSelected(item);
@@ -244,7 +231,6 @@ public class PoolActivity extends BaseActivity
                 switch (action) {
                     case DialogInterface.BUTTON_POSITIVE:
                         if(poolItem.isUserDefined()) {
-                            userdefinedPools.remove(poolItem); // just used when saving
                             poolsAdapter.deletePool(poolItem);
                             ProviderManager.delete(poolItem);
 
@@ -297,7 +283,7 @@ public class PoolActivity extends BaseActivity
 
     class EditDialog {
         private boolean applyChanges() {
-            final String poolName = etPoolName.getEditText().getText().toString().trim();
+            final String poolName = Objects.requireNonNull(etPoolName.getEditText()).getText().toString().trim();
             if (poolName.isEmpty()) {
                 etPoolName.setError(getString(R.string.value_empty));
                 return false;
@@ -305,7 +291,7 @@ public class PoolActivity extends BaseActivity
                 poolEdit.setKey(poolName);
             }
 
-            final String poolUrl = etPoolURL.getEditText().getText().toString().trim();
+            final String poolUrl = Objects.requireNonNull(etPoolURL.getEditText()).getText().toString().trim();
             if (poolUrl.isEmpty()) {
                 etPoolURL.setError(getString(R.string.value_empty));
                 return false;
@@ -314,7 +300,7 @@ public class PoolActivity extends BaseActivity
                 poolEdit.setPool(poolUrl);
             }
 
-            final String poolPort = etPoolPort.getEditText().getText().toString().trim();
+            final String poolPort = Objects.requireNonNull(etPoolPort.getEditText()).getText().toString().trim();
             if (poolPort.isEmpty()) {
                 etPoolPort.setError(getString(R.string.value_empty));
                 return false;
@@ -325,17 +311,15 @@ public class PoolActivity extends BaseActivity
             return true;
         }
 
-        private boolean applyChangesTmp() {
-            final String poolName = etPoolName.getEditText().getText().toString().trim();
+        private void applyChangesTmp() {
+            final String poolName = Objects.requireNonNull(etPoolName.getEditText()).getText().toString().trim();
             poolEdit.setKey(poolName);
 
-            final String poolURL = etPoolURL.getEditText().getText().toString().trim();
+            final String poolURL = Objects.requireNonNull(etPoolURL.getEditText()).getText().toString().trim();
             poolEdit.setPoolUrl(poolURL);
 
-            final String poolPort = etPoolPort.getEditText().getText().toString().trim();
+            final String poolPort = Objects.requireNonNull(etPoolPort.getEditText()).getText().toString().trim();
             poolEdit.setPort(poolPort);
-
-            return true;
         }
 
         private void apply() {
@@ -345,8 +329,6 @@ public class PoolActivity extends BaseActivity
                 closeDialog();
 
                 if (newPool) {
-                    //allPools.add(poolEdit);
-                    userdefinedPools.add(poolEdit); // just used when saving
                     poolsAdapter.addPool(poolEdit);
                     ProviderManager.add(poolEdit);
 
@@ -365,8 +347,6 @@ public class PoolActivity extends BaseActivity
 
             editDialog.dismiss();
             editDialog = null;
-
-            this.editDialog = null;
         }
 
         private void undoChanges() {
@@ -415,9 +395,9 @@ public class PoolActivity extends BaseActivity
                 if(poolEditBackup == null)
                     poolEditBackup = new PoolItem(poolItem);
 
-                etPoolName.getEditText().setText(poolItem.getKey());
-                etPoolURL.getEditText().setText(poolItem.getPoolUrl());
-                etPoolPort.getEditText().setText(poolItem.getPort());
+                Objects.requireNonNull(etPoolName.getEditText()).setText(poolItem.getKey());
+                Objects.requireNonNull(etPoolURL.getEditText()).setText(poolItem.getPoolUrl());
+                Objects.requireNonNull(etPoolPort.getEditText()).setText(poolItem.getPort());
 
                 Bitmap icon = poolItem.getIcon();
                 if(icon != null)
@@ -529,6 +509,7 @@ public class PoolActivity extends BaseActivity
         } catch (Exception e) {
             message = "Exception: " + e.getMessage();
         } finally {
+            assert message != null;
             Log.i("parseVolleyError:", message);
         }
     }
@@ -551,9 +532,7 @@ public class PoolActivity extends BaseActivity
             allPools.clear();
 
             PoolItem[] pools = ProviderManager.getPools(getApplicationContext());
-            for(int i = 0; i < pools.length; i++) {
-                PoolItem poolItem = pools[i];
-
+            for (PoolItem poolItem : pools) {
                 StringRequest stringRequest = poolItem.getInterface().getStringRequest(poolsAdapter);
                 mPoolQueue.add(stringRequest);
 
@@ -581,7 +560,7 @@ public class PoolActivity extends BaseActivity
             poolsAdapter.setPools(allPools);
             poolsAdapter.allowClick(true);
 
-            rvPools.post(() -> updateSelectedPoolLayout());
+            rvPools.post(PoolActivity.this::updateSelectedPoolLayout);
 
             dismissProgressDialog();
         }

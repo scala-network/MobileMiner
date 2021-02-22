@@ -32,7 +32,7 @@ public class QrCodeScannerActivity extends AppCompatActivity implements BarcodeR
     protected void onDestroy() {
         try{
             super.onDestroy();
-        } catch (Exception e) {
+        } catch (Exception ignored) {
         }
     }
 
@@ -41,6 +41,7 @@ public class QrCodeScannerActivity extends AppCompatActivity implements BarcodeR
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_qr_code_scanner);
         barcodeCapture = (BarcodeCapture) getSupportFragmentManager().findFragmentById(R.id.barcode);
+        assert barcodeCapture != null;
         barcodeCapture.setRetrieval(this);
 
         findViewById(R.id.stop).setOnClickListener(new View.OnClickListener() {
@@ -49,7 +50,7 @@ public class QrCodeScannerActivity extends AppCompatActivity implements BarcodeR
                 try{
                     barcodeCapture.stopScanning();
                    finish();
-                } catch (Exception e) {
+                } catch (Exception ignored) {
 
                 }
             }
@@ -67,7 +68,7 @@ public class QrCodeScannerActivity extends AppCompatActivity implements BarcodeR
                 .setShouldShowText(false);
         try{
             barcodeCapture.refresh();
-        } catch (Exception e) {
+        } catch (Exception ignored) {
 
         }
     }
@@ -84,11 +85,11 @@ public class QrCodeScannerActivity extends AppCompatActivity implements BarcodeR
         if(Utils.verifyAddress(miner)) {
             Log.d("CONSOLE:QRCODE", "Barcode read: " + barcode.displayValue);
 
-            Config.write("address", miner);
+            Config.write(Config.CONFIG_ADDRESS, miner);
             try{
                 barcodeCapture.stopScanning();
                 finish();
-            } catch (Exception e) {
+            } catch (Exception ignored) {
 
             }
 

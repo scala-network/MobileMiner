@@ -13,6 +13,8 @@ import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.security.ProviderInstaller;
 
+import org.acra.ACRA;
+
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 
@@ -21,9 +23,6 @@ import javax.net.ssl.SSLContext;
 public class SplashActivity extends BaseActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        SharedPreferences preferences = getSharedPreferences(getPackageName() + "_preferences", MODE_PRIVATE);
-        Config.initialize(preferences);
-
         String configversion = Config.read(Config.CONFIG_KEY_CONFIG_VERSION);
         if(!configversion.equals(Config.version)) {
             Config.clear();
@@ -54,7 +53,7 @@ public class SplashActivity extends BaseActivity {
         int millisecondsDelay = 2000;
         new Handler().postDelayed(new Runnable() {
             public void run() {
-                String hide_setup_wizard = Config.read("hide_setup_wizard");
+                String hide_setup_wizard = Config.read(Config.CONFIG_HIDE_SETUP_WIZARD);
 
                 if (hide_setup_wizard.equals("")) {
                     startActivity(new Intent(SplashActivity.this, WizardHomeActivity.class));

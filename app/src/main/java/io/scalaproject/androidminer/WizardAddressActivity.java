@@ -25,12 +25,15 @@ import androidx.core.content.ContextCompat;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputLayout;
 
+import org.jetbrains.annotations.NotNull;
+
+import java.util.Objects;
+
 import io.scalaproject.androidminer.widgets.Notice;
 import io.scalaproject.androidminer.widgets.Toolbar;
 
 public class WizardAddressActivity extends BaseActivity {
     private TextView tvAddress;
-    private Toolbar toolbar;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -56,19 +59,16 @@ public class WizardAddressActivity extends BaseActivity {
         tvAddress = view2.findViewById(R.id.addressWizard);
 
         // Toolbar
-        toolbar = findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(false);
 
         toolbar.setOnButtonListener(new Toolbar.OnButtonListener() {
             @Override
             public void onButtonMain(int type) {
-                switch (type) {
-                    case Toolbar.BUTTON_MAIN_BACK:
-                        //onBackPressed();
-                        //startActivity(new Intent(WizardAddressActivity.this, WizardHomeActivity.class));
-                        finish();
-                        break;
+                if (type == Toolbar.BUTTON_MAIN_BACK) {//onBackPressed();
+                    //startActivity(new Intent(WizardAddressActivity.this, WizardHomeActivity.class));
+                    finish();
                 }
             }
 
@@ -125,7 +125,7 @@ public class WizardAddressActivity extends BaseActivity {
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NotNull String[] permissions, @NotNull int[] grantResults) {
         Context appContext = WizardAddressActivity.this;
 
         if (requestCode == 100) {
@@ -154,7 +154,7 @@ public class WizardAddressActivity extends BaseActivity {
         til.setErrorEnabled(false);
         til.setError(null);
 
-        Config.write("address", strAddress);
+        Config.write(Config.CONFIG_ADDRESS, strAddress);
 
         Intent intent = new Intent(WizardAddressActivity.this, PoolActivity.class);
         intent.putExtra(PoolActivity.RequesterType, PoolActivity.REQUESTER_WIZARD);
@@ -172,7 +172,7 @@ public class WizardAddressActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        tvAddress.setText(Config.read("address"));
+        tvAddress.setText(Config.read(Config.CONFIG_ADDRESS));
 
     }
 

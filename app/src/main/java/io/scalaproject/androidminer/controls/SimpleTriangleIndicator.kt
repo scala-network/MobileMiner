@@ -45,10 +45,6 @@ class SimpleTriangleIndicator(context: Context) : Indicator<SimpleTriangleIndica
         indicatorPath.moveTo(0f, 0f)
 
         indicatorPaint.setColor(color);
-
-        //val endColor = Color.argb(0, Color.red(color), Color.green(color), Color.blue(color))
-        //val linearGradient = LinearGradient(getCenterX(), indicatorTop, getCenterX(), indicatorTop + width, color, endColor, Shader.TileMode.CLAMP)
-        //indicatorPaint.shader = linearGradient
     }
 
     override fun setWithEffects(withEffects: Boolean) {

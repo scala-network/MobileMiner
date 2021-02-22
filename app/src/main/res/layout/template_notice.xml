@@ -38,5 +38,5 @@
         android:layout_gravity="center"
         android:padding="8dp"
         app:tint="@color/txt_headline"
-        app:srcCompat="@drawable/ic_close_white_24dp" />
+        app:srcCompat="@drawable/ic_close" />
 </LinearLayout>

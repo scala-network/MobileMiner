@@ -12,7 +12,6 @@ import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.Build;
 import android.content.Context;
 import android.os.Bundle;
@@ -39,6 +38,10 @@ import com.google.android.material.button.MaterialButtonToggleGroup;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputLayout;
 
+import org.jetbrains.annotations.NotNull;
+
+import java.util.Objects;
+
 import io.scalaproject.androidminer.api.PoolItem;
 import io.scalaproject.androidminer.api.ProviderManager;
 import io.scalaproject.androidminer.widgets.Notice;
@@ -61,7 +64,8 @@ public class SettingsFragment extends Fragment {
 
     private SeekBar sbCPUTemp, sbBatteryTemp, sbCooldown, sbCores;
     private TextView tvCPUMaxTemp, tvBatteryMaxTemp, tvCooldown, tvCPUTempUnit, tvBatteryTempUnit, tvRefreshHashrateDelay;
-    private Switch swDisableTempControl, swPauseOnBattery, swKeepScreenOnWhenMining;
+    private Switch swDisableTempControl, swPauseOnBattery, swPauseOnNetwork, swKeepScreenOnWhenMining, swSendDebugInformation;
+    //private Switch swDoNotRestartOnCrash;
     private ImageView ivDecreaseRefreshHashrateDelay, ivIncreaseRefreshHashrateDelay;
     private MaterialButtonToggleGroup tgTemperatureUnit;
 
@@ -75,7 +79,6 @@ public class SettingsFragment extends Fragment {
         TextView tvCoresNb, tvCoresMax;
 
         View view = inflater.inflate(R.layout.fragment_settings, container, false);
-        Context appContext = MainActivity.getContextOfApplication();
         bSave = view.findViewById(R.id.saveSettings);
 
         ViewGroup llNotice = view.findViewById(R.id.llNotice);
@@ -132,8 +135,11 @@ public class SettingsFragment extends Fragment {
         tvRefreshHashrateDelay = view.findViewById(R.id.tvRefreshHashrateDelay);
 
         swPauseOnBattery = view.findViewById(R.id.chkPauseOnBattery);
+        swPauseOnNetwork = view.findViewById(R.id.chkPauseOnNetwork);
         swKeepScreenOnWhenMining = view.findViewById(R.id.chkKeepScreenOnWhenMining);
         swDisableTempControl = view.findViewById(R.id.chkAmaycOff);
+        swSendDebugInformation = view.findViewById(R.id.chkSendDebugInformation);
+        //swDoNotRestartOnCrash = view.findViewById(R.id.chkDoNotRestartOnCrash);
 
         tgTemperatureUnit = view.findViewById(R.id.tgTemperatureUnit);
         tgTemperatureUnit.addOnButtonCheckedListener(new MaterialButtonToggleGroup.OnButtonCheckedListener() {
@@ -161,11 +167,11 @@ public class SettingsFragment extends Fragment {
         sbCores.setMax(cores-1);
         tvCoresMax.setText(Integer.toString(cores));
 
-        if (Config.read("cores").isEmpty()) {
+        if (Config.read(Config.CONFIG_CORES).isEmpty()) {
             sbCores.setProgress(suggested-1);
             tvCoresNb.setText(Integer.toString(suggested));
         } else {
-            int corenb = Integer.parseInt(Config.read("cores"));
+            int corenb = Integer.parseInt(Config.read(Config.CONFIG_CORES));
             sbCores.setProgress(corenb-1);
             tvCoresNb.setText(Integer.toString(corenb));
         }
@@ -181,57 +187,72 @@ public class SettingsFragment extends Fragment {
             tvBatteryTempUnit.setText(getString(R.string.fahrenheit));
         }
 
-        if (!Config.read("maxcputemp").isEmpty()) {
-            nMaxCPUTemp = Integer.parseInt(Config.read("maxcputemp"));
+        if (!Config.read(Config.CONFIG_MAX_CPU_TEMP).isEmpty()) {
+            nMaxCPUTemp = Integer.parseInt(Config.read(Config.CONFIG_MAX_CPU_TEMP));
         }
         int nProgress = ((nMaxCPUTemp-Utils.MIN_CPU_TEMP)/Utils.INCREMENT);
         sbCPUTemp.setProgress(nProgress);
         updateCPUTemp();
 
-        if (!Config.read("maxbatterytemp").isEmpty()) {
-            nMaxBatteryTemp = Integer.parseInt(Config.read("maxbatterytemp"));
+        if (!Config.read(Config.CONFIG_MAX_BATTERY_TEMP).isEmpty()) {
+            nMaxBatteryTemp = Integer.parseInt(Config.read(Config.CONFIG_MAX_BATTERY_TEMP));
         }
         nProgress = ((nMaxBatteryTemp-Utils.MIN_BATTERY_TEMP)/Utils.INCREMENT);
         sbBatteryTemp.setProgress(nProgress);
         updateBatteryTemp();
 
-        if (!Config.read("cooldownthreshold").isEmpty()) {
-            nCooldownTheshold = Integer.parseInt(Config.read("cooldownthreshold"));
+        if (!Config.read(Config.CONFIG_COOLDOWN_THRESHOLD).isEmpty()) {
+            nCooldownTheshold = Integer.parseInt(Config.read(Config.CONFIG_COOLDOWN_THRESHOLD));
         }
         nProgress = ((nCooldownTheshold-Utils.MIN_COOLDOWN)/Utils.INCREMENT);
         sbCooldown.setProgress(nProgress);
         updateCooldownThreshold();
 
-        boolean disableAmayc = (Config.read("disableamayc").equals("1"));
-        if(disableAmayc){
+        boolean disableTempControl = (Config.read(Config.CONFIG_DISABLE_TEMPERATURE_CONTROL).equals("1"));
+        if(disableTempControl){
             swDisableTempControl.setChecked(true);
         }
-        enableAmaycControl(!disableAmayc);
+        enableTemperatureControl(!disableTempControl);
 
-        if (!Config.read("mininggoal").isEmpty()) {
-            edMiningGoal.setText(Config.read("mininggoal"));
+        if (!Config.read(Config.CONFIG_MINING_GOAL).isEmpty()) {
+            edMiningGoal.setText(Config.read(Config.CONFIG_MINING_GOAL));
         }
 
-        boolean checkStatus = Config.read("pauseonbattery").equals("1");
-        if(checkStatus) {
+        boolean checkPauseOnBattery = Config.read(Config.CONFIG_PAUSE_ON_BATTERY).equals("1");
+        if(checkPauseOnBattery) {
             swPauseOnBattery.setChecked(true);
         }
 
-        boolean checkStatusScreenOn = Config.read("keepscreenonwhenmining").equals("1");
+        boolean checkPauseOnNetwork = Config.read(Config.CONFIG_PAUSE_ON_NETWORK).equals("1");
+        if(checkPauseOnNetwork) {
+            swPauseOnNetwork.setChecked(true);
+        }
+
+        boolean checkStatusScreenOn = Config.read(Config.CONFIG_KEEP_SCREEN_ON_WHEN_MINING).equals("1");
         if(checkStatusScreenOn) {
             swKeepScreenOnWhenMining.setChecked(true);
         }
 
-        if (!Config.read("address").isEmpty()) {
-            edAddress.setText(Config.read("address"));
+        boolean checkSendDebugInformation = Config.read(Config.CONFIG_SEND_DEBUG_INFO).equals("1");
+        if(checkSendDebugInformation) {
+            swSendDebugInformation.setChecked(true);
         }
 
-        if (!Config.read("usernameparameters").isEmpty()) {
-            edUsernameparameters.setText(Config.read("usernameparameters"));
+        /*boolean checkDoNotRestartOnCrash = Config.read(Config.CONFIG_DISABLE_RESTART_MINING_ABORTED).equals("1");
+        if(checkDoNotRestartOnCrash) {
+            swDoNotRestartOnCrash.setChecked(true);
+        }*/
+
+        if (!Config.read(Config.CONFIG_ADDRESS).isEmpty()) {
+            edAddress.setText(Config.read(Config.CONFIG_ADDRESS));
         }
 
-        if (!Config.read("workername").isEmpty()) {
-            edWorkerName.setText(Config.read("workername"));
+        if (!Config.read(Config.CONFIG_USERNAME_PARAMETERS).isEmpty()) {
+            edUsernameparameters.setText(Config.read(Config.CONFIG_USERNAME_PARAMETERS));
+        }
+
+        if (!Config.read(Config.CONFIG_WORKERNAME).isEmpty()) {
+            edWorkerName.setText(Config.read(Config.CONFIG_WORKERNAME));
         }
 
         if (!Config.read(Config.CONFIG_HASHRATE_REFRESH_DELAY).isEmpty()) {
@@ -332,7 +353,7 @@ public class SettingsFragment extends Fragment {
             public void onClick(View v) {
                 boolean checked = ((Switch)v).isChecked();
                 if (checked) {
-                    MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getActivity(), R.style.MaterialAlertDialogCustom);
+                    MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(Objects.requireNonNull(getActivity()), R.style.MaterialAlertDialogCustom);
                     builder.setTitle("Warning")
                             .setMessage(Html.fromHtml(getString(R.string.warning_temperature_control_prompt)))
                             .setCancelable(false)
@@ -346,7 +367,7 @@ public class SettingsFragment extends Fragment {
                             .show();
                 }
 
-                enableAmaycControl(!checked);
+                enableTemperatureControl(!checked);
             }
         });
 
@@ -358,7 +379,7 @@ public class SettingsFragment extends Fragment {
             public void onClick(View view) {
                 // if mining, ask to restart
                 if(MainActivity.isDeviceMiningBackground()) {
-                    MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getContext(), R.style.MaterialAlertDialogCustom);
+                    MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(Objects.requireNonNull(getContext()), R.style.MaterialAlertDialogCustom);
                     builder.setTitle(getString(R.string.stopmining))
                             .setMessage(getString(R.string.newparametersapplied))
                             .setCancelable(true)
@@ -406,7 +427,7 @@ public class SettingsFragment extends Fragment {
         btnMineScala.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getContext(), R.style.MaterialAlertDialogCustom);
+                MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(Objects.requireNonNull(getContext()), R.style.MaterialAlertDialogCustom);
                 builder.setTitle(getString(R.string.supporttheproject))
                         .setMessage(getString(R.string.minetoscala))
                         .setCancelable(true)
@@ -440,6 +461,26 @@ public class SettingsFragment extends Fragment {
                 TextView tvHelper = popupView.findViewById(R.id.tvHelperMessage);
                 tvHelper.setText(Html.fromHtml(getString(R.string.warning_temperature_control)));
 
+                Utils.showPopup(v, inflater, popupView);
+            }
+        });
+
+        Button btnSendDebugInformationHelp = view.findViewById(R.id.btnSendDebugInformationHelp);
+        btnSendDebugInformationHelp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // inflate the layout of the popup window
+                View popupView = inflater.inflate(R.layout.helper_send_debug_information, null);
+                Utils.showPopup(v, inflater, popupView);
+            }
+        });
+
+        Button btnDoNotRestartOnCrashHelp = view.findViewById(R.id.btnDoNotRestartOnCrashHelp);
+        btnDoNotRestartOnCrashHelp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // inflate the layout of the popup window
+                View popupView = inflater.inflate(R.layout.helper_do_not_restart_process, null);
                 Utils.showPopup(v, inflater, popupView);
             }
         });
@@ -490,11 +531,11 @@ public class SettingsFragment extends Fragment {
         PoolItem selectedPoolItem = getSelectedPoolItem();
 
         Config.write(Config.CONFIG_SELECTED_POOL, selectedPoolItem.getKey().trim());
-        Config.write(Config.CONFIG_POOL_PORT, selectedPoolItem.getDefaultPort().trim());
+        Config.write(Config.CONFIG_CUSTOM_PORT, selectedPoolItem.getDefaultPort().trim());
 
-        Config.write("address", address);
+        Config.write(Config.CONFIG_ADDRESS, address);
 
-        Config.write("usernameparameters", edUsernameparameters.getText().toString().trim());
+        Config.write(Config.CONFIG_USERNAME_PARAMETERS, edUsernameparameters.getText().toString().trim());
 
         String workername = edWorkerName.getText().toString().trim();
         if(workername.isEmpty()) {
@@ -502,32 +543,35 @@ public class SettingsFragment extends Fragment {
         }
 
         Log.i(LOG_TAG,"Worker Name : " + workername);
-        Config.write("workername", workername);
+        Config.write(Config.CONFIG_WORKERNAME, workername);
         edWorkerName.setText(workername);
 
-        Config.write("custom_port", edPort.getText().toString().trim());
+        Config.write(Config.CONFIG_CUSTOM_PORT, edPort.getText().toString().trim());
 
-        Config.write("cores", Integer.toString(sbCores.getProgress()+1));
+        Config.write(Config.CONFIG_CORES, Integer.toString(sbCores.getProgress()+1));
 
-        Config.write("maxcputemp", Integer.toString(getCPUTemp()));
-        Config.write("maxbatterytemp", Integer.toString(getBatteryTemp()));
-        Config.write("cooldownthreshold", Integer.toString(getCooldownTheshold()));
+        Config.write(Config.CONFIG_MAX_CPU_TEMP, Integer.toString(getCPUTemp()));
+        Config.write(Config.CONFIG_MAX_BATTERY_TEMP, Integer.toString(getBatteryTemp()));
+        Config.write(Config.CONFIG_COOLDOWN_THRESHOLD, Integer.toString(getCooldownTheshold()));
 
         Config.write(Config.CONFIG_HASHRATE_REFRESH_DELAY, tvRefreshHashrateDelay.getText().toString());
 
-        Config.write("disableamayc", (swDisableTempControl.isChecked() ? "1" : "0"));
+        Config.write(Config.CONFIG_DISABLE_TEMPERATURE_CONTROL, (swDisableTempControl.isChecked() ? "1" : "0"));
 
         String mininggoal = edMiningGoal.getText().toString().trim();
         if(!mininggoal.isEmpty()) {
-            Config.write("mininggoal", mininggoal);
+            Config.write(Config.CONFIG_MINING_GOAL, mininggoal);
         }
 
-        Config.write("pauseonbattery", swPauseOnBattery.isChecked() ? "1" : "0");
-        Config.write("keepscreenonwhenmining", swKeepScreenOnWhenMining.isChecked() ? "1" : "0");
+        Config.write(Config.CONFIG_PAUSE_ON_BATTERY, swPauseOnBattery.isChecked() ? "1" : "0");
+        Config.write(Config.CONFIG_PAUSE_ON_NETWORK, swPauseOnNetwork.isChecked() ? "1" : "0");
+        Config.write(Config.CONFIG_KEEP_SCREEN_ON_WHEN_MINING, swKeepScreenOnWhenMining.isChecked() ? "1" : "0");
 
         Config.write(Config.CONFIG_TEMPERATURE_UNIT, tgTemperatureUnit.getCheckedButtonId() == R.id.btnFarehnheit ? "F" : "C");
+        Config.write(Config.CONFIG_SEND_DEBUG_INFO, swSendDebugInformation.isChecked() ? "1" : "0");
+        //Config.write(Config.CONFIG_DISABLE_RESTART_MINING_ABORTED, swDoNotRestartOnCrash.isChecked() ? "1" : "0");
 
-        Config.write("init", "1");
+        Config.write(Config.CONFIG_INIT, "1");
 
         Utils.showToast(getContext(), "Settings Saved.", Toast.LENGTH_SHORT);
 
@@ -536,7 +580,6 @@ public class SettingsFragment extends Fragment {
         main.stopMining();
         main.loadSettings();
 
-        main.updateStartButton();
         main.updateStatsListener();
         main.updateUI();
 
@@ -575,7 +618,7 @@ public class SettingsFragment extends Fragment {
         tvCooldown.setText(Integer.toString(getCooldownTheshold()));
     }
 
-    private void enableAmaycControl(boolean enable) {
+    private void enableTemperatureControl(boolean enable) {
         sbCPUTemp.setEnabled(enable);
         sbBatteryTemp.setEnabled(enable);
         sbCooldown.setEnabled(enable);
@@ -592,7 +635,7 @@ public class SettingsFragment extends Fragment {
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NotNull String[] permissions, @NotNull int[] grantResults) {
         Context appContext = MainActivity.getContextOfApplication();
         if (requestCode == 100) {
             if (permissions[0].equals(Manifest.permission.CAMERA) && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
@@ -605,7 +648,7 @@ public class SettingsFragment extends Fragment {
     }
 
     public void updateAddress() {
-        String address =  Config.read("address");
+        String address =  Config.read(Config.CONFIG_ADDRESS);
         if (edAddress == null || address.isEmpty()) {
             return;
         }
@@ -615,7 +658,7 @@ public class SettingsFragment extends Fragment {
 
     private void requestFocus(View view) {
         if (view.requestFocus()) {
-            getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+            Objects.requireNonNull(getActivity()).getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
         }
     }
 
@@ -640,5 +683,10 @@ public class SettingsFragment extends Fragment {
 
         pvSelectedPool.onFinishInflate();
         updatePort();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
     }
 }

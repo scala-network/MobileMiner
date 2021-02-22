@@ -65,6 +65,6 @@
         android:layout_alignParentEnd="true"
         android:layout_centerInParent="true"
         android:background="@android:color/transparent"
-        app:srcCompat="@drawable/ic_arrow_right"/>
+        app:srcCompat="@drawable/ic_right"/>
 
 </RelativeLayout>

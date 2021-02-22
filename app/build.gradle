@@ -14,8 +14,8 @@ android {
         applicationId "io.scalaproject.androidminer"
         minSdkVersion 19
         targetSdkVersion 28 // keep version 28 to avoid an error 13 when running exe in assets folder (sdk 29 gives the error)
-        versionCode 10
-        versionName "2.0.0"
+        versionCode 11
+        versionName "2.1.0"
         buildConfigField "long", "BUILD_TIME", System.currentTimeMillis() + "L"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
@@ -43,4 +43,9 @@ dependencies {
     implementation 'com.github.anastr:speedviewlib:1.5.2'
     implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.4.10'
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
+    implementation 'com.polyak:icon-switch:1.0.0'
+
+    def acraVersion = '5.7.0'
+    implementation "ch.acra:acra-core:$acraVersion"
+    implementation "ch.acra:acra-mail:$acraVersion"
 }

@@ -117,7 +117,7 @@
 				android:layout_width="42dp"
 				android:layout_height="42dp"
 				android:layout_marginEnd="15dp"
-				app:srcCompat="@drawable/ic_discord1" />
+				app:srcCompat="@drawable/ic_discord" />
 
 			<ImageView
 				android:id="@+id/ivTelegram"
@@ -131,20 +131,20 @@
 				android:layout_width="42dp"
 				android:layout_height="42dp"
 				android:layout_marginEnd="15dp"
-				app:srcCompat="@drawable/ic_reddit1" />
+				app:srcCompat="@drawable/ic_reddit" />
 
 			<ImageView
 				android:id="@+id/ivEmail"
 				android:layout_width="42dp"
 				android:layout_height="42dp"
-				app:srcCompat="@drawable/ic_email_blue" />
+				app:srcCompat="@drawable/ic_email" />
 
 		</LinearLayout>
 
 		<Space
 			android:layout_width="0dp"
 			android:layout_height="0dp"
-			android:layout_weight="5"/>
+			android:layout_weight="10"/>
 
 		<TextView
 			android:layout_width="wrap_content"

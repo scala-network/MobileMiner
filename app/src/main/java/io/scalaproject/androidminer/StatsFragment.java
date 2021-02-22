@@ -22,6 +22,8 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import java.util.Locale;
+
 import io.scalaproject.androidminer.api.ProviderData;
 import io.scalaproject.androidminer.api.PoolItem;
 import io.scalaproject.androidminer.api.IProviderListener;
@@ -46,7 +48,7 @@ public class StatsFragment extends Fragment {
 
             @Override
             public boolean onEnabledRequest() {
-                return checkValidState();
+                return true;
             }
         };
 
@@ -61,6 +63,13 @@ public class StatsFragment extends Fragment {
         ProviderManager.afterSave();
 
         updateFields(ProviderManager.data, view);
+
+        checkValidState();
+
+        PoolItem pi = ProviderManager.getSelectedPool();
+
+        ImageView ivShowPayments = view.findViewById(R.id.ivShowPayments);
+        ivShowPayments.setVisibility(pi.getPoolType() == 0 ? View.GONE : View.VISIBLE);
 
         return view;
     }
@@ -101,7 +110,7 @@ public class StatsFragment extends Fragment {
         tvNetworkBlocks.setText(d.network.lastBlockTime.isEmpty() ? "n/a" : d.network.lastBlockTime);
 
         TextView tvNetworkHeight = view.findViewById(R.id.height);
-        tvNetworkHeight.setText(d.network.lastBlockHeight.isEmpty() ? "n/a" : String.format("%,d", Integer.parseInt(d.network.lastBlockHeight)));
+        tvNetworkHeight.setText(d.network.lastBlockHeight.isEmpty() ? "n/a" : String.format(Locale.getDefault(), "%,d", Long.parseLong(d.network.lastBlockHeight)));
 
         TextView tvNetworkRewards = view.findViewById(R.id.rewards);
         tvNetworkRewards.setText(d.network.lastRewardAmount.isEmpty() ? "n/a" : d.network.lastRewardAmount);
@@ -119,20 +128,27 @@ public class StatsFragment extends Fragment {
         tvPoolHashrateUnit.setText(p.length > 1 ? p[1] : "kH/s");
 
         TextView tvPoolMiners = view.findViewById(R.id.miners);
-        tvPoolMiners.setText(String.format("%,d", Integer.parseInt(d.pool.miners)));
-
-        LinearLayout llPoolBlocks = view.findViewById(R.id.llBlocksPool);
-        llPoolBlocks.setVisibility(pi.getPoolType() == 2 || pi.getPoolType() == 0 ? View.GONE : View.VISIBLE);
+        tvPoolMiners.setText(String.format(Locale.getDefault(), "%,d", Integer.parseInt(d.pool.miners)));
 
         TextView tvPoolLastBlock = view.findViewById(R.id.lastblockpool);
         tvPoolLastBlock.setText(d.pool.lastBlockTime.isEmpty() ? "n/a" : d.pool.lastBlockTime);
 
+        // Pool Blocks
+        LinearLayout llPoolBlocks = view.findViewById(R.id.llBlocksPool);
         TextView tvPoolLBlocks = view.findViewById(R.id.blockspool);
-        tvPoolLBlocks.setText(d.pool.blocks.isEmpty() ? "n/a" : String.format("%,d", Integer.parseInt(d.pool.blocks)));
+
+        // Not available for cryptonote-nodejs-pool and custom pools
+        if(pi.getPoolType() == 2 || pi.getPoolType() == 0) {
+            tvPoolLBlocks.setText("n/a");
+            llPoolBlocks.setVisibility(View.GONE);
+        } else {
+            tvPoolLBlocks.setText(d.pool.blocks.isEmpty() ? "n/a" : String.format(Locale.getDefault(), "%,d", Long.parseLong(d.pool.blocks)));
+            llPoolBlocks.setVisibility(View.VISIBLE);
+        }
 
         // Address
 
-        String wallet = Config.read("address");
+        String wallet = Config.read(Config.CONFIG_ADDRESS);
         String prettyaddress = "";
         if(!wallet.isEmpty())
             prettyaddress = wallet.substring(0, 7) + "..." + wallet.substring(wallet.length() - 7);
@@ -154,6 +170,8 @@ public class StatsFragment extends Fragment {
             tvAddressHashrateUnit.setText("H/s");
         }
 
+        tvAddressHashrate.setTextColor(tvAddressHashrate.getText().equals("0") || tvAddressHashrate.getText().equals("n/a") ? view.getResources().getColor(R.color.txt_main) : view.getResources().getColor(R.color.c_green));
+
         TextView tvAddressLastShare = view.findViewById(R.id.lastshareminer);
         tvAddressLastShare.setText(d.miner.lastShare.isEmpty() ? "n/a" : d.miner.lastShare);
 
@@ -161,7 +179,7 @@ public class StatsFragment extends Fragment {
         tvAddressSubmittedHash.setText(pi.getPoolType() == 1 || pi.getPoolType() == 2 ? view.getResources().getString(R.string.submitted_shares) : view.getResources().getString(R.string.submitted_hashes));
 
         TextView tvAddressBlocks = view.findViewById(R.id.blocksminedminer);
-        tvAddressBlocks.setText(d.miner.shares.isEmpty() ? "n/a" : String.format("%,d", Integer.parseInt(d.miner.shares)));
+        tvAddressBlocks.setText(d.miner.shares.isEmpty() ? "n/a" : String.format(Locale.getDefault(), "%,d", Long.parseLong(d.miner.shares)));
 
         String sBalance = d.miner.balance.replace("XLA", "").trim();
         TextView tvBalance = view.findViewById(R.id.balance);
@@ -183,28 +201,25 @@ public class StatsFragment extends Fragment {
             startActivity(new Intent(getActivity(), PaymentsActivity.class));
     }
 
-    public boolean checkValidState() {
+    public void checkValidState() {
         if(getContext() == null)
-            return false;
+            return;
 
-        if(Config.read("address").equals("")) {
+        if(Config.read(Config.CONFIG_ADDRESS).equals("")) {
             Utils.showToast(getContext(),"Wallet address is empty.", Toast.LENGTH_LONG);
-            return false;
+            return;
         }
 
         PoolItem pi = ProviderManager.getSelectedPool();
 
-        if (!Config.read("init").equals("1") || pi == null) {
+        if (!Config.read(Config.CONFIG_INIT).equals("1") || pi == null) {
             Utils.showToast(getContext(),"Start mining to view statistics.", Toast.LENGTH_LONG);
-            return false;
+            return;
         }
 
         if (pi.getPoolType() == 0) {
             Utils.showToast(getContext(),"Statistics are not available for custom pools.", Toast.LENGTH_LONG);
-            return false;
         }
-
-        return true;
     }
 
     @Override

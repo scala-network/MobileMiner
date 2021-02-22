@@ -141,11 +141,11 @@ public class Toolbar extends androidx.appcompat.widget.Toolbar {
                 bMainIcon.setVisibility(View.VISIBLE);
                 break;
             case BUTTON_MAIN_BACK:
-                bMainIcon.setBackground(getResources().getDrawable(R.drawable.ic_arrow_back_white_24dp));
+                bMainIcon.setBackground(getResources().getDrawable(R.drawable.ic_arrow_back));
                 bMainIcon.setVisibility(View.VISIBLE);
                 break;
             case BUTTON_MAIN_CLOSE:
-                bMainIcon.setBackground(getResources().getDrawable(R.drawable.ic_close_white_24dp));
+                bMainIcon.setBackground(getResources().getDrawable(R.drawable.ic_close));
                 bMainIcon.setVisibility(View.VISIBLE);
                 break;
             default:
