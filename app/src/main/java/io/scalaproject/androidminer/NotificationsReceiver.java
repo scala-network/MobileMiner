@@ -17,8 +17,10 @@ public class NotificationsReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         String action = intent.getAction();
 
-        if(activity == null)
+        if(activity == null) {
+            MainActivity.hideNotifications();
             return;
+        }
 
         if(MainActivity.OPEN_ACTION.equals(action)) {
             Log.v(LOG_TAG,"OPEN_ACTION");

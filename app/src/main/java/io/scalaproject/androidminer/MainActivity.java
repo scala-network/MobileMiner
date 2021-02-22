@@ -574,6 +574,8 @@ public class MainActivity extends BaseActivity
 
         updateCores();
 
+        hideNotifications();
+
         toolbar.setTitle(getWorkerName(), true);
     }
 
@@ -590,6 +592,8 @@ public class MainActivity extends BaseActivity
         if(isNetworkReceiverRegistered) {
             unregisterReceiver(networkInfoReceiver);
         }
+
+        hideNotifications();
 
         super.onDestroy();
     }
