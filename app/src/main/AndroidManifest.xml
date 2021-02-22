@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest package="io.scalaproject.androidminer"
+<manifest xmlns:tools="http://schemas.android.com/tools"
+    package="io.scalaproject.androidminer"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
@@ -16,7 +17,8 @@
         android:icon="@mipmap/ic_launcher"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        tools:targetApi="m">
 
         <meta-data
                 android:name="com.google.android.gms.vision.DEPENDENCIES"
@@ -43,7 +45,7 @@
             android:windowSoftInputMode="adjustPan|stateHidden"
             android:theme="@style/AppTheme.NoActionBar"
             android:launchMode="singleTask"
-            android:screenOrientation="behind">
+            android:screenOrientation="portrait">
         </activity>
 
 	    <activity
@@ -51,63 +53,63 @@
             android:configChanges="orientation|keyboardHidden"
             android:label="QrCode"
             android:launchMode="singleTask"
-            android:screenOrientation="behind" />
+            android:screenOrientation="portrait" />
 
         <activity
             android:name=".WizardHomeActivity"
             android:configChanges="orientation|keyboardHidden"
             android:label="Welcome"
             android:launchMode="singleTask"
-            android:screenOrientation="behind" />
+            android:screenOrientation="portrait" />
 
         <activity
             android:name=".VaultActivity"
             android:configChanges="orientation|keyboardHidden"
             android:label="Vault"
             android:launchMode="singleTask"
-            android:screenOrientation="behind" />
+            android:screenOrientation="portrait" />
 
         <activity
             android:name=".WizardAddressActivity"
             android:configChanges="orientation|keyboardHidden"
             android:label="Address"
             android:launchMode="singleTask"
-            android:screenOrientation="behind" />
+            android:screenOrientation="portrait" />
 
         <activity
             android:name=".PoolActivity"
             android:configChanges="orientation|keyboardHidden"
             android:label="Pool"
             android:launchMode="singleTask"
-            android:screenOrientation="behind" />
+            android:screenOrientation="portrait" />
 
         <activity
             android:name=".WizardSettingsActivity"
             android:configChanges="orientation|keyboardHidden"
             android:label="Settings"
             android:launchMode="singleTask"
-            android:screenOrientation="behind" />
+            android:screenOrientation="portrait" />
 
         <activity
             android:name=".SupportActivity"
             android:configChanges="orientation|keyboardHidden"
             android:label="Support"
             android:launchMode="singleTask"
-            android:screenOrientation="behind" />
+            android:screenOrientation="portrait" />
 
         <activity
             android:name=".PaymentsActivity"
             android:configChanges="orientation|keyboardHidden"
             android:label="Payments"
             android:launchMode="singleTask"
-            android:screenOrientation="behind" />
+            android:screenOrientation="portrait" />
 
         <activity
             android:name=".BaseActivity"
             android:configChanges="orientation|keyboardHidden"
             android:label="Base"
             android:launchMode="singleTask"
-            android:screenOrientation="behind" />
+            android:screenOrientation="portrait" />
 
         <service
             android:name=".MiningService"
