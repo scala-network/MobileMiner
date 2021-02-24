@@ -257,4 +257,5 @@
     <string name="deviceonbatterypower">Device on battery power.</string>
     <string name="connectedwifi">Connected to a Wi-Fi network.</string>
     <string name="disconnectedwifi">Disconnected from a Wi-Fi network.</string>
+    <string name="unreachable_pools_repo">The pools repository is unreachable, using default pool.</string>
 </resources>

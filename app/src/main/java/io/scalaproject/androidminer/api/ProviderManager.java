@@ -7,6 +7,7 @@ package io.scalaproject.androidminer.api;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -17,19 +18,44 @@ import java.util.Collections;
 import java.util.Map;
 
 import io.scalaproject.androidminer.Config;
+import io.scalaproject.androidminer.MainActivity;
 import io.scalaproject.androidminer.R;
 import io.scalaproject.androidminer.SettingsFragment;
+import io.scalaproject.androidminer.Tools;
 import io.scalaproject.androidminer.Utils;
 import io.scalaproject.androidminer.network.Json;
 
 public final class ProviderManager {
+
+    static private final String DEFAULT_POOLS_REPOSITORY = "https://raw.githubusercontent.com/scala-network/MobileMiner/master/app.json";
+
+    static private final String IPFS_HASH = "QmeCBnrEovztTRuGVmfVWZ8H6HhCLYTDrqEcXmN6MnytJA";
+    static private final String[] POOLS_REPOSITORY_IPFS_GATEWAYS = {
+            "https://ipfs.io/ipfs/",
+            "https://dweb.link/ipfs/",
+            "https://gateway.ipfs.io/ipfs/",
+            "https://cloudflare-ipfs.com/ipfs/"
+    };
+
+    static private final String DEFAULT_POOL = "{\n" +
+            "\"pools\": [\n" +
+            "{\n" +
+            "\"key\": \"Scala Project (Official Pool)\",\n" +
+            "\"pool\": \"mine.scalaproject.io\",\n" +
+            "\"port\": \"3333\",\n" +
+            "\"poolType\": 3,\n" +
+            "\"poolUrl\": \"https://pool.scalaproject.io\",\n" +
+            "\"poolIp\": \"95.111.237.231\"\n" +
+            "} ]\n" +
+            "}";
+
+    static public boolean useDefaultPool = false;
 
     static private final ArrayList<PoolItem> mPools = new ArrayList<PoolItem>();
 
     static public void add(PoolItem poolItem) {
         mPools.add(poolItem);
     }
-
     static public void delete(PoolItem poolItem) {
         mPools.remove(poolItem);
     }
@@ -56,7 +82,7 @@ public final class ProviderManager {
     }
 
     static public void loadPools(Context context) {
-        loadDefaultPools();
+        loadDefaultPools(context);
 
         loadUserdefinedPools(context);
 
@@ -141,7 +167,6 @@ public final class ProviderManager {
             return;
         }
 
-        //mPools.clear();
         request.mPoolItem = pi;
         data.isNew = true;
         request.start();
@@ -153,7 +178,7 @@ public final class ProviderManager {
         request.run();
     }
 
-    static public void loadDefaultPools() {
+    static public void loadDefaultPools(Context context) {
         request.stop();
         request.mPoolItem = null;
         mPools.clear();
@@ -168,10 +193,30 @@ public final class ProviderManager {
         }
 
         if(jsonString.isEmpty()) {
-            String url = Config.githubAppJson;
-            jsonString  = Json.fetch(url);
-            Config.write(Config.CONFIG_POOLS_REPOSITORY_JSON, jsonString);
-            Config.write(Config.CONFIG_POOLS_REPOSITORY_LAST_FETCHED, String.valueOf(now + 3600));//Cached time is 1 hour for now
+            // Load Pools data from repository
+            if(Tools.isURLReachable(DEFAULT_POOLS_REPOSITORY))
+                jsonString  = Json.fetch(DEFAULT_POOLS_REPOSITORY);
+
+            // If GitHub is not available or is blocked by firewalls, use IPFS gateways
+            if(jsonString.isEmpty()) {
+                for (String strPoolURL : POOLS_REPOSITORY_IPFS_GATEWAYS) {
+                    if(Tools.isURLReachable(strPoolURL)) {
+                        jsonString = Json.fetch(strPoolURL + IPFS_HASH);
+                        if (!jsonString.isEmpty())
+                            break;
+                    }
+                }
+            }
+
+            // None of the URL can be reached. Load default data but don't cache it.
+            if(jsonString.isEmpty()) {
+                useDefaultPool = true;
+                jsonString = DEFAULT_POOL;
+            } else {
+                useDefaultPool = false;
+                Config.write(Config.CONFIG_POOLS_REPOSITORY_JSON, jsonString);
+                Config.write(Config.CONFIG_POOLS_REPOSITORY_LAST_FETCHED, String.valueOf(now + 3600));//Cached time is 1 hour for now
+            }
         }
 
         try {

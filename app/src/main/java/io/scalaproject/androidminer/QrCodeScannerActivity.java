@@ -96,7 +96,7 @@ public class QrCodeScannerActivity extends AppCompatActivity implements BarcodeR
             return;
         }
 
-        Utils.showToast(MainActivity.contextOfApplication, "Invalid scala address", Toast.LENGTH_SHORT);
+        Utils.showToast(MainActivity.contextOfApplication, "Invalid Scala address", Toast.LENGTH_SHORT);
     }
 
     @Override

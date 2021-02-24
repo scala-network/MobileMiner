@@ -41,6 +41,8 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.RandomAccessFile;
 import java.math.BigDecimal;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -436,5 +438,16 @@ public class Tools {
         DecimalFormat decimalFormat = new DecimalFormat("0.##");
 
         return decimalFormat.format(bn) + ' ' + byteUnits[i];
+    }
+
+    static public boolean isURLReachable(String strURL) {
+        try {
+            URL url = new URL(strURL);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            return connection.getResponseCode() == 200;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 }

@@ -21,6 +21,8 @@ public class Config {
     public final static int STATE_COOLING = 3;
     public final static int STATE_CALCULATING = 4;
 
+    public static final int MAX_WORKERNAME_TITLE_CHARS = 25;
+
     public final static String[] SUPPORTED_ARCHITECTURES = {"arm64-v8a", "armeabi-v7a", "x86_64"};
 
     public final static String CONFIG_INIT = "init";
@@ -67,7 +69,6 @@ public class Config {
     public static final Long statsDelay = 30000L;
     public static final String miner_xlarig = "xlarig";
     static final String algo = "panthera";
-    public static final String githubAppJson = "https://raw.githubusercontent.com/scala-network/MobileMiner/2.0.0/app.json";
 
     public static final String CONFIG_KEY_CONFIG_VERSION = "config_version";
     public static final String version = "4";

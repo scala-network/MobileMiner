@@ -264,6 +264,10 @@ public final class Utils {
         return text.substring(0, 7) + "..." + text.substring(text.length() - 7);
     }
 
+    static public String truncateString(String text, int maxChars) {
+        return text.substring(0, maxChars) + "...";
+    }
+
     static public String formatTimestamp(Date d) {
         SimpleDateFormat sdf = new SimpleDateFormat("MMM dd, yyyy");
         return sdf.format(d);

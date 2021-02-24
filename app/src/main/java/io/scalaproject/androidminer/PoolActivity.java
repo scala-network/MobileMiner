@@ -6,6 +6,7 @@ package io.scalaproject.androidminer;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -20,6 +21,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -553,6 +555,11 @@ public class PoolActivity extends BaseActivity
         }
 
         private void complete() {
+            if(ProviderManager.useDefaultPool) {
+                Context context = getApplicationContext();
+                Utils.showToast(context, context.getResources().getString(R.string.unreachable_pools_repo), Toast.LENGTH_LONG);
+            }
+
             asyncLoadPools = null;
 
             pullToRefresh.setRefreshing(false);

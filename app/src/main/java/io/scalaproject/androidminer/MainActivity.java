@@ -142,6 +142,7 @@ public class MainActivity extends BaseActivity
 {
     private static final String LOG_TAG = "MainActivity";
 
+
     private TextView tvCPUTemperature, tvBatteryTemperature, tvLogWidget, tvLogLayout;
     IconSwitch isPerformanceMode;
 
@@ -576,7 +577,7 @@ public class MainActivity extends BaseActivity
 
         hideNotifications();
 
-        toolbar.setTitle(getWorkerName(), true);
+        toolbar.setTitle(Utils.truncateString(getWorkerName(), Config.MAX_WORKERNAME_TITLE_CHARS), true);
     }
 
     @Override
@@ -1349,7 +1350,7 @@ public class MainActivity extends BaseActivity
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setButtonOptions(Toolbar.BUTTON_OPTIONS_SHARE);
-        toolbar.setTitle(getWorkerName(), true);
+        toolbar.setTitle(Utils.truncateString(getWorkerName(), Config.MAX_WORKERNAME_TITLE_CHARS), true);
 
         SwipeRefreshLayout pullToRefreshHr = findViewById(R.id.pullToRefreshHr);
         pullToRefreshHr.setEnabled(true);
@@ -2217,10 +2218,10 @@ public class MainActivity extends BaseActivity
 
         if (text.contains("POOL")) {
             PoolItem selectedPool = ProviderManager.getSelectedPool();
-            if(selectedPool != null) {
+            if(selectedPool != null)
                 text = text + " POOL URL " + selectedPool.getPoolUrl() + ":" + selectedPool.getPort() + System.getProperty("line.separator");
-            }
 
+            text = text + " WORKER NAME " + getWorkerName() + System.getProperty("line.separator");
             text = text + System.getProperty("line.separator");
         }
 
