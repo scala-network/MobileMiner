@@ -13,6 +13,7 @@ import android.graphics.BitmapFactory;
 import android.util.Base64;
 
 import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
 import java.util.Comparator;
 
 import io.scalaproject.androidminer.Config;
@@ -22,9 +23,10 @@ import io.scalaproject.androidminer.api.providers.*;
 public class PoolItem {
 
     private int mId = 0;
-    private String mPool, mPort, mApiUrl, mPoolUrl, mPoolIP, mStatsURL, mStartUrl, mKey;
+    private String mPool, mPort, mApiUrl, mUrl, mIP, mStatsURL, mStartUrl, mKey;
     private int mPoolType = 0;
     private Bitmap icon;
+    private ArrayList<String> mPorts;
 
     private boolean mIsUserDefined = false;
 
@@ -43,6 +45,10 @@ public class PoolItem {
     public void setIsSelected(boolean selected) { isSelected = selected; }
     public boolean isSelected() { return isSelected; }
 
+    private String mSelectedPort = "";
+    public void setSelectedPort(String port) { mSelectedPort = port; }
+    public String getSelectedPort() { return mSelectedPort.isEmpty() ? mPort : mSelectedPort; }
+
     // API Data
     private boolean isValid = false;
     public void setIsValid(boolean valid) { isValid = valid; }
@@ -56,20 +62,23 @@ public class PoolItem {
     public void setHr(float hr) { mHr = hr; }
     public float getHr() { return mHr; }
 
+    public ArrayList<String> getPorts () { return mPorts; }
+
     public PoolItem(PoolItem poolItem) {
         this.mKey = poolItem.getKey();
-        this.mPoolUrl = poolItem.getPoolUrl();
+        this.mUrl = poolItem.getPoolUrl();
         this.mPort = poolItem.getPort();
         this.mPoolType = poolItem.getPoolType();
         this.icon = poolItem.getIcon();
     }
 
-    public PoolItem(String key, String pool, String port, int poolType, String poolUrl, String poolIP) {
+    public PoolItem(String key, String pool, String port, ArrayList<String> ports, int poolType, String poolUrl, String poolIP) {
         this.mKey = key;
         this.mPool = pool;
         this.mPort = port;
-        this.mPoolUrl = poolUrl;
-        this.mPoolIP = poolIP;
+        this.mPorts = ports;
+        this.mUrl = poolUrl;
+        this.mIP = poolIP;
         this.mPoolType = poolType;
 
         switch (mPoolType) {
@@ -92,12 +101,13 @@ public class PoolItem {
         }
     }
 
-    public PoolItem(String key, String pool, String port, int poolType, String poolUrl, String poolIP, String apiUrl, String statsUrl, String startUrl) {
+    public PoolItem(String key, String pool, String port, ArrayList<String> ports, int poolType, String poolUrl, String poolIP, String apiUrl, String statsUrl, String startUrl) {
         this.mKey = key;
         this.mPool = pool;
-        this.mPoolUrl = poolUrl;
-        this.mPoolIP = poolIP;
+        this.mUrl = poolUrl;
+        this.mIP = poolIP;
         this.mPort = port;
+        this.mPorts = ports;
         this.mApiUrl = apiUrl;
         this.mStatsURL = statsUrl;
         this.mStartUrl = startUrl;
@@ -148,7 +158,7 @@ public class PoolItem {
         String[] a = poolString.split(":");
         if (a.length == 3) {
             this.mKey = a[0];
-            this.mPoolUrl = a[1];
+            this.mUrl = a[1];
             this.mPool = a[1];
 
             String[] av = a[2].split("@");
@@ -166,8 +176,8 @@ public class PoolItem {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        if (!mKey.isEmpty() && !mPoolUrl.isEmpty() && !mPort.isEmpty()) {
-            sb.append(mKey).append(":").append(mPoolUrl).append(":").append(mPort);
+        if (!mKey.isEmpty() && !mUrl.isEmpty() && !mPort.isEmpty()) {
+            sb.append(mKey).append(":").append(mUrl).append(":").append(mPort);
         }
 
         if(icon != null) {
@@ -216,34 +226,19 @@ public class PoolItem {
     }
 
     public String getPool() {
-        if(this.mPoolType == 0) {
-            return Config.read(Config.CONFIG_CUSTOM_PORT);
-        }
-
         return this.mPool;
     }
 
     public void setPool(String pool) {
-        if(this.mPoolType == 0) {
-            Config.write(Config.CONFIG_CUSTOM_PORT, pool);
-        } else
-            this.mPool = pool;
+        this.mPool = pool;
     }
 
     public String getDefaultPort() {
         return mPort;
     }
 
-    public String getPortRaw() {
-        return mPort;
-    }
-
     public String getPort() {
         String custom_port = Config.read(Config.CONFIG_CUSTOM_PORT);
-
-        if(this.mPoolType == 0) {
-            return custom_port;
-        }
 
         if(custom_port.isEmpty() || custom_port.equals(this.mPort)) {
             return this.mPort;
@@ -252,40 +247,26 @@ public class PoolItem {
         return custom_port;
     }
 
-    public void setPort(String port) {
-        this.mPort = port;
-    }
-
     public String getApiUrl() { return this.mApiUrl;}
 
     public String getPoolUrl() {
-        return this.mPoolUrl;
+        return this.mUrl;
     }
 
     public void setPoolUrl(String url) {
-        this.mPoolUrl = url;
+        this.mUrl = url;
     }
 
-    public void setPoolIP(String ip) { this.mPoolIP = ip; }
-
     public String getPoolIP() {
-        return this.mPoolIP;
+        return this.mIP;
     }
 
     public String getStatsURL() {
         return this.mStatsURL;
     }
 
-    public String getStartUrl() {
-        return this.mStartUrl;
-    }
-
     public int getPoolType() {
         return this.mPoolType;
-    }
-
-    public void setPoolType(int type) {
-        this.mPoolType = type;
     }
 
     public String getPoolTypeName() {
@@ -304,13 +285,13 @@ public class PoolItem {
     public String getWalletURL(String walletAddress) {
         switch (this.mPoolType) {
             case 1: // nodejs-pool
-                return this.mPoolUrl;
+                return this.mUrl;
             case 2: // cryptonote-nodejs-pool
-                return this.mPoolUrl;
+                return this.mUrl;
             case 3: // scala-pool
-                return this.mPoolUrl + "?wallet=" + walletAddress + "#worker_stats";
+                return this.mUrl + "?wallet=" + walletAddress + "#worker_stats";
             default:
-                return this.mPoolUrl;
+                return this.mUrl;
         }
     }
 
@@ -335,7 +316,7 @@ public class PoolItem {
 
     public void overwriteWith(PoolItem anotherPool) {
         this.mKey = anotherPool.getKey();
-        this.mPoolUrl = anotherPool.getPoolUrl();
+        this.mUrl = anotherPool.getPoolUrl();
         this.mPort = anotherPool.getPort();
     }
 

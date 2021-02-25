@@ -52,7 +52,7 @@ public class SettingsFragment extends Fragment {
     private static final String LOG_TAG = "MiningSvc";
 
     TextInputLayout tilAddress;
-    private EditText edAddress, edWorkerName, edUsernameparameters, edPort, edMiningGoal;
+    private EditText edAddress, edWorkerName, edUsernameparameters, edMiningGoal;
 
     PoolView pvSelectedPool;
 
@@ -65,7 +65,7 @@ public class SettingsFragment extends Fragment {
     private SeekBar sbCPUTemp, sbBatteryTemp, sbCooldown, sbCores;
     private TextView tvCPUMaxTemp, tvBatteryMaxTemp, tvCooldown, tvCPUTempUnit, tvBatteryTempUnit, tvRefreshHashrateDelay;
     private Switch swDisableTempControl, swPauseOnBattery, swPauseOnNetwork, swKeepScreenOnWhenMining, swSendDebugInformation;
-    //private Switch swDoNotRestartOnCrash;
+
     private ImageView ivDecreaseRefreshHashrateDelay, ivIncreaseRefreshHashrateDelay;
     private MaterialButtonToggleGroup tgTemperatureUnit;
 
@@ -109,7 +109,6 @@ public class SettingsFragment extends Fragment {
             }
         });
 
-        edPort = view.findViewById(R.id.port);
         edUsernameparameters = view.findViewById(R.id.usernameparameters);
         edWorkerName = view.findViewById(R.id.workername);
 
@@ -372,7 +371,6 @@ public class SettingsFragment extends Fragment {
         });
 
         selectedPoolTmp = null;
-        updatePort();
 
         bSave.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -531,7 +529,7 @@ public class SettingsFragment extends Fragment {
         PoolItem selectedPoolItem = getSelectedPoolItem();
 
         Config.write(Config.CONFIG_SELECTED_POOL, selectedPoolItem.getKey().trim());
-        Config.write(Config.CONFIG_CUSTOM_PORT, selectedPoolItem.getDefaultPort().trim());
+        Config.write(Config.CONFIG_CUSTOM_PORT, selectedPoolItem.getSelectedPort().trim());
 
         Config.write(Config.CONFIG_ADDRESS, address);
 
@@ -545,8 +543,6 @@ public class SettingsFragment extends Fragment {
         Log.i(LOG_TAG,"Worker Name : " + workername);
         Config.write(Config.CONFIG_WORKERNAME, workername);
         edWorkerName.setText(workername);
-
-        Config.write(Config.CONFIG_CUSTOM_PORT, edPort.getText().toString().trim());
 
         Config.write(Config.CONFIG_CORES, Integer.toString(sbCores.getProgress()+1));
 
@@ -569,7 +565,6 @@ public class SettingsFragment extends Fragment {
 
         Config.write(Config.CONFIG_TEMPERATURE_UNIT, tgTemperatureUnit.getCheckedButtonId() == R.id.btnFarehnheit ? "F" : "C");
         Config.write(Config.CONFIG_SEND_DEBUG_INFO, swSendDebugInformation.isChecked() ? "1" : "0");
-        //Config.write(Config.CONFIG_DISABLE_RESTART_MINING_ABORTED, swDoNotRestartOnCrash.isChecked() ? "1" : "0");
 
         Config.write(Config.CONFIG_INIT, "1");
 
@@ -666,27 +661,17 @@ public class SettingsFragment extends Fragment {
         return selectedPoolTmp == null ? ProviderManager.getSelectedPool() : selectedPoolTmp;
     }
 
-    private void updatePort() {
-        if(selectedPoolTmp != null) {
-            edPort.setText(selectedPoolTmp.getPortRaw());
-        } else {
-            PoolItem selectedPoolItem = getSelectedPoolItem();
-
-            if (selectedPoolItem != null)
-                edPort.setText(selectedPoolItem.getPort());
-        }
-    }
-
     @Override
     public void onResume() {
         super.onResume();
 
         pvSelectedPool.onFinishInflate();
-        updatePort();
     }
 
     @Override
     public void onDestroy() {
+        selectedPoolTmp = null;
+
         super.onDestroy();
     }
 }

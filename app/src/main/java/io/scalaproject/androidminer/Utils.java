@@ -265,7 +265,10 @@ public final class Utils {
     }
 
     static public String truncateString(String text, int maxChars) {
-        return text.substring(0, maxChars) + "...";
+        if(text.length() > maxChars)
+            return text.substring(0, maxChars - 3) + "...";
+        else
+            return text;
     }
 
     static public String formatTimestamp(Date d) {

@@ -53,7 +53,7 @@
         android:layout_height="wrap_content"
         android:textColor="@color/txt_secondary"
         android:textSize="12sp"
-        android:text="mine.scalaproject.io" />
+        android:text="mine.scalaproject.io:3333" />
 
     </LinearLayout>
 

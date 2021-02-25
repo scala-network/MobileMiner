@@ -140,7 +140,7 @@ public class PoolInfoAdapter extends RecyclerView.Adapter<PoolInfoAdapter.ViewHo
                     popupOpen = true;
 
                     MenuItem itemEdit = popup.getMenu().findItem(R.id.action_edit_pool);
-                    itemEdit.setTitle(poolItem.getPoolType() == 0 ? context.getResources().getString(R.string.edit) : context.getResources().getString(R.string.view));
+                    itemEdit.setTitle(context.getResources().getString(R.string.edit));
 
                     MenuItem itemDelete = popup.getMenu().findItem(R.id.action_delete_pool);
                     itemDelete.setVisible(poolItem.getPoolType() == 0);

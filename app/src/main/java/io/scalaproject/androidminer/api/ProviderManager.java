@@ -27,12 +27,13 @@ import io.scalaproject.androidminer.network.Json;
 
 public final class ProviderManager {
 
-    static private final String DEFAULT_POOLS_REPOSITORY = "https://raw.githubusercontent.com/scala-network/MobileMiner/master/app.json";
+    //static private final String DEFAULT_POOLS_REPOSITORY = "https://raw.githubusercontent.com/scala-network/MobileMiner/master/app.json";
+    static private final String DEFAULT_POOLS_REPOSITORY = "https://raw.githubusercontent.com/scala-network/MobileMiner/2.1.1/app.json";
 
     static private final String IPFS_HASH = "QmeCBnrEovztTRuGVmfVWZ8H6HhCLYTDrqEcXmN6MnytJA";
     static private final String[] POOLS_REPOSITORY_IPFS_GATEWAYS = {
-            "https://ipfs.io/ipfs/",
             "https://dweb.link/ipfs/",
+            "https://ipfs.io/ipfs/",
             "https://gateway.ipfs.io/ipfs/",
             "https://cloudflare-ipfs.com/ipfs/"
     };
@@ -60,15 +61,15 @@ public final class ProviderManager {
         mPools.remove(poolItem);
     }
 
-    static public PoolItem add(String key, String pool,String port, int poolType, String poolUrl, String poolIP) {
-        PoolItem pi = new PoolItem(key, pool, port, poolType, poolUrl, poolIP);
+    static public PoolItem add(String key, String pool, String port, ArrayList<String> ports, int poolType, String poolUrl, String poolIP) {
+        PoolItem pi = new PoolItem(key, pool, port, ports, poolType, poolUrl, poolIP);
         mPools.add(pi);
 
         return pi;
     }
 
-    static public PoolItem add(String key, String pool, String port, int poolType, String poolUrl, String poolIP, String poolApi) {
-        PoolItem pi = new PoolItem(key, pool, port, poolType, poolUrl, poolIP, poolApi, "","");
+    static public PoolItem add(String key, String pool, String port, ArrayList<String> ports, int poolType, String poolUrl, String poolIP, String poolApi) {
+        PoolItem pi = new PoolItem(key, pool, port, ports, poolType, poolUrl, poolIP, poolApi, "","");
         mPools.add(pi);
 
         return pi;
@@ -228,10 +229,20 @@ public final class ProviderManager {
 
                 PoolItem poolItem;
 
+                ArrayList<String> listPort = new ArrayList<String>();
+                if(pool.has("ports")) {
+                    JSONArray portsArray = pool.getJSONArray("ports");
+                    if (portsArray != null) {
+                        for (int j = 0; j < portsArray.length(); j++){
+                            listPort.add(portsArray.getString(j));
+                        }
+                    }
+                }
+
                 if(!pool.has("apiUrl")) {
-                    poolItem = add(pool.getString("key"), pool.getString("pool"), pool.getString("port"), pool.getInt("poolType"), pool.getString("poolUrl"), pool.getString("poolIp"));
+                    poolItem = add(pool.getString("key"), pool.getString("pool"), pool.getString("port"), listPort, pool.getInt("type"), pool.getString("url"), pool.getString("ip"));
                 } else {
-                    poolItem = add(pool.getString("key"), pool.getString("pool"), pool.getString("port"), pool.getInt("poolType"), pool.getString("poolUrl"), pool.getString("poolIp"), pool.getString("apiUrl"));
+                    poolItem = add(pool.getString("key"), pool.getString("pool"), pool.getString("port"), listPort, pool.getInt("type"), pool.getString("url"), pool.getString("ip"), pool.getString("apiUrl"));
                 }
 
                 // Icon

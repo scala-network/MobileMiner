@@ -87,7 +87,9 @@ public class PoolView extends LinearLayout {
             return;
 
         tvPoolName.setText(poolItem.getKey());
-        tvPoolURL.setText(poolItem.getPool());
+
+        String port = SettingsFragment.selectedPoolTmp != null ? poolItem.getSelectedPort() : poolItem.getPort();
+        tvPoolURL.setText(poolItem.getPool() + ":" + port);
 
         Bitmap icon = poolItem.getIcon();
         if(icon != null) {

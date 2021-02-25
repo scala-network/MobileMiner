@@ -17,10 +17,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -38,6 +41,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -302,12 +306,16 @@ public class PoolActivity extends BaseActivity
                 poolEdit.setPool(poolUrl);
             }
 
-            final String poolPort = Objects.requireNonNull(etPoolPort.getEditText()).getText().toString().trim();
-            if (poolPort.isEmpty()) {
-                etPoolPort.setError(getString(R.string.value_empty));
-                return false;
+            if(poolEdit.isUserDefined()) {
+                String port = etPoolPort.getEditText().getText().toString().trim();
+                if (port.isEmpty()) {
+                    etPoolPort.setError(getString(R.string.value_empty));
+                    return false;
+                } else {
+                    poolEdit.setSelectedPort(port);
+                }
             } else {
-                poolEdit.setPort(poolPort);
+                poolEdit.setSelectedPort(spPoolPort.getSelectedItem().toString().trim());
             }
 
             return true;
@@ -320,8 +328,12 @@ public class PoolActivity extends BaseActivity
             final String poolURL = Objects.requireNonNull(etPoolURL.getEditText()).getText().toString().trim();
             poolEdit.setPoolUrl(poolURL);
 
-            final String poolPort = Objects.requireNonNull(etPoolPort.getEditText()).getText().toString().trim();
-            poolEdit.setPort(poolPort);
+            if(poolEdit.isUserDefined()) {
+                final String poolPort = Objects.requireNonNull(etPoolPort.getEditText()).getText().toString().trim();
+                poolEdit.setSelectedPort(poolPort);
+            } else {
+                poolEdit.setSelectedPort(spPoolPort.getSelectedItem().toString().trim());
+            }
         }
 
         private void apply() {
@@ -366,7 +378,10 @@ public class PoolActivity extends BaseActivity
 
         TextInputLayout etPoolName;
         TextInputLayout etPoolURL;
+
+        Spinner spPoolPort;
         TextInputLayout etPoolPort;
+
         ImageView ivPoolIcon;
 
         public static final int GET_FROM_GALLERY = 1;
@@ -379,7 +394,19 @@ public class PoolActivity extends BaseActivity
 
             etPoolName = promptsView.findViewById(R.id.etPoolName);
             etPoolURL = promptsView.findViewById(R.id.etPoolURL);
+
+            spPoolPort = promptsView.findViewById(R.id.spinnerPort);
+
+            ImageView imgSpinnerDown = promptsView.findViewById(R.id.imgSpinnerDown);
+            imgSpinnerDown.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    spPoolPort.performClick();
+                }
+            });
+
             etPoolPort = promptsView.findViewById(R.id.etPoolPort);
+
             ivPoolIcon = promptsView.findViewById(R.id.ivPoolIcon);
 
             Button btnSelectImage = promptsView.findViewById(R.id.btnSelectImage);
@@ -399,7 +426,6 @@ public class PoolActivity extends BaseActivity
 
                 Objects.requireNonNull(etPoolName.getEditText()).setText(poolItem.getKey());
                 Objects.requireNonNull(etPoolURL.getEditText()).setText(poolItem.getPoolUrl());
-                Objects.requireNonNull(etPoolPort.getEditText()).setText(poolItem.getPort());
 
                 Bitmap icon = poolItem.getIcon();
                 if(icon != null)
@@ -417,9 +443,40 @@ public class PoolActivity extends BaseActivity
             boolean isUserDefined = poolEdit.isUserDefined();
             etPoolName.setEnabled(isUserDefined);
             etPoolURL.setEnabled(isUserDefined);
-            etPoolPort.setEnabled(isUserDefined);
+
+            TextView tvPort = promptsView.findViewById(R.id.tvPort);
+            tvPort.setVisibility(isUserDefined ? View.GONE : View.VISIBLE);
+
+            LinearLayout llspinnerPort = promptsView.findViewById(R.id.llSpinnerPort);
+            llspinnerPort.setVisibility(isUserDefined ? View.GONE : View.VISIBLE);
+
+            etPoolPort.setVisibility(isUserDefined ? View.VISIBLE : View.GONE);
+
             ivPoolIcon.setEnabled(isUserDefined);
             btnSelectImage.setEnabled(isUserDefined);
+
+            if(isUserDefined) {
+                String port = poolItem != null ? poolItem.getPort() : "";
+                Objects.requireNonNull(etPoolPort.getEditText()).setText(port);
+            } else {
+                ArrayList<String> ports = poolItem.getPorts();
+                if(ports.isEmpty())
+                    ports.add(poolItem.getDefaultPort());
+
+                ArrayAdapter<String> adapter = new ArrayAdapter<>(getApplicationContext(), R.layout.spinner_text, ports);
+                spPoolPort.setAdapter(adapter);
+
+                String selectedPort = poolItem.getPort();
+                int selectedPortIndex = 0;
+                for(int i = 0; i < ports.size(); i++) {
+                    if(ports.get(i).equals(selectedPort)) {
+                        selectedPortIndex = i;
+                        break;
+                    }
+                }
+
+                spPoolPort.setSelection(selectedPortIndex);
+            }
 
             // set dialog message
             alertDialogBuilder
@@ -486,9 +543,9 @@ public class PoolActivity extends BaseActivity
 
     public void onNext(View view) {
         Config.write(Config.CONFIG_SELECTED_POOL, selectedPool.getKey().trim());
+        Config.write(Config.CONFIG_CUSTOM_PORT, selectedPool.getSelectedPort().trim());
 
         startActivity(new Intent(PoolActivity.this, WizardSettingsActivity.class));
-        //finish();
     }
 
     static public void parseVolleyError(VolleyError error) {

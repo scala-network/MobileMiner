@@ -226,7 +226,6 @@ public class MainActivity extends BaseActivity
     }
 
     private Button btnStart;
-    private Boolean bMiningStoppedByUser = false;
 
     private static int m_nLastCurrentState = Config.STATE_STOPPED;
     private static int m_nCurrentState = Config.STATE_STOPPED;
@@ -1522,7 +1521,6 @@ public class MainActivity extends BaseActivity
         bForceMiningOnPauseBattery = false;
         bForceMiningOnPauseNetwork = false;
         bForceMiningNoTempSensor = false;
-        bMiningStoppedByUser = false;
         clearMinerLog = true;
         nSharesCount = 0;
         miningMinutes = 0;
@@ -1644,7 +1642,8 @@ public class MainActivity extends BaseActivity
             return;
         }
 
-        bMiningStoppedByUser = true;
+        if(isDeviceMiningBackground())
+            appendLogOutputTextWithDate(getResources().getString(R.string.stopped));
 
         setMinerStatus(Config.STATE_STOPPED);
 
@@ -1652,11 +1651,7 @@ public class MainActivity extends BaseActivity
 
         resetOptions();
 
-        //stopTimerMiningSanity();
-
         stopTimerMiningTime();
-
-        appendLogOutputTextWithDate(getResources().getString(R.string.stopped));
 
         updateUI();
     }
@@ -2258,6 +2253,14 @@ public class MainActivity extends BaseActivity
                     if(tmpFormat.equals("POOL") && text.contains(tmpFormat2)) {
                         i = text.indexOf(tmpFormat2);
                         imax = i + tmpFormat2.length();
+                        textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_white)), i, imax, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                        textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_grey)), imax, text.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    }
+
+                    String tmpFormat3 = "WORKER NAME";
+                    if(tmpFormat.equals("POOL") && text.contains(tmpFormat3)) {
+                        i = text.indexOf(tmpFormat3);
+                        imax = i + tmpFormat3.length();
                         textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_white)), i, imax, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                         textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_grey)), imax, text.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                     }
