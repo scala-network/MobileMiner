@@ -140,9 +140,9 @@ public class WizardAddressActivity extends BaseActivity {
     }
 
     public void onNext(View view) {
-        String strAddress = tvAddress.getText().toString();
-        View view2 = findViewById(android.R.id.content).getRootView();
+        String strAddress = tvAddress.getText().toString().trim();
 
+        View view2 = findViewById(android.R.id.content).getRootView();
         TextInputLayout til = view2.findViewById(R.id.addressIL);
 
         if(strAddress.isEmpty() || !Utils.verifyAddress(strAddress)) {
@@ -160,8 +160,6 @@ public class WizardAddressActivity extends BaseActivity {
         Intent intent = new Intent(WizardAddressActivity.this, PoolActivity.class);
         intent.putExtra(PoolActivity.RequesterType, PoolActivity.REQUESTER_WIZARD);
         startActivity(intent);
-
-        //finish();
     }
 
     private void requestFocus(View view) {
