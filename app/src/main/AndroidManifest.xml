@@ -13,6 +13,7 @@
     <application
         android:name=".MobileMinerApplication"
         android:allowBackup="true"
+        android:fullBackupContent="true"
         android:usesCleartextTraffic="true"
         android:icon="@mipmap/ic_launcher"
         android:roundIcon="@mipmap/ic_launcher_round"

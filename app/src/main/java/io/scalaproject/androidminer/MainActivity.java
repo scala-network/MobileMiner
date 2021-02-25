@@ -45,6 +45,8 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
+import android.net.Network;
+import android.net.NetworkCapabilities;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.net.wifi.WifiManager;
@@ -142,7 +144,6 @@ public class MainActivity extends BaseActivity
 {
     private static final String LOG_TAG = "MainActivity";
 
-
     private TextView tvCPUTemperature, tvBatteryTemperature, tvLogWidget, tvLogLayout;
     IconSwitch isPerformanceMode;
 
@@ -156,9 +157,6 @@ public class MainActivity extends BaseActivity
 
     private Timer timerRefreshHashrate = null;
     private TimerTask timerTaskRefreshHashrate = null;
-
-    //private Timer timerMiningSanity = null;
-    //private TimerTask timerTaskMiningSanity = null;
 
     private Timer timerMiningTime = null;
     private TimerTask timerTaskMiningTime = null;
@@ -281,7 +279,7 @@ public class MainActivity extends BaseActivity
 
         if(!isNetworkReceiverRegistered) {
             IntentFilter intentFilter = new IntentFilter();
-            intentFilter.addAction(WifiManager.SUPPLICANT_CONNECTION_CHANGE_ACTION);
+            intentFilter.addAction(WifiManager.NETWORK_STATE_CHANGED_ACTION);
             registerReceiver(networkInfoReceiver, intentFilter);
             isNetworkReceiverRegistered = true;
         }
@@ -609,7 +607,7 @@ public class MainActivity extends BaseActivity
             MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this, R.style.MaterialAlertDialogCustom);
             builder.setTitle(getString(R.string.performance_mode))
                     .setMessage(getString(R.string.performance_mode_text))
-                    .setCancelable(true)
+                    .setCancelable(false)
                     .setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
@@ -669,8 +667,6 @@ public class MainActivity extends BaseActivity
 
             stopTimerRefreshHashrate();
 
-            //stopTimerMiningSanity();
-
             LineChart chartHashrate = findViewById(R.id.chartHashrate);
             chartHashrate.clear();
 
@@ -697,8 +693,6 @@ public class MainActivity extends BaseActivity
             ProviderManager.request.setListener(payoutListener).start();
 
             startTimerRefreshHashrate();
-
-            //startTimerMiningSanity();
         }
 
         updatePayoutWidgetStatus();
@@ -1548,8 +1542,6 @@ public class MainActivity extends BaseActivity
 
         setMinerStatus(Config.STATE_MINING);
 
-        //startTimerMiningSanity();
-
         updateUI();
     }
 
@@ -1678,7 +1670,7 @@ public class MainActivity extends BaseActivity
 
         if(!isNetworkReceiverRegistered) {
             IntentFilter intentFilter = new IntentFilter();
-            intentFilter.addAction(WifiManager.SUPPLICANT_CONNECTION_CHANGE_ACTION);
+            intentFilter.addAction(WifiManager.NETWORK_STATE_CHANGED_ACTION);
             registerReceiver(networkInfoReceiver, intentFilter);
             isNetworkReceiverRegistered = true;
         }
@@ -1841,54 +1833,6 @@ public class MainActivity extends BaseActivity
 
         updateNotification();
     }
-
-    /*public void startTimerMiningSanity() {
-        if(timerMiningSanity != null)
-            return;
-
-        timerTaskMiningSanity = new TimerTask() {
-            @Override
-            public void run() {
-                runOnUiThread(new Runnable() {
-                    public void run() {
-                        boolean isAlive = binder.getService().isMiningProcessAlive();
-
-                        if(!isAlive && isDeviceMiningBackground() && !bMiningStoppedByUser) {
-                            appendLogOutputTextWithDate(getString(R.string.mining_aborted));
-
-                            boolean bRestartOnProcessAborted = Config.read(Config.CONFIG_DISABLE_RESTART_MINING_ABORTED, "0").equals("0");
-
-                            if(bRestartOnProcessAborted) {
-                                clearMinerLog = false;
-                                appendLogOutputTextWithDate(getString(R.string.restarting_mining_process));
-                                appendLogOutputText(System.getProperty("line.separator"));
-
-                                TextView tvAcceptedShares = findViewById(R.id.acceptedshare);
-                                nSharesCount = Integer.parseInt(tvAcceptedShares.getText().toString());
-
-                                startMiningService();
-                            } else {
-                                stopMining();
-                                updateMiningButtonState();
-                            }
-                        }
-                    }
-                });
-            }
-        };
-
-        timerMiningSanity = new Timer();
-
-        timerMiningSanity.scheduleAtFixedRate(timerTaskMiningSanity, 5000, Config.CHECK_MINING_SANITY_DELAY);
-    }
-
-    public void stopTimerMiningSanity() {
-        if(timerMiningSanity != null) {
-            timerMiningSanity.cancel();
-            timerMiningSanity = null;
-            timerTaskMiningSanity = null;
-        }
-    }*/
 
     public void startTimerRefreshHashrate() {
         if(timerRefreshHashrate != null)
@@ -2841,7 +2785,7 @@ public class MainActivity extends BaseActivity
         String message = "";
         try {
             String jsonMessage = "";
-            if(error != null && error.networkResponse != null && error.networkResponse.data != null) {
+            /*if(error != null && error.networkResponse != null && error.networkResponse.data != null) {
                 String responseBody = new String(error.networkResponse.data, StandardCharsets.UTF_8);
 
                 if (!responseBody.isEmpty()) {
@@ -2851,18 +2795,15 @@ public class MainActivity extends BaseActivity
                 } else {
                     jsonMessage = error.getMessage();
                 }
-            }
+            }*/
 
             if(error != null)
                 jsonMessage = error.getMessage();
 
-            assert jsonMessage != null;
-            if(jsonMessage.isEmpty())
+            if(jsonMessage == null || jsonMessage.isEmpty())
                 jsonMessage = "Unknown";
 
             message = "AMYAC error: " + jsonMessage;
-        } catch (JSONException e) {
-            message = "AMYAC error JSONException: " + e.getMessage();
         } finally {
             disableAmaycOnError(message);
         }
@@ -2889,11 +2830,13 @@ public class MainActivity extends BaseActivity
         else {
             if (Config.read(Config.CONFIG_PAUSE_ON_BATTERY).equals("1") && !isCharging) {
                 setStatusText(getResources().getString(R.string.pauseonmining));
+                pauseMining();
                 return;
             }
 
             if (Config.read(Config.CONFIG_PAUSE_ON_NETWORK).equals("1") && !isOnWifi()) {
                 setStatusText(getResources().getString(R.string.pauseonnetwork));
+                pauseMining();
                 return;
             }
 
@@ -2906,11 +2849,10 @@ public class MainActivity extends BaseActivity
 
     public void pauseMining() {
         if (!isDevicePaused()) {
-            if(!isDeviceCooling()) {
+            //if(!isDeviceCooling()) {
                 setMinerStatus(Config.STATE_PAUSED);
-
                 updateMiningButtonState();
-            }
+            //}
 
             if (binder != null) {
                 binder.getService().sendInput("p");
@@ -3155,7 +3097,23 @@ public class MainActivity extends BaseActivity
         }
     };
 
-    private boolean isOnWifi() {
+    public boolean isOnWifi() {
+        ConnectivityManager connMgr = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (connMgr == null) {
+            return false;
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            Network network = connMgr.getActiveNetwork();
+            if (network == null) return false;
+            NetworkCapabilities capabilities = connMgr.getNetworkCapabilities(network);
+            return capabilities != null && capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI);
+        } else {
+            NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+            return networkInfo.isConnected() && networkInfo.getType() == ConnectivityManager.TYPE_WIFI;
+        }
+    }
+
+    /*private boolean isOnWifi() {
         if(isOnWifiInit)
             return isOnWifi;
 
@@ -3163,7 +3121,7 @@ public class MainActivity extends BaseActivity
         NetworkInfo mWifi = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
 
         return mWifi.isConnected();
-    }
+    }*/
 
     static boolean lastIsOnWifi = false;
     static boolean isOnWifiInit = false;
@@ -3174,8 +3132,24 @@ public class MainActivity extends BaseActivity
                 return;
 
             final String action = networkStatusIntent.getAction();
-            if (action.equals(WifiManager.SUPPLICANT_CONNECTION_CHANGE_ACTION)) {
-                isOnWifi = networkStatusIntent.getBooleanExtra(WifiManager.EXTRA_SUPPLICANT_CONNECTED, false);
+
+            if(action.equals(WifiManager.NETWORK_STATE_CHANGED_ACTION)) {
+                isOnWifi = false;
+
+                ConnectivityManager connMgr = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+                if (connMgr != null) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        Network network = connMgr.getActiveNetwork();
+                        if (network != null) {
+                            NetworkCapabilities capabilities = connMgr.getNetworkCapabilities(network);
+                            isOnWifi = capabilities != null && capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI);
+                        }
+                    } else {
+                        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+                        if(networkInfo != null)
+                            isOnWifi = networkInfo.isConnected() && networkInfo.getType() == ConnectivityManager.TYPE_WIFI;
+                    }
+                }
             }
 
             isOnWifiInit = true;

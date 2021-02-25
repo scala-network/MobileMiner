@@ -65,16 +65,17 @@ public class Config {
     public final static int DefaultMaxBatteryTemp = 40; // 30,35,40,45,50
     public final static int DefaultCooldownTheshold = 10; // 5,10,15,20,25
 
-    static final int DefaultPoolIndex = 1;
     public static final Long statsDelay = 30000L;
     public static final String miner_xlarig = "xlarig";
     static final String algo = "panthera";
 
     public static final String CONFIG_KEY_CONFIG_VERSION = "config_version";
     public static final String version = "4";
+
+    public static final String CONFIG_KEY_POOLS_VERSION = "pools_version";
+
     static final Integer logMaxLength = 50000;
     static final Integer logPruneLength = 1000;
-    static final String debugAddress = "Ssy2HXpWZ9RhXbb9uNFTeHjaYfexa3suDbGJDSfUWSEpSajSmjQXwLh2xqCAAUQfZrdiRkvpUZvBceT8d6zKc6aV9NaZVYXFsY";
 
     private final HashMap<String,String> mConfigs = new HashMap<String, String>();
 

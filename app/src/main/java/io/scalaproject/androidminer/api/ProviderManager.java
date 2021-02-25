@@ -27,6 +27,9 @@ import io.scalaproject.androidminer.network.Json;
 
 public final class ProviderManager {
 
+    // Increment the version number when the json structure changes
+    static private final String version = "1";
+
     //static private final String DEFAULT_POOLS_REPOSITORY = "https://raw.githubusercontent.com/scala-network/MobileMiner/master/app.json";
     static private final String DEFAULT_POOLS_REPOSITORY = "https://raw.githubusercontent.com/scala-network/MobileMiner/2.1.1/app.json";
 
@@ -184,12 +187,19 @@ public final class ProviderManager {
         request.mPoolItem = null;
         mPools.clear();
 
+        boolean forceReload = false;
+        String poolVersion = Config.read(Config.CONFIG_KEY_POOLS_VERSION);
+        if(!poolVersion.equals(ProviderManager.version)) {
+            forceReload = true;
+            Config.write(Config.CONFIG_KEY_POOLS_VERSION, ProviderManager.version);
+        }
+
         String lastFetched = Config.read(Config.CONFIG_POOLS_REPOSITORY_LAST_FETCHED);
         String jsonString = "";
         long now = System.currentTimeMillis() / 1000L;
 
         // Use cached pools data
-        if(!lastFetched.isEmpty() && Long.parseLong(lastFetched) > now) {
+        if(!lastFetched.isEmpty() && Long.parseLong(lastFetched) > now && !forceReload) {
             jsonString = Config.read(Config.CONFIG_POOLS_REPOSITORY_JSON);
         }
 
