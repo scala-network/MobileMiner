@@ -94,6 +94,7 @@ public class WizardAddressActivity extends BaseActivity {
 
     public void onPaste(View view) {
         tvAddress.setText(Utils.pasteFromClipboard(WizardAddressActivity.this));
+        Utils.hideKeyboard(this);
     }
 
     public void onScanQrCode(View view) {

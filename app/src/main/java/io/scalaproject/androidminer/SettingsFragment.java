@@ -401,7 +401,13 @@ public class SettingsFragment extends Fragment {
         });
 
         Button btnPasteAddress = view.findViewById(R.id.btnPasteAddress);
-        btnPasteAddress.setOnClickListener(v -> edAddress.setText(Utils.pasteFromClipboard(MainActivity.getContextOfApplication())));
+        btnPasteAddress.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                edAddress.setText(Utils.pasteFromClipboard(MainActivity.getContextOfApplication()));
+                Utils.hideKeyboard(getActivity());
+            }
+        });
 
         bQrCode.setOnClickListener(new View.OnClickListener() {
             @Override
