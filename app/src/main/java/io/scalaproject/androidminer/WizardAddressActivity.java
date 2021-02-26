@@ -24,6 +24,7 @@ import androidx.core.content.ContextCompat;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.zxing.integration.android.IntentIntegrator;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -118,8 +119,7 @@ public class WizardAddressActivity extends BaseActivity {
         Context appContext = WizardAddressActivity.this;
 
         try {
-            Intent intent = new Intent(appContext, QrCodeScannerActivity.class);
-            startActivity(intent);
+            new IntentIntegrator(this).setOrientationLocked(false).setCaptureActivity(QrCodeScannerActivity.class).initiateScan();
         } catch (Exception e) {
             Utils.showToast(appContext, e.getMessage(), Toast.LENGTH_SHORT);
         }

@@ -9,34 +9,36 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/actions"
         android:background="@color/bg_body"
+        android:layout_above="@+id/llCancel"
         android:clickable="false"
         android:gravity="center">
 
-        <fragment
-            android:id="@+id/barcode"
-            android:name="com.google.android.gms.samples.vision.barcodereader.BarcodeCapture"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:layout_alignParentStart="true"
+        <com.journeyapps.barcodescanner.DecoratedBarcodeView
+            android:id="@+id/barcodeView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:zxing_scanner_layout="@layout/custom_barcode_scanner">
+        </com.journeyapps.barcodescanner.DecoratedBarcodeView>
+
+        <Button
+            android:id="@+id/btnFlashlight"
+            android:layout_width="wrap_content"
+            android:layout_height="55dp"
+            android:layout_marginTop="5dp"
+            android:text="Turn on flashlight"
+            app:backgroundTint="@color/bg_blue"
+            android:textColor="@color/txt_button_filled"
             android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginStart="10dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginBottom="10dp"
-            app:gvb_auto_focus="true"
-            app:gvb_code_format="code_39|aztec|qr_code"
-            app:gvb_flash="false" />
+            android:layout_centerHorizontal="true"
+            android:textAllCaps="false"
+            app:cornerRadius="5dp"
+            android:onClick="switchFlashlight"/>
 
     </RelativeLayout>
 
     <LinearLayout
-        android:id="@+id/actions"
+        android:id="@+id/llCancel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -45,66 +47,17 @@
         android:paddingLeft="16dp"
         android:paddingRight="16dp">
 
-            <LinearLayout
+            <Button
+                android:id="@+id/btnCancel"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/textView"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:text="@string/touch_screen_to_capture"
-                    android:textColor="@color/c_grey"
-                    android:textSize="12sp" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/he"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="fill"
-                android:minHeight="10dp"
-                android:orientation="horizontal" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/scanResult"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:maxLines="1"
-                    android:text="@string/wallet_address"
-                    android:textColor="@color/txt_main" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:orientation="horizontal">
-
-                <Button
-                    android:id="@+id/stop"
-                    android:layout_width="match_parent"
-                    android:layout_height="55dp"
-                    android:layout_marginBottom="5dip"
-                    android:layout_marginTop="5dip"
-                    app:backgroundTint="@color/bg_lighter"
-                    android:text="@string/cancel"
-                    android:textColor="@color/txt_button_filled"
-                    android:textAllCaps="false"
-                    app:cornerRadius="7.5dp" />
-
-            </LinearLayout>
+                android:layout_height="55dp"
+                android:layout_marginBottom="5dip"
+                android:layout_marginTop="5dip"
+                app:backgroundTint="@color/bg_lighter"
+                android:text="@string/cancel"
+                android:textColor="@color/txt_button_filled"
+                android:textAllCaps="false"
+                app:cornerRadius="7.5dp" />
 
     </LinearLayout>
 

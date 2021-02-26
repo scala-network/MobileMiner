@@ -37,6 +37,7 @@ import androidx.fragment.app.Fragment;
 import com.google.android.material.button.MaterialButtonToggleGroup;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.zxing.integration.android.IntentIntegrator;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -626,13 +627,7 @@ public class SettingsFragment extends Fragment {
     }
 
     private void startQrCodeActivity() {
-        Context appContext = MainActivity.getContextOfApplication();
-        try {
-            Intent intent = new Intent(appContext, QrCodeScannerActivity.class);
-            startActivity(intent);
-        }catch (Exception e) {
-            Utils.showToast(appContext, e.getMessage(), Toast.LENGTH_SHORT);
-        }
+        new IntentIntegrator(getActivity()).setOrientationLocked(false).setCaptureActivity(QrCodeScannerActivity.class).initiateScan();
     }
 
     @Override

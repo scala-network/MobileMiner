@@ -259,4 +259,6 @@
     <string name="disconnectedwifi">Disconnected from a Wi-Fi network.</string>
     <string name="unreachable_pools_repo">The pools repository is unreachable, using default pool.</string>
     <string name="port">Port</string>
+    <string name="turn_off_flashlight">Turn off flashlight</string>
+    <string name="turn_on_flashlight">Turn on flashlight</string>
 </resources>
