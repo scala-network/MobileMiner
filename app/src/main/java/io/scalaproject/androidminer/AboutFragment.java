@@ -15,7 +15,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import android.text.Html;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextPaint;
@@ -31,7 +30,6 @@ import android.widget.TextView;
 
 import java.util.Objects;
 
-import io.scalaproject.androidminer.dialogs.CreditsFragment;
 import io.scalaproject.androidminer.dialogs.DonationsFragment;
 
 public class AboutFragment extends Fragment {
@@ -175,7 +173,7 @@ public class AboutFragment extends Fragment {
     }
 
     private void onShowCredits() {
-        CreditsFragment.display(Objects.requireNonNull(getActivity()).getSupportFragmentManager());
+        startActivity(new Intent(getActivity(), CreditsActivity.class));
     }
 
     private void onShowDonations() {

@@ -6,8 +6,8 @@ android {
     buildToolsVersion "29.0.2"
 
     compileOptions {
-        sourceCompatibility '1.8'
-        targetCompatibility '1.8'
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 
     defaultConfig {
@@ -52,4 +52,12 @@ dependencies {
     def acraVersion = '5.7.0'
     implementation "ch.acra:acra-core:$acraVersion"
     implementation "ch.acra:acra-mail:$acraVersion"
+
+    // debugImplementation because LeakCanary should only run in debug builds.
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.6'
+
+    //noinspection GradleDependency
+    implementation "com.mikepenz:aboutlibraries:6.2.3"
+    implementation "androidx.cardview:cardview:1.0.0"
+    implementation "androidx.recyclerview:recyclerview:1.1.0"
 }

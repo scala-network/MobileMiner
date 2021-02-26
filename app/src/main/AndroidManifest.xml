@@ -109,6 +109,13 @@
             android:screenOrientation="portrait" />
 
         <activity
+            android:name=".CreditsActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:label="Support"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
+
+        <activity
             android:name=".BaseActivity"
             android:configChanges="orientation|keyboardHidden"
             android:label="Base"

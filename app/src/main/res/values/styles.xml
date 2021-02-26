@@ -135,4 +135,17 @@
         <item name="android:textAllCaps">false</item>
         <item name="android:textSize">14sp</item>
     </style>
+
+    <style name="CustomAboutLibrariesTheme" parent="">
+        <!-- AboutLibraries specific values -->
+        <item name="android:windowBackground">@color/bg_body</item>
+        <item name="about_libraries_card">@color/bg_body</item>
+        <item name="about_libraries_title_description">@color/txt_headline</item>
+        <item name="about_libraries_text_description">@color/txt_main</item>
+        <item name="about_libraries_title_openSource">@color/txt_headline</item>
+        <item name="about_libraries_text_openSource">@color/txt_secondary</item>
+        <item name="about_libraries_divider_description">@color/txt_inactive</item>
+        <item name="about_libraries_special_button_openSource">@color/c_light_grey</item>
+        <item name="about_libraries_dividerLight_openSource">@color/txt_inactive</item>
+    </style>
 </resources>
