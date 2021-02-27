@@ -13,7 +13,8 @@ import java.util.Comparator;
 
 public class ChangelogItem {
 
-    public String mVersion, mDate;
+    public int mVersion;
+    public String mDate;
     public ArrayList<String> mChanges = new ArrayList<>();
 
     public ChangelogItem() {
@@ -22,7 +23,7 @@ public class ChangelogItem {
     static public Comparator<ChangelogItem> ChangelogComparator = new Comparator<ChangelogItem>() {
         @Override
         public int compare(ChangelogItem o1, ChangelogItem o2) {
-            return o1.mVersion.compareTo(o2.mVersion);
+            return o1.mVersion - o2.mVersion;
         }
     };
 }

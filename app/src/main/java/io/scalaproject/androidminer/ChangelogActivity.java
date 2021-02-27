@@ -18,7 +18,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
-import java.text.DateFormat;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -32,7 +31,7 @@ import io.scalaproject.androidminer.widgets.Toolbar;
 public class ChangelogActivity extends BaseActivity {
     private static final String LOG_TAG = "ChangelogActivity";
 
-    static private final String DEFAULT_CHANGELOG_REPOSITORY = "https://raw.githubusercontent.com/scala-network/MobileMiner/master/fastlane/metadata/android/en-US/changelog/";
+    static private final String DEFAULT_CHANGELOG_REPOSITORY = "https://raw.githubusercontent.com/scala-network/MobileMiner/2.1.1/fastlane/metadata/android/en-US/changelog/";
 
     private ChangelogInfoAdapter changelogAdapter;
     private final Set<ChangelogItem> allChangelogItems = new HashSet<>();
@@ -123,21 +122,16 @@ public class ChangelogActivity extends BaseActivity {
                 if (Tools.isURLReachable(strChangelogFile)) {
                     URL url;
                     try {
-                        changelogItem.mVersion = String.valueOf(i);
+                        changelogItem.mVersion = i;
+
                         url = new URL(strChangelogFile);
                         HttpsURLConnection uc = (HttpsURLConnection) url.openConnection();
                         InputStream in = uc.getInputStream();
 
-                        long dateTime = uc.getLastModified();
-                        if(dateTime > 0.0f)
-                            changelogItem.mDate = "(" + DateFormat.getDateInstance(DateFormat.LONG).format(dateTime) + ")";
-
                         BufferedReader br = new BufferedReader(new InputStreamReader(in));
-                        while (true) {
-                            String line;
-                            if ((line = br.readLine()) == null)
-                                break;
 
+                        String line;
+                        while ((line = br.readLine()) != null) {
                             changelogItem.mChanges.add(line);
                         }
 

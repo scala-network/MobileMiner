@@ -76,7 +76,7 @@ public class ChangelogInfoAdapter extends RecyclerView.Adapter<ChangelogInfoAdap
         void bind(final int position) {
             changelogItem = changelogItems.get(position);
 
-            tvVersion.setText(changelogItem.mVersion);
+            tvVersion.setText(String.valueOf(changelogItem.mVersion));
             tvDate.setText(changelogItem.mDate);
 
             StringBuffer text = new StringBuffer();
