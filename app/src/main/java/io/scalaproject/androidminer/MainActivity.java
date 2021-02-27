@@ -58,6 +58,7 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.PowerManager;
 import android.os.StrictMode;
+import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.StyleSpan;
@@ -77,7 +78,6 @@ import android.widget.RelativeLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.text.Spannable;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
@@ -87,18 +87,6 @@ import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Locale;
-import java.util.Objects;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -127,8 +115,18 @@ import com.polyak.iconswitch.IconSwitch;
 
 import org.acra.ACRA;
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Locale;
+import java.util.Objects;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import io.scalaproject.androidminer.api.IProviderListener;
 import io.scalaproject.androidminer.api.PoolItem;
@@ -337,6 +335,10 @@ public class MainActivity extends BaseActivity
                         Utils.showToast(contextOfApplication, "Mining Log copied.", Toast.LENGTH_SHORT, Tools.TOAST_YOFFSET_BOTTOM);
                         break;
                     }
+                    case Toolbar.BUTTON_OPTIONS_CHANGELOG: {
+                        showChangeLog();
+                        break;
+                    }
                     default: {
                         // Do nothing
                     }
@@ -395,7 +397,7 @@ public class MainActivity extends BaseActivity
             Switch swPerformanceMode = findViewById(R.id.swPerformanceMode);
             swPerformanceMode.setVisibility(View.GONE);
 
-            isPerformanceMode = (IconSwitch)getLayoutInflater().inflate(R.layout.control_iconswitch, null);
+            isPerformanceMode = (IconSwitch)getLayoutInflater().inflate(R.layout.iconswitch_performance_mode, null);
 
             llPerformanceMode.addView(isPerformanceMode);
 
@@ -575,6 +577,10 @@ public class MainActivity extends BaseActivity
         hideNotifications();
 
         toolbar.setTitle(Utils.truncateString(getWorkerName(), Config.MAX_WORKERNAME_TITLE_CHARS), true);
+    }
+
+    private void showChangeLog() {
+        startActivity(new Intent(this, ChangelogActivity.class));
     }
 
     @Override
@@ -1311,7 +1317,7 @@ public class MainActivity extends BaseActivity
                 }
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, about_fragment, "about_fragment").commit();
 
-                toolbar.setButtonOptions(Toolbar.BUTTON_OPTIONS_NONE);
+                toolbar.setButtonOptions(Toolbar.BUTTON_OPTIONS_CHANGELOG);
                 toolbar.setTitle(getResources().getString(R.string.about), true);
 
                 llMain.setVisibility(View.VISIBLE);

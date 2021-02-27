@@ -4,6 +4,7 @@
 
 package io.scalaproject.androidminer;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -210,6 +211,7 @@ public class PoolActivity extends BaseActivity
         poolsAdapter.dataSetChanged();
     }
 
+    @SuppressLint("NonConstantResourceId")
     @Override
     public boolean onContextInteraction(MenuItem item, PoolItem poolItem) {
         switch (item.getItemId()) {
@@ -307,7 +309,7 @@ public class PoolActivity extends BaseActivity
             }
 
             if(poolEdit.isUserDefined()) {
-                String port = etPoolPort.getEditText().getText().toString().trim();
+                String port = Objects.requireNonNull(etPoolPort.getEditText()).getText().toString().trim();
                 if (port.isEmpty()) {
                     etPoolPort.setError(getString(R.string.value_empty));
                     return false;
@@ -459,6 +461,7 @@ public class PoolActivity extends BaseActivity
                 String port = poolItem != null ? poolItem.getPort() : "";
                 Objects.requireNonNull(etPoolPort.getEditText()).setText(port);
             } else {
+                assert poolItem != null;
                 ArrayList<String> ports = poolItem.getPorts();
                 if(ports.isEmpty())
                     ports.add(poolItem.getDefaultPort());
@@ -510,8 +513,9 @@ public class PoolActivity extends BaseActivity
             //refresh();
         }
 
+        @SuppressLint("IntentReset")
         public void pickImage() {
-            Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
+            @SuppressLint("IntentReset") Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
             intent.setType("image/*");
             intent.putExtra("crop", "true");
             intent.putExtra("scale", true);
@@ -573,6 +577,7 @@ public class PoolActivity extends BaseActivity
         }
     }
 
+    @SuppressLint("StaticFieldLeak")
     private class AsyncLoadPools extends AsyncTask<Void, PoolItem, Boolean> {
         @Override
         protected void onPreExecute() {

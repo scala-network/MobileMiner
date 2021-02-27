@@ -30,18 +30,15 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import io.scalaproject.androidminer.R;
-
 import java.util.Locale;
+
+import io.scalaproject.androidminer.R;
 
 public class ProgressDialog extends AlertDialog {
 
     private ProgressBar pbBar;
 
-    private TextView tvMessage;
-
-    private TextView tvProgress;
-
+    private TextView tvMessage, tvProgress;
     private View rlProgressBar, pbCircle;
 
     static private final String PROGRESS_FORMAT = "%1d/%2d";
@@ -57,13 +54,16 @@ public class ProgressDialog extends AlertDialog {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         final View view = LayoutInflater.from(getContext()).inflate(R.layout.dialog_progress, null);
+
         pbCircle = view.findViewById(R.id.pbCircle);
         tvMessage = view.findViewById(R.id.tvMessage);
         rlProgressBar = view.findViewById(R.id.rlProgressBar);
         pbBar = view.findViewById(R.id.pbBar);
         tvProgress = view.findViewById(R.id.tvProgress);
+
         setView(view);
         setIndeterminate(indeterminate);
+
         if (maxValue > 0) {
             setMax(maxValue);
         }
@@ -80,6 +80,7 @@ public class ProgressDialog extends AlertDialog {
     public void setProgress(int value, int max) {
         progressValue = value;
         maxValue = max;
+
         if (pbBar != null) {
             pbBar.setProgress(value);
             pbBar.setMax(max);
@@ -113,6 +114,7 @@ public class ProgressDialog extends AlertDialog {
                     rlProgressBar.setVisibility(View.VISIBLE);
                 }
             }
+
             this.indeterminate = indeterminate;
         }
     }
@@ -120,6 +122,7 @@ public class ProgressDialog extends AlertDialog {
     @Override
     public void setMessage(CharSequence message) {
         this.message = message;
+
         if (tvMessage != null) {
             tvMessage.setText(message);
         }

@@ -238,11 +238,6 @@ public class SettingsFragment extends Fragment {
             swSendDebugInformation.setChecked(true);
         }
 
-        /*boolean checkDoNotRestartOnCrash = Config.read(Config.CONFIG_DISABLE_RESTART_MINING_ABORTED).equals("1");
-        if(checkDoNotRestartOnCrash) {
-            swDoNotRestartOnCrash.setChecked(true);
-        }*/
-
         if (!Config.read(Config.CONFIG_ADDRESS).isEmpty()) {
             edAddress.setText(Config.read(Config.CONFIG_ADDRESS));
         }

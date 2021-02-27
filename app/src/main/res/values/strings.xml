@@ -175,6 +175,7 @@
     <string name="hardware_settings_help">Your device will start cooling when the CPU or battery reach the specified temperatures.\n\nThe cooldown threshold defines the temperature at which the application will resume the mining process.</string>
 
     <string name="loading_pools" tools:ignore="TypographyEllipsis">Loading pools...</string>
+    <string name="loading_changelog" tools:ignore="TypographyEllipsis">Loading changelog...</string>
     <string name="aboutapplication">An open-source cryptocurrency miner for Android devices.</string>
     <string name="disclaimerText">Running your CPU at a high intensity for a prolonged duration may result in negative effects such as: battery drainage, slow response time, overheating, and may cause permanent damage to your device.\n\nWe recommend using the Temperature Control settings and a low number of CPU Cores to prevent damage to your device.\n\nBy using this application, you assume full responsibility for any damage that may be caused to your device, property or self.</string>
     <string name="icons_by">Icons by</string>
@@ -261,4 +262,6 @@
     <string name="port">Port</string>
     <string name="turn_off_flashlight">Turn off flashlight</string>
     <string name="turn_on_flashlight">Turn on flashlight</string>
+    <string name="changelog">Changelog</string>
+    <string name="no_changelog">No changelog.</string>
 </resources>
