@@ -1,0 +1,3 @@
+- Fix subaddresses
+- Update app icon
+- Fix pool stats
