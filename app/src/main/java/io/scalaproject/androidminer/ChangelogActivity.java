@@ -5,6 +5,7 @@
 package io.scalaproject.androidminer;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -49,13 +50,16 @@ public class ChangelogActivity extends BaseActivity {
 
             @Override
             public void onButtonOptions(int type) {
-                // Does nothing in this view
+                if (type == Toolbar.BUTTON_OPTIONS_RELEASES) {
+                    Uri uri = Uri.parse(Config.URL_RELEASES);
+                    startActivity(new Intent(Intent.ACTION_VIEW, uri));
+                }
             }
         });
 
         toolbar.setTitle(getString(R.string.changelog));
         toolbar.setButtonMain(Toolbar.BUTTON_MAIN_BACK);
-        toolbar.setButtonOptions(Toolbar.BUTTON_OPTIONS_NONE);
+        toolbar.setButtonOptions(Toolbar.BUTTON_OPTIONS_RELEASES);
 
         View view = findViewById(android.R.id.content).getRootView();
 
@@ -65,17 +69,24 @@ public class ChangelogActivity extends BaseActivity {
 
         changelogAdapter.setChangelogs(MainActivity.allChangelogItems);
 
-        LinearLayout llNoChangelog = findViewById(R.id.llNoChangelog);
-        llNoChangelog.setVisibility(MainActivity.allChangelogItems.isEmpty() ? View.VISIBLE : View.GONE);
+        boolean isChangelogEmpty = MainActivity.allChangelogItems.isEmpty();
 
-        if(Utils.needUpdate()) {
-            Utils.showToast(getApplicationContext(), getResources().getString(R.string.latest_version_not_ok), Toast.LENGTH_SHORT, Tools.TOAST_YOFFSET_BOTTOM);
+        LinearLayout llNoChangelog = findViewById(R.id.llNoChangelog);
+        llNoChangelog.setVisibility(isChangelogEmpty ? View.VISIBLE : View.GONE);
+
+        if(isChangelogEmpty) {
+            Utils.showToast(getApplicationContext(), getResources().getString(R.string.cannot_retrieve_changelog_data), Toast.LENGTH_SHORT, Tools.TOAST_YOFFSET_BOTTOM);
         } else {
-            Utils.showToast(getApplicationContext(), getResources().getString(R.string.latest_version_ok), Toast.LENGTH_SHORT, Tools.TOAST_YOFFSET_BOTTOM);
+            if (Utils.needUpdate()) {
+                Utils.showToast(getApplicationContext(), getResources().getString(R.string.latest_version_not_ok), Toast.LENGTH_SHORT, Tools.TOAST_YOFFSET_BOTTOM);
+            } else {
+                Utils.showToast(getApplicationContext(), getResources().getString(R.string.latest_version_ok), Toast.LENGTH_SHORT, Tools.TOAST_YOFFSET_BOTTOM);
+            }
         }
 
         Utils.hideKeyboard(this);
     }
+
 
     @Override
     public void onBackPressed() {

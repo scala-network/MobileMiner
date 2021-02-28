@@ -23,7 +23,8 @@ public class Config {
 
     public static final int MAX_WORKERNAME_TITLE_CHARS = 25;
 
-    public static final String DEFAULT_CHANGELOG_REPOSITORY = "https://raw.githubusercontent.com/scala-network/MobileMiner/2.1.1/fastlane/metadata/android/en-US/changelog/";
+    public static final String URL_CHANGELOG_DIRECTORY = "https://raw.githubusercontent.com/scala-network/MobileMiner/2.1.1/fastlane/metadata/android/en-US/changelog/";
+    public static final String URL_RELEASES = "https://github.com/scala-network/MobileMiner/releases";
 
     public final static String[] SUPPORTED_ARCHITECTURES = {"arm64-v8a", "armeabi-v7a", "x86_64"};
 

@@ -64,7 +64,8 @@
                         android:paddingStart="15dp"
                         android:paddingEnd="15dp"
                         android:orientation="horizontal"
-                        android:background="@drawable/corner_radius_orange_small">
+                        android:background="@drawable/corner_radius_orange_small"
+                        android:visibility="gone">
 
                         <TextView
                             android:layout_width="wrap_content"

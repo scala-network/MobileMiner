@@ -25,7 +25,7 @@
 			android:layout_height="wrap_content"
 			android:layout_marginStart="35dp"
 			android:layout_marginEnd="35dp"
-			android:paddingBottom="35dp"
+			android:paddingBottom="25dp"
 			android:weightSum="80">
 
 			<TextView
@@ -142,25 +142,6 @@
 					app:srcCompat="@drawable/ic_email" />
 
 			</LinearLayout>
-
-			<TextView
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:layout_gravity="center"
-				android:layout_marginTop="25dp"
-				android:layout_marginBottom="15dp"
-				android:text="@string/happy_mining"
-				android:textColor="@color/txt_headline"
-				android:textStyle="bold"
-				android:textAlignment="center"
-				android:textSize="22sp" />
-
-			<ImageView
-				android:id="@+id/ivHaku"
-				android:layout_width="124dp"
-				android:layout_height="124dp"
-				android:layout_gravity="center"
-				app:srcCompat="@mipmap/haku_face" />
 
 		</LinearLayout>
 

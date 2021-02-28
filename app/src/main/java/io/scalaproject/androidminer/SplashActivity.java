@@ -102,7 +102,7 @@ public class SplashActivity extends BaseActivity {
 
             for(int i = 1; i < 100; i++) {
                 ChangelogItem changelogItem = new ChangelogItem();
-                String strChangelogFile = Config.DEFAULT_CHANGELOG_REPOSITORY + i + ".txt";
+                String strChangelogFile = Config.URL_CHANGELOG_DIRECTORY + i + ".txt";
 
                 if (Tools.isURLReachable(strChangelogFile)) {
                     URL url;

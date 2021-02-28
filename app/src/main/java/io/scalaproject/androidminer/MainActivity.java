@@ -306,8 +306,18 @@ public class MainActivity extends BaseActivity
         toolbar.setOnButtonListener(new Toolbar.OnButtonListener() {
             @Override
             public void onButtonMain(int type) {
-                if (type == Toolbar.BUTTON_MAIN_CLOSE) {
-                    backHomeMenu();
+                switch(type) {
+                    case Toolbar.BUTTON_MAIN_LOGO: {
+                        showAboutHaku();
+                        break;
+                    }
+                    case Toolbar.BUTTON_MAIN_CLOSE: {
+                        backHomeMenu();
+                        break;
+                    }
+                    default: {
+                        // Do nothing
+                    }
                 }
             }
 
@@ -318,12 +328,10 @@ public class MainActivity extends BaseActivity
                         Bitmap bitmap = takeScreenshot();
                         saveBitmap(bitmap);
                         onShareHashrate();
-
                         break;
                     }
                     case Toolbar.BUTTON_OPTIONS_SHOW_CORES: {
                         refreshHashrate();
-
                         break;
                     }
                     case Toolbar.BUTTON_OPTIONS_STATS: {
@@ -1562,6 +1570,27 @@ public class MainActivity extends BaseActivity
                     public void onClick(DialogInterface dialog, int id) {
                     }
                 }).show();
+    }
+
+    private void showAboutHaku() {
+        LayoutInflater li = LayoutInflater.from(this);
+        View aboutHakuView = li.inflate(R.layout.about_haku, null);
+
+        MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this, R.style.MaterialAlertDialogCustom);
+        alertDialogBuilder.setView(aboutHakuView);
+
+        final TextView tvWebsite = aboutHakuView.findViewById(R.id.tvWebsite);
+        tvWebsite.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Uri uri = Uri.parse(getResources().getString(R.string.ScalaLinkClean));
+                startActivity(new Intent(Intent.ACTION_VIEW, uri));
+            }
+        });
+
+        // set dialog message
+        alertDialogBuilder
+                .setCancelable(true)
+                .setPositiveButton(getString(R.string.ok), null).show();
     }
 
     private void startMining() {
