@@ -22,6 +22,9 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.VectorDrawable;
 import android.net.Uri;
 import android.os.Build;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
+import android.text.style.ForegroundColorSpan;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -320,6 +323,32 @@ public final class Utils {
                     }
                 })
                 .setNegativeButton(context.getResources().getString(R.string.no), null)
+                .show();
+    }
+
+    static public void showPopup(Context context, String title, String message) {
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(context, R.style.MaterialAlertDialogCustom);
+        builder.setTitle(title)
+                .setMessage(message)
+                .setCancelable(true)
+                .show();
+    }
+
+    static public void showPopup(Context context, String title, String message, int titleColor) {
+        ForegroundColorSpan foregroundColorSpan = new ForegroundColorSpan(titleColor);
+
+        SpannableStringBuilder ssBuilder = new SpannableStringBuilder(title);
+        ssBuilder.setSpan(
+                foregroundColorSpan,
+                0,
+                title.length(),
+                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+        );
+
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(context, R.style.MaterialAlertDialogCustom);
+        builder.setTitle(ssBuilder)
+                .setMessage(message)
+                .setCancelable(true)
                 .show();
     }
 

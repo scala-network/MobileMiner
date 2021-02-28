@@ -499,20 +499,18 @@ public class MainActivity extends BaseActivity
         indicator_max.setColor(getResources().getColor(R.color.c_orange));
         meterHashrate_max.setIndicator(indicator_max);
 
-        LayoutInflater inflater = LayoutInflater.from(getApplicationContext());
-
         // CPU Temperature
 
         tvCPUTemperature = findViewById(R.id.cputemp);
+
+        Context context = this;
 
         RelativeLayout rlWarningCPUTemperature = findViewById(R.id.rlWarningCPUTemp);
         rlWarningCPUTemperature.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(!bValidCPUTemperatureSensor) {
-                    // Inflate the layout of the popup window
-                    View popupView = inflater.inflate(R.layout.warning_cpu_temp_sensor, null);
-                    Utils.showPopup(v, inflater, popupView);
+                    Utils.showPopup(context, getResources().getString(R.string.warning), getResources().getString(R.string.warning_cpu_temp_sensor), getResources().getColor(R.color.c_yellow));
                 }
             }
         });
@@ -526,9 +524,7 @@ public class MainActivity extends BaseActivity
             @Override
             public void onClick(View v) {
                 if(!bValidBatteryTemperatureSensor) {
-                    // Inflate the layout of the popup window
-                    View popupView = inflater.inflate(R.layout.warning_battery_temp_sensor, null);
-                    Utils.showPopup(v, inflater, popupView);
+                    Utils.showPopup(context, getResources().getString(R.string.warning), getResources().getString(R.string.warning_battery_temp_sensor), getResources().getColor(R.color.c_yellow));
                 }
             }
         });

@@ -4,9 +4,9 @@
 
 package io.scalaproject.androidminer;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.SeekBar;
@@ -81,15 +81,12 @@ public class WizardSettingsActivity extends BaseActivity {
         sbCooldown = view.findViewById(R.id.seekbarcooldownthreshold);
         tvCooldown = view.findViewById(R.id.cooldownthreshold);
 
+        Context context = this;
         Button btnTemperatureControlHelp = view.findViewById(R.id.btnTemperatureControlHelp);
         btnTemperatureControlHelp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // inflate the layout of the popup window
-                LayoutInflater inflater = LayoutInflater.from(getApplicationContext());
-
-                View popupView = inflater.inflate(R.layout.helper_max_temperature, null);
-                Utils.showPopup(v, inflater, popupView);
+                Utils.showPopup(context, getString(R.string.temperature_control), getString(R.string.hardware_settings_help));
             }
         });
 
