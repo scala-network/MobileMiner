@@ -4,7 +4,6 @@ apply plugin: 'kotlin-android'
 android {
     compileSdkVersion 29
     buildToolsVersion "29.0.2"
-    dataBinding.enabled = true
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -16,7 +15,7 @@ android {
         minSdkVersion 19
         targetSdkVersion 28 // keep version 28 to avoid an error 13 when running exe in assets folder (sdk 29 gives the error)
         versionCode 12
-        versionName "2.1.1"
+        versionName "2.2.0"
         buildConfigField "long", "BUILD_TIME", System.currentTimeMillis() + "L"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
@@ -58,7 +57,7 @@ dependencies {
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.6'
 
     //noinspection GradleDependency
-    implementation "com.mikepenz:aboutlibraries:6.2.3"
+    implementation "com.mikepenz:aboutlibraries:6.2.3" // Keep 6.2.3 for compatibility with AndroidX/AppCompat
     implementation "androidx.cardview:cardview:1.0.0"
     implementation "androidx.recyclerview:recyclerview:1.1.0"
 }

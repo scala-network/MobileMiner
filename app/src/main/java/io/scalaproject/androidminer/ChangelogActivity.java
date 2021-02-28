@@ -4,37 +4,22 @@
 
 package io.scalaproject.androidminer;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.URL;
-import java.util.HashSet;
 import java.util.Objects;
-import java.util.Set;
 
-import javax.net.ssl.HttpsURLConnection;
-
-import io.scalaproject.androidminer.api.ChangelogItem;
 import io.scalaproject.androidminer.widgets.ChangelogInfoAdapter;
 import io.scalaproject.androidminer.widgets.Toolbar;
 
 public class ChangelogActivity extends BaseActivity {
     private static final String LOG_TAG = "ChangelogActivity";
 
-    static private final String DEFAULT_CHANGELOG_REPOSITORY = "https://raw.githubusercontent.com/scala-network/MobileMiner/2.1.1/fastlane/metadata/android/en-US/changelog/";
-
     private ChangelogInfoAdapter changelogAdapter;
-    private final Set<ChangelogItem> allChangelogItems = new HashSet<>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -77,9 +62,10 @@ public class ChangelogActivity extends BaseActivity {
         changelogAdapter = new ChangelogInfoAdapter();
         rvChangelog.setAdapter(changelogAdapter);
 
-        refresh();
+        changelogAdapter.setChangelogs(MainActivity.allChangelogItems);
 
-        changelogAdapter.setChangelogs(allChangelogItems);
+        LinearLayout llNoChangelog = findViewById(R.id.llNoChangelog);
+        llNoChangelog.setVisibility(MainActivity.allChangelogItems.isEmpty() ? View.VISIBLE : View.GONE);
 
         Utils.hideKeyboard(this);
     }
@@ -87,86 +73,5 @@ public class ChangelogActivity extends BaseActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-    }
-
-    private AsyncLoadChangelog asyncLoadChangelogs = null;
-
-    private void refresh() {
-        if (asyncLoadChangelogs != null) return; // ignore refresh request as one is ongoing
-
-        asyncLoadChangelogs = new ChangelogActivity.AsyncLoadChangelog();
-        asyncLoadChangelogs.execute();
-    }
-
-    @SuppressLint("StaticFieldLeak")
-    private class AsyncLoadChangelog extends AsyncTask<Void, ChangelogItem, Boolean> {
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-
-            changelogAdapter.setChangelogs(null);
-
-            showProgressDialog(R.string.loading_changelog);
-        }
-
-        @Override
-        protected Boolean doInBackground(Void... params) {
-            allChangelogItems.clear();
-
-            // Set Changelog data
-
-            for(int i = 1; i < 100; i++) {
-                ChangelogItem changelogItem = new ChangelogItem();
-                String strChangelogFile = DEFAULT_CHANGELOG_REPOSITORY + i + ".txt";
-
-                if (Tools.isURLReachable(strChangelogFile)) {
-                    URL url;
-                    try {
-                        changelogItem.mVersion = i;
-
-                        url = new URL(strChangelogFile);
-                        HttpsURLConnection uc = (HttpsURLConnection) url.openConnection();
-                        InputStream in = uc.getInputStream();
-
-                        BufferedReader br = new BufferedReader(new InputStreamReader(in));
-
-                        String line;
-                        while ((line = br.readLine()) != null) {
-                            changelogItem.mChanges.add(line);
-                        }
-
-                        allChangelogItems.add(changelogItem);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                        break;
-                    }
-                } else {
-                    break;
-                }
-            }
-
-            return true;
-        }
-
-        @Override
-        protected void onPostExecute(Boolean result) {
-            complete();
-        }
-
-        @Override
-        protected void onCancelled(Boolean result) {
-            complete();
-        }
-
-        private void complete() {
-            asyncLoadChangelogs = null;
-
-            changelogAdapter.setChangelogs(allChangelogItems);
-
-            LinearLayout llNoChangelog = findViewById(R.id.llNoChangelog);
-            llNoChangelog.setVisibility(allChangelogItems.isEmpty() ? View.VISIBLE : View.GONE);
-
-            dismissProgressDialog();
-        }
     }
 }

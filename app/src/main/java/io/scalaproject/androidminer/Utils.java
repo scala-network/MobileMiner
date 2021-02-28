@@ -8,6 +8,8 @@ import android.app.Activity;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -18,6 +20,7 @@ import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.VectorDrawable;
+import android.net.Uri;
 import android.os.Build;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -28,24 +31,26 @@ import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
-import android.widget.Toast;
 
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.text.DateFormat;
+import java.text.DecimalFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Objects;
-import java.util.regex.*;
-import java.text.DecimalFormat;
-import java.text.ParseException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import io.scalaproject.androidminer.widgets.CustomToast;
 
@@ -300,5 +305,25 @@ public final class Utils {
     // Converts to fahrenheit
     static public int convertCelciusToFahrenheit(int celsius) {
         return ((celsius * 9) / 5) + 32;
+    }
+
+    static public void askUpdateVersion(Context context) {
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(context, R.style.MaterialAlertDialogCustom);
+        builder.setTitle(context.getResources().getString(R.string.new_version_title))
+                .setMessage(context.getResources().getString(R.string.new_version_text))
+                .setCancelable(false)
+                .setPositiveButton(context.getResources().getString(R.string.yes), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Uri uri = Uri.parse(context.getResources().getString(R.string.mobileminerLink));
+                        context.startActivity(new Intent(Intent.ACTION_VIEW, uri));
+                    }
+                })
+                .setNegativeButton(context.getResources().getString(R.string.no), null)
+                .show();
+    }
+
+    static public boolean needUpdate() {
+        return BuildConfig.VERSION_CODE < MainActivity.nLastVersion;
     }
 }

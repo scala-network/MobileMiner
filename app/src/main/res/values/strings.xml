@@ -63,6 +63,7 @@
     <string name="mininglog">Mining Log</string>
     <string name="value_empty">We need this!</string>
 
+    <string name="mobileminerLink">https://mobileminer.scalaproject.io</string>
     <string name="privacyPolicyLink">https://scalaproject.io/miner-privacy-policy.html</string>
     <string name="githubLink">https://github.com/scala-network/MobileMiner/releases</string>
     <string name="discordLink">https://discord.gg/djAFVvy</string>
@@ -251,8 +252,12 @@
     <string name="activity">Activity</string>
     <string name="stopped">stopped</string>
     <string name="payout">Payout</string>
+    <string name="whats_new">What\'s new?</string>
+    <string name="whats_new_text">Your application has been updated to the latest version.\n\nHere are the new features:\n</string>
     <string name="performance_mode">Performance Mode</string>
     <string name="performance_mode_text">Are you sure you want to enable Performance Mode?\n\nThe following features will be disabled:\n- Hashrate meter and chart\n- Temperature chart\n- Payout widget\n- Statistics refresh\n- Hashrate refresh delay</string>
+    <string name="new_version_title">A new version is available!</string>
+    <string name="new_version_text">A new version of the application is available. To update to this version, uninstall your current application and install the new one.\n\nDo you want to download it now?</string>
     <string name="refresh">Refresh</string>
     <string name="devicecharging">Device charging.</string>
     <string name="deviceonbatterypower">Device on battery power.</string>
@@ -264,4 +269,5 @@
     <string name="turn_on_flashlight">Turn on flashlight</string>
     <string name="changelog">Changelog</string>
     <string name="no_changelog">No changelog.</string>
+    <string name="install">Install</string>
 </resources>

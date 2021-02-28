@@ -23,6 +23,8 @@ public class Config {
 
     public static final int MAX_WORKERNAME_TITLE_CHARS = 25;
 
+    public static final String DEFAULT_CHANGELOG_REPOSITORY = "https://raw.githubusercontent.com/scala-network/MobileMiner/2.1.1/fastlane/metadata/android/en-US/changelog/";
+
     public final static String[] SUPPORTED_ARCHITECTURES = {"arm64-v8a", "armeabi-v7a", "x86_64"};
 
     public final static String CONFIG_INIT = "init";
@@ -51,11 +53,11 @@ public class Config {
     public final static String CONFIG_DISCLAIMER_AGREED = "disclaimer_agreed";
     public final static String CONFIG_POOLS_REPOSITORY_LAST_FETCHED = "pools_respository_last_fetched";
     public final static String CONFIG_POOLS_REPOSITORY_JSON = "pools_respository_json";
+    public final static String CONFIG_APP_PREVIOUS_VERSION = "app_previous_version";
 
     public final static int DefaultRefreshDelay = 30; // In seconds
 
     public final static int CHECK_TEMPERATURE_DELAY = 10000; // In milliseconds
-    public final static int CHECK_MINING_SANITY_DELAY = 10000; // In milliseconds
     public final static int CHECK_MINING_TIME_DELAY = 60000; // In milliseconds
 
     private static Config mSettings;

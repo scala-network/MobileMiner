@@ -7,6 +7,7 @@ package io.scalaproject.androidminer.widgets;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -18,6 +19,7 @@ import java.util.Collections;
 import java.util.List;
 
 import io.scalaproject.androidminer.R;
+import io.scalaproject.androidminer.Utils;
 import io.scalaproject.androidminer.api.ChangelogItem;
 
 public class ChangelogInfoAdapter extends RecyclerView.Adapter<ChangelogInfoAdapter.ViewHolder> {
@@ -63,6 +65,7 @@ public class ChangelogInfoAdapter extends RecyclerView.Adapter<ChangelogInfoAdap
 
     class ViewHolder extends RecyclerView.ViewHolder {
         TextView tvVersion, tvDate, tvChangelog;
+        LinearLayout llUpdate;
 
         ChangelogItem changelogItem;
 
@@ -71,6 +74,7 @@ public class ChangelogInfoAdapter extends RecyclerView.Adapter<ChangelogInfoAdap
             tvVersion = itemView.findViewById(R.id.tvVersion);
             tvDate = itemView.findViewById(R.id.tvDate);
             tvChangelog = itemView.findViewById(R.id.tvChangelog);
+            llUpdate = itemView.findViewById(R.id.llUpdate);
         }
 
         void bind(final int position) {
@@ -79,11 +83,13 @@ public class ChangelogInfoAdapter extends RecyclerView.Adapter<ChangelogInfoAdap
             tvVersion.setText(String.valueOf(changelogItem.mVersion));
             tvDate.setText(changelogItem.mDate);
 
-            StringBuffer text = new StringBuffer();
+            StringBuilder changes = new StringBuilder();
             for (String change: changelogItem.mChanges) {
-                text.append(change).append('\n');
+                changes.append(change).append('\n');
             }
-            tvChangelog.setText(text);
+            tvChangelog.setText(changes);
+
+            llUpdate.setVisibility(Utils.needUpdate() && position == 0 ? View.VISIBLE : View.GONE);
         }
     }
 }

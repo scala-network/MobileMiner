@@ -122,12 +122,16 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import io.scalaproject.androidminer.api.ChangelogItem;
 import io.scalaproject.androidminer.api.IProviderListener;
 import io.scalaproject.androidminer.api.PoolItem;
 import io.scalaproject.androidminer.api.ProviderData;
@@ -144,6 +148,11 @@ public class MainActivity extends BaseActivity
 
     private TextView tvCPUTemperature, tvBatteryTemperature, tvLogWidget, tvLogLayout;
     IconSwitch isPerformanceMode;
+
+    public static int nLastVersion = -1;
+    public static boolean isChangelogLoaded = false;
+    public static boolean isActivityLoaded = false;
+    public static final Set<ChangelogItem> allChangelogItems = new HashSet<>();
 
     private boolean bIsPerformanceMode = false;
 
@@ -454,8 +463,6 @@ public class MainActivity extends BaseActivity
         meterCores.setMaxSpeed(nNbMaxCores);
         meterCores.speedTo(0, 0);
 
-        SpeedView meterTicks = findViewById(R.id.meter_hashrate_ticks);
-
         // Hashrate
         TubeSpeedometer meterHashrate = findViewById(R.id.meter_hashrate);
         meterHashrate.makeSections(1, getResources().getColor(R.color.c_blue), Section.Style.SQUARE);
@@ -577,6 +584,9 @@ public class MainActivity extends BaseActivity
         hideNotifications();
 
         toolbar.setTitle(Utils.truncateString(getWorkerName(), Config.MAX_WORKERNAME_TITLE_CHARS), true);
+
+        isActivityLoaded = true;
+        manageChangelog();
     }
 
     private void showChangeLog() {
@@ -599,7 +609,74 @@ public class MainActivity extends BaseActivity
 
         hideNotifications();
 
+        isActivityLoaded = false;
+
         super.onDestroy();
+    }
+
+    public static int changeLogRetries = 0;
+    public void manageChangelog() {
+        // Start timer
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                changeLogRetries++;
+
+                if(changeLogRetries > 3) // Max 3 retries
+                    return;
+
+                if(!isChangelogLoaded)
+                    manageChangelog();
+                else
+                    checkVersion();
+            }
+        }, 3000);
+    }
+
+    private void checkVersion() {
+        if(allChangelogItems.isEmpty())
+            return;
+
+        List<ChangelogItem> changelogItems = new ArrayList<ChangelogItem>();
+        changelogItems.clear();
+        changelogItems.addAll(allChangelogItems);
+
+        Collections.sort(changelogItems, ChangelogItem.ChangelogComparator);
+        Collections.reverse(changelogItems);
+
+        ChangelogItem lastVersion = changelogItems.get(0);
+        nLastVersion = lastVersion.mVersion;
+
+        if(Utils.needUpdate()) {
+            Utils.askUpdateVersion(this);
+        } else {
+            String previousVersion = Config.read(Config.CONFIG_APP_PREVIOUS_VERSION);
+
+            if(!previousVersion.isEmpty()) {
+                int nPreviousVersion = Integer.parseInt(previousVersion);
+                if(nPreviousVersion < nLastVersion) {
+                    StringBuilder changes = new StringBuilder();
+                    for (String change: lastVersion.mChanges) {
+                        changes.append(change).append('\n');
+                    }
+                    String newFeatures = getString(R.string.whats_new_text) + changes;
+
+                    MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this, R.style.MaterialAlertDialogCustom);
+                    builder.setTitle(getString(R.string.whats_new))
+                            .setMessage(newFeatures)
+                            .setCancelable(false)
+                            .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+
+                                }
+                            })
+                            .show();
+                }
+            }
+
+            Config.write(Config.CONFIG_APP_PREVIOUS_VERSION, String.valueOf(BuildConfig.VERSION_CODE));
+        }
     }
 
     private boolean ignorePerformanceModeEvent = false;
