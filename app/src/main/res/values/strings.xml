@@ -270,4 +270,8 @@
     <string name="changelog">Changelog</string>
     <string name="no_changelog">No changelog.</string>
     <string name="install">Install</string>
+    <string name="happy_mining">Happy mining!</string>
+    <string name="need_help">Need help getting started? Did you encounter an issue with the application?</string>
+    <string name="send_debug_information_text">To help us better understand your problem, start by copying the debug information of your device.</string>
+    <string name="send_us_message">Send us a message through one of our official communication channels, and make sure to paste the debug information.</string>
 </resources>
