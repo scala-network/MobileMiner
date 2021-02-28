@@ -1588,9 +1588,7 @@ public class MainActivity extends BaseActivity
         });
 
         // set dialog message
-        alertDialogBuilder
-                .setCancelable(true)
-                .setPositiveButton(getString(R.string.ok), null).show();
+        alertDialogBuilder.setCancelable(true).show();
     }
 
     private void startMining() {
