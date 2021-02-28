@@ -62,6 +62,7 @@ import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.StyleSpan;
+import android.text.style.TypefaceSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -450,13 +451,13 @@ public class MainActivity extends BaseActivity
         meterCoresGap.setTickNumber(nNbMaxCores + 1); // Keep this line to patch a bug in the meter implementation
         meterCoresGap.setOnPrintTickLabel((integer, aFloat) -> {
             String tick = "▮";
+            TypefaceSpan typefaceSpan = new TypefaceSpan("sans-serif-medium");
             Spannable textSpan = new SpannableString(tick);
-            textSpan.setSpan(new StyleSpan(android.graphics.Typeface.BOLD), 0, 1, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+            textSpan.setSpan(typefaceSpan, 0, 1, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
 
             return textSpan;
         });
         meterCoresGap.invalidate();
-
 
         TubeSpeedometer meterCores = findViewById(R.id.meter_cores);
         meterCores.makeSections(1, getResources().getColor(R.color.c_yellow), Section.Style.SQUARE);
