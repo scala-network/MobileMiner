@@ -274,4 +274,7 @@
     <string name="need_help">Need help getting started? Did you encounter an issue with the application?</string>
     <string name="send_debug_information_text">To help us better understand your problem, start by copying the debug information of your device.</string>
     <string name="send_us_message">Send us a message through one of our official communication channels, and make sure to paste the debug information.</string>
+    <string name="latest_version_ok">You have the latest version.</string>
+    <string name="latest_version_not_ok">You don\'t have the latest version.</string>
+
 </resources>

@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -66,6 +67,12 @@ public class ChangelogActivity extends BaseActivity {
 
         LinearLayout llNoChangelog = findViewById(R.id.llNoChangelog);
         llNoChangelog.setVisibility(MainActivity.allChangelogItems.isEmpty() ? View.VISIBLE : View.GONE);
+
+        if(Utils.needUpdate()) {
+            Utils.showToast(getApplicationContext(), getResources().getString(R.string.latest_version_not_ok), Toast.LENGTH_SHORT, Tools.TOAST_YOFFSET_BOTTOM);
+        } else {
+            Utils.showToast(getApplicationContext(), getResources().getString(R.string.latest_version_ok), Toast.LENGTH_SHORT, Tools.TOAST_YOFFSET_BOTTOM);
+        }
 
         Utils.hideKeyboard(this);
     }
