@@ -21,8 +21,6 @@ import io.scalaproject.androidminer.widgets.Toolbar;
 public class ChangelogActivity extends BaseActivity {
     private static final String LOG_TAG = "ChangelogActivity";
 
-    private ChangelogInfoAdapter changelogAdapter;
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,7 +62,7 @@ public class ChangelogActivity extends BaseActivity {
         View view = findViewById(android.R.id.content).getRootView();
 
         RecyclerView rvChangelog = view.findViewById(R.id.rvChangelog);
-        changelogAdapter = new ChangelogInfoAdapter();
+        ChangelogInfoAdapter changelogAdapter = new ChangelogInfoAdapter();
         rvChangelog.setAdapter(changelogAdapter);
 
         changelogAdapter.setChangelogs(MainActivity.allChangelogItems);

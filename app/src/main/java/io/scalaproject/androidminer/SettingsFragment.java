@@ -55,10 +55,10 @@ public class SettingsFragment extends Fragment {
 
     private static final String LOG_TAG = "MiningSvc";
 
-    TextInputLayout tilAddress;
+    private TextInputLayout tilAddress;
     private EditText edAddress, edWorkerName, edUsernameparameters, edMiningGoal;
 
-    PoolView pvSelectedPool;
+    private PoolView pvSelectedPool;
 
     public static PoolItem selectedPoolTmp = null;
 

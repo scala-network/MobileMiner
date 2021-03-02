@@ -642,7 +642,7 @@ public class MainActivity extends BaseActivity
         if(allChangelogItems.isEmpty())
             return;
 
-        List<ChangelogItem> changelogItems = new ArrayList<ChangelogItem>();
+        List<ChangelogItem> changelogItems = new ArrayList<>();
         changelogItems.clear();
         changelogItems.addAll(allChangelogItems);
 

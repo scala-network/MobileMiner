@@ -80,7 +80,7 @@ public class Config {
     static final Integer logMaxLength = 50000;
     static final Integer logPruneLength = 1000;
 
-    private final HashMap<String,String> mConfigs = new HashMap<String, String>();
+    private final HashMap<String,String> mConfigs = new HashMap<>();
 
     static void initialize(SharedPreferences preferences) {
         mSettings = new Config();

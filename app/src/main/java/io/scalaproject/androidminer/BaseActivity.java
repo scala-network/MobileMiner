@@ -4,13 +4,13 @@
 
 package io.scalaproject.androidminer;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
-
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -32,7 +32,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
     }
 
-    private static int sessionDepth = 0;
+    private int sessionDepth = 0;
 
     static {
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
@@ -90,8 +90,8 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         sessionDepth++;
-        if(sessionDepth == 1){
-            //app came to foreground;
+        if(sessionDepth == 1) {
+            //Do nothing: app came to foreground
         }
     }
 

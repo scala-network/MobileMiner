@@ -23,7 +23,7 @@ public class CreditsActivity extends LibsActivity {
         super.onCreate(savedInstanceState);
 
         // Handle Toolbar
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setBackground(getApplicationContext().getResources().getDrawable(R.drawable.backgound_toolbar));
         toolbar.setTitle(R.string.credits);
         toolbar.setTitleTextAppearance(getApplicationContext(), R.style.Toolbar_Title);

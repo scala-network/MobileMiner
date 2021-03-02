@@ -65,7 +65,7 @@ public class PoolActivity extends BaseActivity
 
     private PoolItem selectedPool = null;
 
-    RequestQueue mPoolQueue = null;
+    private RequestQueue mPoolQueue = null;
 
     public final static String RequesterType = "Requester";
     public final static int REQUESTER_NONE =1;

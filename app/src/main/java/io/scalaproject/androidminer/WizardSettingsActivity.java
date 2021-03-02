@@ -22,9 +22,9 @@ public class WizardSettingsActivity extends BaseActivity {
     private SeekBar sbCores, sbCPUTemp, sbBatteryTemp, sbCooldown;
     private TextView tvCPUMaxTemp, tvBatteryMaxTemp, tvCooldown, tvCPUTempUnit, tvBatteryTempUnit;
 
-    private Integer nMaxCPUTemp = Config.DefaultMaxCPUTemp; // 60,65,70,75,80
-    private Integer nMaxBatteryTemp = Config.DefaultMaxBatteryTemp; // 30,35,40,45,50
-    private Integer nCooldownTheshold = Config.DefaultCooldownTheshold; // 5,10,15,20,25
+    private int nMaxCPUTemp = Config.DefaultMaxCPUTemp; // 60,65,70,75,80
+    private int nMaxBatteryTemp = Config.DefaultMaxBatteryTemp; // 30,35,40,45,50
+    private int nCooldownTheshold = Config.DefaultCooldownTheshold; // 5,10,15,20,25
 
     private MaterialButtonToggleGroup tgTemperatureUnit;
 
