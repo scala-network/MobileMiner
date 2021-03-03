@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="aboutLibraries_description_name">@string/app_name</string>
+    <string name="aboutLibraries_description_showIcon">true</string>
+    <string name="aboutLibraries_description_showVersion">true</string>
+    <string name="aboutLibraries_description_text">
+        <![CDATA[Made with <color="red">❤</color> by <a href="https://scalaproject.io">Scala</a>.<br />
+        Forked from <a href="https://github.com/Mine2Gether/m2g_android_miner">Mine2gether</a>, <a href="https://github.com/upost/MoneroMiner">MoneroMiner</a>.<br />
+        Icons by <a href="https://material.io/resources/">Material Design</a>, <a href="https://fontawesome.com/license">Font Awesome</a>, <a href="https://www.iconfinder.com/">Icon Finder</a>.]]>
+    </string>
+</resources>

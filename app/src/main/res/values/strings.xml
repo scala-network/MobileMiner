@@ -63,6 +63,7 @@
     <string name="mininglog">Mining Log</string>
     <string name="value_empty">We need this!</string>
 
+    <string name="mobileminerLink">https://mobileminer.scalaproject.io</string>
     <string name="privacyPolicyLink">https://scalaproject.io/miner-privacy-policy.html</string>
     <string name="githubLink">https://github.com/scala-network/MobileMiner/releases</string>
     <string name="discordLink">https://discord.gg/djAFVvy</string>
@@ -175,6 +176,7 @@
     <string name="hardware_settings_help">Your device will start cooling when the CPU or battery reach the specified temperatures.\n\nThe cooldown threshold defines the temperature at which the application will resume the mining process.</string>
 
     <string name="loading_pools" tools:ignore="TypographyEllipsis">Loading pools...</string>
+    <string name="loading_changelog" tools:ignore="TypographyEllipsis">Loading changelog...</string>
     <string name="aboutapplication">An open-source cryptocurrency miner for Android devices.</string>
     <string name="disclaimerText">Running your CPU at a high intensity for a prolonged duration may result in negative effects such as: battery drainage, slow response time, overheating, and may cause permanent damage to your device.\n\nWe recommend using the Temperature Control settings and a low number of CPU Cores to prevent damage to your device.\n\nBy using this application, you assume full responsibility for any damage that may be caused to your device, property or self.</string>
     <string name="icons_by">Icons by</string>
@@ -250,11 +252,30 @@
     <string name="activity">Activity</string>
     <string name="stopped">stopped</string>
     <string name="payout">Payout</string>
+    <string name="whats_new">What\'s new?</string>
+    <string name="whats_new_text">Your application has been updated to the latest version.\n\nHere are the new features:\n</string>
     <string name="performance_mode">Performance Mode</string>
     <string name="performance_mode_text">Are you sure you want to enable Performance Mode?\n\nThe following features will be disabled:\n- Hashrate meter and chart\n- Temperature chart\n- Payout widget\n- Statistics refresh\n- Hashrate refresh delay</string>
+    <string name="new_version_title">A new version is available!</string>
+    <string name="new_version_text">A new version of the application is available. To update to this version, uninstall your current application and install the new one.\n\nDo you want to download it now?</string>
     <string name="refresh">Refresh</string>
     <string name="devicecharging">Device charging.</string>
     <string name="deviceonbatterypower">Device on battery power.</string>
     <string name="connectedwifi">Connected to a Wi-Fi network.</string>
     <string name="disconnectedwifi">Disconnected from a Wi-Fi network.</string>
+    <string name="unreachable_pools_repo">The pools repository is unreachable, using default pool.</string>
+    <string name="port">Port</string>
+    <string name="turn_off_flashlight">Turn off flashlight</string>
+    <string name="turn_on_flashlight">Turn on flashlight</string>
+    <string name="changelog">Changelog</string>
+    <string name="no_changelog">No changelog.</string>
+    <string name="install">Install</string>
+    <string name="happy_mining">Happy mining!</string>
+    <string name="need_help">Need help getting started? Did you encounter an issue with the application?</string>
+    <string name="send_debug_information_text">To help us better understand your problem, start by copying the debug information of your device.</string>
+    <string name="send_us_message">Send us a message through one of our official communication channels, and make sure to paste the debug information.</string>
+    <string name="latest_version_ok">You have the latest version.</string>
+    <string name="latest_version_not_ok">You don\'t have the latest version.</string>
+    <string name="cannot_retrieve_changelog_data">Cannot retrieve changelog data.</string>
+
 </resources>

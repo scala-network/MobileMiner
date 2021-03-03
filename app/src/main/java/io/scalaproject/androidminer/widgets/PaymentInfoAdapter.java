@@ -5,22 +5,20 @@
 package io.scalaproject.androidminer.widgets;
 
 import android.content.Context;
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
-
-import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import io.scalaproject.androidminer.R;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import io.scalaproject.androidminer.R;
 import io.scalaproject.androidminer.Utils;
 import io.scalaproject.androidminer.api.PaymentItem;
 
@@ -73,11 +71,7 @@ public class PaymentInfoAdapter extends RecyclerView.Adapter<PaymentInfoAdapter.
     }
 
     class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        TextView tvAmount;
-        TextView tvFee;
-        TextView tvHash;
-        TextView tvTimestamp;
-
+        TextView tvAmount, tvFee, tvHash, tvTimestamp;
         PaymentItem paymentItem;
 
         ViewHolder(View itemView) {

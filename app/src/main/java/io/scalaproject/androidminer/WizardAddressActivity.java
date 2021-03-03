@@ -24,6 +24,7 @@ import androidx.core.content.ContextCompat;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.zxing.integration.android.IntentIntegrator;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -94,6 +95,7 @@ public class WizardAddressActivity extends BaseActivity {
 
     public void onPaste(View view) {
         tvAddress.setText(Utils.pasteFromClipboard(WizardAddressActivity.this));
+        Utils.hideKeyboard(this);
     }
 
     public void onScanQrCode(View view) {
@@ -117,8 +119,7 @@ public class WizardAddressActivity extends BaseActivity {
         Context appContext = WizardAddressActivity.this;
 
         try {
-            Intent intent = new Intent(appContext, QrCodeScannerActivity.class);
-            startActivity(intent);
+            new IntentIntegrator(this).setOrientationLocked(false).setCaptureActivity(QrCodeScannerActivity.class).initiateScan();
         } catch (Exception e) {
             Utils.showToast(appContext, e.getMessage(), Toast.LENGTH_SHORT);
         }
@@ -139,9 +140,9 @@ public class WizardAddressActivity extends BaseActivity {
     }
 
     public void onNext(View view) {
-        String strAddress = tvAddress.getText().toString();
-        View view2 = findViewById(android.R.id.content).getRootView();
+        String strAddress = tvAddress.getText().toString().trim();
 
+        View view2 = findViewById(android.R.id.content).getRootView();
         TextInputLayout til = view2.findViewById(R.id.addressIL);
 
         if(strAddress.isEmpty() || !Utils.verifyAddress(strAddress)) {
@@ -159,8 +160,6 @@ public class WizardAddressActivity extends BaseActivity {
         Intent intent = new Intent(WizardAddressActivity.this, PoolActivity.class);
         intent.putExtra(PoolActivity.RequesterType, PoolActivity.REQUESTER_WIZARD);
         startActivity(intent);
-
-        //finish();
     }
 
     private void requestFocus(View view) {

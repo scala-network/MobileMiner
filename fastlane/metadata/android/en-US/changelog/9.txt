@@ -1,0 +1,2 @@
+- Restore the 'Keep screen ON when mining' option
+- Clean up the log

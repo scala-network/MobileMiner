@@ -34,12 +34,12 @@ public class StatsFragment extends Fragment {
 
     public static ProviderData poolData = null;
 
-    static View view = null;
+    static final View view = null;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_stats, container, false);
+        View view = inflater.inflate(R.layout.fragment_stats, container, false);
 
         statsListener = new IProviderListener() {
             public void onStatsChange(ProviderData d) {
@@ -128,7 +128,7 @@ public class StatsFragment extends Fragment {
         tvPoolHashrateUnit.setText(p.length > 1 ? p[1] : "kH/s");
 
         TextView tvPoolMiners = view.findViewById(R.id.miners);
-        tvPoolMiners.setText(String.format(Locale.getDefault(), "%,d", Integer.parseInt(d.pool.miners)));
+        tvPoolMiners.setText(d.pool.miners.isEmpty() ? "n/a" : String.format(Locale.getDefault(), "%,d", Integer.parseInt(d.pool.miners)));
 
         TextView tvPoolLastBlock = view.findViewById(R.id.lastblockpool);
         tvPoolLastBlock.setText(d.pool.lastBlockTime.isEmpty() ? "n/a" : d.pool.lastBlockTime);

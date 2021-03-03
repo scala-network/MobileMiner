@@ -1,0 +1,9 @@
+- Add Send Debug Information feature
+- Add Performance Mode
+- Add Pause On Mobile Data feature
+- Add Pause/Resume options in the notifications
+- Fix Pool statistics for some configurations
+- Improve memory management
+- Better stability
+- Fix crash on notifications when miner is stopped
+- Refactoring

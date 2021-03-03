@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingBottom="15dp"
+    android:background="@color/bg_lighter"
+    android:orientation="vertical" >
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="10dp"
+        android:gravity="center"
+        android:text="@string/happy_mining"
+        android:textColor="@color/txt_headline"
+        android:textStyle="bold"
+        android:textSize="18sp" />
+
+    <ImageView
+        android:id="@+id/ivHaku"
+        android:layout_width="82dp"
+        android:layout_height="82dp"
+        android:layout_gravity="center"
+        app:srcCompat="@mipmap/haku_face" />
+
+    <TextView
+        android:id="@+id/tvWebsite"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:layout_gravity="center"
+        android:text="@string/ScalaLinkClean"
+        android:textColor="@color/c_blue"
+        android:textStyle="bold"
+        android:textSize="14sp" />
+
+</LinearLayout>

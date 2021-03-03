@@ -21,6 +21,11 @@ public class Config {
     public final static int STATE_COOLING = 3;
     public final static int STATE_CALCULATING = 4;
 
+    public static final int MAX_WORKERNAME_TITLE_CHARS = 25;
+
+    public static final String URL_CHANGELOG_DIRECTORY = "https://raw.githubusercontent.com/scala-network/MobileMiner/2.1.1/fastlane/metadata/android/en-US/changelog/";
+    public static final String URL_RELEASES = "https://github.com/scala-network/MobileMiner/releases";
+
     public final static String[] SUPPORTED_ARCHITECTURES = {"arm64-v8a", "armeabi-v7a", "x86_64"};
 
     public final static String CONFIG_INIT = "init";
@@ -49,11 +54,11 @@ public class Config {
     public final static String CONFIG_DISCLAIMER_AGREED = "disclaimer_agreed";
     public final static String CONFIG_POOLS_REPOSITORY_LAST_FETCHED = "pools_respository_last_fetched";
     public final static String CONFIG_POOLS_REPOSITORY_JSON = "pools_respository_json";
+    public final static String CONFIG_APP_PREVIOUS_VERSION = "app_previous_version";
 
     public final static int DefaultRefreshDelay = 30; // In seconds
 
     public final static int CHECK_TEMPERATURE_DELAY = 10000; // In milliseconds
-    public final static int CHECK_MINING_SANITY_DELAY = 10000; // In milliseconds
     public final static int CHECK_MINING_TIME_DELAY = 60000; // In milliseconds
 
     private static Config mSettings;
@@ -63,19 +68,19 @@ public class Config {
     public final static int DefaultMaxBatteryTemp = 40; // 30,35,40,45,50
     public final static int DefaultCooldownTheshold = 10; // 5,10,15,20,25
 
-    static final int DefaultPoolIndex = 1;
     public static final Long statsDelay = 30000L;
     public static final String miner_xlarig = "xlarig";
     static final String algo = "panthera";
-    public static final String githubAppJson = "https://raw.githubusercontent.com/scala-network/MobileMiner/2.0.0/app.json";
 
     public static final String CONFIG_KEY_CONFIG_VERSION = "config_version";
     public static final String version = "4";
+
+    public static final String CONFIG_KEY_POOLS_VERSION = "pools_version";
+
     static final Integer logMaxLength = 50000;
     static final Integer logPruneLength = 1000;
-    static final String debugAddress = "Ssy2HXpWZ9RhXbb9uNFTeHjaYfexa3suDbGJDSfUWSEpSajSmjQXwLh2xqCAAUQfZrdiRkvpUZvBceT8d6zKc6aV9NaZVYXFsY";
 
-    private final HashMap<String,String> mConfigs = new HashMap<String, String>();
+    private final HashMap<String,String> mConfigs = new HashMap<>();
 
     static void initialize(SharedPreferences preferences) {
         mSettings = new Config();

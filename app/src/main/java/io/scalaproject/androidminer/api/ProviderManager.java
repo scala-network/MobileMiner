@@ -19,30 +19,58 @@ import java.util.Map;
 import io.scalaproject.androidminer.Config;
 import io.scalaproject.androidminer.R;
 import io.scalaproject.androidminer.SettingsFragment;
+import io.scalaproject.androidminer.Tools;
 import io.scalaproject.androidminer.Utils;
 import io.scalaproject.androidminer.network.Json;
 
 public final class ProviderManager {
+
+    // Increment the version number when the json structure changes
+    static private final String version = "1";
+
+    static private final String DEFAULT_POOLS_REPOSITORY = "https://raw.githubusercontent.com/scala-network/MobileMiner/master/app.json";
+
+    static private final String IPFS_HASH = "QmaX32HmCqH9BeVim9G2nk7vzhGHmevN7PRN3F8gttuEmD";
+    static private final String[] POOLS_REPOSITORY_IPFS_GATEWAYS = {
+            "https://dweb.link/ipfs/",
+            "https://ipfs.io/ipfs/",
+            "https://gateway.ipfs.io/ipfs/",
+            "https://cloudflare-ipfs.com/ipfs/"
+    };
+
+    static private final String DEFAULT_POOL = "{\n" +
+            "\"pools\": [\n" +
+            "{\n" +
+            "\"key\": \"Scala Project (Official Pool)\",\n" +
+            "\"pool\": \"mine.scalaproject.io\",\n" +
+            "\"port\": \"3333\",\n" +
+            "\"ports\": [\"3333\", \"5555\", \"7777\", \"8888\"],\n" +
+            "\"type\": 3,\n" +
+            "\"url\": \"https://pool.scalaproject.io\",\n" +
+            "\"ip\": \"95.111.237.231\"\n" +
+            "} ]\n" +
+            "}";
+
+    static public boolean useDefaultPool = false;
 
     static private final ArrayList<PoolItem> mPools = new ArrayList<PoolItem>();
 
     static public void add(PoolItem poolItem) {
         mPools.add(poolItem);
     }
-
     static public void delete(PoolItem poolItem) {
         mPools.remove(poolItem);
     }
 
-    static public PoolItem add(String key, String pool,String port, int poolType, String poolUrl, String poolIP) {
-        PoolItem pi = new PoolItem(key, pool, port, poolType, poolUrl, poolIP);
+    static public PoolItem add(String key, String pool, String port, ArrayList<String> ports, int poolType, String poolUrl, String poolIP) {
+        PoolItem pi = new PoolItem(key, pool, port, ports, poolType, poolUrl, poolIP);
         mPools.add(pi);
 
         return pi;
     }
 
-    static public PoolItem add(String key, String pool, String port, int poolType, String poolUrl, String poolIP, String poolApi) {
-        PoolItem pi = new PoolItem(key, pool, port, poolType, poolUrl, poolIP, poolApi, "","");
+    static public PoolItem add(String key, String pool, String port, ArrayList<String> ports, int poolType, String poolUrl, String poolIP, String poolApi) {
+        PoolItem pi = new PoolItem(key, pool, port, ports, poolType, poolUrl, poolIP, poolApi, "","");
         mPools.add(pi);
 
         return pi;
@@ -56,7 +84,7 @@ public final class ProviderManager {
     }
 
     static public void loadPools(Context context) {
-        loadDefaultPools();
+        loadDefaultPools(context);
 
         loadUserdefinedPools(context);
 
@@ -141,7 +169,6 @@ public final class ProviderManager {
             return;
         }
 
-        //mPools.clear();
         request.mPoolItem = pi;
         data.isNew = true;
         request.start();
@@ -153,25 +180,52 @@ public final class ProviderManager {
         request.run();
     }
 
-    static public void loadDefaultPools() {
+    static public void loadDefaultPools(Context context) {
         request.stop();
         request.mPoolItem = null;
         mPools.clear();
+
+        boolean forceReload = false;
+        String poolVersion = Config.read(Config.CONFIG_KEY_POOLS_VERSION);
+        if(!poolVersion.equals(ProviderManager.version)) {
+            forceReload = true;
+            Config.write(Config.CONFIG_KEY_POOLS_VERSION, ProviderManager.version);
+        }
 
         String lastFetched = Config.read(Config.CONFIG_POOLS_REPOSITORY_LAST_FETCHED);
         String jsonString = "";
         long now = System.currentTimeMillis() / 1000L;
 
         // Use cached pools data
-        if(!lastFetched.isEmpty() && Long.parseLong(lastFetched) > now) {
+        if(!lastFetched.isEmpty() && Long.parseLong(lastFetched) > now && !forceReload) {
             jsonString = Config.read(Config.CONFIG_POOLS_REPOSITORY_JSON);
         }
 
         if(jsonString.isEmpty()) {
-            String url = Config.githubAppJson;
-            jsonString  = Json.fetch(url);
-            Config.write(Config.CONFIG_POOLS_REPOSITORY_JSON, jsonString);
-            Config.write(Config.CONFIG_POOLS_REPOSITORY_LAST_FETCHED, String.valueOf(now + 3600));//Cached time is 1 hour for now
+            // Load Pools data from repository
+            if(Tools.isURLReachable(DEFAULT_POOLS_REPOSITORY))
+                jsonString  = Json.fetch(DEFAULT_POOLS_REPOSITORY);
+
+            // If GitHub is not available or is blocked by firewalls, use IPFS gateways
+            if(jsonString.isEmpty()) {
+                for (String strPoolURL : POOLS_REPOSITORY_IPFS_GATEWAYS) {
+                    if(Tools.isURLReachable(strPoolURL)) {
+                        jsonString = Json.fetch(strPoolURL + IPFS_HASH);
+                        if (!jsonString.isEmpty())
+                            break;
+                    }
+                }
+            }
+
+            // None of the URL can be reached. Load default data but don't cache it.
+            if(jsonString.isEmpty()) {
+                useDefaultPool = true;
+                jsonString = DEFAULT_POOL;
+            } else {
+                useDefaultPool = false;
+                Config.write(Config.CONFIG_POOLS_REPOSITORY_JSON, jsonString);
+                Config.write(Config.CONFIG_POOLS_REPOSITORY_LAST_FETCHED, String.valueOf(now + 3600));//Cached time is 1 hour for now
+            }
         }
 
         try {
@@ -183,10 +237,20 @@ public final class ProviderManager {
 
                 PoolItem poolItem;
 
+                ArrayList<String> listPort = new ArrayList<>();
+                if(pool.has("ports")) {
+                    JSONArray portsArray = pool.getJSONArray("ports");
+                    if (portsArray != null) {
+                        for (int j = 0; j < portsArray.length(); j++){
+                            listPort.add(portsArray.getString(j));
+                        }
+                    }
+                }
+
                 if(!pool.has("apiUrl")) {
-                    poolItem = add(pool.getString("key"), pool.getString("pool"), pool.getString("port"), pool.getInt("poolType"), pool.getString("poolUrl"), pool.getString("poolIp"));
+                    poolItem = add(pool.getString("key"), pool.getString("pool"), pool.getString("port"), listPort, pool.getInt("type"), pool.getString("url"), pool.getString("ip"));
                 } else {
-                    poolItem = add(pool.getString("key"), pool.getString("pool"), pool.getString("port"), pool.getInt("poolType"), pool.getString("poolUrl"), pool.getString("poolIp"), pool.getString("apiUrl"));
+                    poolItem = add(pool.getString("key"), pool.getString("pool"), pool.getString("port"), listPort, pool.getInt("type"), pool.getString("url"), pool.getString("ip"), pool.getString("apiUrl"));
                 }
 
                 // Icon

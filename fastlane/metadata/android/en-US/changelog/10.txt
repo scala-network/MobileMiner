@@ -1,0 +1,11 @@
+- Support for ARMv7 devices
+- Support for older Android SDKs
+- Revisited UI/UX
+- Mining Dashboard
+- Setup Wizard
+- New Payout Widget
+- Hashrate and Temperature charts
+- Updated statistics, balance and payouts
+- Get Support page
+- Better stability
+- Fixed minors bugs

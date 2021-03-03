@@ -1,0 +1,6 @@
+- Support subaddresses
+- Update mining pools list
+- Update AMAYC endpoint url
+- Update statistics view
+- Fix CPU temp sensor readings
+- Change app icon

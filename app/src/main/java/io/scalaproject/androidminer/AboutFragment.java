@@ -13,9 +13,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import android.text.Html;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextPaint;
@@ -27,11 +24,14 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 
 import java.util.Objects;
 
-import io.scalaproject.androidminer.dialogs.CreditsFragment;
 import io.scalaproject.androidminer.dialogs.DonationsFragment;
 
 public class AboutFragment extends Fragment {
@@ -171,11 +171,26 @@ public class AboutFragment extends Fragment {
         tvDisclaimer.setLinkTextColor(getResources().getColor(R.color.c_blue));
         tvDisclaimer.setHighlightColor(Color.TRANSPARENT);
 
+        boolean needUpdate = Utils.needUpdate();
+
+        ImageView ivUpdateAvailable = view.findViewById(R.id.ivUpdateAvailable);
+        ivUpdateAvailable.setVisibility(needUpdate ? View.VISIBLE : View.INVISIBLE);
+
+        RelativeLayout rlVersion = view.findViewById(R.id.rlVersion);
+        rlVersion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(needUpdate) {
+                    Utils.askUpdateVersion(getActivity());
+                }
+            }
+        });
+
         return view;
     }
 
     private void onShowCredits() {
-        CreditsFragment.display(Objects.requireNonNull(getActivity()).getSupportFragmentManager());
+        startActivity(new Intent(getActivity(), CreditsActivity.class));
     }
 
     private void onShowDonations() {

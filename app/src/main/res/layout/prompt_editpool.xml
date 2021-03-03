@@ -51,6 +51,49 @@
                 android:textAlignment="textStart" />
         </com.google.android.material.textfield.TextInputLayout>
 
+        <TextView
+            android:id="@+id/tvPort"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:gravity="start"
+            android:text="@string/port"
+            android:textColor="@color/txt_headline"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:id="@+id/llSpinnerPort"
+            android:layout_width="match_parent"
+            android:layout_height="42dp"
+            android:layout_marginStart="0.5dp"
+            android:layout_marginBottom="15dp"
+            android:background="@drawable/spinner_custom"
+            android:orientation="horizontal">
+
+            <Spinner
+                android:id="@+id/spinnerPort"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:textColor="@color/txt_main"
+                android:layout_weight="4"
+                android:spinnerMode="dropdown"
+                android:popupBackground="@color/input_bg_default"
+                android:background="@android:color/transparent"
+                android:textSize="14sp" />
+
+            <ImageView
+                android:id="@+id/imgSpinnerDown"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginEnd="10dp"
+                android:layout_gravity="center"
+                android:clickable="true"
+                app:srcCompat="@drawable/ic_down"
+                android:focusable="true" />
+
+        </LinearLayout>
+
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/etPoolPort"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
@@ -62,7 +105,7 @@
                 style="@style/ScalaEdit"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:hint="Port"
+                android:hint="@string/port"
                 android:textColor="@color/txt_main"
                 android:textStyle="normal"
                 android:imeOptions="actionNext"

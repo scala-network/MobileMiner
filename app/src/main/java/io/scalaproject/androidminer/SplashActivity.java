@@ -4,8 +4,9 @@
 
 package io.scalaproject.androidminer;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 
@@ -13,12 +14,18 @@ import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.security.ProviderInstaller;
 
-import org.acra.ACRA;
-
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.URL;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 
+import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
+
+import io.scalaproject.androidminer.api.ChangelogItem;
 
 public class SplashActivity extends BaseActivity {
     @Override
@@ -50,6 +57,8 @@ public class SplashActivity extends BaseActivity {
             e.printStackTrace();
         }
 
+        loadChangelog();
+
         int millisecondsDelay = 2000;
         new Handler().postDelayed(new Runnable() {
             public void run() {
@@ -64,5 +73,80 @@ public class SplashActivity extends BaseActivity {
                 finish();
             }
         }, millisecondsDelay);
+    }
+
+    private AsyncLoadChangelog asyncLoadChangelogs = null;
+
+    private void loadChangelog() {
+        if (asyncLoadChangelogs != null) return; // ignore refresh request as one is ongoing
+
+        asyncLoadChangelogs = new AsyncLoadChangelog();
+        asyncLoadChangelogs.execute();
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    private class AsyncLoadChangelog extends AsyncTask<Void, ChangelogItem, Boolean> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+            MainActivity.changeLogRetries = 0;
+            MainActivity.isChangelogLoaded = false;
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... params) {
+            MainActivity.allChangelogItems.clear();
+
+            // Set Changelog data
+
+            for(int i = 1; i < 100; i++) {
+                ChangelogItem changelogItem = new ChangelogItem();
+                String strChangelogFile = Config.URL_CHANGELOG_DIRECTORY + i + ".txt";
+
+                if (Tools.isURLReachable(strChangelogFile)) {
+                    URL url;
+                    try {
+                        changelogItem.mVersion = i;
+
+                        url = new URL(strChangelogFile);
+                        HttpsURLConnection uc = (HttpsURLConnection) url.openConnection();
+                        InputStream in = uc.getInputStream();
+
+                        BufferedReader br = new BufferedReader(new InputStreamReader(in));
+
+                        String line;
+                        while ((line = br.readLine()) != null) {
+                            changelogItem.mChanges.add(line);
+                        }
+
+                        MainActivity.allChangelogItems.add(changelogItem);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        break;
+                    }
+                } else {
+                    break;
+                }
+            }
+
+            return true;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean result) {
+            complete();
+        }
+
+        @Override
+        protected void onCancelled(Boolean result) {
+            complete();
+        }
+
+        private void complete() {
+            asyncLoadChangelogs = null;
+
+            MainActivity.isChangelogLoaded = true;
+        }
     }
 }

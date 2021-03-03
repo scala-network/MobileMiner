@@ -9,6 +9,7 @@
     <color name="c_blue">#6190ff</color>
     <color name="c_green">#78c2a4</color>
     <color name="c_red">#e85238</color>
+    <color name="c_red_bright">#FF0000</color>
     <color name="c_yellow">#d1e838</color>
     <color name="c_purple">#ca2c92</color>
     <color name="c_orange">#f29333</color>

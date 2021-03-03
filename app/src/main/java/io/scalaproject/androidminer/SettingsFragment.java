@@ -16,6 +16,9 @@ import android.os.Build;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.Html;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
+import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,6 +40,7 @@ import androidx.fragment.app.Fragment;
 import com.google.android.material.button.MaterialButtonToggleGroup;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.zxing.integration.android.IntentIntegrator;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -51,10 +55,10 @@ public class SettingsFragment extends Fragment {
 
     private static final String LOG_TAG = "MiningSvc";
 
-    TextInputLayout tilAddress;
-    private EditText edAddress, edWorkerName, edUsernameparameters, edPort, edMiningGoal;
+    private TextInputLayout tilAddress;
+    private EditText edAddress, edWorkerName, edUsernameparameters, edMiningGoal;
 
-    PoolView pvSelectedPool;
+    private PoolView pvSelectedPool;
 
     public static PoolItem selectedPoolTmp = null;
 
@@ -65,7 +69,7 @@ public class SettingsFragment extends Fragment {
     private SeekBar sbCPUTemp, sbBatteryTemp, sbCooldown, sbCores;
     private TextView tvCPUMaxTemp, tvBatteryMaxTemp, tvCooldown, tvCPUTempUnit, tvBatteryTempUnit, tvRefreshHashrateDelay;
     private Switch swDisableTempControl, swPauseOnBattery, swPauseOnNetwork, swKeepScreenOnWhenMining, swSendDebugInformation;
-    //private Switch swDoNotRestartOnCrash;
+
     private ImageView ivDecreaseRefreshHashrateDelay, ivIncreaseRefreshHashrateDelay;
     private MaterialButtonToggleGroup tgTemperatureUnit;
 
@@ -109,7 +113,6 @@ public class SettingsFragment extends Fragment {
             }
         });
 
-        edPort = view.findViewById(R.id.port);
         edUsernameparameters = view.findViewById(R.id.usernameparameters);
         edWorkerName = view.findViewById(R.id.workername);
 
@@ -238,11 +241,6 @@ public class SettingsFragment extends Fragment {
             swSendDebugInformation.setChecked(true);
         }
 
-        /*boolean checkDoNotRestartOnCrash = Config.read(Config.CONFIG_DISABLE_RESTART_MINING_ABORTED).equals("1");
-        if(checkDoNotRestartOnCrash) {
-            swDoNotRestartOnCrash.setChecked(true);
-        }*/
-
         if (!Config.read(Config.CONFIG_ADDRESS).isEmpty()) {
             edAddress.setText(Config.read(Config.CONFIG_ADDRESS));
         }
@@ -353,8 +351,19 @@ public class SettingsFragment extends Fragment {
             public void onClick(View v) {
                 boolean checked = ((Switch)v).isChecked();
                 if (checked) {
+                    ForegroundColorSpan foregroundColorSpan = new ForegroundColorSpan(getResources().getColor(R.color.c_yellow));
+
+                    String title = getString(R.string.warning);
+                    SpannableStringBuilder ssBuilder = new SpannableStringBuilder(title);
+                    ssBuilder.setSpan(
+                            foregroundColorSpan,
+                            0,
+                            title.length(),
+                            Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+                    );
+
                     MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(Objects.requireNonNull(getActivity()), R.style.MaterialAlertDialogCustom);
-                    builder.setTitle("Warning")
+                    builder.setTitle(ssBuilder)
                             .setMessage(Html.fromHtml(getString(R.string.warning_temperature_control_prompt)))
                             .setCancelable(false)
                             .setPositiveButton(getString(R.string.yes), null)
@@ -372,7 +381,6 @@ public class SettingsFragment extends Fragment {
         });
 
         selectedPoolTmp = null;
-        updatePort();
 
         bSave.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -403,7 +411,13 @@ public class SettingsFragment extends Fragment {
         });
 
         Button btnPasteAddress = view.findViewById(R.id.btnPasteAddress);
-        btnPasteAddress.setOnClickListener(v -> edAddress.setText(Utils.pasteFromClipboard(MainActivity.getContextOfApplication())));
+        btnPasteAddress.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                edAddress.setText(Utils.pasteFromClipboard(MainActivity.getContextOfApplication()));
+                Utils.hideKeyboard(getActivity());
+            }
+        });
 
         bQrCode.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -446,9 +460,7 @@ public class SettingsFragment extends Fragment {
         btnTemperatureControlHelp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // inflate the layout of the popup window
-                View popupView = inflater.inflate(R.layout.helper_max_temperature, null);
-                Utils.showPopup(v, inflater, popupView);
+                Utils.showPopup(getContext(), getString(R.string.temperature_control), getString(R.string.hardware_settings_help));
             }
         });
 
@@ -456,12 +468,7 @@ public class SettingsFragment extends Fragment {
         btnAmaycWarning.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // inflate the layout of the popup window
-                View popupView = inflater.inflate(R.layout.helper_temperature_control, null);
-                TextView tvHelper = popupView.findViewById(R.id.tvHelperMessage);
-                tvHelper.setText(Html.fromHtml(getString(R.string.warning_temperature_control)));
-
-                Utils.showPopup(v, inflater, popupView);
+                Utils.showPopup(getContext(), getString(R.string.temperature_control), Html.fromHtml(getString(R.string.warning_temperature_control)).toString());
             }
         });
 
@@ -469,19 +476,7 @@ public class SettingsFragment extends Fragment {
         btnSendDebugInformationHelp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // inflate the layout of the popup window
-                View popupView = inflater.inflate(R.layout.helper_send_debug_information, null);
-                Utils.showPopup(v, inflater, popupView);
-            }
-        });
-
-        Button btnDoNotRestartOnCrashHelp = view.findViewById(R.id.btnDoNotRestartOnCrashHelp);
-        btnDoNotRestartOnCrashHelp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // inflate the layout of the popup window
-                View popupView = inflater.inflate(R.layout.helper_do_not_restart_process, null);
-                Utils.showPopup(v, inflater, popupView);
+                Utils.showPopup(getContext(), getResources().getString(R.string.send_debug_information), getResources().getString(R.string.send_debug_information_help));
             }
         });
 
@@ -531,7 +526,7 @@ public class SettingsFragment extends Fragment {
         PoolItem selectedPoolItem = getSelectedPoolItem();
 
         Config.write(Config.CONFIG_SELECTED_POOL, selectedPoolItem.getKey().trim());
-        Config.write(Config.CONFIG_CUSTOM_PORT, selectedPoolItem.getDefaultPort().trim());
+        Config.write(Config.CONFIG_CUSTOM_PORT, selectedPoolItem.getSelectedPort().trim());
 
         Config.write(Config.CONFIG_ADDRESS, address);
 
@@ -545,8 +540,6 @@ public class SettingsFragment extends Fragment {
         Log.i(LOG_TAG,"Worker Name : " + workername);
         Config.write(Config.CONFIG_WORKERNAME, workername);
         edWorkerName.setText(workername);
-
-        Config.write(Config.CONFIG_CUSTOM_PORT, edPort.getText().toString().trim());
 
         Config.write(Config.CONFIG_CORES, Integer.toString(sbCores.getProgress()+1));
 
@@ -569,7 +562,6 @@ public class SettingsFragment extends Fragment {
 
         Config.write(Config.CONFIG_TEMPERATURE_UNIT, tgTemperatureUnit.getCheckedButtonId() == R.id.btnFarehnheit ? "F" : "C");
         Config.write(Config.CONFIG_SEND_DEBUG_INFO, swSendDebugInformation.isChecked() ? "1" : "0");
-        //Config.write(Config.CONFIG_DISABLE_RESTART_MINING_ABORTED, swDoNotRestartOnCrash.isChecked() ? "1" : "0");
 
         Config.write(Config.CONFIG_INIT, "1");
 
@@ -625,13 +617,7 @@ public class SettingsFragment extends Fragment {
     }
 
     private void startQrCodeActivity() {
-        Context appContext = MainActivity.getContextOfApplication();
-        try {
-            Intent intent = new Intent(appContext, QrCodeScannerActivity.class);
-            startActivity(intent);
-        }catch (Exception e) {
-            Utils.showToast(appContext, e.getMessage(), Toast.LENGTH_SHORT);
-        }
+        new IntentIntegrator(getActivity()).setOrientationLocked(false).setCaptureActivity(QrCodeScannerActivity.class).initiateScan();
     }
 
     @Override
@@ -666,27 +652,17 @@ public class SettingsFragment extends Fragment {
         return selectedPoolTmp == null ? ProviderManager.getSelectedPool() : selectedPoolTmp;
     }
 
-    private void updatePort() {
-        if(selectedPoolTmp != null) {
-            edPort.setText(selectedPoolTmp.getPortRaw());
-        } else {
-            PoolItem selectedPoolItem = getSelectedPoolItem();
-
-            if (selectedPoolItem != null)
-                edPort.setText(selectedPoolItem.getPort());
-        }
-    }
-
     @Override
     public void onResume() {
         super.onResume();
 
         pvSelectedPool.onFinishInflate();
-        updatePort();
     }
 
     @Override
     public void onDestroy() {
+        selectedPoolTmp = null;
+
         super.onDestroy();
     }
 }

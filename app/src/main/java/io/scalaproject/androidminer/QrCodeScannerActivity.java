@@ -4,133 +4,128 @@
 
 package io.scalaproject.androidminer;
 
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
-import android.util.SparseArray;
+import android.view.KeyEvent;
 import android.view.View;
-import android.widget.TextView;
+import android.widget.Button;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.ResultPoint;
+import com.journeyapps.barcodescanner.BarcodeCallback;
+import com.journeyapps.barcodescanner.BarcodeResult;
+import com.journeyapps.barcodescanner.DecoratedBarcodeView;
+import com.journeyapps.barcodescanner.DefaultDecoderFactory;
 
-import com.google.android.gms.samples.vision.barcodereader.BarcodeCapture;
-import com.google.android.gms.samples.vision.barcodereader.BarcodeGraphic;
-import com.google.android.gms.vision.CameraSource;
-import com.google.android.gms.vision.barcode.Barcode;
-
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
-import xyz.belvi.mobilevisionbarcodescanner.BarcodeRetriever;
-
-public class QrCodeScannerActivity extends AppCompatActivity implements BarcodeRetriever {
-
-    public TextView scanResult;
-    BarcodeCapture barcodeCapture;
+public class QrCodeScannerActivity extends BaseActivity {
     public static final String XLA_SCHEME = "scala:";
 
-    @Override
-    protected void onDestroy() {
-        try{
-            super.onDestroy();
-        } catch (Exception ignored) {
+    private DecoratedBarcodeView barcodeView;
+    private Button btnFlashlight;
+    private String lastText;
+
+    private final BarcodeCallback callbackBarcode = new BarcodeCallback() {
+        @Override
+        public void barcodeResult(BarcodeResult result) {
+            if(result.getText() == null || result.getText().equals(lastText)) {
+                // Prevent duplicate scans
+                return;
+            }
+
+            lastText = result.getText();
+            if(lastText.startsWith(XLA_SCHEME)) {
+                lastText = lastText.substring(XLA_SCHEME.length());
+            }
+
+            barcodeView.setStatusText(lastText + System.getProperty("line.separator") + System.getProperty("line.separator") + System.getProperty("line.separator"));
+
+            if(Utils.verifyAddress(lastText)) {
+                Log.d("CONSOLE:QRCODE", "Barcode read: " + lastText);
+
+                Config.write(Config.CONFIG_ADDRESS, lastText);
+                barcodeView.setTorchOff();
+                finish();
+
+                return;
+            }
+
+            Utils.showToast(getApplicationContext(), "Invalid Scala address", Toast.LENGTH_SHORT);
         }
-    }
+
+        @Override
+        public void possibleResultPoints(List<ResultPoint> resultPoints) {
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_qr_code_scanner);
-        barcodeCapture = (BarcodeCapture) getSupportFragmentManager().findFragmentById(R.id.barcode);
-        assert barcodeCapture != null;
-        barcodeCapture.setRetrieval(this);
 
-        findViewById(R.id.stop).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.btnCancel).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                try{
-                    barcodeCapture.stopScanning();
-                   finish();
+                try {
+                    barcodeView.setTorchOff();
+                    finish();
                 } catch (Exception ignored) {
 
                 }
             }
         });
 
-        scanResult = findViewById(R.id.scanResult);
+        btnFlashlight = findViewById(R.id.btnFlashlight);
 
-        barcodeCapture.setShowDrawRect(true)
-                .setSupportMultipleScan(false)
-                .setTouchAsCallback(true)
-                .shouldAutoFocus(true)
-                .setShowFlash(false)
-                .setBarcodeFormat(Barcode.ALL_FORMATS)
-                .setCameraFacing(CameraSource.CAMERA_FACING_BACK)
-                .setShouldShowText(false);
-        try{
-            barcodeCapture.refresh();
-        } catch (Exception ignored) {
-
+        // if the device does not have flashlight in its camera, then remove the switch flashlight button
+        if (!hasFlash()) {
+            btnFlashlight.setVisibility(View.GONE);
         }
+
+        barcodeView = findViewById(R.id.barcodeView);
+        Collection<BarcodeFormat> formats = Arrays.asList(BarcodeFormat.QR_CODE, BarcodeFormat.CODE_39);
+        barcodeView.getBarcodeView().setDecoderFactory(new DefaultDecoderFactory(formats));
+        barcodeView.initializeFromIntent(getIntent());
+        barcodeView.decodeContinuous(callbackBarcode);
     }
 
     @Override
-    public void onRetrieved(final Barcode barcode) {
-
-        String miner = barcode.displayValue;
-        if(miner.startsWith(XLA_SCHEME)) {
-            miner = miner.substring(XLA_SCHEME.length());
-        }
-
-        scanResult.setText("Scala Wallet Address: " + miner);
-        if(Utils.verifyAddress(miner)) {
-            Log.d("CONSOLE:QRCODE", "Barcode read: " + barcode.displayValue);
-
-            Config.write(Config.CONFIG_ADDRESS, miner);
-            try{
-                barcodeCapture.stopScanning();
-                finish();
-            } catch (Exception ignored) {
-
-            }
-
-            return;
-        }
-
-        Utils.showToast(MainActivity.contextOfApplication, "Invalid scala address", Toast.LENGTH_SHORT);
+    protected void onResume() {
+        super.onResume();
+        barcodeView.resume();
     }
 
     @Override
-    public void onRetrievedMultiple(final Barcode closetToClick, final List<BarcodeGraphic> barcodeGraphics) {
-        final StringBuilder message = new StringBuilder();
-        message.append("Code selected : ");
-        message.append(closetToClick.displayValue);
-        message.append("\n\nother ");
-        message.append("codes in frame include : \n");
+    protected void onPause() {
+        super.onPause();
+        barcodeView.pause();
+    }
 
-        for (int index = 0; index < barcodeGraphics.size(); index++) {
-            Barcode barcode = barcodeGraphics.get(index).getBarcode();
-            message.append(index + 1).append(". ").append(barcode.displayValue).append("\n");
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        return barcodeView.onKeyDown(keyCode, event) || super.onKeyDown(keyCode, event);
+    }
+
+    /**
+     * Check if the device's camera has a Flashlight.
+     * @return true if there is Flashlight, otherwise false.
+     */
+    private boolean hasFlash() {
+        return this.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH);
+    }
+
+    public void switchFlashlight(View view) {
+        if (getResources().getString(R.string.turn_on_flashlight).contentEquals(btnFlashlight.getText())) {
+            barcodeView.setTorchOn();
+            btnFlashlight.setText(getResources().getString(R.string.turn_off_flashlight));
+        } else {
+            barcodeView.setTorchOff();
+            btnFlashlight.setText(getResources().getString(R.string.turn_on_flashlight));
         }
-        Log.d("CONSOLE:QRCODE:MULTIPLE", message.toString());
-    }
-    @Override
-    public void onBitmapScanned(SparseArray<Barcode> sparseArray) {
-        // when image is scanned and processed
-        for (int i = 0; i < sparseArray.size(); i++) {
-            Barcode barcode = sparseArray.valueAt(i);
-            Log.d("CONSOLE:QRCODE:VALUED", barcode.displayValue);
-        }
-    }
-
-    @Override
-    public void onRetrievedFailed(String reason) {
-        // in case of failure
-
-        Log.e("CONSOLE:QRCODE:FAIL", reason);
-    }
-
-    @Override
-    public void onPermissionRequestDenied(){
-        Log.e("CONSOLE:QRCODE:FAIL", "DENIED");
     }
 }
