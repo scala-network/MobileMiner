@@ -7,6 +7,7 @@
 - Add detailed Credits layout
 - Add Changelog view with fastlane support
 - Manage versions update
-- Add Haku to support page
+- Add Haku to about logo
 - Force sans-serif font type for meter cores gaps
 - Use generic Helper class for popups
+- Add leak detector plugin in debug mode
