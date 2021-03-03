@@ -1,0 +1,12 @@
+- Add IPFS Gateways for pool repository
+- Truncate Worker Name if too long
+- Add default port list and refactor
+- Simplify pool port selection
+- Update network state change detection
+- Use open-source QR Code reader (FOSS)
+- Add detailed Credits layout
+- Add Changelog view with fastlane support
+- Manage versions update
+- Add Haku to support page
+- Force sans-serif font type for meter cores gaps
+- Use generic Helper class for popups
