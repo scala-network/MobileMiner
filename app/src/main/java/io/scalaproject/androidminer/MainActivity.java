@@ -3220,16 +3220,6 @@ public class MainActivity extends BaseActivity
         }
     }
 
-    /*private boolean isOnWifi() {
-        if(isOnWifiInit)
-            return isOnWifi;
-
-        ConnectivityManager connManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo mWifi = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
-
-        return mWifi.isConnected();
-    }*/
-
     static boolean lastIsOnWifi = false;
     static boolean isOnWifiInit = false;
     private final BroadcastReceiver networkInfoReceiver = new BroadcastReceiver() {
