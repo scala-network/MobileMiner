@@ -10,3 +10,4 @@
 - Add Haku to about logo
 - Force sans-serif font type for meter cores gaps
 - Use generic Helper class for popups
+- Add leak detector plugin in debug mode
