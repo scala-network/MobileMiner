@@ -7,7 +7,6 @@ package io.scalaproject.androidminer.api;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -18,7 +17,6 @@ import java.util.Collections;
 import java.util.Map;
 
 import io.scalaproject.androidminer.Config;
-import io.scalaproject.androidminer.MainActivity;
 import io.scalaproject.androidminer.R;
 import io.scalaproject.androidminer.SettingsFragment;
 import io.scalaproject.androidminer.Tools;
@@ -30,10 +28,9 @@ public final class ProviderManager {
     // Increment the version number when the json structure changes
     static private final String version = "1";
 
-    //static private final String DEFAULT_POOLS_REPOSITORY = "https://raw.githubusercontent.com/scala-network/MobileMiner/master/app.json";
-    static private final String DEFAULT_POOLS_REPOSITORY = "https://raw.githubusercontent.com/scala-network/MobileMiner/2.1.1/app.json";
+    static private final String DEFAULT_POOLS_REPOSITORY = "https://raw.githubusercontent.com/scala-network/MobileMiner/master/app.json";
 
-    static private final String IPFS_HASH = "QmeCBnrEovztTRuGVmfVWZ8H6HhCLYTDrqEcXmN6MnytJA";
+    static private final String IPFS_HASH = "QmaX32HmCqH9BeVim9G2nk7vzhGHmevN7PRN3F8gttuEmD";
     static private final String[] POOLS_REPOSITORY_IPFS_GATEWAYS = {
             "https://dweb.link/ipfs/",
             "https://ipfs.io/ipfs/",
