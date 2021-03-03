@@ -44,9 +44,10 @@ public final class ProviderManager {
             "\"key\": \"Scala Project (Official Pool)\",\n" +
             "\"pool\": \"mine.scalaproject.io\",\n" +
             "\"port\": \"3333\",\n" +
-            "\"poolType\": 3,\n" +
-            "\"poolUrl\": \"https://pool.scalaproject.io\",\n" +
-            "\"poolIp\": \"95.111.237.231\"\n" +
+            "\"ports\": [\"3333\", \"5555\", \"7777\", \"8888\"],\n" +
+            "\"type\": 3,\n" +
+            "\"url\": \"https://pool.scalaproject.io\",\n" +
+            "\"ip\": \"95.111.237.231\"\n" +
             "} ]\n" +
             "}";
 
@@ -236,7 +237,7 @@ public final class ProviderManager {
 
                 PoolItem poolItem;
 
-                ArrayList<String> listPort = new ArrayList<String>();
+                ArrayList<String> listPort = new ArrayList<>();
                 if(pool.has("ports")) {
                     JSONArray portsArray = pool.getJSONArray("ports");
                     if (portsArray != null) {
