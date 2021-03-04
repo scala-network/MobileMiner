@@ -49,21 +49,19 @@
 		<TextView
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:layout_gravity="center"
+			android:gravity="center"
 			android:text="@string/landingpage_headline"
 			android:textColor="@color/txt_headline"
 			android:textStyle="bold"
-			android:textAlignment="center"
 			android:textSize="22sp" />
 
 		<TextView
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:layout_gravity="center"
+			android:gravity="center"
 			android:layout_marginTop="20dp"
 			android:text="@string/landingpage_introduction"
 			android:textColor="@color/txt_main"
-			android:textAlignment="center"
 			android:textSize="14sp" />
 
 		<Space
@@ -74,11 +72,10 @@
 		<TextView
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:layout_gravity="center"
+			android:gravity="center"
 			android:layout_marginBottom="10dp"
-			android:text="You need to provide your Scala wallet address to start mining."
+			android:text="@string/scala_address_wizard"
 			android:textColor="@color/txt_main"
-			android:textAlignment="center"
 			android:textSize="14sp" />
 
 		<Button
@@ -120,13 +117,12 @@
 			android:id="@+id/disclaimer"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:layout_gravity="center"
+			android:gravity="center"
 			android:layout_marginBottom="35dp"
 			android:layout_marginStart="35dp"
 			android:layout_marginEnd="35dp"
 			android:text="@string/disclaimer_agreement"
 			android:textColor="@color/txt_inactive"
-			android:textAlignment="center"
 			android:textSize="14sp" />
 
 	</RelativeLayout>

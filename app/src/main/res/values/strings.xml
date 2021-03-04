@@ -277,5 +277,6 @@
     <string name="latest_version_ok">You have the latest version.</string>
     <string name="latest_version_not_ok">You don\'t have the latest version.</string>
     <string name="cannot_retrieve_changelog_data">Cannot retrieve changelog data.</string>
+    <string name="scala_address_wizard">You need to provide your Scala wallet address to start mining.</string>
 
 </resources>

@@ -56,11 +56,10 @@
 		<TextView
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:layout_gravity="center"
+			android:gravity="center"
 			android:layout_marginTop="5dp"
 			android:text="A secure and lightweight wallet to store your Scala coins"
 			android:textColor="@color/txt_main"
-			android:textAlignment="center"
 			android:textSize="18sp" />
 
 	</LinearLayout>
