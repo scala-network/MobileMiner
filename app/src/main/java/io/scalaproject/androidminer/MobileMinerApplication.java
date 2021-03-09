@@ -5,13 +5,11 @@
 package io.scalaproject.androidminer;
 
 import android.app.Application;
-import android.app.job.JobInfo;
 import android.content.Context;
 import android.content.SharedPreferences;
 
 import org.acra.*;
 import org.acra.annotation.*;
-import org.acra.data.StringFormat;
 
 @AcraCore(buildConfigClass = BuildConfig.class)
 @AcraMailSender(mailTo = "hello@scalaproject.io")

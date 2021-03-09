@@ -111,10 +111,6 @@ public class QrCodeScannerActivity extends BaseActivity {
         return barcodeView.onKeyDown(keyCode, event) || super.onKeyDown(keyCode, event);
     }
 
-    /**
-     * Check if the device's camera has a Flashlight.
-     * @return true if there is Flashlight, otherwise false.
-     */
     private boolean hasFlash() {
         return this.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH);
     }

@@ -1,22 +1,8 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">Scala Miner</string>
-    <string name="navigation_drawer_open">Open Navigation Drawer</string>
-    <string name="navigation_drawer_close">Close Navigation Drawer</string>
-    <string name="mining_pool_address">Mining pool URL</string>
-    <string name="mining_pool_port">Port</string>
-    <string name="walletaddress">Wallet Address:</string>
-    <string name="cmdline">Cmdline</string>
     <string name="help">Help</string>
-    <string name="cmd">Cmd</string>
-    <string name="threads">Threads</string>
-    <string name="max_cpu_usage">Max CPU</string>
-    <string name="hpers">H/s</string>
-    <string name="accepted">accepted</string>
-    <string name="cpus">Cores</string>
     <string name="celsius">°C</string>
-    <string name="cputemp">CPU:</string>
-    <string name="batterytemp">Battery:</string>
-    <string name="cooling">Cooling...</string>
+    <string name="cooling">Cooling…</string>
     <string name="paused">Paused</string>
     <string name="cancel">Cancel</string>
     <string name="hashrate">Hashrate</string>
@@ -24,40 +10,21 @@
     <string name="settings">Settings</string>
     <string name="about">About</string>
     <string name="pool">Pool</string>
-    <string name="cpu">CPU</string>
     <string name="scanqrcode">QR Code</string>
-    <string name="processing">Calculating Hashrate...</string>
+    <string name="processing">Calculating Hashrate…</string>
     <string name="disclaimer">Disclaimer</string>
     <string name="shares">Shares</string>
-    <string name="invalid">Invalid</string>
-    <string name="last">Last</string>
-    <string name="hugepages">Huge Pages</string>
-    <string name="memory">Memory</string>
-    <string name="scratchpad">Scratchpad</string>
     <string name="difficulty">Difficulty</string>
     <string name="lastblock">Last Block</string>
-    <string name="nextpayout">Next Payout</string>
     <string name="network">Network</string>
-    <string name="height">Height</string>
-    <string name="rewards">Rewards</string>
-    <string name="checkstatsonline">View statistics online</string>
     <string name="lastshare">Last Share</string>
-    <string name="sharesubmitted">Submitted Shares</string>
     <string name="blockheight">Blockchain Height</string>
     <string name="blockreward">Last Reward</string>
     <string name="totalhashrate">Total Hashrate</string>
-    <string name="emptyaddress">Wallet address is empty.</string>
-    <string name="startminingstats">Start mining to view statisticss</string>
-    <string name="notavailablecustompool">Statistics are not available for custom pools</string>
     <string name="address">Address</string>
     <string name="balance">Balance</string>
     <string name="paid">Total Paid</string>
-    <string name="total">Total:</string>
     <string name="na">n/a</string>
-    <string name="options">Options</string>
-    <string name="donations">Donate</string>
-    <string name="mininggoal">Mining Goal</string>
-    <string name="followus">Follow Us</string>
     <string name="miningstatus">Mining Status</string>
     <string name="startmining">I am ready!</string>
     <string name="mininglog">Mining Log</string>
@@ -65,19 +32,12 @@
 
     <string name="mobileminerLink">https://mobileminer.scalaproject.io</string>
     <string name="privacyPolicyLink">https://scalaproject.io/miner-privacy-policy.html</string>
-    <string name="githubLink">https://github.com/scala-network/MobileMiner/releases</string>
     <string name="discordLink">https://discord.gg/djAFVvy</string>
     <string name="mediumLink">https://medium.com/scala-network</string>
     <string name="twitterLink">https://twitter.com/scalahq</string>
     <string name="telegramLink">https://t.me/scalaofficial</string>
-    <string name="redditLink">https://www.reddit.com/r/ScalaNetwork</string>
     <string name="emailLink">mailto:hello@scalaproject.io</string>
     <string name="ScalaLinkClean">https://scalaproject.io</string>
-    <string name="ScalaLink">&lt;a href=&quot;https://scalaproject.io&quot;&gt;Scala&lt;/a&gt;</string>
-    <string name="Mine2getherLink">&lt;a href=&quot;https://github.com/Mine2Gether/m2g_android_miner&quot;&gt;Mine2gether&lt;/a&gt;</string>
-    <string name="MoneroMinerLink">&lt;a href=&quot;https://github.com/upost/MoneroMiner&quot;&gt;MoneroMiner&lt;/a&gt;</string>
-    <string name="MaterialDesignLink">&lt;a href=&quot;https://material.io/resources/&quot;&gt;Material Design&lt;/a&gt;</string>
-    <string name="FontAwesomeLink">&lt;a href=&quot;https://fontawesome.com/license&quot;&gt;Font Awesome&lt;/a&gt;</string>
     <string name="amaycPostLink">https://amayc.scalaproject.io/</string>
     <string name="maxtemperaturereached">Temperature threshold reached!</string>
     <string name="resumedmining">Temperatures have reached safe levels. Resumed mining.</string>
@@ -87,7 +47,6 @@
     <string name="deviceonbattery">Your device is currently on battery power.</string>
     <string name="devicenotonwifi">Your device is currently not connected to a Wi-Fi network.</string>
     <string name="mininggoalhint">Mining goal or pool payout</string>
-    <string name="hardwaresettings">Hardware</string>
     <string name="max">Max</string>
     <string name="cputemperature">CPU Temperature</string>
     <string name="batterytemperature">Battery Temperature</string>
@@ -98,13 +57,10 @@
     <string name="keepscreenonwhenmining">Keep screen ON when mining</string>
     <string name="turnoffamayccontrol">Disable Temperature Control</string>
     <string name="warning">Warning!</string>
-    <string name="allworkers">All workers:</string>
     <string name="amaycpaused">Cannot resume mining when device is cooling.</string>
     <string name="amaycerror">AMAYC: Cannot reach distant server.</string>
     <string name="miningpaused">Mining paused until temperatures return to safe levels.</string>
     <string name="miningbackground">Scala Miner is still mining in the background.</string>
-    <string name="donationsinfo">Donations support the contributors and help pay for the project infrastructure.</string>
-    <string name="donationadresses">Donations</string>
     <string name="donationadressbtc_copied">BTC Donation Address copied.</string>
     <string name="donationadresseth_copied">ETH Donation Address copied.</string>
     <string name="donationadressltc_copied">LTC Donation Address copied.</string>
@@ -119,34 +75,21 @@
     <string name="landingpage_introduction">Scala Miner provides useful information about your mining activities and prevents your device from overheating.</string>
     <string name="createaddress">Create your wallet</string>
     <string name="disclaimer_agreement">By using this application, you confirm your knowledge and acceptance of the Disclaimer</string>
-    <string name="paper">Paper</string>
-    <string name="or">or</string>
-    <string name="skip">Skip</string>
     <string name="scala_vault_play_store">https://play.google.com/store/apps/details?id=io.scalaproject.vault</string>
     <string name="ok">OK</string>
     <string name="save">Save</string>
     <string name="devicemining">Device Mining</string>
-    <string name="nightmode">Night Mode</string>
-    <string name="newacceptedshare">New Accepted Share!</string>
     <string name="next">Next</string>
     <string name="walletaddress2">Wallet Address</string>
     <string name="paste">Paste</string>
-    <string name="selectminingpool">Mining Pool</string>
-    <string name="specifywalletaddress">Your Wallet Address</string>
-    <string name="supportproject">Support us</string>
     <string name="enteraddress">Enter your wallet address</string>
     <string name="home">Home</string>
-    <string name="payoutgoal">Payout Goal</string>
-    <string name="forcehashrate"><u>Show Cores</u></string>
     <string name="invalidaddress">Invalid Wallet Address</string>
     <string name="miners">Miners</string>
     <string name="advanced">Advanced</string>
     <string name="supporttheproject">Do you want to support the project?</string>
     <string name="minetoscala">The Scala donation address will then be used for mining.</string>
-    <string name="sure">Sure!</string>
-    <string name="nothanks">Nope.</string>
     <string name="stopmining">Do you want to stop mining?</string>
-    <string name="restartmining">Do you want to restart mining?</string>
     <string name="closeApp">If you close the app, the mining process will be stopped.</string>
     <string name="newparametersapplied">You will have to restart the mining process in order for the new parameters to be applied.</string>
     <string name="hashrate_share">Take a look at my Scala Mobile Miner stats! I\'m currently mining on my Android device. Download the app to start mining on your phone: https://mobileminer.scalaproject.io/</string>
@@ -154,8 +97,6 @@
     <string name="share_title">Scala Mobile Miner</string>
     <string name="share_via">Share via</string>
 
-    <string name="donate_help">If you would like to help build this project, feel free to specify a donation level here.\n\nFor example, a value of 5 will make your device mine 5 minutes out of 100 to fund Scala project.\n\nThe default value is 0.</string>
-    <string name="mininggoal_help">The mining goal should reflect the pool payout setting, but you can also specify a custom value for your device.\n\nThe default value is the minimum payout value of the specified mining pool.</string>
     <string name="warning_temperature_control_prompt"><![CDATA[
         <p>This application implements two layers of protection for your device.</p>
         <p>The first one is the <strong>As-Much-As-You-Can (AMAYC)</strong> machine learning algorithm that can predict when your device will overheat and pause the miner until the device\'s temperature has normalized.</p>
@@ -169,18 +110,12 @@
         <strong>Turning this feature off might cause damage to your device.</strong>
     ]]></string>
 
-    <string name="temp_control_ownrisks">Turning this feature off might cause damage to your device. Do it at your own risk!</string>
-    <string name="shares_help">Your mining reward is based on the amount of shares that contributed to the resolution of a block.</string>
     <string name="donation_addresses_help">If you would like to help build this project, you can send BTC, ETH, LTC or XLA to the project\'s wallet. Thanks for your support!</string>
-    <string name="pool_options_help">These parameters are optional, you can leave them blank if you don\'t know what they represent.\n\nTo add a static difficulty or a paymentID, specify it in the \'Username parameters\' field. For example, enter \'+500\' to configure a static difficulty of 500.\n\nMake sure you respect the selected pool configuration. The value of this field will be appended as is to the wallet address.</string>
     <string name="hardware_settings_help">Your device will start cooling when the CPU or battery reach the specified temperatures.\n\nThe cooldown threshold defines the temperature at which the application will resume the mining process.</string>
 
     <string name="loading_pools" tools:ignore="TypographyEllipsis">Loading pools...</string>
-    <string name="loading_changelog" tools:ignore="TypographyEllipsis">Loading changelog...</string>
     <string name="aboutapplication">An open-source cryptocurrency miner for Android devices.</string>
     <string name="disclaimerText">Running your CPU at a high intensity for a prolonged duration may result in negative effects such as: battery drainage, slow response time, overheating, and may cause permanent damage to your device.\n\nWe recommend using the Temperature Control settings and a low number of CPU Cores to prevent damage to your device.\n\nBy using this application, you assume full responsibility for any damage that may be caused to your device, property or self.</string>
-    <string name="icons_by">Icons by</string>
-    <string name="and">and</string>
     <string name="btc">BTC</string>
     <string name="eth">ETH</string>
     <string name="xla">XLA</string>
@@ -189,22 +124,10 @@
     <string name="log">Mining Log</string>
     <string name="percent">%</string>
     <string name="message">Message</string>
-    <string name="worker_name">Worker Name</string>
-    <string name="cpu2">CPU:</string>
-    <string name="battery2">Battery:</string>
-    <string name="connection">Connection</string>
-    <string name="mining_time">Mining Time</string>
     <string name="kh_s">kH/s</string>
     <string name="h_s">H/s</string>
-    <string name="touch_screen_to_capture">Touch screen to capture</string>
-    <string name="wallet_address">Wallet Address</string>
     <string name="build">Build:</string>
     <string name="credits">Credits</string>
-    <string name="made_with">Made with</string>
-    <string name="by">by</string>
-    <string name="forked_from">Forked from</string>
-    <string name="scala_project">Scala Project</string>
-    <string name="recommended">(Recommended)</string>
     <string name="stop">Stop</string>
     <string name="start">Start</string>
     <string name="no">No</string>
@@ -240,13 +163,10 @@
     <string name="send_debug_information">Send debug information</string>
     <string name="send_debug_information_help">When this option is enabled and the application encounters a fatal error, your default email client will be opened to let you send the detailed debug and stack trace report to our team.</string>
     <string name="mining_aborted">Mining process has been abruptly aborted.</string>
-    <string name="restarting_mining_process">Restarting mining process...</string>
+    <string name="restarting_mining_process">Restarting mining process…</string>
     <string name="disable_restart_process">Do not restart mining process</string>
-    <string name="disable_restart_process_help">When the application goes in standby while mining, sometimes the mining process is killed by Android. By default, the application will restart the process automatically, except when this option is actived.</string>
     <string name="edit">Edit</string>
-    <string name="view">View</string>
     <string name="delete">Delete</string>
-    <string name="details">Details</string>
     <string name="temperature">Temperature</string>
     <string name="more">More</string>
     <string name="activity">Activity</string>

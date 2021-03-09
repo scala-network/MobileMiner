@@ -26,8 +26,7 @@
 			android:background="@color/bg_body">
 
 			<ImageView
-				android:id="@+id/splashscreen"
-				android:layout_width="wrap_content"
+                android:layout_width="wrap_content"
 				android:layout_height="100dp"
 				android:src="@mipmap/ic_logo_colors"/>
 
@@ -79,8 +78,7 @@
 			android:textSize="14sp" />
 
 		<Button
-			android:id="@+id/enterWalletAddress"
-			android:layout_width="match_parent"
+            android:layout_width="match_parent"
 			android:layout_height="55dp"
 			android:layout_gravity="center"
 			app:backgroundTint="@color/bg_blue"
@@ -92,8 +90,7 @@
 			app:cornerRadius="5dp" />
 
 		<Button
-			android:id="@+id/createWalletAddress"
-			android:layout_width="match_parent"
+            android:layout_width="match_parent"
 			android:layout_height="55dp"
 			android:layout_gravity="center"
 			android:onClick="onCreateWallet"

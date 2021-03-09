@@ -53,7 +53,7 @@ public final class ProviderManager {
 
     static public boolean useDefaultPool = false;
 
-    static private final ArrayList<PoolItem> mPools = new ArrayList<PoolItem>();
+    static private final ArrayList<PoolItem> mPools = new ArrayList<>();
 
     static public void add(PoolItem poolItem) {
         mPools.add(poolItem);
@@ -84,7 +84,7 @@ public final class ProviderManager {
     }
 
     static public void loadPools(Context context) {
-        loadDefaultPools(context);
+        loadDefaultPools();
 
         loadUserdefinedPools(context);
 
@@ -180,7 +180,7 @@ public final class ProviderManager {
         request.run();
     }
 
-    static public void loadDefaultPools(Context context) {
+    static public void loadDefaultPools() {
         request.stop();
         request.mPoolItem = null;
         mPools.clear();
@@ -240,10 +240,8 @@ public final class ProviderManager {
                 ArrayList<String> listPort = new ArrayList<>();
                 if(pool.has("ports")) {
                     JSONArray portsArray = pool.getJSONArray("ports");
-                    if (portsArray != null) {
-                        for (int j = 0; j < portsArray.length(); j++){
-                            listPort.add(portsArray.getString(j));
-                        }
+                    for (int j = 0; j < portsArray.length(); j++){
+                        listPort.add(portsArray.getString(j));
                     }
                 }
 

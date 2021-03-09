@@ -11,14 +11,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 
 public class Json {
 
     private static final String LOG_TAG = "MiningSvc";
-
-    private static final Json ourInstance = new Json();
 
     private Json() {
     }

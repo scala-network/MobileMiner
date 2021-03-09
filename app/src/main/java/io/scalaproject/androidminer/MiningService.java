@@ -345,7 +345,7 @@ public class MiningService extends Service {
 
             process = pb.start();
 
-            outputHandler = new MiningService.OutputReaderThread(process.getInputStream(), Config.miner_xlarig);
+            outputHandler = new MiningService.OutputReaderThread(process.getInputStream());
             outputHandler.start();
 
             inputHandler = new InputReaderThread(process.getOutputStream());
@@ -380,7 +380,7 @@ public class MiningService extends Service {
     }
 
     private class ProcessMonitor extends Thread {
-        Process proc;
+        final Process proc;
 
         ProcessMonitor(Process proc) {
             this.proc = proc;
@@ -407,7 +407,7 @@ public class MiningService extends Service {
         private final InputStream inputStream;
         private final StringBuilder output = new StringBuilder();
 
-        OutputReaderThread(InputStream inputStream, String miner) {
+        OutputReaderThread(InputStream inputStream) {
             this.inputStream = inputStream;
         }
 
@@ -421,15 +421,13 @@ public class MiningService extends Service {
                 if(lineCompare.contains("diff")) {
                     int i = lineCompare.indexOf("diff ") + "diff ".length();
                     int imax = lineCompare.indexOf(" ", i);
-                    String diff = lineCompare.substring(i, imax).trim();
-                    difficulty = Integer.parseInt(lineCompare.substring(i, imax).trim());;
+                    difficulty = Integer.parseInt(lineCompare.substring(i, imax).trim());
                 }
 
                 if(lineCompare.contains("ms)")) {
                     int i = lineCompare.indexOf("(", lineCompare.length() - 10) + 1;
                     int imax = lineCompare.indexOf("ms)");
-                    String conn = lineCompare.substring(i, imax).trim();
-                    connection = Integer.parseInt(lineCompare.substring(i, imax).trim());;
+                    connection = Integer.parseInt(lineCompare.substring(i, imax).trim());
                 }
 
             } // For some reason some devices display "miner" instead of "speed"
@@ -532,7 +530,7 @@ public class MiningService extends Service {
         }
     }
 
-    public boolean isMiningProcessAlive() {
+    /*public boolean isMiningProcessAlive() {
         try {
             if(process != null) {
                 process.exitValue();
@@ -543,5 +541,5 @@ public class MiningService extends Service {
         }
 
         return false;
-    }
+    }*/
 }

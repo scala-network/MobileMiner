@@ -26,7 +26,7 @@
             android:autoLink="web"
             android:gravity="start"
             android:textSize="14sp"
-            tools:text="@string/menu_help" />
+            tools:text="@string/help" />
 
     </LinearLayout>
 </ScrollView>

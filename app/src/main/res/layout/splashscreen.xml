@@ -8,8 +8,7 @@
 	android:gravity="center">
 
 	<ImageView
-		android:id="@+id/splashscreen"
-		android:layout_width="wrap_content"
+        android:layout_width="wrap_content"
 		android:layout_height="100dp"
 		app:srcCompat="@mipmap/ic_logo_colors"/>
 

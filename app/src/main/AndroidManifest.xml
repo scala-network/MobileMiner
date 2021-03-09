@@ -12,6 +12,8 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.CAMERA" />
 
+    <permission android:name="io.scalaproject.androidminer.PERMISSION" />
+
     <application
         android:name=".MobileMinerApplication"
         android:allowBackup="true"
@@ -135,7 +137,8 @@
 
         <receiver
             android:name=".NotificationsReceiver"
-            android:enabled="true">
+            android:enabled="true"
+            android:permission="io.scalaproject.androidminer.PERMISSION">
             <intent-filter>
                 <action android:name="OPEN_ACTION"/>
                 <action android:name="STOP_ACTION"/>

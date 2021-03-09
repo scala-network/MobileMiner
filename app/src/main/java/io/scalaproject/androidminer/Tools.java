@@ -235,7 +235,7 @@ public class Tools {
         Map<String, String> output = new HashMap<>();
 
         try {
-            BufferedReader br = null;
+            BufferedReader br;
             br = new BufferedReader(new FileReader("/proc/cpuinfo"));
 
             String str;
@@ -322,8 +322,8 @@ public class Tools {
     static float getCPUTempFromFile(String sFile) {
         float output = 0.0f;
 
-        RandomAccessFile reader = null;
-        String line = null;
+        RandomAccessFile reader;
+        String line;
 
         try {
             reader = new RandomAccessFile(sFile, "r");
@@ -351,7 +351,7 @@ public class Tools {
     }
 
     static float getCPUTempSysFile() {
-        float output = 0.0f;
+        float output;
         for (String sysFile : CPU_TEMP_SYS_FILE) {
             output = getCPUTempFromFile(sysFile);
 

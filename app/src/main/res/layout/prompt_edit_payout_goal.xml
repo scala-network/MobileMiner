@@ -15,7 +15,6 @@
         android:paddingEnd="20dp">
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/mininggoalIL"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

@@ -155,7 +155,6 @@
                     android:textStyle="bold" />
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/usernameparamsIL"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -174,7 +173,6 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/workernameIL"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -193,7 +191,6 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/mininggoalIL"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -925,7 +922,6 @@
                         android:checked="false" />
 
                     <Button
-                        android:id="@+id/btnDoNotRestartOnCrashHelp"
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:layout_gravity="center_vertical"
@@ -945,7 +941,6 @@
                         tools:ignore="NestedWeights" />
 
                     <Switch
-                        android:id="@+id/chkDoNotRestartOnCrash"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:theme="@style/SwitchTheme" />

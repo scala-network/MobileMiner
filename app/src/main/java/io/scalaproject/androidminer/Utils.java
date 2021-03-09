@@ -26,17 +26,11 @@ import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
 import android.util.TypedValue;
-import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.LinearLayout;
-import android.widget.PopupWindow;
 
 import androidx.core.content.ContextCompat;
-import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -60,18 +54,18 @@ import io.scalaproject.androidminer.widgets.CustomToast;
 import static android.content.ClipDescription.MIMETYPE_TEXT_PLAIN;
 
 public final class Utils {
-    static public Integer INCREMENT = 5;
-    static public Integer MIN_CPU_TEMP = 60;
-    static public Integer MIN_BATTERY_TEMP = 30;
-    static public Integer MIN_COOLDOWN = 5;
+    static public final Integer INCREMENT = 5;
+    static public final Integer MIN_CPU_TEMP = 60;
+    static public final Integer MIN_BATTERY_TEMP = 30;
+    static public final Integer MIN_COOLDOWN = 5;
 
-    static public String SCALA_BTC_ADDRESS = "1XTLY5LqdBXRW6hcHtnuMU7c68mAyW6qm";
-    static public String SCALA_ETH_ADDRESS = "0x133a15dF7177823Dd407ca87A190bbE4585a379e";
-    static public String SCALA_XLA_ADDRESS = "SvkFLjR4DST5bAG8SSHWfta4MsCzRrDEPNx72cTetqcoPfkwi7cFA2sYGG2Tf51rQ9EMSPHVuzxeoS4Y7ieicg5A1M24A8TTW";
-    static public String SCALA_LTC_ADDRESS = "LeLK5hopvfArVyKtkZBzF3B5wj6rGrNUGk";
+    static public final String SCALA_BTC_ADDRESS = "1XTLY5LqdBXRW6hcHtnuMU7c68mAyW6qm";
+    static public final String SCALA_ETH_ADDRESS = "0x133a15dF7177823Dd407ca87A190bbE4585a379e";
+    static public final String SCALA_XLA_ADDRESS = "SvkFLjR4DST5bAG8SSHWfta4MsCzRrDEPNx72cTetqcoPfkwi7cFA2sYGG2Tf51rQ9EMSPHVuzxeoS4Y7ieicg5A1M24A8TTW";
+    static public final String SCALA_LTC_ADDRESS = "LeLK5hopvfArVyKtkZBzF3B5wj6rGrNUGk";
 
-    static public String ADDRESS_REGEX_MAIN = "^S+([1-9A-HJ-NP-Za-km-z]{96})$";
-    static public String ADDRESS_REGEX_SUB = "^Ss+([1-9A-HJ-NP-Za-km-z]{96})$";
+    static public final String ADDRESS_REGEX_MAIN = "^S+([1-9A-HJ-NP-Za-km-z]{96})$";
+    static public final String ADDRESS_REGEX_SUB = "^Ss+([1-9A-HJ-NP-Za-km-z]{96})$";
 
     static public boolean verifyAddress(String input) {
         Pattern p = Pattern.compile(Utils.ADDRESS_REGEX_MAIN);
@@ -115,27 +109,6 @@ public final class Utils {
         return dateFormat.format(date.getTime());
     }
 
-    static public void showPopup(View view, LayoutInflater inflater, View popupView) {
-        // create the popup window
-        int width = LinearLayout.LayoutParams.WRAP_CONTENT;
-        int height = LinearLayout.LayoutParams.WRAP_CONTENT;
-        boolean focusable = true; // lets taps outside the popup also dismiss it
-        final PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
-
-        // show the popup window
-        // which view you pass in doesn't matter, it is only used for the window tolken
-        popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
-
-        // dismiss the popup window when touched
-        popupView.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                popupWindow.dismiss();
-                return true;
-            }
-        });
-    }
-
     static public void copyToClipboard(String label, String text) {
         ClipboardManager clipboard = (ClipboardManager) MainActivity.getContextOfApplication().getSystemService(Context.CLIPBOARD_SERVICE);
         ClipData clip = ClipData.newPlainText(label, text);
@@ -149,33 +122,14 @@ public final class Utils {
 
         // If it does contain data
         assert clipboard != null;
-        if (!(clipboard.hasPrimaryClip())) {
-            // Ignore
-        } else if (!(Objects.requireNonNull(clipboard.getPrimaryClipDescription()).hasMimeType(MIMETYPE_TEXT_PLAIN))) {
-            // Ignore, since the clipboard has data but it is not plain text
-        } else {
-            ClipData.Item item = Objects.requireNonNull(clipboard.getPrimaryClip()).getItemAt(0);
-            pasteData = item.getText().toString();
+        if (clipboard.hasPrimaryClip()) {
+            if (Objects.requireNonNull(clipboard.getPrimaryClipDescription()).hasMimeType(MIMETYPE_TEXT_PLAIN)) {
+                ClipData.Item item = Objects.requireNonNull(clipboard.getPrimaryClip()).getItemAt(0);
+                pasteData = item.getText().toString();
+            }
         }
 
         return pasteData;
-    }
-
-    static public Bitmap getBitmapFromVectorDrawable(Context context, int drawableId) {
-        Drawable drawable = ContextCompat.getDrawable(context, drawableId);
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-            assert drawable != null;
-            drawable = (DrawableCompat.wrap(drawable)).mutate();
-        }
-
-        assert drawable != null;
-        Bitmap bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(),
-                drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(bitmap);
-        drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
-        drawable.draw(canvas);
-
-        return bitmap;
     }
 
     static public void hideKeyboardFrom(Context context, View view) {
@@ -298,11 +252,6 @@ public final class Utils {
     static public void showToast(Context context, String text, int length, int YOffset) {
         CustomToast ct = new CustomToast(context, text, length, YOffset);
         ct.show();
-    }
-
-    // Converts to celcius
-    static public int convertFahrenheitToCelcius(int fahrenheit) {
-        return ((fahrenheit - 32) * 5 / 9);
     }
 
     // Converts to fahrenheit

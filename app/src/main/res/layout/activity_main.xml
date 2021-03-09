@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="@color/bg_body"
@@ -21,7 +20,6 @@
         android:layout_below="@+id/toolbar">
 
         <LinearLayout
-            android:id="@+id/layout_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/bg_body"
@@ -368,7 +366,7 @@
 
                                     <Button
                                         android:id="@+id/start"
-                                        android:layout_width="50dp"
+                                        android:layout_width="0dp"
                                         android:layout_height="55dp"
                                         android:layout_weight="0.25"
                                         app:backgroundTint="@color/bg_green"
@@ -383,13 +381,11 @@
                             </FrameLayout>
 
                             <Space
-                                android:id="@+id/space_metrics_above"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:layout_weight="1" />
 
                                 <HorizontalScrollView
-                                    android:id="@+id/hsv"
                                     android:layout_width="fill_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="15dp"
@@ -398,12 +394,12 @@
                                     android:scrollbars="none" >
 
                                     <LinearLayout
-                                        android:id="@+id/innerLay"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_marginBottom="5dp"
                                         android:gravity="center_vertical"
-                                        android:orientation="horizontal" >
+                                        android:orientation="horizontal"
+                                        android:baselineAligned="false">
 
                                         <LinearLayout
                                             android:layout_width="50dp"
@@ -623,7 +619,6 @@
                                 </HorizontalScrollView>
 
                             <Space
-                                android:id="@+id/space_metrics_below"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:layout_weight="1" />
@@ -719,7 +714,6 @@
                                     android:progressDrawable="@drawable/progressbar_rounded_green" />
 
                                 <LinearLayout
-                                    android:id="@+id/llPayoutGoal"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="10dp"
@@ -768,7 +762,6 @@
                             </LinearLayout>
 
                         <LinearLayout
-                            android:id="@+id/llTitleActivity"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="20dp"
@@ -818,7 +811,6 @@
                         </LinearLayout>
 
                         <RelativeLayout
-                            android:id="@+id/rlLog"
                             android:layout_width="match_parent"
                             android:layout_height="125dp"
                             android:layout_marginTop="15dp"

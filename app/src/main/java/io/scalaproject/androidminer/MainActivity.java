@@ -152,7 +152,6 @@ public class MainActivity extends BaseActivity
 
     public static int nLastVersion = -1;
     public static boolean isChangelogLoaded = false;
-    public static boolean isActivityLoaded = false;
     public static final Set<ChangelogItem> allChangelogItems = new HashSet<>();
 
     private boolean bIsPerformanceMode = false;
@@ -185,11 +184,11 @@ public class MainActivity extends BaseActivity
 
     // Graphics
 
-    ArrayList<Entry> lValuesHr = new ArrayList<>();
+    final ArrayList<Entry> lValuesHr = new ArrayList<>();
     int xHr = 0;
 
-    ArrayList<BarEntry> lValuesTempBattery = new ArrayList<>();
-    ArrayList<BarEntry> lValuesTempCPU = new ArrayList<>();
+    final ArrayList<BarEntry> lValuesTempBattery = new ArrayList<>();
+    final ArrayList<BarEntry> lValuesTempCPU = new ArrayList<>();
     int xTemp = 0;
 
     // Settings
@@ -589,8 +588,6 @@ public class MainActivity extends BaseActivity
         hideNotifications();
 
         toolbar.setTitle(Utils.truncateString(getWorkerName(), Config.MAX_WORKERNAME_TITLE_CHARS), true);
-
-        isActivityLoaded = true;
         manageChangelog();
     }
 
@@ -613,8 +610,6 @@ public class MainActivity extends BaseActivity
         }
 
         hideNotifications();
-
-        isActivityLoaded = false;
 
         super.onDestroy();
     }
@@ -2069,6 +2064,10 @@ public class MainActivity extends BaseActivity
         float fCurrentMax = meterTicks.getMaxSpeed();
 
         if((meterTicks.getTickNumber() == 0 || (fCurrentMax > 0 && fHr >= fCurrentMax * 0.9)) && fMaxHr > 0) {
+            TubeSpeedometer meterHashrate = findViewById(R.id.meter_hashrate);
+            TubeSpeedometer meterHashrate_avg = findViewById(R.id.meter_hashrate_avg);
+            TubeSpeedometer meterHashrate_max = findViewById(R.id.meter_hashrate_max);
+
             float hrMax = getMaxHr(fMaxHr);
 
             // This is not normal, we need to recompute it
@@ -2076,15 +2075,15 @@ public class MainActivity extends BaseActivity
                 hrMax = getMaxHr(fHr);
             }
 
-            if(hrMax <= 10) { // in some case xlarig returns a wrong low hrMax, but it needs to be > tick number, so we force a dummy max number
-                hrMax = 11;
+            // Sometimes xlarig returns a wrong low hrMax, but it needs to be > tick number, so we force a dummy max number
+            if(hrMax <= 10.0f) {
+                hrMax = 15.0f;
             }
 
-            TubeSpeedometer meterHashrate = findViewById(R.id.meter_hashrate);
-            TubeSpeedometer meterHashrate_avg = findViewById(R.id.meter_hashrate_avg);
-            TubeSpeedometer meterHashrate_max = findViewById(R.id.meter_hashrate_max);
-
             Log.i(LOG_TAG, "hrMax: " + hrMax);
+
+            if(meterTicks.getMinSpeed() != 0.0f)
+                meterTicks.setMinSpeed(0);
 
             meterTicks.setMaxSpeed(hrMax);
 
@@ -2240,13 +2239,12 @@ public class MainActivity extends BaseActivity
         if(text.contains("paused, press")) {
             if(isDeviceCooling()) {
                 text = text.replace("paused, press", getResources().getString(R.string.miningpaused));
-                text = text.replace("to resume", "");
-                text = text.replace("r ", "");
             } else {
                 text = text.replace(", press", "");
-                text = text.replace("to resume", "");
-                text = text.replace("r ", "");
             }
+
+            text = text.replace("to resume", "");
+            text = text.replace("r ", "");
         }
 
         if(m_nLastCurrentState == Config.STATE_COOLING && text.contains("resumed")) {
@@ -3057,7 +3055,7 @@ public class MainActivity extends BaseActivity
         notificationBuilder.addAction(R.mipmap.ic_pause_miner,"Pause", pendingIntentPause);
         notificationBuilder.addAction(R.mipmap.ic_stop_miner,"Stop", pendingIntentStop);
         notificationBuilder.setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher_round));
-        notificationBuilder.setSmallIcon(R.mipmap.ic_notification);
+        notificationBuilder.setSmallIcon(android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP ? R.drawable.ic_notification : R.mipmap.ic_notification);
         notificationBuilder.setOngoing(true);
         notificationBuilder.setOnlyAlertOnce(true);
         notificationBuilder.build();
@@ -3141,10 +3139,6 @@ public class MainActivity extends BaseActivity
                 ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
             }
 
-            if (imagePath.exists()) {
-                imagePath.delete();
-            }
-
             fos = new FileOutputStream(imagePath, false);
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);
             fos.flush();
@@ -3216,12 +3210,12 @@ public class MainActivity extends BaseActivity
             return capabilities != null && capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI);
         } else {
             NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+            assert networkInfo != null;
             return networkInfo.isConnected() && networkInfo.getType() == ConnectivityManager.TYPE_WIFI;
         }
     }
 
     static boolean lastIsOnWifi = false;
-    static boolean isOnWifiInit = false;
     private final BroadcastReceiver networkInfoReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent networkStatusIntent) {
@@ -3248,8 +3242,6 @@ public class MainActivity extends BaseActivity
                     }
                 }
             }
-
-            isOnWifiInit = true;
 
             if (lastIsOnWifi == isOnWifi)
                 return;

@@ -199,7 +199,7 @@ public class PoolActivity extends BaseActivity
     }
 
     @Override
-    public void onSelectPool(final View view, final PoolItem poolItem) {
+    public void onSelectPool(final PoolItem poolItem) {
         selectedPool.setIsSelected(false);
         poolItem.setIsSelected(true);
         selectedPool = poolItem;
@@ -376,15 +376,15 @@ public class PoolActivity extends BaseActivity
             editDialog.show();
         }
 
-        androidx.appcompat.app.AlertDialog editDialog = null;
+        androidx.appcompat.app.AlertDialog editDialog;
 
-        TextInputLayout etPoolName;
-        TextInputLayout etPoolURL;
+        final TextInputLayout etPoolName;
+        final TextInputLayout etPoolURL;
 
-        Spinner spPoolPort;
-        TextInputLayout etPoolPort;
+        final Spinner spPoolPort;
+        final TextInputLayout etPoolPort;
 
-        ImageView ivPoolIcon;
+        final ImageView ivPoolIcon;
 
         public static final int GET_FROM_GALLERY = 1;
 
@@ -439,7 +439,7 @@ public class PoolActivity extends BaseActivity
                 poolEdit = new PoolItem();
                 poolEdit.setUserDefined(true);
                 poolEditBackup = null;
-                ivPoolIcon.setImageBitmap(ProviderManager.getDefaultPoolIcon(getApplicationContext(), poolItem));
+                ivPoolIcon.setImageBitmap(ProviderManager.getDefaultPoolIcon(getApplicationContext(), null));
             }
 
             boolean isUserDefined = poolEdit.isUserDefined();

@@ -4,7 +4,6 @@
 
 package io.scalaproject.androidminer.widgets;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,14 +24,14 @@ import io.scalaproject.androidminer.api.PaymentItem;
 public class PaymentInfoAdapter extends RecyclerView.Adapter<PaymentInfoAdapter.ViewHolder> {
 
     public interface OnShowPaymentListener {
-        void onShowPayment(View view, PaymentItem item);
+        void onShowPayment(PaymentItem item);
     }
 
     private final PaymentInfoAdapter.OnShowPaymentListener onShowPaymentListener;
 
     private final List<PaymentItem> paymentItems = new ArrayList<>();
 
-    public PaymentInfoAdapter(Context context, PaymentInfoAdapter.OnShowPaymentListener onShowPaymentListener) {
+    public PaymentInfoAdapter(PaymentInfoAdapter.OnShowPaymentListener onShowPaymentListener) {
         this.onShowPaymentListener = onShowPaymentListener;
     }
 
@@ -71,7 +70,10 @@ public class PaymentInfoAdapter extends RecyclerView.Adapter<PaymentInfoAdapter.
     }
 
     class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        TextView tvAmount, tvFee, tvHash, tvTimestamp;
+        final TextView tvAmount;
+        final TextView tvFee;
+        final TextView tvHash;
+        final TextView tvTimestamp;
         PaymentItem paymentItem;
 
         ViewHolder(View itemView) {
@@ -85,7 +87,7 @@ public class PaymentInfoAdapter extends RecyclerView.Adapter<PaymentInfoAdapter.
         void bind(final int position) {
             paymentItem = paymentItems.get(position);
 
-            tvAmount.setText("+ " + paymentItem.mAmount);
+            tvAmount.setText(String.format("+ %s", paymentItem.mAmount));
             tvFee.setText(paymentItem.mFee);
 
             tvHash.setText(Utils.getPrettyTx(paymentItem.mHash));
@@ -100,7 +102,7 @@ public class PaymentInfoAdapter extends RecyclerView.Adapter<PaymentInfoAdapter.
         @Override
         public void onClick(View view) {
             if (onShowPaymentListener != null) {
-                onShowPaymentListener.onShowPayment(view, paymentItem);
+                onShowPaymentListener.onShowPayment(paymentItem);
             }
         }
     }

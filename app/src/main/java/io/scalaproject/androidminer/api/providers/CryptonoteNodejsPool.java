@@ -64,6 +64,7 @@ public class CryptonoteNodejsPool extends ProviderAbstract {
                 }
                 , PoolActivity::parseVolleyError);
     }
+
     @Override
     protected void onBackgroundFetchData() {
         PrettyTime pTime = new PrettyTime();

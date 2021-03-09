@@ -169,10 +169,6 @@ public class Toolbar extends androidx.appcompat.widget.Toolbar {
 
     public void setButtonOptions(int type) {
         switch (type) {
-            case BUTTON_OPTIONS_NONE:
-                bOptionIcon.setImageDrawable(getResources().getDrawable(R.drawable.ic_share));
-                bOptionIcon.setVisibility(View.INVISIBLE);
-                break;
             case BUTTON_OPTIONS_STAR:
                 bOptionIcon.setImageDrawable(getResources().getDrawable(R.drawable.ic_star));
                 bOptionIcon.setVisibility(View.VISIBLE);
@@ -186,6 +182,7 @@ public class Toolbar extends androidx.appcompat.widget.Toolbar {
                 bOptionIcon.setVisibility(View.VISIBLE);
                 break;
             case BUTTON_OPTIONS_STATS:
+            case BUTTON_OPTIONS_RELEASES:
                 bOptionIcon.setImageDrawable(getResources().getDrawable(R.drawable.ic_open_url));
                 bOptionIcon.setVisibility(View.VISIBLE);
                 break;
@@ -197,10 +194,7 @@ public class Toolbar extends androidx.appcompat.widget.Toolbar {
                 bOptionIcon.setImageDrawable(getResources().getDrawable(R.drawable.ic_changelog));
                 bOptionIcon.setVisibility(View.VISIBLE);
                 break;
-            case BUTTON_OPTIONS_RELEASES:
-                bOptionIcon.setImageDrawable(getResources().getDrawable(R.drawable.ic_open_url));
-                bOptionIcon.setVisibility(View.VISIBLE);
-                break;
+            case BUTTON_OPTIONS_NONE:
             default:
                 bOptionIcon.setImageDrawable(getResources().getDrawable(R.drawable.ic_share));
                 bOptionIcon.setVisibility(View.INVISIBLE);

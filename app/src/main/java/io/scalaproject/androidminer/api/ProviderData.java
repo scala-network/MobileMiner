@@ -5,7 +5,6 @@
 package io.scalaproject.androidminer.api;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public final class ProviderData {
@@ -34,7 +33,7 @@ public final class ProviderData {
         public String paid = "";
         public String lastShare = "";
         public String shares = "";
-        public List<Payment> payments = new ArrayList<>();
+        public final List<Payment> payments = new ArrayList<>();
     }
 
     public static class Coin {

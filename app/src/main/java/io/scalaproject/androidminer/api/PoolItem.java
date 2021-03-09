@@ -22,8 +22,7 @@ import io.scalaproject.androidminer.api.providers.*;
 
 public class PoolItem {
 
-    private int mId = 0;
-    private String mPool, mPort, mApiUrl, mUrl, mIP, mStatsURL, mStartUrl, mKey;
+    private String mPool, mPort, mApiUrl, mUrl, mIP, mStatsURL, mKey;
     private int mPoolType = 0;
     private Bitmap icon;
     private ArrayList<String> mPorts;
@@ -85,16 +84,13 @@ public class PoolItem {
             case 1:
                 this.mStatsURL = poolUrl + "/#/dashboard";
                 this.mApiUrl = poolUrl + "/api";
-                this.mStartUrl = poolUrl + "/#/help/getting_started";
                 break;
             case 2:
                 this.mStatsURL = poolUrl + "/#my_stats";
                 this.mApiUrl = poolUrl + "/api";
-                this.mStartUrl = poolUrl + "/#getting_started";
             case 3:
                 this.mStatsURL = poolUrl + "/#stats";
                 this.mApiUrl = poolUrl + "/api";
-                this.mStartUrl = poolUrl + "/#getting_started";
                 break;
             default:
                 break;
@@ -110,7 +106,6 @@ public class PoolItem {
         this.mPorts = ports;
         this.mApiUrl = apiUrl;
         this.mStatsURL = statsUrl;
-        this.mStartUrl = startUrl;
         this.mPoolType = poolType;
 
         switch (mPoolType) {
@@ -121,9 +116,6 @@ public class PoolItem {
                 if(apiUrl.isEmpty()) {
                     this.mApiUrl = poolUrl + "/api";
                 }
-                if(statsUrl.isEmpty()) {
-                    this.mStartUrl = poolUrl + "/#/help/getting_started";
-                }
                 break;
             case 2:
                 if(startUrl.isEmpty()) {
@@ -132,18 +124,13 @@ public class PoolItem {
                 if(apiUrl.isEmpty()) {
                     this.mApiUrl = poolUrl + "/api";
                 }
-                if(statsUrl.isEmpty()) {
-                    this.mStartUrl = poolUrl + "/#getting_started";
-                }
+                break;
             case 3:
                 if(startUrl.isEmpty()) {
                     this.mStatsURL = poolUrl + "/#stats";
                 }
                 if(apiUrl.isEmpty()) {
                     this.mApiUrl = poolUrl + "/api";
-                }
-                if(statsUrl.isEmpty()) {
-                    this.mStartUrl = poolUrl + "/#getting_started";
                 }
                 break;
             default:
@@ -207,14 +194,6 @@ public class PoolItem {
     }
     public void setIcon(Bitmap icon) {
         this.icon = icon;
-    }
-
-    public void setId(int id) {
-        this.mId = id;
-    }
-
-    public int getId() {
-        return this.mId;
     }
 
     public void setKey(String key) {
@@ -320,7 +299,7 @@ public class PoolItem {
         this.mPort = anotherPool.getPort();
     }
 
-    static public Comparator<PoolItem> PoolComparator = new Comparator<PoolItem>() {
+    static public final Comparator<PoolItem> PoolComparator = new Comparator<PoolItem>() {
         @Override
         public int compare(PoolItem o1, PoolItem o2) {
             if(o1.isOfficial())
