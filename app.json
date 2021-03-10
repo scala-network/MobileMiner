@@ -19,6 +19,15 @@
       "ip" : "168.119.229.63"
     },
     {
+      "key" : "Scala Party",
+      "pool" : "scala.party",
+      "port" : "3333",
+      "ports" : ["3333", "5555", "7777", "9999"],
+      "type"  :  3,
+      "url" : "https://scala.party",
+      "ip" : "90.251.104.100"
+    },
+    {
       "key" : "GNTL",
       "pool" : "xla.pool.gntl.co.uk",
       "port" : "40002",
