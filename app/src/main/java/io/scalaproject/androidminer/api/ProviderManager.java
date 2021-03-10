@@ -30,7 +30,7 @@ public final class ProviderManager {
 
     static private final String DEFAULT_POOLS_REPOSITORY = "https://raw.githubusercontent.com/scala-network/MobileMiner/master/app.json";
 
-    static private final String IPFS_HASH = "QmaX32HmCqH9BeVim9G2nk7vzhGHmevN7PRN3F8gttuEmD";
+    static private final String IPFS_HASH = "Qmeh5zsSaNpXKkAW8XNvzUqWGG9zKrCLkh1jbPvfhUFnGi";
     static private final String[] POOLS_REPOSITORY_IPFS_GATEWAYS = {
             "https://dweb.link/ipfs/",
             "https://ipfs.io/ipfs/",

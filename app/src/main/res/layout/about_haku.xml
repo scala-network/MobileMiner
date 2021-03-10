@@ -19,7 +19,6 @@
         android:textSize="18sp" />
 
     <ImageView
-        android:id="@+id/ivHaku"
         android:layout_width="82dp"
         android:layout_height="82dp"
         android:layout_gravity="center"
