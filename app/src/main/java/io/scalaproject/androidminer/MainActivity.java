@@ -1330,6 +1330,10 @@ public class MainActivity extends BaseActivity
         return workerName;
     }
 
+    private String getUsernameParameters() {
+        return Config.read(Config.CONFIG_USERNAME_PARAMETERS);
+    }
+
     private void updateCores() {
         TubeSpeedometer meterCores = findViewById(R.id.meter_cores);
         meterCores.speedTo(nCores, 0);
@@ -2236,6 +2240,18 @@ public class MainActivity extends BaseActivity
             text = sb.delete(i-4, i).toString();
         }
 
+        boolean speed = false;
+        // For some reason some devices display "miner" instead of "speed"
+        if (text.contains("speed") || text.contains("miner")) {
+            text = text.replace("speed ", "");
+            text = text.replace("miner ", "");
+            text = text.replace("H/s ", "");
+            speed = true;
+        }
+
+        if(bIsPerformanceMode)
+            return new SpannableString(text);
+
         if(text.contains("paused, press")) {
             if(isDeviceCooling()) {
                 text = text.replace("paused, press", getResources().getString(R.string.miningpaused));
@@ -2266,21 +2282,12 @@ public class MainActivity extends BaseActivity
                 text = text + " POOL URL " + selectedPool.getPoolUrl() + ":" + selectedPool.getPort() + System.getProperty("line.separator");
 
             text = text + " WORKER NAME " + getWorkerName() + System.getProperty("line.separator");
+
+            String usernameParameters = getUsernameParameters();
+            if(!usernameParameters.isEmpty())
+                text = text + " USERNAME PARAMETERS " + getWorkerName() + System.getProperty("line.separator");
+
             text = text + System.getProperty("line.separator");
-        }
-
-        boolean speed = false;
-        if (text.contains("speed")) {
-            text = text.replace("speed ", "");
-            text = text.replace("H/s ", "");
-            speed = true;
-        }
-
-        // For some reason some devices display "miner" instead of "speed"
-        if (text.contains("miner")) {
-            text = text.replace("miner ", "");
-            text = text.replace("H/s ", "");
-            speed = true;
         }
 
         // Remove consecutive spaces
@@ -2310,6 +2317,14 @@ public class MainActivity extends BaseActivity
                     if(tmpFormat.equals("POOL") && text.contains(tmpFormat3)) {
                         i = text.indexOf(tmpFormat3);
                         imax = i + tmpFormat3.length();
+                        textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_white)), i, imax, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                        textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_grey)), imax, text.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    }
+
+                    String tmpFormat4 = "USERNAME PARAMETERS";
+                    if(tmpFormat.equals("POOL") && text.contains(tmpFormat4)) {
+                        i = text.indexOf(tmpFormat4);
+                        imax = i + tmpFormat4.length();
                         textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_white)), i, imax, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                         textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_grey)), imax, text.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                     }

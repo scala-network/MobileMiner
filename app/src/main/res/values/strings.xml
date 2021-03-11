@@ -175,7 +175,7 @@
     <string name="whats_new">What\'s new?</string>
     <string name="whats_new_text">Your application has been updated to the latest version.\n\nHere are the new features:\n</string>
     <string name="performance_mode">Performance Mode</string>
-    <string name="performance_mode_text">Are you sure you want to enable Performance Mode?\n\nThe following features will be disabled:\n- Hashrate meter and chart\n- Temperature chart\n- Payout widget\n- Statistics refresh\n- Hashrate refresh delay</string>
+    <string name="performance_mode_text">Are you sure you want to enable Performance Mode?\n\nThe following features will be disabled:\n- Hashrate meter and chart\n- Temperature chart\n- Payout widget\n- Statistics refresh\n- Hashrate refresh delay\n- Formatted mining log</string>
     <string name="new_version_title">A new version is available!</string>
     <string name="new_version_text">A new version of the application is available. To update to this version, uninstall your current application and install the new one.\n\nDo you want to download it now?</string>
     <string name="refresh">Refresh</string>
@@ -198,5 +198,7 @@
     <string name="latest_version_not_ok">You don\'t have the latest version.</string>
     <string name="cannot_retrieve_changelog_data">Cannot retrieve changelog data.</string>
     <string name="scala_address_wizard">You need to provide your Scala wallet address to start mining.</string>
+    <string name="url">URL</string>
+    <string name="name">Name</string>
 
 </resources>

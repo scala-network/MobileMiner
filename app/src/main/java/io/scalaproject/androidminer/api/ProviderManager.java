@@ -286,7 +286,7 @@ public final class ProviderManager {
         for(int i = 0; i < mPools.size(); i++) {
             PoolItem pi = mPools.get(i);
 
-            if(pi.isUserDefined()) { // just in case!
+            if(pi.isUserDefined()) {
                 String poolString = pi.toString();
                 editor.putString(Integer.toString(i), poolString);
             }

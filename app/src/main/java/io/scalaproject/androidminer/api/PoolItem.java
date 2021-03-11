@@ -163,8 +163,8 @@ public class PoolItem {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        if (!mKey.isEmpty() && !mUrl.isEmpty() && !mPort.isEmpty()) {
-            sb.append(mKey).append(":").append(mUrl).append(":").append(mPort);
+        if (!mKey.isEmpty() && !mUrl.isEmpty() && !mSelectedPort.isEmpty()) {
+            sb.append(mKey).append(":").append(mUrl).append(":").append(mSelectedPort);
         }
 
         if(icon != null) {
