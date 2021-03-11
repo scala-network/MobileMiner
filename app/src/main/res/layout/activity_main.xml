@@ -59,6 +59,73 @@
                                 android:orientation="horizontal"
                                 android:gravity="center">
 
+                                <LinearLayout
+                                    android:id="@+id/llCPUCores"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:paddingTop="6dp"
+                                    android:paddingBottom="6dp"
+                                    android:paddingStart="8dp"
+                                    android:paddingEnd="10dp"
+                                    android:orientation="horizontal"
+                                    android:gravity="center_vertical"
+                                    android:background="@drawable/corner_radius_lighter_round">
+
+                                    <ImageView
+                                        android:layout_width="12dp"
+                                        android:layout_height="12dp"
+                                        android:layout_marginTop="1dp"
+                                        android:gravity="center"
+                                        app:srcCompat="@drawable/ic_cpu_cores" />
+
+                                    <TextView
+                                        android:id="@+id/tvCPUCores"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        android:layout_marginStart="2dp"
+                                        android:gravity="start"
+                                        android:text="4/7"
+                                        android:textColor="@color/c_white"
+                                        android:textSize="12sp"
+                                        android:textStyle="normal" />
+
+                                </LinearLayout>
+
+                                <Space
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight="1" />
+
+                                <LinearLayout
+                                    android:id="@+id/llMiningStatus"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="8dp"
+                                    android:orientation="horizontal"
+                                    android:gravity="center_vertical">
+
+                                    <ImageView
+                                        android:id="@+id/ivMiningStatus"
+                                        android:layout_width="20dp"
+                                        android:layout_height="20dp"
+                                        app:tint="@color/bg_lighter"
+                                        app:srcCompat="@drawable/ic_mining_status" />
+
+                                    <TextView
+                                        android:id="@+id/tvMiningStatus"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        android:layout_marginStart="4dp"
+                                        android:gravity="start"
+                                        android:text="@string/stopped_status"
+                                        android:textColor="@color/c_white"
+                                        android:textSize="18sp"
+                                        android:textStyle="normal" />
+
+                                </LinearLayout>
+
                                 <Space
                                     android:layout_width="0dp"
                                     android:layout_height="match_parent"
@@ -74,7 +141,6 @@
                                     android:layout_marginEnd="3dp"
                                     app:tint="@color/c_blue"
                                     app:srcCompat="@drawable/ic_rocket" />
-
 
                                 <Switch
                                     android:id="@+id/swPerformanceMode"

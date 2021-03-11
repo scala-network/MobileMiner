@@ -76,6 +76,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.SeekBar;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -406,6 +407,14 @@ public class MainActivity extends BaseActivity
         });
 
         // Controls
+
+        LinearLayout llCPUCores = findViewById(R.id.llCPUCores);
+        llCPUCores.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onEditCPUCores(v);
+            }
+        });
 
         LinearLayout llPerformanceMode = findViewById(R.id.llPerformanceMode);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
@@ -746,6 +755,9 @@ public class MainActivity extends BaseActivity
             tvTemperature.setVisibility(View.GONE);
             llChartTemperature.setVisibility(View.GONE);
 
+            ImageView ivMiningStatus = findViewById(R.id.ivMiningStatus);
+            ivMiningStatus.clearAnimation();
+
             ProviderManager.request.setListener(payoutListener).stop();
 
             stopTimerRefreshHashrate();
@@ -768,6 +780,8 @@ public class MainActivity extends BaseActivity
 
             tvTemperature.setVisibility(View.VISIBLE);
             llChartTemperature.setVisibility(View.VISIBLE);
+
+            updateMiningStatus();
 
             refreshHashrate();
 
@@ -1090,6 +1104,96 @@ public class MainActivity extends BaseActivity
         }
     }
 
+    public void onEditCPUCores(View view) {
+        MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this, R.style.MaterialAlertDialogCustom);
+        LayoutInflater li = LayoutInflater.from(alertDialogBuilder.getContext());
+        View promptsView = li.inflate(R.layout.prompt_edit_cpu_cores, null);
+        alertDialogBuilder.setView(promptsView);
+
+        SeekBar sbCores = promptsView.findViewById(R.id.seekbarcores);
+        TextView tvCoresNb = promptsView.findViewById(R.id.coresnb);
+        TextView tvCoresMax = promptsView.findViewById(R.id.coresmax);
+
+        sbCores.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                // Auto-generated method stub
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                // Auto-generated method stub
+            }
+
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                tvCoresNb.setText(Integer.toString(progress+1));
+            }
+        });
+
+        // CPU Cores
+        int cores = Runtime.getRuntime().availableProcessors();
+
+        int suggested = cores / 2;
+        if (suggested == 0) suggested = 1;
+
+        sbCores.setMax(cores-1);
+        tvCoresMax.setText(Integer.toString(cores));
+
+        if (Config.read(Config.CONFIG_CORES).isEmpty()) {
+            sbCores.setProgress(suggested-1);
+            tvCoresNb.setText(Integer.toString(suggested));
+        } else {
+            int corenb = Integer.parseInt(Config.read(Config.CONFIG_CORES));
+            sbCores.setProgress(corenb-1);
+            tvCoresNb.setText(Integer.toString(corenb));
+        }
+
+        // set dialog message
+        alertDialogBuilder
+                .setTitle(getResources().getString(R.string.intensity))
+                .setCancelable(false)
+                .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        if (isDeviceMiningBackground()) {
+                            MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(view.getContext(), R.style.MaterialAlertDialogCustom);
+                            builder.setTitle(getString(R.string.stopmining))
+                                    .setMessage(getString(R.string.newSettings))
+                                    .setCancelable(true)
+                                    .setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialogInterface, int i) {
+                                            stopMining();
+
+                                            nCores = sbCores.getProgress() + 1;
+                                            Config.write("cores", Integer.toString(nCores));
+
+                                            updateCores();
+                                        }
+                                    })
+                                    .setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialogInterface, int i) {
+                                            // Do nothing
+                                        }
+                                    })
+                                    .show();
+                        } else {
+                            nCores = sbCores.getProgress() + 1;
+                            Config.write("cores", Integer.toString(nCores));
+                            updateCores();
+                        }
+                    }
+                })
+                .setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        Utils.hideKeyboardFrom(contextOfApplication, promptsView);
+                    }
+                });
+
+        alertDialogBuilder.show();
+    }
+
     public void onEditPayoutGoal(View view) {
         MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this, R.style.MaterialAlertDialogCustom);
         LayoutInflater li = LayoutInflater.from(alertDialogBuilder.getContext());
@@ -1337,6 +1441,9 @@ public class MainActivity extends BaseActivity
     private void updateCores() {
         TubeSpeedometer meterCores = findViewById(R.id.meter_cores);
         meterCores.speedTo(nCores, 0);
+
+        TextView tvCPUCores = findViewById(R.id.tvCPUCores);
+        tvCPUCores.setText(nCores + "/" + nNbMaxCores);
     }
 
     @Override
@@ -1854,6 +1961,21 @@ public class MainActivity extends BaseActivity
         tvMiningTime.setText(miningTime);
     }
 
+    private void updateMiningStatus() {
+        ImageView ivMiningStatus = findViewById(R.id.ivMiningStatus);
+        ivMiningStatus.setColorFilter(m_nCurrentState == Config.STATE_STOPPED ? getResources().getColor(R.color.bg_lighter) : getResources().getColor(R.color.c_green));
+
+        if(m_nCurrentState != Config.STATE_STOPPED && !bIsPerformanceMode) {
+            if(ivMiningStatus.getAnimation() == null)
+                ivMiningStatus.startAnimation(getBlinkAnimationInfinite());
+        } else {
+            ivMiningStatus.clearAnimation();
+        }
+
+        TextView tvMiningStatus = findViewById(R.id.tvMiningStatus);
+        tvMiningStatus.setText(m_nCurrentState == Config.STATE_STOPPED ? getResources().getString(R.string.stopped_status) : getResources().getString(R.string.running_status));
+    }
+
     private void setMinerStatus(Integer status) {
         LinearLayout llHashrate = findViewById(R.id.layout_hashrate);
         LinearLayout llStatus = findViewById(R.id.layout_status);
@@ -1936,6 +2058,8 @@ public class MainActivity extends BaseActivity
 
         m_nLastCurrentState = m_nCurrentState;
         m_nCurrentState = status;
+
+        updateMiningStatus();
 
         updateNotification();
     }
@@ -2709,11 +2833,21 @@ public class MainActivity extends BaseActivity
     };
 
     private Animation getBlinkAnimation() {
-        Animation animation = new AlphaAnimation(1, 0);         // Change alpha from fully visible to invisible
+        Animation animation = new AlphaAnimation(1.0f, 0.0f);
         animation.setDuration(800);
-        animation.setInterpolator(new LinearInterpolator());    // do not alter animation rate
+        animation.setInterpolator(new LinearInterpolator());
         animation.setRepeatCount(1);
-        animation.setRepeatMode(Animation.REVERSE);             // Reverse animation at the end so the button will fade back in
+        animation.setRepeatMode(Animation.REVERSE);
+
+        return animation;
+    }
+
+    private Animation getBlinkAnimationInfinite() {
+        AlphaAnimation animation= new AlphaAnimation(1.0f, 0.2f);
+        animation.setDuration(1250);
+        animation.setInterpolator(new LinearInterpolator());
+        animation.setRepeatCount(Animation.INFINITE);
+        animation.setRepeatMode(Animation.REVERSE);
 
         return animation;
     }

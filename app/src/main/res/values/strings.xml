@@ -90,12 +90,15 @@
     <string name="supporttheproject">Do you want to support the project?</string>
     <string name="minetoscala">The Scala donation address will then be used for mining.</string>
     <string name="stopmining">Do you want to stop mining?</string>
+    <string name="newSettings">Restart mining process to apply the new settings.</string>
     <string name="closeApp">If you close the app, the mining process will be stopped.</string>
     <string name="newparametersapplied">You will have to restart the mining process in order for the new parameters to be applied.</string>
     <string name="hashrate_share">Take a look at my Scala Mobile Miner stats! I\'m currently mining on my Android device. Download the app to start mining on your phone: https://mobileminer.scalaproject.io/</string>
     <string name="app_share">"Did you know you can mine cryptocurrencies on any Android device? Download the app to start mining on your phone: https://mobileminer.scalaproject.io/</string>
     <string name="share_title">Scala Mobile Miner</string>
     <string name="share_via">Share via</string>
+    <string name="running_status">Running</string>
+    <string name="stopped_status">Stopped</string>
 
     <string name="warning_temperature_control_prompt"><![CDATA[
         <p>This application implements two layers of protection for your device.</p>
