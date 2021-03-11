@@ -2807,7 +2807,9 @@ public class MainActivity extends BaseActivity
 
                             if(!tvAcceptedShares.getText().equals(sAccepted)) {
                                 tvAcceptedShares.setText(sAccepted);
-                                tvAcceptedShares.startAnimation(getBlinkAnimation());
+
+                                if(!bIsPerformanceMode)
+                                    tvAcceptedShares.startAnimation(getBlinkAnimation());
                             }
 
                             if(nLastShareCount != accepted) {
