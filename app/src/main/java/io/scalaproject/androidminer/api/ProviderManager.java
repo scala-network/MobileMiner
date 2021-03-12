@@ -30,12 +30,12 @@ public final class ProviderManager {
 
     static private final String DEFAULT_POOLS_REPOSITORY = "https://raw.githubusercontent.com/scala-network/MobileMiner/master/app.json";
 
-    static private final String IPFS_HASH = "Qmeh5zsSaNpXKkAW8XNvzUqWGG9zKrCLkh1jbPvfhUFnGi";
+    static private final String IPNS_NAME = "pool-list.scalaproject.io";
     static private final String[] POOLS_REPOSITORY_IPFS_GATEWAYS = {
-            "https://dweb.link/ipfs/",
-            "https://ipfs.io/ipfs/",
-            "https://gateway.ipfs.io/ipfs/",
-            "https://cloudflare-ipfs.com/ipfs/"
+            "https://dweb.link/ipns/",
+            "https://ipfs.io/ipns/",
+            "https://gateway.ipfs.io/ipns/",
+            "https://cloudflare-ipfs.com/ipns/"
     };
 
     static private final String DEFAULT_POOL = "{\n" +
@@ -210,7 +210,7 @@ public final class ProviderManager {
             if(jsonString.isEmpty()) {
                 for (String strPoolURL : POOLS_REPOSITORY_IPFS_GATEWAYS) {
                     if(Tools.isURLReachable(strPoolURL)) {
-                        jsonString = Json.fetch(strPoolURL + IPFS_HASH);
+                        jsonString = Json.fetch(strPoolURL + IPNS_NAME);
                         if (!jsonString.isEmpty())
                             break;
                     }
