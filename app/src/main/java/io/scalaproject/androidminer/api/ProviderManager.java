@@ -28,8 +28,11 @@ public final class ProviderManager {
     // Increment the version number when the pool json structure changes
     static private final String version = "1";
 
-    static private final String DEFAULT_POOLS_REPOSITORY = "https://raw.githubusercontentddd.com/scala-network/MobileMiner/master/app.json";
+    static private final String DEFAULT_POOLS_REPOSITORY = "https://raw.githubusercontent.com/scala-network/MobileMiner/master/app.json";
 
+    // USAGE: When the DEFAULT_POOLS_REPOSITORY file is modified, we need to upload the new file
+    //        to the IPNS gateway as well. This is to avoid having to release a new version of the app
+    //        every time the data changes.
     static private final String IPNS_NAME = "pool-list.scalaproject.io";
     static private final String[] POOLS_REPOSITORY_IPNS_GATEWAYS = {
             "https://dweb.link/ipns/",
