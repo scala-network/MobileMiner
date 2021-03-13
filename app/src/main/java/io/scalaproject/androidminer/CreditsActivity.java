@@ -18,7 +18,6 @@ public class CreditsActivity extends LibsActivity {
         builder.aboutShowIcon = true;
         builder.aboutShowVersion = true;
         builder.withFields(R.string.class.getFields());
-        builder.withLibraries("activeandroid", "caldroid");
         builder.withActivityTheme(R.style.CustomAboutLibrariesTheme);
 
         setIntent(builder.intent(this));
