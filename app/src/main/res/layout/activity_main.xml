@@ -101,7 +101,7 @@
                                     android:id="@+id/llMiningStatus"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginStart="8dp"
+                                    android:layout_marginStart="9dp"
                                     android:orientation="horizontal"
                                     android:gravity="center_vertical">
 
@@ -122,7 +122,7 @@
                                         android:text="@string/stopped_status"
                                         android:textColor="@color/c_white"
                                         android:textSize="18sp"
-                                        android:textStyle="normal" />
+                                        android:textStyle="bold" />
 
                                 </LinearLayout>
 

@@ -25,13 +25,13 @@ import io.scalaproject.androidminer.network.Json;
 
 public final class ProviderManager {
 
-    // Increment the version number when the json structure changes
+    // Increment the version number when the pool json structure changes
     static private final String version = "1";
 
-    static private final String DEFAULT_POOLS_REPOSITORY = "https://raw.githubusercontent.com/scala-network/MobileMiner/master/app.json";
+    static private final String DEFAULT_POOLS_REPOSITORY = "https://raw.githubusercontentddd.com/scala-network/MobileMiner/master/app.json";
 
     static private final String IPNS_NAME = "pool-list.scalaproject.io";
-    static private final String[] POOLS_REPOSITORY_IPFS_GATEWAYS = {
+    static private final String[] POOLS_REPOSITORY_IPNS_GATEWAYS = {
             "https://dweb.link/ipns/",
             "https://ipfs.io/ipns/",
             "https://gateway.ipfs.io/ipns/",
@@ -208,9 +208,10 @@ public final class ProviderManager {
 
             // If GitHub is not available or is blocked by firewalls, use IPFS gateways
             if(jsonString.isEmpty()) {
-                for (String strPoolURL : POOLS_REPOSITORY_IPFS_GATEWAYS) {
+                for (String strPoolURLDir : POOLS_REPOSITORY_IPNS_GATEWAYS) {
+                    String strPoolURL = strPoolURLDir + IPNS_NAME;
                     if(Tools.isURLReachable(strPoolURL)) {
-                        jsonString = Json.fetch(strPoolURL + IPNS_NAME);
+                        jsonString = Json.fetch(strPoolURL);
                         if (!jsonString.isEmpty())
                             break;
                     }
@@ -224,7 +225,7 @@ public final class ProviderManager {
             } else {
                 useDefaultPool = false;
                 Config.write(Config.CONFIG_POOLS_REPOSITORY_JSON, jsonString);
-                Config.write(Config.CONFIG_POOLS_REPOSITORY_LAST_FETCHED, String.valueOf(now + 3600));//Cached time is 1 hour for now
+                Config.write(Config.CONFIG_POOLS_REPOSITORY_LAST_FETCHED, String.valueOf(now + 3600)); //Cached time is 1 hour for now
             }
         }
 
