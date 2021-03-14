@@ -203,5 +203,6 @@
     <string name="scala_address_wizard">You need to provide your Scala wallet address to start mining.</string>
     <string name="url">URL</string>
     <string name="name">Name</string>
+    <string name="mining_resumed_by_user">Mining resumed by user.</string>
 
 </resources>

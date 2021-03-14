@@ -96,16 +96,9 @@ public class MiningService extends Service {
     }
 
     @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
-        return START_STICKY;
-    }
-
-    @Override
     public void onTaskRemoved(Intent rootIntent) {
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.cancelAll();
-
-        stopMining();
 
         super.onTaskRemoved(rootIntent);
     }
@@ -114,8 +107,6 @@ public class MiningService extends Service {
     public void onDestroy() {
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.cancelAll();
-
-        stopMining();
 
         super.onDestroy();
     }
@@ -380,7 +371,7 @@ public class MiningService extends Service {
     }
 
     private class ProcessMonitor extends Thread {
-        final Process proc;
+        Process proc;
 
         ProcessMonitor(Process proc) {
             this.proc = proc;
@@ -404,8 +395,8 @@ public class MiningService extends Service {
     }
 
     private class OutputReaderThread extends Thread {
-        private final InputStream inputStream;
-        private final StringBuilder output = new StringBuilder();
+        private InputStream inputStream;
+        private StringBuilder output = new StringBuilder();
 
         OutputReaderThread(InputStream inputStream) {
             this.inputStream = inputStream;
@@ -491,7 +482,7 @@ public class MiningService extends Service {
     }
 
     private static class InputReaderThread extends Thread {
-        private final OutputStream outputStream;
+        private OutputStream outputStream;
         private BufferedWriter writer;
 
         InputReaderThread(OutputStream outputStream) {

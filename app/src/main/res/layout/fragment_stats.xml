@@ -41,7 +41,7 @@
                         android:layout_marginStart="7.5dp"
                         android:layout_gravity="center"
                         app:tint="@color/c_white"
-                        app:srcCompat="@drawable/ic_balance" />
+                        app:srcCompat="@drawable/ic_balance2" />
 
                     <LinearLayout
                         android:layout_width="wrap_content"

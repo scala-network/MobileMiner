@@ -233,7 +233,8 @@ public class MainActivity extends BaseActivity
 
     private Button btnStart;
 
-    private static int m_nLastCurrentState = Config.STATE_STOPPED;
+    private boolean m_bWasCooling = false;
+    private boolean m_bUserForcedResume = false;
     private static int m_nCurrentState = Config.STATE_STOPPED;
 
     private static NotificationManager notificationManager = null;
@@ -1840,6 +1841,9 @@ public class MainActivity extends BaseActivity
         fSumHr = 0.0f;
         nHrCount = 0;
         fMaxHr = 0.0f;
+
+        m_bWasCooling = false;
+        m_bUserForcedResume = false;
     }
 
     public void stopMining() {
@@ -1924,7 +1928,7 @@ public class MainActivity extends BaseActivity
             DrawableCompat.setTint(buttonDrawableStart, getResources().getColor(R.color.bg_green));
             btnStart.setBackground(buttonDrawableStart);
             btnStart.setText(R.string.start);
-        } else if(m_nCurrentState == Config.STATE_PAUSED) {
+        } else if(m_nCurrentState == Config.STATE_PAUSED || m_nCurrentState == Config.STATE_COOLING) {
             updateHashrate(0.0f, 0.0f);
             DrawableCompat.setTint(buttonDrawableStart, getResources().getColor(R.color.bg_green));
             btnStart.setBackground(buttonDrawableStart);
@@ -2056,7 +2060,6 @@ public class MainActivity extends BaseActivity
             }
         }
 
-        m_nLastCurrentState = m_nCurrentState;
         m_nCurrentState = status;
 
         updateMiningStatus();
@@ -2364,31 +2367,29 @@ public class MainActivity extends BaseActivity
             text = sb.delete(i-4, i).toString();
         }
 
-        boolean speed = false;
-        // For some reason some devices display "miner" instead of "speed"
-        if (text.contains("speed") || text.contains("miner")) {
-            text = text.replace("speed ", "");
-            text = text.replace("miner ", "");
-            text = text.replace("H/s ", "");
-            speed = true;
-        }
-
-        if(bIsPerformanceMode)
-            return new SpannableString(text);
+        // Remove consecutive spaces
+        text = text.replaceAll("( )+", " ");
 
         if(text.contains("paused, press")) {
             if(isDeviceCooling()) {
-                text = text.replace("paused, press", getResources().getString(R.string.miningpaused));
+                text = text.replace("paused,", getResources().getString(R.string.miningpaused));
             } else {
-                text = text.replace(", press", "");
+                text = text.replace(",", "");
             }
 
-            text = text.replace("to resume", "");
-            text = text.replace("r ", "");
+            text = text.replace("press r to resume", "");
+            text = text.replace("miner ", "");
         }
 
-        if(m_nLastCurrentState == Config.STATE_COOLING && text.contains("resumed")) {
-            text = text.replace("resumed", getResources().getString(R.string.resumedmining));
+        if(text.contains("resumed")) {
+            if(m_bUserForcedResume) {
+                text = text.replace("resumed", getResources().getString(R.string.mining_resumed_by_user));
+                m_bUserForcedResume = false;
+            }
+            else if(m_bWasCooling)
+                text = text.replace("resumed", getResources().getString(R.string.resumedmining));
+
+            text = text.replace("miner ", "");
         }
 
         if (text.contains("threads:")) {
@@ -2413,9 +2414,6 @@ public class MainActivity extends BaseActivity
 
             text = text + System.getProperty("line.separator");
         }
-
-        // Remove consecutive spaces
-        text = text.replaceAll("( )+", " ");
 
         if(text.contains("*")) {
             text = text.replace("* ", "");
@@ -2458,7 +2456,21 @@ public class MainActivity extends BaseActivity
             }
         }
 
+        boolean speed = false;
+        // For some reason some devices display "miner" instead of "speed"
+        if (text.contains("H/s") && (text.contains("speed") || text.contains("miner"))) {
+            text = text.replace("speed ", "");
+            text = text.replace("miner ", "");
+            text = text.replace("H/s ", "");
+            speed = true;
+        }
+
         Spannable textSpan = new SpannableString(text);
+
+        if(bIsPerformanceMode)
+            return textSpan;
+
+        // UPDATE STYLE & COLORS
 
         // Format time
         formatText = "]";
@@ -2570,7 +2582,7 @@ public class MainActivity extends BaseActivity
             int i = text.indexOf(formatText);
             int imax = i + formatText.length();
             textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_white)), i, imax, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            textSpan.setSpan(new StyleSpan(android.graphics.Typeface.BOLD), i, imax, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+            textSpan.setSpan(new StyleSpan(android.graphics.Typeface.NORMAL), i, imax, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
             return textSpan;
         }
 
@@ -2578,7 +2590,7 @@ public class MainActivity extends BaseActivity
         if(text.contains(formatText)) {
             int i = text.indexOf(formatText);
             int imax = i + formatText.length();
-            textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_grey)), i, imax, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_white)), i, imax, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             textSpan.setSpan(new StyleSpan(android.graphics.Typeface.NORMAL), i, imax, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
             return textSpan;
         }
@@ -2588,7 +2600,16 @@ public class MainActivity extends BaseActivity
             int i = text.indexOf(formatText);
             int imax = i + formatText.length();
             textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_white)), i, imax, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            textSpan.setSpan(new StyleSpan(android.graphics.Typeface.BOLD), i, imax, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+            textSpan.setSpan(new StyleSpan(android.graphics.Typeface.NORMAL), i, imax, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+            return textSpan;
+        }
+
+        formatText = getResources().getString(R.string.mining_resumed_by_user);
+        if(text.contains(formatText)) {
+            int i = text.indexOf(formatText);
+            int imax = text.length();
+            textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_white)), i, imax, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            textSpan.setSpan(new StyleSpan(android.graphics.Typeface.NORMAL), i, imax, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
             return textSpan;
         }
 
@@ -2641,7 +2662,7 @@ public class MainActivity extends BaseActivity
         if(text.contains(formatText)) {
             int i = text.indexOf(formatText);
             int imax = text.length();
-            textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_yellow)), i, imax, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_grey)), i, imax, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             textSpan.setSpan(new StyleSpan(android.graphics.Typeface.NORMAL), i, imax, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
             return textSpan;
         }
@@ -2650,7 +2671,7 @@ public class MainActivity extends BaseActivity
         if(text.contains(formatText)) {
             int i = text.indexOf(formatText);
             int imax = text.length();
-            textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_yellow)), i, imax, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_grey)), i, imax, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             textSpan.setSpan(new StyleSpan(android.graphics.Typeface.NORMAL), i, imax, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
             return textSpan;
         }
@@ -2659,7 +2680,7 @@ public class MainActivity extends BaseActivity
         if(text.contains(formatText)) {
             int i = text.indexOf(formatText);
             int imax = text.length();
-            textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_yellow)), i, imax, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_grey)), i, imax, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             textSpan.setSpan(new StyleSpan(android.graphics.Typeface.NORMAL), i, imax, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
             return textSpan;
         }
@@ -2743,7 +2764,7 @@ public class MainActivity extends BaseActivity
                         if(!validateSettings())
                             return;
 
-                        if (isDevicePaused()) {
+                        if (isDevicePaused() || isDeviceCooling()) {
                             if (Config.read(Config.CONFIG_PAUSE_ON_BATTERY).equals("1") && !isCharging && !bForceMiningOnPauseBattery) {
                                 askToForceMiningBattery();
                                 return;
@@ -2753,6 +2774,9 @@ public class MainActivity extends BaseActivity
                                 askToForceMiningNetwork();
                                 return;
                             }
+
+                            if(isDeviceCooling())
+                                m_bUserForcedResume = true;
 
                             clearMinerLog = false;
                             resumeMining();
@@ -3079,6 +3103,8 @@ public class MainActivity extends BaseActivity
         if(enable) {
             setMinerStatus(Config.STATE_COOLING);
 
+            m_bWasCooling = true;
+
             pauseMining();
 
             appendLogOutputTextWithDate(getResources().getString(R.string.maxtemperaturereached));
@@ -3098,6 +3124,8 @@ public class MainActivity extends BaseActivity
 
             resumeMining();
 
+            m_bWasCooling = false;
+
             listCPUTemp.clear();
             listBatteryTemp.clear();
         }
@@ -3105,10 +3133,11 @@ public class MainActivity extends BaseActivity
 
     public void pauseMining() {
         if (!isDevicePaused()) {
-            //if(!isDeviceCooling()) {
+            if(!isDeviceCooling()) {
                 setMinerStatus(Config.STATE_PAUSED);
-                updateMiningButtonState();
-            //}
+            }
+
+            updateMiningButtonState();
 
             if (binder != null) {
                 binder.getService().sendInput("p");
@@ -3122,6 +3151,8 @@ public class MainActivity extends BaseActivity
 
     public void resumeMining() {
         if (isDevicePaused() || isDeviceCooling()) {
+            m_bWasCooling = false;
+
             setMinerStatus(Config.STATE_MINING);
 
             if (binder != null) {

@@ -30,10 +30,6 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import java.util.Objects;
-
-import io.scalaproject.androidminer.dialogs.DonationsFragment;
-
 public class AboutFragment extends Fragment {
     @Nullable
     @Override
@@ -74,14 +70,6 @@ public class AboutFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 onShareApp();
-            }
-        });
-
-        LinearLayout llDonations = view.findViewById(R.id.llDonations);
-        llDonations.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onShowDonations();
             }
         });
 
@@ -191,10 +179,6 @@ public class AboutFragment extends Fragment {
 
     private void onShowCredits() {
         startActivity(new Intent(getActivity(), CreditsActivity.class));
-    }
-
-    private void onShowDonations() {
-        DonationsFragment.display(Objects.requireNonNull(getActivity()).getSupportFragmentManager());
     }
 
     private void onShareApp() {
