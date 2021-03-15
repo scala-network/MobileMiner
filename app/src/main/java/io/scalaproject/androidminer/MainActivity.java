@@ -2694,6 +2694,15 @@ public class MainActivity extends BaseActivity
             return textSpan;
         }
 
+        formatText = "Mining Service Error";
+        if(text.contains(formatText)) {
+            int i = text.indexOf(formatText);
+            int imax = text.length();
+            textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_red)), i, imax, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            textSpan.setSpan(new StyleSpan(android.graphics.Typeface.NORMAL), i, imax, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+            return textSpan;
+        }
+
         return textSpan;
     }
 
@@ -2793,7 +2802,7 @@ public class MainActivity extends BaseActivity
 
                 binder.getService().setMiningServiceStateListener(new MiningService.MiningServiceStateListener() {
                     @Override
-                    public void onStateChange(Boolean state) {
+                    public void onStateChange(Boolean state, String message) {
                         Log.i(LOG_TAG, "onMiningStateChange: " + state);
                         runOnUiThread(() -> {
                             updateMiningButtonState();
@@ -2812,7 +2821,12 @@ public class MainActivity extends BaseActivity
                                 setStatusText("Miner Started.");
                             } else {
                                 setStatusText("Miner Stopped.");
+
+                                stopMining(); // in case process stops by itself
                             }
+
+                            if(!message.isEmpty())
+                                appendLogOutputTextWithDate("Mining Service Error: " + message);
 
                             bIsRestartEvent = false;
                         });

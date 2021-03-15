@@ -114,7 +114,7 @@ public class MiningService extends Service {
     private MiningServiceStateListener listener = null;
 
     public interface MiningServiceStateListener {
-        void onStateChange(Boolean state);
+        void onStateChange(Boolean state, String message);
         void onStatusChange(String status, float speed, float max, int accepted, int difficulty, int connection);
     }
 
@@ -125,9 +125,9 @@ public class MiningService extends Service {
 
     Boolean mMiningServiceState = false;
 
-    private void raiseMiningServiceStateChange(boolean state) {
+    private void raiseMiningServiceStateChange(boolean state, String message) {
         mMiningServiceState = state;
-        if (listener != null) listener.onStateChange(state);
+        if (listener != null) listener.onStateChange(state, message);
     }
 
     private void raiseMiningServiceStatusChange(String status, float speed, float max, int accepted, int difficulty, int connection) {
@@ -379,16 +379,16 @@ public class MiningService extends Service {
 
         public void run() {
             try {
-                raiseMiningServiceStateChange(true);
+                raiseMiningServiceStateChange(true, "");
                 if (proc != null) {
                     proc.waitFor();
                     Log.i(LOG_TAG, "process exit: " + proc.exitValue());
                 }
-                raiseMiningServiceStateChange(false);
+                raiseMiningServiceStateChange(false, "");
 
             } catch (Exception e) {
                 // assume problem with process and not running
-                raiseMiningServiceStateChange(false);
+                raiseMiningServiceStateChange(false, e.getMessage());
                 Log.e(LOG_TAG, "exception:", e);
             }
         }
