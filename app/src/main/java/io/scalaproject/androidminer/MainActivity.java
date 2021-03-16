@@ -174,7 +174,6 @@ public class MainActivity extends BaseActivity
     private MiningService.MiningServiceBinder binder;
     private boolean bPayoutDataReceived = false;
 
-    private boolean bIsRestartEvent = false;
     private boolean bForceMiningOnPauseBattery = false;
     private boolean bForceMiningOnPauseNetwork = false;
 
@@ -1851,16 +1850,15 @@ public class MainActivity extends BaseActivity
             return;
         }
 
+        stopTimerMiningTime();
+
         if(isDeviceMiningBackground())
             appendLogOutputTextWithDate(getResources().getString(R.string.stopped));
 
         setMinerStatus(Config.STATE_STOPPED);
-
-        binder.getService().stopMining();
-
         resetOptions();
 
-        stopTimerMiningTime();
+        binder.getService().stopMining();
 
         updateUI();
     }
@@ -1917,9 +1915,6 @@ public class MainActivity extends BaseActivity
     }
 
     private void updateMiningButtonState() {
-        if(bIsRestartEvent)
-            return;
-
         Drawable buttonDrawableStart = btnStart.getBackground();
         buttonDrawableStart = DrawableCompat.wrap(buttonDrawableStart);
 
@@ -2068,7 +2063,7 @@ public class MainActivity extends BaseActivity
     }
 
     public void startTimerRefreshHashrate() {
-        if(timerRefreshHashrate != null)
+        if(timerRefreshHashrate != null || !isDeviceMiningBackground())
             return;
 
         String refreshDelay = Config.read(Config.CONFIG_HASHRATE_REFRESH_DELAY);
@@ -2264,7 +2259,7 @@ public class MainActivity extends BaseActivity
     }
 
     private void updateHashrate(float fSpeed, float fMax) {
-        if(!isDeviceMining() || fSpeed < 0.0f)
+        if(!isDeviceMiningBackground() || fSpeed < 0.0f)
             return;
 
         SpeedView meterTicks = findViewById(R.id.meter_hashrate_ticks);
@@ -2275,6 +2270,9 @@ public class MainActivity extends BaseActivity
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
+                    if(!isDeviceMiningBackground() || fSpeed < 0.0f)
+                        return;
+
                     updateHashrateMeter(fSpeed, fMax);
                     addHashrateValue(fSpeed);
                 }
@@ -2805,7 +2803,6 @@ public class MainActivity extends BaseActivity
                     public void onStateChange(Boolean state, String message) {
                         Log.i(LOG_TAG, "onMiningStateChange: " + state);
                         runOnUiThread(() -> {
-                            updateMiningButtonState();
                             if (state) {
                                 if (clearMinerLog) {
                                     tvLogWidget.setText("");
@@ -2825,10 +2822,10 @@ public class MainActivity extends BaseActivity
                                 stopMining(); // in case process stops by itself
                             }
 
+                            updateMiningButtonState();
+
                             if(!message.isEmpty())
                                 appendLogOutputTextWithDate("Mining Service Error: " + message);
-
-                            bIsRestartEvent = false;
                         });
                     }
 
@@ -3079,17 +3076,6 @@ public class MainActivity extends BaseActivity
         String message = "";
         try {
             String jsonMessage = "";
-            /*if(error != null && error.networkResponse != null && error.networkResponse.data != null) {
-                String responseBody = new String(error.networkResponse.data, StandardCharsets.UTF_8);
-
-                if (!responseBody.isEmpty()) {
-                    JSONObject data = new JSONObject(responseBody);
-                    JSONArray errors = data.getJSONArray("errors");
-                    jsonMessage = errors.getJSONObject(0).getString("message");
-                } else {
-                    jsonMessage = error.getMessage();
-                }
-            }*/
 
             if(error != null)
                 jsonMessage = error.getMessage();
