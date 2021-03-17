@@ -320,11 +320,8 @@ public class MiningService extends Service {
             String[] args = {"./" + Config.miner_xlarig};
 
             ProcessBuilder pb = new ProcessBuilder(args);
-
             pb.directory(new File(privatePath));
-
             pb.environment().put("LD_LIBRARY_PATH", privatePath);
-
             pb.redirectErrorStream();
 
             accepted = 0;

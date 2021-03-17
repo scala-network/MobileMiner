@@ -71,7 +71,6 @@ import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -201,7 +200,6 @@ public class MainActivity extends BaseActivity
     private int nCores = 0;
 
     private int nSharesCount = 0;
-    private int nLastShareCount = 0;
 
     private int nNbMaxCores = 0;
 
@@ -244,6 +242,9 @@ public class MainActivity extends BaseActivity
     private boolean isFromLogView = false;
 
     private int miningMinutes = 0;
+    
+    private boolean m_bUserStoppedMining = false;
+    private boolean m_bRestartingMining = false;
 
     public static boolean isDeviceMiningBackground() {
         return (m_nCurrentState == Config.STATE_CALCULATING || m_nCurrentState == Config.STATE_MINING || m_nCurrentState == Config.STATE_COOLING || m_nCurrentState == Config.STATE_PAUSED);
@@ -1063,9 +1064,7 @@ public class MainActivity extends BaseActivity
         updateTemperaturesChart();
     }
 
-    public void refreshHashrate() {
-        sendInput("h");
-    }
+    public void refreshHashrate() { sendInput("h"); }
 
     public void startTimerTemperatures() {
         if(timerTemperatures != null) {
@@ -1194,44 +1193,8 @@ public class MainActivity extends BaseActivity
         alertDialogBuilder.show();
     }
 
-    public void onEditPayoutGoal(View view) {
-        MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this, R.style.MaterialAlertDialogCustom);
-        LayoutInflater li = LayoutInflater.from(alertDialogBuilder.getContext());
-        View promptsView = li.inflate(R.layout.prompt_edit_payout_goal, null);
-        alertDialogBuilder.setView(promptsView);
-
-        EditText edMiningGoal = promptsView.findViewById(R.id.mininggoal);
-
-        if (!Config.read(Config.CONFIG_MINING_GOAL).isEmpty()) {
-            edMiningGoal.setText(Config.read(Config.CONFIG_MINING_GOAL));
-        } else {
-            TextView tvPayoutGoal = findViewById(R.id.tvPayoutGoal);
-            edMiningGoal.setText(tvPayoutGoal.getText());
-        }
-
-        // set dialog message
-        alertDialogBuilder
-                .setTitle("Payout Goal")
-                .setCancelable(false)
-                .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        String mininggoal = edMiningGoal.getText().toString().trim();
-                        if(!mininggoal.isEmpty()) {
-                            Config.write(Config.CONFIG_MINING_GOAL, mininggoal);
-                        }
-
-                        Utils.hideKeyboardFrom(contextOfApplication, promptsView);
-                        updateStatsListener();
-                    }
-                })
-                .setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        Utils.hideKeyboardFrom(contextOfApplication, promptsView);
-                    }
-                });
-
-
-        alertDialogBuilder.show();
+    public void onMinimumPayoutHelp(View view) {
+        Utils.showPopup(this, getString(R.string.minimum_payout), getString(R.string.minimum_payout_help));
     }
 
     private void updatePayoutWidget(ProviderData d) {
@@ -1250,12 +1213,9 @@ public class MainActivity extends BaseActivity
             TextView tvBalance = findViewById(R.id.balance_payout);
             tvBalance.setText(sBalance.isEmpty() ? Tools.getLongValueString(0.0) : sBalance);
 
-            float fMinPayout;
-            if(Config.read(Config.CONFIG_MINING_GOAL).equals("")) {
-                fMinPayout = Utils.convertStringToFloat(d.pool.minPayout);
-            }
-            else
-                fMinPayout = Utils.convertStringToFloat(Config.read(Config.CONFIG_MINING_GOAL).trim());
+            float fMinPayout = Utils.convertStringToFloat(d.pool.minPayout);
+            if(fMinPayout <= 0.0f)
+                fMinPayout = 100.0f;
 
             TextView tvPayoutGoal = findViewById(R.id.tvPayoutGoal);
             tvPayoutGoal.setText(String.valueOf(Math.round(fMinPayout)));
@@ -1701,10 +1661,6 @@ public class MainActivity extends BaseActivity
             return;
         }
 
-        // Cause a crash to test ACRA
-        //String sCrashString = null;
-        //Log.e("ACRA Test", sCrashString.toString() );
-
         if (!Utils.verifyAddress(Config.read(Config.CONFIG_ADDRESS))) {
             setStatusText(getString(R.string.invalid_address));
             return;
@@ -1725,12 +1681,7 @@ public class MainActivity extends BaseActivity
             return;
         }
 
-        bForceMiningOnPauseBattery = false;
-        bForceMiningOnPauseNetwork = false;
-        bForceMiningNoTempSensor = false;
-        clearMinerLog = true;
-        nSharesCount = 0;
-        miningMinutes = 0;
+        m_bUserStoppedMining = false;
 
         resetOptions();
 
@@ -1831,11 +1782,18 @@ public class MainActivity extends BaseActivity
     }
 
     private void resetOptions() {
+        clearMinerLog = true;
+
         bDisableAMAYC = false;
+        bForceMiningOnPauseBattery = false;
+        bForceMiningOnPauseNetwork = false;
+        bForceMiningNoTempSensor = false;
+
         listCPUTemp.clear();
         listBatteryTemp.clear();
 
-        nLastShareCount = 0;
+        nSharesCount = 0;
+        miningMinutes = 0;
 
         fSumHr = 0.0f;
         nHrCount = 0;
@@ -1849,6 +1807,9 @@ public class MainActivity extends BaseActivity
         if(binder == null) {
             return;
         }
+
+        m_bUserStoppedMining = true;
+        m_bRestartingMining = false;
 
         stopTimerMiningTime();
 
@@ -2164,6 +2125,7 @@ public class MainActivity extends BaseActivity
     }
 
     private void resetHashrateTicks() {
+
         SpeedView meterTicks = findViewById(R.id.meter_hashrate_ticks);
         TubeSpeedometer meterHashrate = findViewById(R.id.meter_hashrate);
         TubeSpeedometer meterHashrate_avg = findViewById(R.id.meter_hashrate_avg);
@@ -2304,7 +2266,9 @@ public class MainActivity extends BaseActivity
         updateAvgMaxHashrate(fSpeed, fMax);
     }
 
-    private void resetAvgMaxHashrate() { updateAvgMaxHashrate(0.0f, 0.0f); }
+    private void resetAvgMaxHashrate() {
+        updateAvgMaxHashrate(0.0f, 0.0f);
+    }
 
     private void updateAvgMaxHashrate(float fSpeed, float fMax) {
         TextView tvAvgHr = findViewById(R.id.avghr);
@@ -2399,21 +2363,24 @@ public class MainActivity extends BaseActivity
             return null;
         }
 
-        if (text.contains("POOL")) {
+        if (text.contains("POOL") && !m_bRestartingMining) {
             PoolItem selectedPool = ProviderManager.getSelectedPool();
-            if(selectedPool != null)
+            if (selectedPool != null)
                 text = text + "POOL URL " + selectedPool.getPoolUrl() + ":" + selectedPool.getPort() + System.getProperty("line.separator");
 
             text = text + "WORKER NAME " + getWorkerName() + System.getProperty("line.separator");
 
             String usernameParameters = getUsernameParameters();
-            if(!usernameParameters.isEmpty())
+            if (!usernameParameters.isEmpty())
                 text = text + "USERNAME PARAMETERS " + getWorkerName() + System.getProperty("line.separator");
 
             text = text + System.getProperty("line.separator");
         }
 
-        if(text.contains("*")) {
+        if (text.contains("*")) {
+            if(m_bRestartingMining)
+                return null;
+
             text = text.replace(" * ", "");
             Spannable textSpan = new SpannableString(text);
 
@@ -2426,7 +2393,7 @@ public class MainActivity extends BaseActivity
                     textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_grey)), imax, text.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
                     String tmpFormat2 = "POOL URL";
-                    if(tmpFormat.equals("POOL") && text.contains(tmpFormat2)) {
+                    if (tmpFormat.equals("POOL") && text.contains(tmpFormat2)) {
                         i = text.indexOf(tmpFormat2);
                         imax = i + tmpFormat2.length();
                         textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_white)), i, imax, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -2434,7 +2401,7 @@ public class MainActivity extends BaseActivity
                     }
 
                     String tmpFormat3 = "WORKER NAME";
-                    if(tmpFormat.equals("POOL") && text.contains(tmpFormat3)) {
+                    if (tmpFormat.equals("POOL") && text.contains(tmpFormat3)) {
                         i = text.indexOf(tmpFormat3);
                         imax = i + tmpFormat3.length();
                         textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_white)), i, imax, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -2442,7 +2409,7 @@ public class MainActivity extends BaseActivity
                     }
 
                     String tmpFormat4 = "USERNAME PARAMETERS";
-                    if(tmpFormat.equals("POOL") && text.contains(tmpFormat4)) {
+                    if (tmpFormat.equals("POOL") && text.contains(tmpFormat4)) {
                         i = text.indexOf(tmpFormat4);
                         imax = i + tmpFormat4.length();
                         textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_white)), i, imax, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -2620,7 +2587,7 @@ public class MainActivity extends BaseActivity
             return textSpan;
         }
 
-        formatText = getResources().getString(R.string.stopped);
+        formatText = "resumed";
         if(text.contains(formatText)) {
             int i = text.indexOf(formatText);
             int imax = text.length();
@@ -2629,7 +2596,25 @@ public class MainActivity extends BaseActivity
             return textSpan;
         }
 
-        formatText = "resumed";
+        formatText = getResources().getString(R.string.restarted);
+        if(text.contains(formatText)) {
+            int i = text.indexOf(formatText);
+            int imax = text.length();
+            textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_white)), i, imax, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            textSpan.setSpan(new StyleSpan(android.graphics.Typeface.NORMAL), i, imax, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+            return textSpan;
+        }
+
+        formatText = getResources().getString(R.string.minimum_stopped_unexpectedly);
+        if(text.contains(formatText)) {
+            int i = text.indexOf(formatText);
+            int imax = text.length();
+            textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_red)), i, imax, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            textSpan.setSpan(new StyleSpan(android.graphics.Typeface.NORMAL), i, imax, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+            return textSpan;
+        }
+
+        formatText = getResources().getString(R.string.stopped);
         if(text.contains(formatText)) {
             int i = text.indexOf(formatText);
             int imax = text.length();
@@ -2819,7 +2804,21 @@ public class MainActivity extends BaseActivity
                             } else {
                                 setStatusText("Miner Stopped.");
 
-                                stopMining(); // in case process stops by itself
+                                if(!m_bUserStoppedMining) {
+                                    m_bRestartingMining = true;
+                                    clearMinerLog = false;
+
+                                    appendLogOutputTextWithDate(getResources().getString(R.string.minimum_stopped_unexpectedly));
+
+                                    // Start timer
+                                    new Handler().postDelayed(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            appendLogOutputTextWithDate(getResources().getString(R.string.restarted));
+                                            startMiningService(); // in case process stops by itself
+                                        }
+                                    }, 2000);
+                                }
                             }
 
                             updateMiningButtonState();
@@ -2835,8 +2834,8 @@ public class MainActivity extends BaseActivity
                         runOnUiThread(() -> {
                             appendLogOutputText(status);
 
-                            int nShares = nSharesCount + accepted;
-                            String sAccepted = Integer.toString(nShares);
+                            nSharesCount = nSharesCount + accepted;
+                            String sAccepted = Integer.toString(nSharesCount);
 
                             TextView tvAcceptedShares = findViewById(R.id.acceptedshare);
 
@@ -2845,10 +2844,6 @@ public class MainActivity extends BaseActivity
 
                                 if(!bIsPerformanceMode)
                                     tvAcceptedShares.startAnimation(getBlinkAnimation());
-                            }
-
-                            if(nLastShareCount != accepted) {
-                                nLastShareCount = accepted;
                             }
 
                             if(accepted == 1) {

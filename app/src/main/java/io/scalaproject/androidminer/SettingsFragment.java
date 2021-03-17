@@ -56,7 +56,7 @@ public class SettingsFragment extends Fragment {
     private static final String LOG_TAG = "MiningSvc";
 
     private TextInputLayout tilAddress;
-    private EditText edAddress, edWorkerName, edUsernameparameters, edMiningGoal;
+    private EditText edAddress, edWorkerName, edUsernameparameters;
 
     private PoolView pvSelectedPool;
 
@@ -115,8 +115,6 @@ public class SettingsFragment extends Fragment {
 
         edUsernameparameters = view.findViewById(R.id.usernameparameters);
         edWorkerName = view.findViewById(R.id.workername);
-
-        edMiningGoal = view.findViewById(R.id.mininggoal);
 
         Button bQrCode = view.findViewById(R.id.btnQrCode);
 
@@ -216,10 +214,6 @@ public class SettingsFragment extends Fragment {
             swDisableTempControl.setChecked(true);
         }
         enableTemperatureControl(!disableTempControl);
-
-        if (!Config.read(Config.CONFIG_MINING_GOAL).isEmpty()) {
-            edMiningGoal.setText(Config.read(Config.CONFIG_MINING_GOAL));
-        }
 
         boolean checkPauseOnBattery = Config.read(Config.CONFIG_PAUSE_ON_BATTERY).equals("1");
         if(checkPauseOnBattery) {
@@ -550,11 +544,6 @@ public class SettingsFragment extends Fragment {
         Config.write(Config.CONFIG_HASHRATE_REFRESH_DELAY, tvRefreshHashrateDelay.getText().toString());
 
         Config.write(Config.CONFIG_DISABLE_TEMPERATURE_CONTROL, (swDisableTempControl.isChecked() ? "1" : "0"));
-
-        String mininggoal = edMiningGoal.getText().toString().trim();
-        if(!mininggoal.isEmpty()) {
-            Config.write(Config.CONFIG_MINING_GOAL, mininggoal);
-        }
 
         Config.write(Config.CONFIG_PAUSE_ON_BATTERY, swPauseOnBattery.isChecked() ? "1" : "0");
         Config.write(Config.CONFIG_PAUSE_ON_NETWORK, swPauseOnNetwork.isChecked() ? "1" : "0");

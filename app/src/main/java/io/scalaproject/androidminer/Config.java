@@ -44,7 +44,6 @@ public class Config {
     public final static String CONFIG_MAX_BATTERY_TEMP = "maxbatterytemp";
     public final static String CONFIG_COOLDOWN_THRESHOLD = "cooldownthreshold";
     public final static String CONFIG_DISABLE_TEMPERATURE_CONTROL = "disable_temperature_control";
-    public final static String CONFIG_MINING_GOAL = "mininggoal";
     public final static String CONFIG_PAUSE_ON_BATTERY = "pauseonbattery";
     public final static String CONFIG_PAUSE_ON_NETWORK = "pauseonnetwork";
     public final static String CONFIG_KEEP_SCREEN_ON_WHEN_MINING = "keepscreenonwhenmining";

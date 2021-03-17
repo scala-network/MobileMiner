@@ -156,6 +156,10 @@
     <string name="temperature_unit">Temperature unit</string>
     <string name="intensity">Intensity</string>
     <string name="temperature_control">Temperature Control</string>
+    <string name="minimum_payout">Minimum Payout</string>
+    <string name="minimum_payout_help">The Minimum Payout value can be changed on the pool settings page.</string>
+    <string name="minimum_stopped_unexpectedly">Mining process stopped unexpectedly.</string>
+    <string name="restarted">restarted</string>
     <string name="community">Community</string>
     <string name="blocks_found">Blocks Found</string>
     <string name="submitted_hashes">Submitted Hashes</string>
@@ -204,5 +208,6 @@
     <string name="url">URL</string>
     <string name="name">Name</string>
     <string name="mining_resumed_by_user">Mining resumed by user.</string>
+    <string name="minimum_payout_label">Minimum Payout:</string>
 
 </resources>

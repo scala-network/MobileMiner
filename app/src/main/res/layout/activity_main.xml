@@ -785,14 +785,14 @@
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="10dp"
                                     android:layout_marginBottom="5dp"
-                                    android:onClick="onEditPayoutGoal"
+                                    android:onClick="onMinimumPayoutHelp"
                                     android:orientation="horizontal">
 
                                     <TextView
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:gravity="center"
-                                        android:text="Payout Goal:"
+                                        android:text="@string/minimum_payout_label"
                                         android:textColor="@color/txt_main"
                                         android:textSize="12sp" />
 
@@ -816,13 +816,14 @@
                                         android:textSize="12sp" />
 
                                     <ImageView
-                                        android:layout_width="14dp"
-                                        android:layout_height="14dp"
-                                        android:layout_marginStart="5dp"
+                                        android:layout_width="12dp"
+                                        android:layout_height="12dp"
+                                        android:layout_marginTop="0.5dp"
+                                        android:layout_marginStart="4dp"
                                         android:layout_gravity="center"
-                                        android:onClick="onEditPayoutGoal"
-                                        android:tint="@color/btn_icon_default"
-                                        app:srcCompat="@drawable/ic_edit" />
+                                        android:onClick="onMinimumPayoutHelp"
+                                        android:tint="@color/txt_main"
+                                        app:srcCompat="@drawable/ic_help" />
 
                                 </LinearLayout>
 
