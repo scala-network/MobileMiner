@@ -38,7 +38,7 @@
       "pass": "$pass$",
       "rig-id": null,
       "nicehash": false,
-      "keepalive": true,
+      "keepalive": false,
       "enabled": true,
       "tls": false,
       "tls-fingerprint": null,

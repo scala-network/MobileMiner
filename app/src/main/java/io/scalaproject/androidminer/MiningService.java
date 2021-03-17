@@ -339,7 +339,7 @@ public class MiningService extends Service {
             outputHandler = new MiningService.OutputReaderThread(process.getInputStream());
             outputHandler.start();
 
-            inputHandler = new InputReaderThread(process.getOutputStream());
+            inputHandler = new MiningService.InputReaderThread(process.getOutputStream());
             inputHandler.start();
 
             if (procMon != null) {
@@ -481,7 +481,7 @@ public class MiningService extends Service {
         }
     }
 
-    private static class InputReaderThread extends Thread {
+    private class InputReaderThread extends Thread {
         private OutputStream outputStream;
         private BufferedWriter writer;
 

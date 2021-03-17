@@ -2259,7 +2259,7 @@ public class MainActivity extends BaseActivity
     }
 
     private void updateHashrate(float fSpeed, float fMax) {
-        if(!isDeviceMiningBackground() || fSpeed < 0.0f)
+        if(!isDeviceMining() || fSpeed < 0.0f)
             return;
 
         SpeedView meterTicks = findViewById(R.id.meter_hashrate_ticks);
@@ -2270,7 +2270,7 @@ public class MainActivity extends BaseActivity
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    if(!isDeviceMiningBackground() || fSpeed < 0.0f)
+                    if(!isDeviceMining() || fSpeed < 0.0f)
                         return;
 
                     updateHashrateMeter(fSpeed, fMax);
@@ -2402,19 +2402,19 @@ public class MainActivity extends BaseActivity
         if (text.contains("POOL")) {
             PoolItem selectedPool = ProviderManager.getSelectedPool();
             if(selectedPool != null)
-                text = text + " POOL URL " + selectedPool.getPoolUrl() + ":" + selectedPool.getPort() + System.getProperty("line.separator");
+                text = text + "POOL URL " + selectedPool.getPoolUrl() + ":" + selectedPool.getPort() + System.getProperty("line.separator");
 
-            text = text + " WORKER NAME " + getWorkerName() + System.getProperty("line.separator");
+            text = text + "WORKER NAME " + getWorkerName() + System.getProperty("line.separator");
 
             String usernameParameters = getUsernameParameters();
             if(!usernameParameters.isEmpty())
-                text = text + " USERNAME PARAMETERS " + getWorkerName() + System.getProperty("line.separator");
+                text = text + "USERNAME PARAMETERS " + getWorkerName() + System.getProperty("line.separator");
 
             text = text + System.getProperty("line.separator");
         }
 
         if(text.contains("*")) {
-            text = text.replace("* ", "");
+            text = text.replace(" * ", "");
             Spannable textSpan = new SpannableString(text);
 
             List<String> listHeader = Arrays.asList("ABOUT", "LIBS", "HUGE PAGES", "1GB PAGES", "CPU", "MEMORY", "DONATE", "POOL", "COMMANDS", "THREADS");
