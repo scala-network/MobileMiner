@@ -4,6 +4,8 @@
 - Add CPU cores widget to home view
 - Add mining status to home view
 - Add default port list and refactor
+- Restart mining process automatically
+- Remove minimum payout option
 - Simplify pool port selection
 - Truncate worker name if too long
 - Update network state change detection
