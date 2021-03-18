@@ -48,6 +48,7 @@ dependencies {
     implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.4.31'
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
     implementation 'com.polyak:icon-switch:1.0.0'
+    implementation 'androidx.lifecycle:lifecycle-process:2.3.0'
 
     def acraVersion = '5.7.0'
     implementation "ch.acra:acra-core:$acraVersion"

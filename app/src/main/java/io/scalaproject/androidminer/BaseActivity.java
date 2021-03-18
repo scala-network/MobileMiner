@@ -7,17 +7,16 @@ package io.scalaproject.androidminer;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 
 import org.jetbrains.annotations.NotNull;
 
-import static io.scalaproject.androidminer.MainActivity.contextOfApplication;
+import io.scalaproject.androidminer.dialogs.ProgressDialog;
 
 public abstract class BaseActivity extends AppCompatActivity {
-    io.scalaproject.androidminer.dialogs.ProgressDialog progressDialog = null;
+    private ProgressDialog progressDialog = null;
 
     private static class SimpleProgressDialog extends io.scalaproject.androidminer.dialogs.ProgressDialog {
         SimpleProgressDialog(Context context, int msgId) {
@@ -31,8 +30,6 @@ public abstract class BaseActivity extends AppCompatActivity {
             // prevent back button
         }
     }
-
-    private int sessionDepth = 0;
 
     static {
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
@@ -84,23 +81,5 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
 
         progressDialog = null;
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        sessionDepth++;
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        if (sessionDepth > 0)
-            sessionDepth--;
-        if (sessionDepth == 0) {
-            // app went to background
-            if(MainActivity.isDeviceMiningBackground())
-                Utils.showToast(contextOfApplication, getResources().getString(R.string.miningbackground), Toast.LENGTH_SHORT);
-        }
     }
 }

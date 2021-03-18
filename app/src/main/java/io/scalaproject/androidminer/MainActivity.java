@@ -544,13 +544,27 @@ public class MainActivity extends BaseActivity
 
         btnStart = findViewById(R.id.start);
 
-        if (!Arrays.asList(Config.SUPPORTED_ARCHITECTURES).contains(Tools.getABI())) {
+        String abi = Tools.getABI();
+        if (!Arrays.asList(Config.SUPPORTED_ARCHITECTURES).contains(abi)) {
             String sArchError = "Your architecture is not supported: " + Tools.getABI();
             appendLogOutputTextWithDate(sArchError);
-            refreshLogOutputView();
             setStatusText(sArchError);
 
+            refreshLogOutputView();
+
             validArchitecture = false;
+        } else if(abi.equals("armeabi-v7a")) {
+            MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this, R.style.MaterialAlertDialogCustom);
+            builder.setTitle(getString(R.string.arm_title))
+                    .setMessage(getString(R.string.arm_message))
+                    .setCancelable(false)
+                    .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+
+                        }
+                    })
+                    .show();
         }
 
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
@@ -2356,8 +2370,10 @@ public class MainActivity extends BaseActivity
                 text = text.replace("resumed", getResources().getString(R.string.mining_resumed_by_user));
                 m_bUserForcedResume = false;
             }
-            else if(m_bWasCooling)
+            else if(m_bWasCooling) {
                 text = text.replace("resumed", getResources().getString(R.string.resumedmining));
+                m_bWasCooling = false;
+            }
 
             text = text.replace("miner ", "");
         }
@@ -3129,8 +3145,6 @@ public class MainActivity extends BaseActivity
 
             resumeMining();
 
-            m_bWasCooling = false;
-
             listCPUTemp.clear();
             listBatteryTemp.clear();
         }
@@ -3156,8 +3170,6 @@ public class MainActivity extends BaseActivity
 
     public void resumeMining() {
         if (isDevicePaused() || isDeviceCooling()) {
-            m_bWasCooling = false;
-
             setMinerStatus(Config.STATE_MINING);
 
             if (binder != null) {
