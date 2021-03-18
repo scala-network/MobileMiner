@@ -200,6 +200,7 @@ public class MainActivity extends BaseActivity
     private int nCores = 0;
 
     private int nSharesCount = 0;
+    private int nLastSharesCount = 0;
 
     private int nNbMaxCores = 0;
 
@@ -389,6 +390,9 @@ public class MainActivity extends BaseActivity
         });
 
         // Layouts
+
+        LinearLayout llMiningStatus =findViewById(R.id.llMiningStatus);
+        llMiningStatus.setVisibility(android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP ? View.VISIBLE : View.GONE);
 
         LinearLayout llViewLog = findViewById(R.id.llViewLog);
         llViewLog.setOnClickListener(new View.OnClickListener() {
@@ -1792,6 +1796,7 @@ public class MainActivity extends BaseActivity
         listCPUTemp.clear();
         listBatteryTemp.clear();
 
+        nLastSharesCount = 0;
         nSharesCount = 0;
         miningMinutes = 0;
 
@@ -1922,6 +1927,9 @@ public class MainActivity extends BaseActivity
     }
 
     private void updateMiningStatus() {
+        if(android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP)
+            return;
+
         ImageView ivMiningStatus = findViewById(R.id.ivMiningStatus);
         ivMiningStatus.setColorFilter(m_nCurrentState == Config.STATE_STOPPED ? getResources().getColor(R.color.bg_lighter) : getResources().getColor(R.color.c_green));
 
@@ -2808,6 +2816,8 @@ public class MainActivity extends BaseActivity
                                     m_bRestartingMining = true;
                                     clearMinerLog = false;
 
+                                    nLastSharesCount = nSharesCount;
+
                                     appendLogOutputTextWithDate(getResources().getString(R.string.minimum_stopped_unexpectedly));
 
                                     // Start timer
@@ -2834,7 +2844,7 @@ public class MainActivity extends BaseActivity
                         runOnUiThread(() -> {
                             appendLogOutputText(status);
 
-                            nSharesCount = nSharesCount + accepted;
+                            nSharesCount = nLastSharesCount + accepted;
                             String sAccepted = Integer.toString(nSharesCount);
 
                             TextView tvAcceptedShares = findViewById(R.id.acceptedshare);
