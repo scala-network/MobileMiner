@@ -157,7 +157,10 @@
     <string name="intensity">Intensity</string>
     <string name="temperature_control">Temperature Control</string>
     <string name="minimum_payout">Minimum Payout</string>
-    <string name="minimum_payout_help">The Minimum Payout value can be changed on the pool settings page.</string>
+    <string name="minimum_payout_help"><![CDATA[
+        <p>The Minimum Payout value can be changed on the pool settings page.</p>
+        <a href="%pool_url">%pool_url</a>
+    ]]></string>
     <string name="minimum_stopped_unexpectedly">Mining process stopped unexpectedly.</string>
     <string name="restarted">restarted</string>
     <string name="community">Community</string>

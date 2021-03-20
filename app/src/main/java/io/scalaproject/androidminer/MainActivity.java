@@ -58,6 +58,7 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.PowerManager;
 import android.os.StrictMode;
+import android.text.Html;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
@@ -1212,7 +1213,10 @@ public class MainActivity extends BaseActivity
     }
 
     public void onMinimumPayoutHelp(View view) {
-        Utils.showPopup(this, getString(R.string.minimum_payout), getString(R.string.minimum_payout_help));
+        PoolItem pi = ProviderManager.getSelectedPool();
+        String pool_url = pi == null ? "" : pi.getPoolUrl();
+
+        Utils.showPopup(this, getString(R.string.minimum_payout), Html.fromHtml(getString(R.string.minimum_payout_help).replace("%pool_url", pool_url)).toString());
     }
 
     private void updatePayoutWidget(ProviderData d) {

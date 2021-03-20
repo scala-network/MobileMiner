@@ -22,14 +22,19 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.VectorDrawable;
 import android.net.Uri;
 import android.os.Build;
+import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
+import android.text.method.LinkMovementMethod;
 import android.text.style.ForegroundColorSpan;
+import android.text.util.Linkify;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.TextView;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
 import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat;
 
@@ -276,11 +281,18 @@ public final class Utils {
     }
 
     static public void showPopup(Context context, String title, String message) {
+        final SpannableString s = new SpannableString(message); // msg should have url to enable clicking
+        Linkify.addLinks(s, Linkify.ALL);
+
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(context, R.style.MaterialAlertDialogCustom);
-        builder.setTitle(title)
-                .setMessage(message)
+        AlertDialog d = builder.setTitle(title)
+                .setMessage(s)
                 .setCancelable(true)
                 .show();
+
+        View v = d.findViewById(android.R.id.message);
+        if(v != null)
+            ((TextView)v).setMovementMethod(LinkMovementMethod.getInstance());
     }
 
     static public void showPopup(Context context, String title, String message, int titleColor) {
