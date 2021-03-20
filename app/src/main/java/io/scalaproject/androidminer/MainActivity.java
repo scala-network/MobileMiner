@@ -2853,7 +2853,7 @@ public class MainActivity extends BaseActivity
 
                             updateMiningButtonState();
 
-                            if(!message.isEmpty())
+                            if(message != null && !message.isEmpty())
                                 appendLogOutputTextWithDate("Mining Service Error: " + message);
                         });
                     }

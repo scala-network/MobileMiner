@@ -35,6 +35,7 @@
     <string name="discordLink">https://discord.gg/djAFVvy</string>
     <string name="mediumLink">https://medium.com/scala-network</string>
     <string name="twitterLink">https://twitter.com/scalahq</string>
+    <string name="redditLink">https://www.reddit.com/r/ScalaNetwork/</string>
     <string name="telegramLink">https://t.me/scalaofficial</string>
     <string name="emailLink">mailto:hello@scalaproject.io</string>
     <string name="ScalaLinkClean">https://scalaproject.io</string>

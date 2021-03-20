@@ -126,7 +126,7 @@ public class AboutFragment extends Fragment {
         ivReddit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Uri uri = Uri.parse(getResources().getString(R.string.twitterLink));
+                Uri uri = Uri.parse(getResources().getString(R.string.redditLink));
                 Intent intent = new Intent(Intent.ACTION_VIEW, uri);
                 startActivity(intent);
             }
