@@ -13,6 +13,8 @@ import androidx.appcompat.app.AppCompatDelegate;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.concurrent.TimeoutException;
+
 import io.scalaproject.androidminer.dialogs.ProgressDialog;
 
 public abstract class BaseActivity extends AppCompatActivity {
@@ -44,12 +46,14 @@ public abstract class BaseActivity extends AppCompatActivity {
         Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
             @Override
             public void uncaughtException(@NotNull Thread paramThread, @NotNull Throwable paramThrowable) {
-                MainActivity.hideNotifications();
+                if (!paramThread.getName().equals("FinalizerWatchdogDaemon") || !(paramThrowable instanceof TimeoutException)) {
+                    MainActivity.hideNotifications();
 
-                if (oldHandler != null)
-                    oldHandler.uncaughtException(paramThread, paramThrowable); // Delegates to Android's error handling
-                else
-                    System.exit(2); // Prevents the service/app from freezing
+                    if (oldHandler != null)
+                        oldHandler.uncaughtException(paramThread, paramThrowable); // Delegates to Android's error handling
+                    else
+                        System.exit(2); // Prevents the service/app from freezing
+                }
             }
         });
     }
