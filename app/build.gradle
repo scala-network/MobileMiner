@@ -14,8 +14,8 @@ android {
         applicationId "io.scalaproject.androidminer"
         minSdkVersion 19
         targetSdkVersion 28 // keep version 28 to avoid an error 13 when running exe in assets folder (sdk 29 gives the error)
-        versionCode 12
-        versionName "2.2.0"
+        versionCode 13
+        versionName "2.2.1"
         buildConfigField "long", "BUILD_TIME", System.currentTimeMillis() + "L"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
