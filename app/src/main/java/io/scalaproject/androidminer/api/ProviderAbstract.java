@@ -8,6 +8,8 @@ import android.os.AsyncTask;
 
 import com.android.volley.toolbox.StringRequest;
 
+import java.io.IOException;
+
 import io.scalaproject.androidminer.Config;
 import io.scalaproject.androidminer.widgets.PoolInfoAdapter;
 

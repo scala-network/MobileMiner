@@ -461,24 +461,31 @@ public class PoolActivity extends BaseActivity
                 String port = poolItem != null ? poolItem.getPort() : "";
                 Objects.requireNonNull(etPoolPort.getEditText()).setText(port);
             } else {
-                assert poolItem != null;
-                ArrayList<String> ports = poolItem.getPorts();
-                if(ports.isEmpty())
-                    ports.add(poolItem.getDefaultPort());
+                ArrayList<String> ports = new ArrayList<>();
+                if(poolItem != null ) {
+                    ports = poolItem.getPorts();
+                    if (ports.isEmpty())
+                        ports.add(poolItem.getDefaultPort());
 
-                ArrayAdapter<String> adapter = new ArrayAdapter<>(getApplicationContext(), R.layout.spinner_text, ports);
-                spPoolPort.setAdapter(adapter);
+                    ArrayAdapter<String> adapter = new ArrayAdapter<>(getApplicationContext(), R.layout.spinner_text, ports);
+                    spPoolPort.setAdapter(adapter);
 
-                String selectedPort = poolItem.getPort();
-                int selectedPortIndex = 0;
-                for(int i = 0; i < ports.size(); i++) {
-                    if(ports.get(i).equals(selectedPort)) {
-                        selectedPortIndex = i;
-                        break;
+                    String selectedPort = poolItem.getPort();
+                    int selectedPortIndex = 0;
+                    for (int i = 0; i < ports.size(); i++) {
+                        if (ports.get(i).equals(selectedPort)) {
+                            selectedPortIndex = i;
+                            break;
+                        }
                     }
-                }
 
-                spPoolPort.setSelection(selectedPortIndex);
+                    spPoolPort.setSelection(selectedPortIndex);
+                } else {
+                    ArrayAdapter<String> adapter = new ArrayAdapter<>(getApplicationContext(), R.layout.spinner_text, ports);
+                    spPoolPort.setAdapter(adapter);
+
+                    spPoolPort.setSelection(0);
+                }
             }
 
             // set dialog message
@@ -509,8 +516,6 @@ public class PoolActivity extends BaseActivity
                     });
                 }
             });
-
-            //refresh();
         }
 
         @SuppressLint("IntentReset")
@@ -555,25 +560,17 @@ public class PoolActivity extends BaseActivity
     static public void parseVolleyError(VolleyError error) {
         String message = "";
         try {
-            if (error.networkResponse != null) {
-                String responseBody = new String(error.networkResponse.data, StandardCharsets.UTF_8);
-                JSONObject data = new JSONObject(responseBody);
-                JSONArray errors = data.getJSONArray("errors");
-                JSONObject jsonMessage = errors.getJSONObject(0);
+            String jsonMessage = "";
 
-                message = "VolleyError: " + jsonMessage.getString("message");
-            } else {
-                message = error.getMessage();
-            }
-        } catch (JSONException e) {
-            message = "JSONException: " + e.getMessage();
-        } catch (NullPointerException e) {
-            message = "NullPointerException: " + e.getMessage();
-        } catch (Exception e) {
-            message = "Exception: " + e.getMessage();
+            if(error != null)
+                jsonMessage = error.getMessage();
+
+            if(jsonMessage == null || jsonMessage.isEmpty())
+                jsonMessage = "Unknown";
+
+            message = "Pool error: " + jsonMessage;
         } finally {
-            assert message != null;
-            Log.i("parseVolleyError:", message);
+            Log.i("pool:parseVolleyError:", message);
         }
     }
 

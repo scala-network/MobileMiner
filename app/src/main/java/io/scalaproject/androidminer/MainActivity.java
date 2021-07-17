@@ -2191,7 +2191,7 @@ public class MainActivity extends BaseActivity
 
             // Sometimes xlarig returns a wrong low hrMax, but it needs to be > tick number, so we force a dummy max number
             if(hrMax <= 10.0f) {
-                hrMax = 15.0f;
+                hrMax = 25.0f;
             }
 
             Log.i(LOG_TAG, "hrMax: " + hrMax);
@@ -2201,7 +2201,9 @@ public class MainActivity extends BaseActivity
 
             meterTicks.setMaxSpeed(hrMax);
 
-            meterTicks.setTickNumber(10);
+            if(meterTicks.getTickNumber() != 10)
+                meterTicks.setTickNumber(10);
+
             meterTicks.setTextColor(getResources().getColor(R.color.txt_main));
 
             meterHashrate.setMaxSpeed(hrMax);

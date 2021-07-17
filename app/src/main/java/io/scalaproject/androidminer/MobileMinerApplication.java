@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleObserver;
 import androidx.lifecycle.OnLifecycleEvent;
@@ -26,6 +27,8 @@ public class MobileMinerApplication extends Application implements LifecycleObse
     @Override
     public void onCreate() {
         super.onCreate();
+
+        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
 
         ProcessLifecycleOwner.get().getLifecycle().addObserver(this);
     }

@@ -30,12 +30,11 @@ public class Json {
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
             String line;
             while ((line = bufferedReader.readLine()) != null) {
-                    data.append(line);
+                data.append(line);
             }
 
-        } catch (IOException e) {
-                Log.i(LOG_TAG, e.toString());
-//                e.printStackTrace();
+        } catch (Exception e) {
+            Log.i(LOG_TAG, e.toString());
         }
 
         return data.toString();
