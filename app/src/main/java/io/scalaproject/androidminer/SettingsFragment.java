@@ -25,8 +25,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -43,6 +45,7 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.google.zxing.integration.android.IntentIntegrator;
 
 import org.jetbrains.annotations.NotNull;
+import org.w3c.dom.Text;
 
 import java.util.Objects;
 
@@ -61,6 +64,9 @@ public class SettingsFragment extends Fragment {
     private PoolView pvSelectedPool;
 
     public static PoolItem selectedPoolTmp = null;
+
+    private boolean bDefineBatteryLevel = false;
+    private Integer nBatteryLevel = Config.DefaultBatteryLevel;
 
     private Integer nMaxCPUTemp = Config.DefaultMaxCPUTemp; // 60,65,70,75,80
     private Integer nMaxBatteryTemp = Config.DefaultMaxBatteryTemp; // 30,35,40,45,50
@@ -140,7 +146,26 @@ public class SettingsFragment extends Fragment {
         swKeepScreenOnWhenMining = view.findViewById(R.id.chkKeepScreenOnWhenMining);
         swDisableTempControl = view.findViewById(R.id.chkAmaycOff);
         swSendDebugInformation = view.findViewById(R.id.chkSendDebugInformation);
-        //swDoNotRestartOnCrash = view.findViewById(R.id.chkDoNotRestartOnCrash);
+
+        bDefineBatteryLevel = Config.read(Config.CONFIG_BATTERY_LEVEL_ENABLED, "0").equals("1");
+        nBatteryLevel = Integer.valueOf(Config.read(Config.CONFIG_BATTERY_LEVEL, Integer.toString(Config.DefaultBatteryLevel)));
+
+        ImageView ivBatteryLevelOptions = view.findViewById(R.id.ivBatteryLevelOptions);
+        ivBatteryLevelOptions.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onPauseMiningBattery(v);
+            }
+        });
+
+        swPauseOnBattery.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                boolean checked = ((Switch)v).isChecked();
+                if(checked)
+                    onPauseMiningBattery(v);
+            }
+        });
 
         tgTemperatureUnit = view.findViewById(R.id.tgTemperatureUnit);
         tgTemperatureUnit.addOnButtonCheckedListener(new MaterialButtonToggleGroup.OnButtonCheckedListener() {
@@ -477,6 +502,91 @@ public class SettingsFragment extends Fragment {
         return view;
     }
 
+    private void onPauseMiningBattery(View view) {
+        MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(getContext(), R.style.MaterialAlertDialogCustom);
+        LayoutInflater li = LayoutInflater.from(alertDialogBuilder.getContext());
+        View promptsView = li.inflate(R.layout.prompt_battery_level, null);
+        alertDialogBuilder.setView(promptsView);
+
+        TextView tvBatteryLevel = promptsView.findViewById(R.id.tvBatteryLevel);
+        ImageView ivDecreaseBatteryLevel = promptsView.findViewById(R.id.ivDecreaseBatteryLevel);
+        ImageView ivIncreaseBatteryLevel = promptsView.findViewById(R.id.ivIncreaseBatteryLevel);
+
+        Switch swBatteryLevel = promptsView.findViewById(R.id.chkBatteryLevel);
+        swBatteryLevel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                boolean checked = ((Switch)v).isChecked();
+                int level = Integer.parseInt(tvBatteryLevel.getText().toString());
+                boolean enabled = level > 5 && checked;
+                ivDecreaseBatteryLevel.setEnabled(enabled);
+                ivDecreaseBatteryLevel.setColorFilter(enabled ? getResources().getColor(R.color.c_blue) : getResources().getColor(R.color.txt_inactive));
+
+                enabled = level < 95 && checked;
+                ivIncreaseBatteryLevel.setEnabled(enabled);
+                ivIncreaseBatteryLevel.setColorFilter(enabled ? getResources().getColor(R.color.c_blue) : getResources().getColor(R.color.txt_inactive));
+            }
+        });
+
+        // Load initial values
+        swBatteryLevel.setChecked(bDefineBatteryLevel);
+        tvBatteryLevel.setText(String.valueOf(nBatteryLevel));
+
+        int level = Integer.parseInt(tvBatteryLevel.getText().toString());
+        boolean enabled = level > 5 && swBatteryLevel.isChecked();
+        ivDecreaseBatteryLevel.setEnabled(enabled);
+        ivDecreaseBatteryLevel.setColorFilter(enabled ? getResources().getColor(R.color.c_blue) : getResources().getColor(R.color.txt_inactive));
+
+        enabled = level < 95 && swBatteryLevel.isChecked();
+        ivIncreaseBatteryLevel.setEnabled(enabled);
+        ivIncreaseBatteryLevel.setColorFilter(enabled ? getResources().getColor(R.color.c_blue) : getResources().getColor(R.color.txt_inactive));
+
+        ivDecreaseBatteryLevel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int level = Integer.parseInt(tvBatteryLevel.getText().toString());
+                if(level > 5)
+                    tvBatteryLevel.setText(Integer.toString(level-5));
+
+                level = Integer.parseInt(tvBatteryLevel.getText().toString());
+                ivDecreaseBatteryLevel.setEnabled(level > 5);
+                ivDecreaseBatteryLevel.setColorFilter(level > 5 ? getResources().getColor(R.color.c_blue) : getResources().getColor(R.color.txt_inactive));
+
+                ivIncreaseBatteryLevel.setEnabled(level < 95);
+                ivIncreaseBatteryLevel.setColorFilter(level < 95 ? getResources().getColor(R.color.c_blue) : getResources().getColor(R.color.txt_inactive));
+            }
+        });
+
+        ivIncreaseBatteryLevel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int level = Integer.parseInt(tvBatteryLevel.getText().toString());
+                if(level < 95)
+                    tvBatteryLevel.setText(Integer.toString(level+5));
+
+                level = Integer.parseInt(tvBatteryLevel.getText().toString());
+                ivDecreaseBatteryLevel.setEnabled(level > 5);
+                ivDecreaseBatteryLevel.setColorFilter(level > 5 ? getResources().getColor(R.color.c_blue) : getResources().getColor(R.color.txt_inactive));
+
+                ivIncreaseBatteryLevel.setEnabled(level < 95);
+                ivIncreaseBatteryLevel.setColorFilter(level < 95 ? getResources().getColor(R.color.c_blue) : getResources().getColor(R.color.txt_inactive));
+            }
+        });
+
+        // set dialog message
+        alertDialogBuilder
+                .setTitle(getResources().getString(R.string.battery_level))
+                .setCancelable(false)
+                .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        bDefineBatteryLevel = swBatteryLevel.isChecked();
+                        nBatteryLevel = Integer.valueOf(tvBatteryLevel.getText().toString());
+                    }
+                });
+
+        alertDialogBuilder.show();
+    }
+
     private void updateHashrateRefreshDelayControls() {
         int delay = Integer.parseInt(tvRefreshHashrateDelay.getText().toString());
         ivDecreaseRefreshHashrateDelay.setEnabled(delay > 1);
@@ -496,7 +606,6 @@ public class SettingsFragment extends Fragment {
 
     public void onIncreaseHashrateRefreshDelay() {
         int delay = Integer.parseInt(tvRefreshHashrateDelay.getText().toString());
-
         if(delay < Config.DefaultRefreshDelay)
             tvRefreshHashrateDelay.setText(Integer.toString(delay+1));
 
@@ -546,6 +655,9 @@ public class SettingsFragment extends Fragment {
         Config.write(Config.CONFIG_DISABLE_TEMPERATURE_CONTROL, (swDisableTempControl.isChecked() ? "1" : "0"));
 
         Config.write(Config.CONFIG_PAUSE_ON_BATTERY, swPauseOnBattery.isChecked() ? "1" : "0");
+        Config.write(Config.CONFIG_BATTERY_LEVEL_ENABLED, bDefineBatteryLevel ? "1" : "0");
+        Config.write(Config.CONFIG_BATTERY_LEVEL, String.valueOf(nBatteryLevel));
+
         Config.write(Config.CONFIG_PAUSE_ON_NETWORK, swPauseOnNetwork.isChecked() ? "1" : "0");
         Config.write(Config.CONFIG_KEEP_SCREEN_ON_WHEN_MINING, swKeepScreenOnWhenMining.isChecked() ? "1" : "0");
 

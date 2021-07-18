@@ -156,6 +156,7 @@
     <string name="fahrenheit">°F</string>
     <string name="temperature_unit">Temperature unit</string>
     <string name="intensity">Intensity</string>
+    <string name="battery_level">Battery Level</string>
     <string name="temperature_control">Temperature Control</string>
     <string name="minimum_payout">Minimum Payout</string>
     <string name="minimum_payout_help"><![CDATA[
@@ -215,5 +216,7 @@
     <string name="name">Name</string>
     <string name="mining_resumed_by_user">Mining resumed by user.</string>
     <string name="minimum_payout_label">Minimum Payout:</string>
+    <string name="battery_level_option">Only when battery reaches a specific level</string>
+    <string name="minimum_battery_level">Minimum Battery Level</string>
 
 </resources>

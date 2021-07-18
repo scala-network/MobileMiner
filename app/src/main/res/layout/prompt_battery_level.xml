@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:paddingTop="15dp"
+    android:paddingStart="20dp"
+    android:paddingBottom="10dp"
+    android:paddingEnd="20dp"
+    android:background="@color/bg_lighter">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:text="Define Battery Level"
+            android:textColor="@color/c_grey"
+            android:textSize="14sp"
+            android:checked="false"
+            app:buttonTint="@color/txt_main" />
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            tools:ignore="NestedWeights" />
+
+        <Switch
+            android:id="@+id/chkBatteryLevel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:theme="@style/SwitchTheme" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/llBatteryLevel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/minimum_battery_level"
+            android:textColor="@color/c_grey"
+            android:textSize="14sp"
+            android:checked="false"
+            app:buttonTint="@color/txt_main" />
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            tools:ignore="NestedWeights" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/ivDecreaseBatteryLevel"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="center"
+                app:tint="@color/c_blue"
+                app:srcCompat="@drawable/ic_left" />
+
+            <TextView
+                android:id="@+id/tvBatteryLevel"
+                android:layout_width="20dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="25"
+                android:textColor="@color/txt_main"
+                android:textSize="14sp"
+                android:checked="false" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="%"
+                android:textColor="@color/txt_main"
+                android:textSize="14sp"
+                android:checked="false" />
+
+            <ImageView
+                android:id="@+id/ivIncreaseBatteryLevel"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="center"
+                app:tint="@color/c_blue"
+                app:srcCompat="@drawable/ic_right" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

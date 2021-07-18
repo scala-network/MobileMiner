@@ -734,6 +734,15 @@
                         android:checked="false"
                         app:buttonTint="@color/txt_main" />
 
+                    <ImageView
+                        android:id="@+id/ivBatteryLevelOptions"
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:layout_marginStart="4dp"
+                        android:layout_gravity="center_vertical"
+                        app:tint="@color/btn_icon_default"
+                        app:srcCompat="@drawable/ic_edit" />
+
                     <Space
                         android:layout_width="0dp"
                         android:layout_height="match_parent"

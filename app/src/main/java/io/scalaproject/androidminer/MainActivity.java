@@ -3379,6 +3379,25 @@ public class MainActivity extends BaseActivity
             int status = batteryStatusIntent.getIntExtra(BatteryManager.EXTRA_STATUS, -1);
             isCharging = status == BatteryManager.BATTERY_STATUS_CHARGING || status == BatteryManager.BATTERY_STATUS_FULL;
 
+            boolean state = false;
+            if (binder != null) {
+                state = binder.getService().getMiningServiceState();
+            }
+
+            int level = batteryStatusIntent.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
+            int scale = batteryStatusIntent.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
+            float batteryPct = level * 100 / (float)scale;
+            float batteryLevelConfig = (float)Integer.parseInt(Config.read(Config.CONFIG_BATTERY_LEVEL, String.valueOf(Config.DefaultBatteryLevel)));
+
+            if(Config.read(Config.CONFIG_BATTERY_LEVEL_ENABLED).equals("1")
+                    && Config.read(Config.CONFIG_PAUSE_ON_BATTERY).equals("1")
+                    && state
+                    && !isCharging
+                    && batteryPct <= batteryLevelConfig) {
+                pauseMining();
+            }
+
+            // Device has been plugged or unplugged
             if (lastIsCharging == isCharging)
                 return;
 
@@ -3389,14 +3408,9 @@ public class MainActivity extends BaseActivity
             if (Config.read(Config.CONFIG_PAUSE_ON_BATTERY).equals("0")) {
                 clearMinerLog = true;
             } else {
-                boolean state = false;
-                if (binder != null) {
-                    state = binder.getService().getMiningServiceState();
-                }
-
                 if (isCharging) {
                     resumeMining();
-                } else if (state) {
+                } else if (state) { // mining on battery
                     pauseMining();
                 }
             }
