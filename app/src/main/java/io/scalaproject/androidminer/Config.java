@@ -56,8 +56,8 @@ public class Config {
     public final static String CONFIG_POOLS_REPOSITORY_JSON = "pools_respository_json";
     public final static String CONFIG_APP_PREVIOUS_VERSION = "app_previous_version";
 
-    public final static int DefaultRefreshDelay = 30; // In seconds
-    public final static int DefaultBatteryLevel = 25; // In %
+    public final static int DefaultRefreshDelay = 30; // seconds
+    public final static int DefaultBatteryLevel = 25; // %
 
     public final static int CHECK_TEMPERATURE_DELAY = 10000; // In milliseconds
     public final static int CHECK_MINING_TIME_DELAY = 60000; // In milliseconds
