@@ -2,8 +2,8 @@
 
 A high performance and open-source application for mining Veruscoin on Android mobile devices.
 
-<p align="left">
-  <img src="https://wiki.veruscoin.io/img/favicon.png" width="350" title="Veruscoin">
+<p align="center">
+  <img src="https://wiki.veruscoin.io/img/favicon.png" width="128" title="Veruscoin">
 </p>
 
 ## Supported CPU instruction sets
@@ -33,7 +33,7 @@ When opening the application for the first time, you have to specify the pool th
 The 'Worker name or pool options' field can be left blank if the pool doesn't use any options/password. In this case, the worker name will be set to your device type (make and model) by default so you can easily identify it on the pool.
 
 #### Wallet Address
-Specifies the Veruscoin wallet address that will be used with the mining pool. A validation has been added to this field to make sure you enter a valid address. You can also use the provided QR code functionnality to retrieve the address. Currently, only the [Official Pool](https://pool.scalaproject.io) and the [Official GUI Wallet](https://github.com/scala-network/scala-electron-gui) support QR code functionnality.
+Specifies the Veruscoin wallet address that will be used with the mining pool. A validation has been added to this field to make sure you enter a valid address. 
 
 #### Hardware Settings
 ##### CPU Cores
@@ -64,16 +64,9 @@ When saving the settings, you will be redirected automatically to the Miner page
 
 The Payout Widget which is at the top of the screen displays the current balance for the selected pool and the progression toward the defined mining goal. If the specified pool does not provide an API (in the case of custom pools for example), this widget will be hidden.
 
-The stats about the hashrate and the accepted shares are then presented in the Device Widget. All the information is extracted from XLArig. The hahsrate information comes from the 15s/30s/60s hashrate data from the output log, in this order of priority. The CPU and Battery temperatures are used for the AMYAC integration and static temperature protection. The middle screen displays the output log from XLArig as is.
-
-You can use the buttons at the bottom of the application to display the hashrate in the log ('H'), to pause the miner ('P') and to resume the miner ('R'). You cannot resume the miner when the device is cooling.
+The stats about the hashrate and the accepted shares are then presented in the Device Widget. All the information is extracted from `ccminer`. The hahsrate information comes from the 15s/30s/60s hashrate data from the output log, in this order of priority. The CPU and Battery temperatures are used for the AMYAC integration and static temperature protection. The middle screen displays the output log from `ccminer` as is.
 
 The application will keep mining even when your device is on standby mode. So keep in mind that even if your phone screen is off, your device may still be running.
-
-## Future development
-- Push notifications
-- Wallet integration
-- Unified design for the all-in-one application
 
 ## Donations
 * VRSC: `RKE5YdseSU6becMtpHKn4z9N4ahRkqm1cV`
@@ -82,13 +75,6 @@ The application will keep mining even when your device is on standby mode. So ke
 * Forked from [MobileMiner](https://github.com/scala-network/MobileMiner)
 * Forked from [Mine2gether](https://github.com/Mine2Gether/m2g_android_miner)
 * Original code from [MoneroMiner](https://github.com/upost/MoneroMiner)
-
-## Contacts
-* [Website](https://veruscoin.io/)
-* hello@scalaproject.io
-* [Discord](https://verus.io/discord)
-* [Twitter](https://twitter.com/VerusCoin)
-
 
 # License
 
