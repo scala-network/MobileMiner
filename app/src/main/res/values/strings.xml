@@ -218,5 +218,6 @@
     <string name="minimum_payout_label">Minimum Payout:</string>
     <string name="battery_level_option">Only when battery reaches a specific level</string>
     <string name="minimum_battery_level">Minimum Battery Level</string>
+    <string name="address_label">Specify the wallet address that will receive the mining rewards.</string>
 
 </resources>
