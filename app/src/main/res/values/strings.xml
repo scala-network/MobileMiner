@@ -219,5 +219,7 @@
     <string name="battery_level_option">Only when battery reaches a specific level</string>
     <string name="minimum_battery_level">Minimum Battery Level</string>
     <string name="address_label">Specify the wallet address that will receive the mining rewards.</string>
+    <string name="send_address_resolve_ud">Resolving Unstoppable Domains address...</string>
+    <string name="mining_address_help">Specify the wallet address that will receive the mining rewards. Unstoppable Domains addresses are supported too, for example: myaddress.crypto. Make sure XLA is defined in your UD profile.</string>
 
 </resources>

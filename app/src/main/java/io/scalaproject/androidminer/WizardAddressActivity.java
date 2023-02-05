@@ -16,6 +16,7 @@ import android.os.StrictMode;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,6 +26,9 @@ import androidx.core.content.ContextCompat;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.zxing.integration.android.IntentIntegrator;
+import com.unstoppabledomains.exceptions.ns.NamingServiceException;
+import com.unstoppabledomains.resolution.DomainResolution;
+import com.unstoppabledomains.resolution.Resolution;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -53,8 +57,6 @@ public class WizardAddressActivity extends BaseActivity {
             StrictMode.setThreadPolicy(policy);
         }
 
-        //ProviderManager.loadPools(getApplicationContext());
-
         setContentView(R.layout.fragment_wizard_address);
         View view2 = findViewById(android.R.id.content).getRootView();
         tvAddress = view2.findViewById(R.id.addressWizard);
@@ -67,8 +69,7 @@ public class WizardAddressActivity extends BaseActivity {
         toolbar.setOnButtonListener(new Toolbar.OnButtonListener() {
             @Override
             public void onButtonMain(int type) {
-                if (type == Toolbar.BUTTON_MAIN_BACK) {//onBackPressed();
-                    //startActivity(new Intent(WizardAddressActivity.this, WizardHomeActivity.class));
+                if (type == Toolbar.BUTTON_MAIN_BACK) {
                     finish();
                 }
             }
@@ -82,6 +83,14 @@ public class WizardAddressActivity extends BaseActivity {
         toolbar.setTitle("Wallet Address");
         toolbar.setButtonMain(Toolbar.BUTTON_MAIN_BACK);
         toolbar.setButtonOptions(Toolbar.BUTTON_OPTIONS_STAR);
+
+        Button btnWalletAddressHelp = findViewById(R.id.btnWalletAddressHelp);
+        btnWalletAddressHelp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Utils.showPopup(WizardAddressActivity.this, getString(R.string.walletaddress2), getString(R.string.mining_address_help));
+            }
+        });
 
         ViewGroup llNotice = findViewById(R.id.llNotice);
         llNotice.setOnClickListener(new View.OnClickListener() {
@@ -104,13 +113,12 @@ public class WizardAddressActivity extends BaseActivity {
         if (Build.VERSION.SDK_INT >= 23) {
             if (ContextCompat.checkSelfPermission(appContext, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
                 requestPermissions(new String[]{Manifest.permission.CAMERA}, 100);
-            }
-            else {
+            } else {
                 startQrCodeActivity();
             }
-        } else if(Build.VERSION.SDK_INT >= 21) {
+        } else if (Build.VERSION.SDK_INT >= 21) {
             startQrCodeActivity();
-        }else {
+        } else {
             Utils.showToast(appContext, "This version of Android does not support Qr Code.", Toast.LENGTH_LONG);
         }
     }
@@ -132,9 +140,8 @@ public class WizardAddressActivity extends BaseActivity {
         if (requestCode == 100) {
             if (permissions[0].equals(Manifest.permission.CAMERA) && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 startQrCodeActivity();
-            }
-            else {
-                Utils.showToast(appContext,"Camera Permission Denied.", Toast.LENGTH_LONG);
+            } else {
+                Utils.showToast(appContext, "Camera Permission Denied.", Toast.LENGTH_LONG);
             }
         }
     }
@@ -145,10 +152,8 @@ public class WizardAddressActivity extends BaseActivity {
         View view2 = findViewById(android.R.id.content).getRootView();
         TextInputLayout til = view2.findViewById(R.id.addressIL);
 
-        if(strAddress.isEmpty() || !Utils.verifyAddress(strAddress)) {
-            til.setErrorEnabled(true);
-            til.setError(getResources().getString(R.string.invalidaddress));
-            requestFocus(tvAddress);
+        if (strAddress.isEmpty() || !Utils.verifyAddress(strAddress)) {
+            processUD(strAddress);
             return;
         }
 
@@ -160,6 +165,45 @@ public class WizardAddressActivity extends BaseActivity {
         Intent intent = new Intent(WizardAddressActivity.this, PoolActivity.class);
         intent.putExtra(PoolActivity.RequesterType, PoolActivity.REQUESTER_WIZARD);
         startActivity(intent);
+    }
+
+    public void processUD(String udString) {
+        DomainResolution resolution = new Resolution();
+        final boolean[] domainIsUD = {false};
+        final String[] strUDAddress = {""};
+
+        View view2 = findViewById(android.R.id.content).getRootView();
+        TextInputLayout til = view2.findViewById(R.id.addressIL);
+        til.setErrorEnabled(true);
+        til.setError(getResources().getString(R.string.send_address_resolve_ud));
+
+        new Thread(() -> {
+            try {
+                strUDAddress[0] = resolution.getAddress(udString, "xla");
+                domainIsUD[0] = true;
+            } catch (NamingServiceException e) {
+                switch (e.getCode()) {
+                    case UnknownCurrency:
+                    case RecordNotFound:
+                        domainIsUD[0] = true;
+                        break;
+                    default:
+                        domainIsUD[0] = false;
+                        break;
+                }
+            }
+
+            runOnUiThread(() -> {
+                if (domainIsUD[0]) {
+                    til.setErrorEnabled(false);
+                    tvAddress.setText(strUDAddress[0]);
+                } else {
+                    til.setErrorEnabled(true);
+                    til.setError(getResources().getString(R.string.invalidaddress));
+                    requestFocus(tvAddress);
+                }
+            });
+        }).start();
     }
 
     private void requestFocus(View view) {

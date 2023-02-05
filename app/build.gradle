@@ -14,8 +14,8 @@ android {
         minSdkVersion 19
         //noinspection ExpiredTargetSdkVersion
         targetSdkVersion 28 // keep version 28 to avoid an error 13 when running exe in assets folder (sdk 29 gives the error)
-        versionCode 15
-        versionName "2.5.0"
+        versionCode 14
+        versionName "2.4.0"
         buildConfigField "long", "BUILD_TIME", System.currentTimeMillis() + "L"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true

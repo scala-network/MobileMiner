@@ -47,6 +47,19 @@
                         android:textAllCaps="true"
                         android:textStyle="bold" />
 
+                    <Button
+                        android:id="@+id/btnAddressHelp"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        app:backgroundTint="@android:color/transparent"
+                        android:layout_gravity="center_vertical"
+                        app:cornerRadius="5dp"
+                        app:icon="@drawable/ic_help"
+                        app:iconGravity="textStart"
+                        app:iconPadding="0dp"
+                        app:iconTint="@color/c_grey"
+                        tools:ignore="UnusedAttribute" />
+
                     <Space
                         android:layout_width="0dp"
                         android:layout_height="match_parent"

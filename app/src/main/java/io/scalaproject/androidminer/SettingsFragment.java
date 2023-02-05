@@ -43,9 +43,11 @@ import com.google.android.material.button.MaterialButtonToggleGroup;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.zxing.integration.android.IntentIntegrator;
+import com.unstoppabledomains.exceptions.ns.NamingServiceException;
+import com.unstoppabledomains.resolution.DomainResolution;
+import com.unstoppabledomains.resolution.Resolution;
 
 import org.jetbrains.annotations.NotNull;
-import org.w3c.dom.Text;
 
 import java.util.Objects;
 
@@ -475,6 +477,14 @@ public class SettingsFragment extends Fragment {
             }
         });
 
+        Button btnAddressHelp = view.findViewById(R.id.btnAddressHelp);
+        btnAddressHelp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Utils.showPopup(getContext(), getString(R.string.walletaddress2), getString(R.string.mining_address_help));
+            }
+        });
+
         Button btnTemperatureControlHelp = view.findViewById(R.id.btnTemperatureControlHelp);
         btnTemperatureControlHelp.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -612,14 +622,49 @@ public class SettingsFragment extends Fragment {
         updateHashrateRefreshDelayControls();
     }
 
+    public void processUD(String udString) {
+        DomainResolution resolution = new Resolution();
+        final boolean[] domainIsUD = {false};
+        final String[] strUDAddress = {""};
+
+        tilAddress.setErrorEnabled(true);
+        tilAddress.setError(getResources().getString(R.string.send_address_resolve_ud));
+
+        new Thread(() -> {
+            try {
+                strUDAddress[0] = resolution.getAddress(udString, "xla");
+                domainIsUD[0] = true;
+            } catch (NamingServiceException e) {
+                switch (e.getCode()) {
+                    case UnknownCurrency:
+                    case RecordNotFound:
+                        domainIsUD[0] = true;
+                        break;
+                    default:
+                        domainIsUD[0] = false;
+                        break;
+                }
+            }
+
+            requireActivity().runOnUiThread(() -> {
+                if (domainIsUD[0]) {
+                    tilAddress.setErrorEnabled(false);
+                    edAddress.setText(strUDAddress[0]);
+                } else {
+                    tilAddress.setErrorEnabled(true);
+                    tilAddress.setError(getResources().getString(R.string.invalidaddress));
+                    requestFocus(edAddress);
+                }
+            });
+        }).start();
+    }
+
     private void saveSettings() {
         // Validate address
         String address = edAddress.getText().toString().trim();
 
         if(address.isEmpty() || !Utils.verifyAddress(address)) {
-            tilAddress.setErrorEnabled(true);
-            tilAddress.setError(getResources().getString(R.string.invalidaddress));
-            requestFocus(edAddress);
+            processUD(address);
             return;
         }
 
