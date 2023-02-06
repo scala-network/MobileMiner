@@ -101,12 +101,6 @@ public class QrCodeScannerActivity extends BaseActivity {
     }
 
     @Override
-    protected void onPause() {
-        super.onPause();
-        barcodeView.pause();
-    }
-
-    @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         return barcodeView.onKeyDown(keyCode, event) || super.onKeyDown(keyCode, event);
     }

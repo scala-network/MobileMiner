@@ -33,6 +33,18 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onDestroy() {
+        dismissProgressDialog();
+        super.onDestroy();
+    }
+
+    @Override
+    public void onPause() {
+        dismissProgressDialog();
+        super.onPause();
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
@@ -77,9 +89,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     public void dismissProgressDialog() {
-        if (progressDialog == null) return; // nothing to do
-
-        if (progressDialog.isShowing()) {
+        if (progressDialog != null && progressDialog.isShowing()) {
             progressDialog.dismiss();
         }
 

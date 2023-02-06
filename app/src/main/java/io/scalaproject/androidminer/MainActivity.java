@@ -1882,11 +1882,6 @@ public class MainActivity extends BaseActivity
         refreshHashrate();
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-    }
-
     private void toggleMiningState() {
         if (binder == null)
             return;
@@ -2174,43 +2169,47 @@ public class MainActivity extends BaseActivity
         if(bIsPerformanceMode)
             return;
 
-        SpeedView meterTicks = findViewById(R.id.meter_hashrate_ticks);
-        float fCurrentMax = meterTicks.getMaxSpeed();
+        try {
+            SpeedView meterTicks = findViewById(R.id.meter_hashrate_ticks);
+            float fCurrentMax = meterTicks.getMaxSpeed();
 
-        if((meterTicks.getTickNumber() == 0 || (fCurrentMax > 0 && fHr >= fCurrentMax * 0.9)) && fMaxHr > 0) {
-            TubeSpeedometer meterHashrate = findViewById(R.id.meter_hashrate);
-            TubeSpeedometer meterHashrate_avg = findViewById(R.id.meter_hashrate_avg);
-            TubeSpeedometer meterHashrate_max = findViewById(R.id.meter_hashrate_max);
+            if ((meterTicks.getTickNumber() == 0 || (fCurrentMax > 0 && fHr >= fCurrentMax * 0.9)) && fMaxHr > 0) {
+                TubeSpeedometer meterHashrate = findViewById(R.id.meter_hashrate);
+                TubeSpeedometer meterHashrate_avg = findViewById(R.id.meter_hashrate_avg);
+                TubeSpeedometer meterHashrate_max = findViewById(R.id.meter_hashrate_max);
 
-            float hrMax = getMaxHr(fMaxHr);
+                float hrMax = getMaxHr(fMaxHr);
 
-            // This is not normal, we need to recompute it
-            if(fHr > hrMax) {
-                hrMax = getMaxHr(fHr);
+                // This is not normal, we need to recompute it
+                if (fHr > hrMax) {
+                    hrMax = getMaxHr(fHr);
+                }
+
+                // Sometimes xlarig returns a wrong low hrMax, but it needs to be > tick number, so we force a dummy max number
+                if (hrMax <= 10.0f) {
+                    hrMax = 25.0f;
+                }
+
+                Log.i(LOG_TAG, "hrMax: " + hrMax);
+
+                if (meterTicks.getMinSpeed() != 0.0f)
+                    meterTicks.setMinSpeed(0);
+
+                meterTicks.setMaxSpeed(hrMax);
+
+                if (meterTicks.getTickNumber() != 10)
+                    meterTicks.setTickNumber(10);
+
+                meterTicks.setTextColor(getResources().getColor(R.color.txt_main));
+
+                meterHashrate.setMaxSpeed(hrMax);
+                meterHashrate.setWithTremble(!(hrMax < 15));
+
+                meterHashrate_avg.setMaxSpeed(hrMax);
+                meterHashrate_max.setMaxSpeed(hrMax);
             }
-
-            // Sometimes xlarig returns a wrong low hrMax, but it needs to be > tick number, so we force a dummy max number
-            if(hrMax <= 10.0f) {
-                hrMax = 25.0f;
-            }
-
-            Log.i(LOG_TAG, "hrMax: " + hrMax);
-
-            if(meterTicks.getMinSpeed() != 0.0f)
-                meterTicks.setMinSpeed(0);
-
-            meterTicks.setMaxSpeed(hrMax);
-
-            if(meterTicks.getTickNumber() != 10)
-                meterTicks.setTickNumber(10);
-
-            meterTicks.setTextColor(getResources().getColor(R.color.txt_main));
-
-            meterHashrate.setMaxSpeed(hrMax);
-            meterHashrate.setWithTremble(!(hrMax < 15));
-
-            meterHashrate_avg.setMaxSpeed(hrMax);
-            meterHashrate_max.setMaxSpeed(hrMax);
+        } catch (IllegalArgumentException ignore) {
+            // ignore java.lang.IllegalArgumentException: ticks must be between [minSpeed, maxSpeed] !!
         }
     }
 
