@@ -223,7 +223,7 @@ public final class Utils {
 
     static public String getBuildTime() {
         Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(Long.parseLong(BuildConfig.BUILD_TYPE));
+        calendar.setTimeInMillis(BuildConfig.BUILD_TIME);
         return DateFormat.getDateInstance(DateFormat.LONG).format(calendar.getTime());
     }
 
