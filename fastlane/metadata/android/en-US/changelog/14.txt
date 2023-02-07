@@ -1,0 +1,3 @@
+- Support for Unstoppable Domains. You can send and receive crypto using a human-readable name instead of a long string of numbers and letters. Please note that you must have XLA enabled on your UD domain to use this feature.
+- Upgrade libraries
+- Fix crashes
