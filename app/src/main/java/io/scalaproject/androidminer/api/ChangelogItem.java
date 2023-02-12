@@ -15,12 +15,12 @@ public class ChangelogItem {
 
     public int mVersion;
     public String mDate;
-    public ArrayList<String> mChanges = new ArrayList<>();
+    public final ArrayList<String> mChanges = new ArrayList<>();
 
     public ChangelogItem() {
     }
 
-    static public Comparator<ChangelogItem> ChangelogComparator = new Comparator<ChangelogItem>() {
+    static public final Comparator<ChangelogItem> ChangelogComparator = new Comparator<ChangelogItem>() {
         @Override
         public int compare(ChangelogItem o1, ChangelogItem o2) {
             return o1.mVersion - o2.mVersion;

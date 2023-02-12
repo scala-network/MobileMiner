@@ -1,0 +1,16 @@
+- Add IPNS gateways for pool repository
+- Add detailed Credits layout
+- Add Changelog view with fastlane support
+- Add CPU cores widget to home view
+- Add mining status to home view
+- Add default port list and refactor
+- Restart mining process automatically
+- Remove minimum payout option
+- Simplify pool port selection
+- Truncate worker name if too long
+- Update network state change detection
+- Use open-source QR Code reader (FOSS)
+- Manage versions update
+- Add Haku to about logo
+- Use generic Helper class for popups
+- Fix bugs

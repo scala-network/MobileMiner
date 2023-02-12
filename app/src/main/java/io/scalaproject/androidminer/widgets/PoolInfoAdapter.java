@@ -5,10 +5,6 @@
 package io.scalaproject.androidminer.widgets;
 
 import android.content.Context;
-import androidx.annotation.NonNull;
-import androidx.appcompat.widget.PopupMenu;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.graphics.Bitmap;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -20,7 +16,9 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import io.scalaproject.androidminer.R;
+import androidx.annotation.NonNull;
+import androidx.appcompat.widget.PopupMenu;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -28,6 +26,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import io.scalaproject.androidminer.R;
 import io.scalaproject.androidminer.Utils;
 import io.scalaproject.androidminer.api.PoolItem;
 import io.scalaproject.androidminer.api.ProviderManager;
@@ -39,7 +38,7 @@ public class PoolInfoAdapter extends RecyclerView.Adapter<PoolInfoAdapter.ViewHo
     }
 
     public interface OnSelectPoolListener {
-        void onSelectPool(View view, PoolItem item);
+        void onSelectPool(PoolItem item);
     }
 
     private final List<PoolItem> poolItems = new ArrayList<>();
@@ -90,10 +89,6 @@ public class PoolInfoAdapter extends RecyclerView.Adapter<PoolInfoAdapter.ViewHo
         notifyDataSetChanged();
     }
 
-    public List<PoolItem> getPools() {
-        return poolItems;
-    }
-
     public void setPools(Collection<PoolItem> data) {
         poolItems.clear();
         if (data != null) {
@@ -112,11 +107,11 @@ public class PoolInfoAdapter extends RecyclerView.Adapter<PoolInfoAdapter.ViewHo
     }
 
     class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        TextView tvName;
-        TextView tvMiners;
-        TextView tvHr;
-        ImageView ivIcon;
-        ImageButton ibOptions;
+        final TextView tvName;
+        final TextView tvMiners;
+        final TextView tvHr;
+        final ImageView ivIcon;
+        final ImageButton ibOptions;
         boolean popupOpen = false;
 
         PoolItem poolItem;
@@ -229,7 +224,7 @@ public class PoolInfoAdapter extends RecyclerView.Adapter<PoolInfoAdapter.ViewHo
             if (onSelectPoolListener != null) {
                 int position = getAdapterPosition(); // gets item position
                 if (position != RecyclerView.NO_POSITION) { // Check if an item was deleted, but the user clicked it before the UI removed it
-                    onSelectPoolListener.onSelectPool(view, poolItems.get(position));
+                    onSelectPoolListener.onSelectPool(poolItems.get(position));
                 }
             }
         }

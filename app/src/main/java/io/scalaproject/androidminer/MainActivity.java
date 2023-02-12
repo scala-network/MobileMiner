@@ -58,6 +58,7 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.PowerManager;
 import android.os.StrictMode;
+import android.text.Html;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
@@ -71,11 +72,11 @@ import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.SeekBar;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -152,7 +153,6 @@ public class MainActivity extends BaseActivity
 
     public static int nLastVersion = -1;
     public static boolean isChangelogLoaded = false;
-    public static boolean isActivityLoaded = false;
     public static final Set<ChangelogItem> allChangelogItems = new HashSet<>();
 
     private boolean bIsPerformanceMode = false;
@@ -174,7 +174,6 @@ public class MainActivity extends BaseActivity
     private MiningService.MiningServiceBinder binder;
     private boolean bPayoutDataReceived = false;
 
-    private boolean bIsRestartEvent = false;
     private boolean bForceMiningOnPauseBattery = false;
     private boolean bForceMiningOnPauseNetwork = false;
 
@@ -185,11 +184,11 @@ public class MainActivity extends BaseActivity
 
     // Graphics
 
-    ArrayList<Entry> lValuesHr = new ArrayList<>();
+    final ArrayList<Entry> lValuesHr = new ArrayList<>();
     int xHr = 0;
 
-    ArrayList<BarEntry> lValuesTempBattery = new ArrayList<>();
-    ArrayList<BarEntry> lValuesTempCPU = new ArrayList<>();
+    final ArrayList<BarEntry> lValuesTempBattery = new ArrayList<>();
+    final ArrayList<BarEntry> lValuesTempCPU = new ArrayList<>();
     int xTemp = 0;
 
     // Settings
@@ -202,7 +201,7 @@ public class MainActivity extends BaseActivity
     private int nCores = 0;
 
     private int nSharesCount = 0;
-    private int nLastShareCount = 0;
+    private int nLastSharesCount = 0;
 
     private int nNbMaxCores = 0;
 
@@ -233,7 +232,8 @@ public class MainActivity extends BaseActivity
 
     private Button btnStart;
 
-    private static int m_nLastCurrentState = Config.STATE_STOPPED;
+    private boolean m_bWasCooling = false;
+    private boolean m_bUserForcedResume = false;
     private static int m_nCurrentState = Config.STATE_STOPPED;
 
     private static NotificationManager notificationManager = null;
@@ -244,6 +244,9 @@ public class MainActivity extends BaseActivity
     private boolean isFromLogView = false;
 
     private int miningMinutes = 0;
+    
+    private boolean m_bUserStoppedMining = false;
+    private boolean m_bRestartingMining = false;
 
     public static boolean isDeviceMiningBackground() {
         return (m_nCurrentState == Config.STATE_CALCULATING || m_nCurrentState == Config.STATE_MINING || m_nCurrentState == Config.STATE_COOLING || m_nCurrentState == Config.STATE_PAUSED);
@@ -389,6 +392,9 @@ public class MainActivity extends BaseActivity
 
         // Layouts
 
+        LinearLayout llMiningStatus =findViewById(R.id.llMiningStatus);
+        llMiningStatus.setVisibility(android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP ? View.VISIBLE : View.GONE);
+
         LinearLayout llViewLog = findViewById(R.id.llViewLog);
         llViewLog.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -407,6 +413,14 @@ public class MainActivity extends BaseActivity
         });
 
         // Controls
+
+        LinearLayout llCPUCores = findViewById(R.id.llCPUCores);
+        llCPUCores.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onEditCPUCores(v);
+            }
+        });
 
         LinearLayout llPerformanceMode = findViewById(R.id.llPerformanceMode);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
@@ -531,13 +545,27 @@ public class MainActivity extends BaseActivity
 
         btnStart = findViewById(R.id.start);
 
-        if (!Arrays.asList(Config.SUPPORTED_ARCHITECTURES).contains(Tools.getABI())) {
+        String abi = Tools.getABI();
+        if (!Arrays.asList(Config.SUPPORTED_ARCHITECTURES).contains(abi)) {
             String sArchError = "Your architecture is not supported: " + Tools.getABI();
             appendLogOutputTextWithDate(sArchError);
-            refreshLogOutputView();
             setStatusText(sArchError);
 
+            refreshLogOutputView();
+
             validArchitecture = false;
+        } else if(abi.equals("armeabi-v7a")) {
+            MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this, R.style.MaterialAlertDialogCustom);
+            builder.setTitle(getString(R.string.arm_title))
+                    .setMessage(getString(R.string.arm_message))
+                    .setCancelable(false)
+                    .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+
+                        }
+                    })
+                    .show();
         }
 
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
@@ -589,8 +617,6 @@ public class MainActivity extends BaseActivity
         hideNotifications();
 
         toolbar.setTitle(Utils.truncateString(getWorkerName(), Config.MAX_WORKERNAME_TITLE_CHARS), true);
-
-        isActivityLoaded = true;
         manageChangelog();
     }
 
@@ -613,8 +639,6 @@ public class MainActivity extends BaseActivity
         }
 
         hideNotifications();
-
-        isActivityLoaded = false;
 
         super.onDestroy();
     }
@@ -751,6 +775,9 @@ public class MainActivity extends BaseActivity
             tvTemperature.setVisibility(View.GONE);
             llChartTemperature.setVisibility(View.GONE);
 
+            ImageView ivMiningStatus = findViewById(R.id.ivMiningStatus);
+            ivMiningStatus.clearAnimation();
+
             ProviderManager.request.setListener(payoutListener).stop();
 
             stopTimerRefreshHashrate();
@@ -773,6 +800,8 @@ public class MainActivity extends BaseActivity
 
             tvTemperature.setVisibility(View.VISIBLE);
             llChartTemperature.setVisibility(View.VISIBLE);
+
+            updateMiningStatus();
 
             refreshHashrate();
 
@@ -1054,9 +1083,7 @@ public class MainActivity extends BaseActivity
         updateTemperaturesChart();
     }
 
-    public void refreshHashrate() {
-        sendInput("h");
-    }
+    public void refreshHashrate() { sendInput("h"); }
 
     public void startTimerTemperatures() {
         if(timerTemperatures != null) {
@@ -1095,34 +1122,85 @@ public class MainActivity extends BaseActivity
         }
     }
 
-    public void onEditPayoutGoal(View view) {
+    public void onEditCPUCores(View view) {
         MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this, R.style.MaterialAlertDialogCustom);
         LayoutInflater li = LayoutInflater.from(alertDialogBuilder.getContext());
-        View promptsView = li.inflate(R.layout.prompt_edit_payout_goal, null);
+        View promptsView = li.inflate(R.layout.prompt_edit_cpu_cores, null);
         alertDialogBuilder.setView(promptsView);
 
-        EditText edMiningGoal = promptsView.findViewById(R.id.mininggoal);
+        SeekBar sbCores = promptsView.findViewById(R.id.seekbarcores);
+        TextView tvCoresNb = promptsView.findViewById(R.id.coresnb);
+        TextView tvCoresMax = promptsView.findViewById(R.id.coresmax);
 
-        if (!Config.read(Config.CONFIG_MINING_GOAL).isEmpty()) {
-            edMiningGoal.setText(Config.read(Config.CONFIG_MINING_GOAL));
+        sbCores.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                // Auto-generated method stub
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                // Auto-generated method stub
+            }
+
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                tvCoresNb.setText(Integer.toString(progress+1));
+            }
+        });
+
+        // CPU Cores
+        int cores = Runtime.getRuntime().availableProcessors();
+
+        int suggested = cores / 2;
+        if (suggested == 0) suggested = 1;
+
+        sbCores.setMax(cores-1);
+        tvCoresMax.setText(Integer.toString(cores));
+
+        if (Config.read(Config.CONFIG_CORES).isEmpty()) {
+            sbCores.setProgress(suggested-1);
+            tvCoresNb.setText(Integer.toString(suggested));
         } else {
-            TextView tvPayoutGoal = findViewById(R.id.tvPayoutGoal);
-            edMiningGoal.setText(tvPayoutGoal.getText());
+            int corenb = Integer.parseInt(Config.read(Config.CONFIG_CORES));
+            sbCores.setProgress(corenb-1);
+            tvCoresNb.setText(Integer.toString(corenb));
         }
 
         // set dialog message
         alertDialogBuilder
-                .setTitle("Payout Goal")
+                .setTitle(getResources().getString(R.string.intensity))
                 .setCancelable(false)
                 .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        String mininggoal = edMiningGoal.getText().toString().trim();
-                        if(!mininggoal.isEmpty()) {
-                            Config.write(Config.CONFIG_MINING_GOAL, mininggoal);
-                        }
+                        if (isDeviceMiningBackground()) {
+                            MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(view.getContext(), R.style.MaterialAlertDialogCustom);
+                            builder.setTitle(getString(R.string.stopmining))
+                                    .setMessage(getString(R.string.newSettings))
+                                    .setCancelable(true)
+                                    .setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialogInterface, int i) {
+                                            stopMining();
 
-                        Utils.hideKeyboardFrom(contextOfApplication, promptsView);
-                        updateStatsListener();
+                                            nCores = sbCores.getProgress() + 1;
+                                            Config.write("cores", Integer.toString(nCores));
+
+                                            updateCores();
+                                        }
+                                    })
+                                    .setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialogInterface, int i) {
+                                            // Do nothing
+                                        }
+                                    })
+                                    .show();
+                        } else {
+                            nCores = sbCores.getProgress() + 1;
+                            Config.write("cores", Integer.toString(nCores));
+                            updateCores();
+                        }
                     }
                 })
                 .setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
@@ -1131,8 +1209,14 @@ public class MainActivity extends BaseActivity
                     }
                 });
 
-
         alertDialogBuilder.show();
+    }
+
+    public void onMinimumPayoutHelp(View view) {
+        PoolItem pi = ProviderManager.getSelectedPool();
+        String pool_url = pi == null ? "" : pi.getPoolUrl();
+
+        Utils.showPopup(this, getString(R.string.minimum_payout), Html.fromHtml(getString(R.string.minimum_payout_help).replace("%pool_url", pool_url)).toString());
     }
 
     private void updatePayoutWidget(ProviderData d) {
@@ -1151,12 +1235,9 @@ public class MainActivity extends BaseActivity
             TextView tvBalance = findViewById(R.id.balance_payout);
             tvBalance.setText(sBalance.isEmpty() ? Tools.getLongValueString(0.0) : sBalance);
 
-            float fMinPayout;
-            if(Config.read(Config.CONFIG_MINING_GOAL).equals("")) {
-                fMinPayout = Utils.convertStringToFloat(d.pool.minPayout);
-            }
-            else
-                fMinPayout = Utils.convertStringToFloat(Config.read(Config.CONFIG_MINING_GOAL).trim());
+            float fMinPayout = Utils.convertStringToFloat(d.pool.minPayout);
+            if(fMinPayout <= 0.0f)
+                fMinPayout = 100.0f;
 
             TextView tvPayoutGoal = findViewById(R.id.tvPayoutGoal);
             tvPayoutGoal.setText(String.valueOf(Math.round(fMinPayout)));
@@ -1335,9 +1416,16 @@ public class MainActivity extends BaseActivity
         return workerName;
     }
 
+    private String getUsernameParameters() {
+        return Config.read(Config.CONFIG_USERNAME_PARAMETERS);
+    }
+
     private void updateCores() {
         TubeSpeedometer meterCores = findViewById(R.id.meter_cores);
         meterCores.speedTo(nCores, 0);
+
+        TextView tvCPUCores = findViewById(R.id.tvCPUCores);
+        tvCPUCores.setText(nCores + "/" + nNbMaxCores);
     }
 
     @Override
@@ -1595,10 +1683,6 @@ public class MainActivity extends BaseActivity
             return;
         }
 
-        // Cause a crash to test ACRA
-        //String sCrashString = null;
-        //Log.e("ACRA Test", sCrashString.toString() );
-
         if (!Utils.verifyAddress(Config.read(Config.CONFIG_ADDRESS))) {
             setStatusText(getString(R.string.invalid_address));
             return;
@@ -1619,12 +1703,7 @@ public class MainActivity extends BaseActivity
             return;
         }
 
-        bForceMiningOnPauseBattery = false;
-        bForceMiningOnPauseNetwork = false;
-        bForceMiningNoTempSensor = false;
-        clearMinerLog = true;
-        nSharesCount = 0;
-        miningMinutes = 0;
+        m_bUserStoppedMining = false;
 
         resetOptions();
 
@@ -1725,15 +1804,26 @@ public class MainActivity extends BaseActivity
     }
 
     private void resetOptions() {
+        clearMinerLog = true;
+
         bDisableAMAYC = false;
+        bForceMiningOnPauseBattery = false;
+        bForceMiningOnPauseNetwork = false;
+        bForceMiningNoTempSensor = false;
+
         listCPUTemp.clear();
         listBatteryTemp.clear();
 
-        nLastShareCount = 0;
+        nLastSharesCount = 0;
+        nSharesCount = 0;
+        miningMinutes = 0;
 
         fSumHr = 0.0f;
         nHrCount = 0;
         fMaxHr = 0.0f;
+
+        m_bWasCooling = false;
+        m_bUserForcedResume = false;
     }
 
     public void stopMining() {
@@ -1741,16 +1831,18 @@ public class MainActivity extends BaseActivity
             return;
         }
 
+        m_bUserStoppedMining = true;
+        m_bRestartingMining = false;
+
+        stopTimerMiningTime();
+
         if(isDeviceMiningBackground())
             appendLogOutputTextWithDate(getResources().getString(R.string.stopped));
 
         setMinerStatus(Config.STATE_STOPPED);
-
-        binder.getService().stopMining();
-
         resetOptions();
 
-        stopTimerMiningTime();
+        binder.getService().stopMining();
 
         updateUI();
     }
@@ -1790,11 +1882,6 @@ public class MainActivity extends BaseActivity
         refreshHashrate();
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-    }
-
     private void toggleMiningState() {
         if (binder == null)
             return;
@@ -1807,9 +1894,6 @@ public class MainActivity extends BaseActivity
     }
 
     private void updateMiningButtonState() {
-        if(bIsRestartEvent)
-            return;
-
         Drawable buttonDrawableStart = btnStart.getBackground();
         buttonDrawableStart = DrawableCompat.wrap(buttonDrawableStart);
 
@@ -1818,7 +1902,7 @@ public class MainActivity extends BaseActivity
             DrawableCompat.setTint(buttonDrawableStart, getResources().getColor(R.color.bg_green));
             btnStart.setBackground(buttonDrawableStart);
             btnStart.setText(R.string.start);
-        } else if(m_nCurrentState == Config.STATE_PAUSED) {
+        } else if(m_nCurrentState == Config.STATE_PAUSED || m_nCurrentState == Config.STATE_COOLING) {
             updateHashrate(0.0f, 0.0f);
             DrawableCompat.setTint(buttonDrawableStart, getResources().getColor(R.color.bg_green));
             btnStart.setBackground(buttonDrawableStart);
@@ -1853,6 +1937,24 @@ public class MainActivity extends BaseActivity
         TextView tvMiningTime = findViewById(R.id.miningtime);
         tvMiningTime.setTextColor(miningTime.equals("0m") ? getResources().getColor(R.color.txt_inactive) : getResources().getColor(R.color.c_white));
         tvMiningTime.setText(miningTime);
+    }
+
+    private void updateMiningStatus() {
+        if(android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP)
+            return;
+
+        ImageView ivMiningStatus = findViewById(R.id.ivMiningStatus);
+        ivMiningStatus.setColorFilter(m_nCurrentState == Config.STATE_STOPPED ? getResources().getColor(R.color.bg_lighter) : getResources().getColor(R.color.c_green));
+
+        if(m_nCurrentState != Config.STATE_STOPPED && !bIsPerformanceMode) {
+            if(ivMiningStatus.getAnimation() == null)
+                ivMiningStatus.startAnimation(getBlinkAnimationInfinite());
+        } else {
+            ivMiningStatus.clearAnimation();
+        }
+
+        TextView tvMiningStatus = findViewById(R.id.tvMiningStatus);
+        tvMiningStatus.setText(m_nCurrentState == Config.STATE_STOPPED ? getResources().getString(R.string.stopped_status) : getResources().getString(R.string.running_status));
     }
 
     private void setMinerStatus(Integer status) {
@@ -1935,14 +2037,15 @@ public class MainActivity extends BaseActivity
             }
         }
 
-        m_nLastCurrentState = m_nCurrentState;
         m_nCurrentState = status;
+
+        updateMiningStatus();
 
         updateNotification();
     }
 
     public void startTimerRefreshHashrate() {
-        if(timerRefreshHashrate != null)
+        if(timerRefreshHashrate != null || !isDeviceMiningBackground())
             return;
 
         String refreshDelay = Config.read(Config.CONFIG_HASHRATE_REFRESH_DELAY);
@@ -2043,6 +2146,7 @@ public class MainActivity extends BaseActivity
     }
 
     private void resetHashrateTicks() {
+
         SpeedView meterTicks = findViewById(R.id.meter_hashrate_ticks);
         TubeSpeedometer meterHashrate = findViewById(R.id.meter_hashrate);
         TubeSpeedometer meterHashrate_avg = findViewById(R.id.meter_hashrate_avg);
@@ -2065,37 +2169,47 @@ public class MainActivity extends BaseActivity
         if(bIsPerformanceMode)
             return;
 
-        SpeedView meterTicks = findViewById(R.id.meter_hashrate_ticks);
-        float fCurrentMax = meterTicks.getMaxSpeed();
+        try {
+            SpeedView meterTicks = findViewById(R.id.meter_hashrate_ticks);
+            float fCurrentMax = meterTicks.getMaxSpeed();
 
-        if((meterTicks.getTickNumber() == 0 || (fCurrentMax > 0 && fHr >= fCurrentMax * 0.9)) && fMaxHr > 0) {
-            float hrMax = getMaxHr(fMaxHr);
+            if ((meterTicks.getTickNumber() == 0 || (fCurrentMax > 0 && fHr >= fCurrentMax * 0.9)) && fMaxHr > 0) {
+                TubeSpeedometer meterHashrate = findViewById(R.id.meter_hashrate);
+                TubeSpeedometer meterHashrate_avg = findViewById(R.id.meter_hashrate_avg);
+                TubeSpeedometer meterHashrate_max = findViewById(R.id.meter_hashrate_max);
 
-            // This is not normal, we need to recompute it
-            if(fHr > hrMax) {
-                hrMax = getMaxHr(fHr);
+                float hrMax = getMaxHr(fMaxHr);
+
+                // This is not normal, we need to recompute it
+                if (fHr > hrMax) {
+                    hrMax = getMaxHr(fHr);
+                }
+
+                // Sometimes xlarig returns a wrong low hrMax, but it needs to be > tick number, so we force a dummy max number
+                if (hrMax <= 10.0f) {
+                    hrMax = 25.0f;
+                }
+
+                Log.i(LOG_TAG, "hrMax: " + hrMax);
+
+                if (meterTicks.getMinSpeed() != 0.0f)
+                    meterTicks.setMinSpeed(0);
+
+                meterTicks.setMaxSpeed(hrMax);
+
+                if (meterTicks.getTickNumber() != 10)
+                    meterTicks.setTickNumber(10);
+
+                meterTicks.setTextColor(getResources().getColor(R.color.txt_main));
+
+                meterHashrate.setMaxSpeed(hrMax);
+                meterHashrate.setWithTremble(!(hrMax < 15));
+
+                meterHashrate_avg.setMaxSpeed(hrMax);
+                meterHashrate_max.setMaxSpeed(hrMax);
             }
-
-            if(hrMax <= 10) { // in some case xlarig returns a wrong low hrMax, but it needs to be > tick number, so we force a dummy max number
-                hrMax = 11;
-            }
-
-            TubeSpeedometer meterHashrate = findViewById(R.id.meter_hashrate);
-            TubeSpeedometer meterHashrate_avg = findViewById(R.id.meter_hashrate_avg);
-            TubeSpeedometer meterHashrate_max = findViewById(R.id.meter_hashrate_max);
-
-            Log.i(LOG_TAG, "hrMax: " + hrMax);
-
-            meterTicks.setMaxSpeed(hrMax);
-
-            meterTicks.setTickNumber(10);
-            meterTicks.setTextColor(getResources().getColor(R.color.txt_main));
-
-            meterHashrate.setMaxSpeed(hrMax);
-            meterHashrate.setWithTremble(!(hrMax < 15));
-
-            meterHashrate_avg.setMaxSpeed(hrMax);
-            meterHashrate_max.setMaxSpeed(hrMax);
+        } catch (IllegalArgumentException ignore) {
+            // ignore java.lang.IllegalArgumentException: ticks must be between [minSpeed, maxSpeed] !!
         }
     }
 
@@ -2145,6 +2259,9 @@ public class MainActivity extends BaseActivity
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
+                    if(!isDeviceMining() || fSpeed < 0.0f)
+                        return;
+
                     updateHashrateMeter(fSpeed, fMax);
                     addHashrateValue(fSpeed);
                 }
@@ -2176,7 +2293,9 @@ public class MainActivity extends BaseActivity
         updateAvgMaxHashrate(fSpeed, fMax);
     }
 
-    private void resetAvgMaxHashrate() { updateAvgMaxHashrate(0.0f, 0.0f); }
+    private void resetAvgMaxHashrate() {
+        updateAvgMaxHashrate(0.0f, 0.0f);
+    }
 
     private void updateAvgMaxHashrate(float fSpeed, float fMax) {
         TextView tvAvgHr = findViewById(R.id.avghr);
@@ -2237,20 +2356,31 @@ public class MainActivity extends BaseActivity
             text = sb.delete(i-4, i).toString();
         }
 
+        // Remove consecutive spaces
+        text = text.replaceAll("( )+", " ");
+
         if(text.contains("paused, press")) {
             if(isDeviceCooling()) {
-                text = text.replace("paused, press", getResources().getString(R.string.miningpaused));
-                text = text.replace("to resume", "");
-                text = text.replace("r ", "");
+                text = text.replace("paused,", getResources().getString(R.string.miningpaused));
             } else {
-                text = text.replace(", press", "");
-                text = text.replace("to resume", "");
-                text = text.replace("r ", "");
+                text = text.replace(",", "");
             }
+
+            text = text.replace("press r to resume", "");
+            text = text.replace("miner ", "");
         }
 
-        if(m_nLastCurrentState == Config.STATE_COOLING && text.contains("resumed")) {
-            text = text.replace("resumed", getResources().getString(R.string.resumedmining));
+        if(text.contains("resumed")) {
+            if(m_bUserForcedResume) {
+                text = text.replace("resumed", getResources().getString(R.string.mining_resumed_by_user));
+                m_bUserForcedResume = false;
+            }
+            else if(m_bWasCooling) {
+                text = text.replace("resumed", getResources().getString(R.string.resumedmining));
+                m_bWasCooling = false;
+            }
+
+            text = text.replace("miner ", "");
         }
 
         if (text.contains("threads:")) {
@@ -2262,34 +2392,25 @@ public class MainActivity extends BaseActivity
             return null;
         }
 
-        if (text.contains("POOL")) {
+        if (text.contains("POOL") && !m_bRestartingMining) {
             PoolItem selectedPool = ProviderManager.getSelectedPool();
-            if(selectedPool != null)
-                text = text + " POOL URL " + selectedPool.getPoolUrl() + ":" + selectedPool.getPort() + System.getProperty("line.separator");
+            if (selectedPool != null)
+                text = text + "POOL URL " + selectedPool.getPoolUrl() + ":" + selectedPool.getPort() + System.getProperty("line.separator");
 
-            text = text + " WORKER NAME " + getWorkerName() + System.getProperty("line.separator");
+            text = text + "WORKER NAME " + getWorkerName() + System.getProperty("line.separator");
+
+            String usernameParameters = getUsernameParameters();
+            if (!usernameParameters.isEmpty())
+                text = text + "USERNAME PARAMETERS " + getWorkerName() + System.getProperty("line.separator");
+
             text = text + System.getProperty("line.separator");
         }
 
-        boolean speed = false;
-        if (text.contains("speed")) {
-            text = text.replace("speed ", "");
-            text = text.replace("H/s ", "");
-            speed = true;
-        }
+        if (text.contains("*")) {
+            if(m_bRestartingMining)
+                return null;
 
-        // For some reason some devices display "miner" instead of "speed"
-        if (text.contains("miner")) {
-            text = text.replace("miner ", "");
-            text = text.replace("H/s ", "");
-            speed = true;
-        }
-
-        // Remove consecutive spaces
-        text = text.replaceAll("( )+", " ");
-
-        if(text.contains("*")) {
-            text = text.replace("* ", "");
+            text = text.replace(" * ", "");
             Spannable textSpan = new SpannableString(text);
 
             List<String> listHeader = Arrays.asList("ABOUT", "LIBS", "HUGE PAGES", "1GB PAGES", "CPU", "MEMORY", "DONATE", "POOL", "COMMANDS", "THREADS");
@@ -2301,7 +2422,7 @@ public class MainActivity extends BaseActivity
                     textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_grey)), imax, text.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
                     String tmpFormat2 = "POOL URL";
-                    if(tmpFormat.equals("POOL") && text.contains(tmpFormat2)) {
+                    if (tmpFormat.equals("POOL") && text.contains(tmpFormat2)) {
                         i = text.indexOf(tmpFormat2);
                         imax = i + tmpFormat2.length();
                         textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_white)), i, imax, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -2309,9 +2430,17 @@ public class MainActivity extends BaseActivity
                     }
 
                     String tmpFormat3 = "WORKER NAME";
-                    if(tmpFormat.equals("POOL") && text.contains(tmpFormat3)) {
+                    if (tmpFormat.equals("POOL") && text.contains(tmpFormat3)) {
                         i = text.indexOf(tmpFormat3);
                         imax = i + tmpFormat3.length();
+                        textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_white)), i, imax, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                        textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_grey)), imax, text.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    }
+
+                    String tmpFormat4 = "USERNAME PARAMETERS";
+                    if (tmpFormat.equals("POOL") && text.contains(tmpFormat4)) {
+                        i = text.indexOf(tmpFormat4);
+                        imax = i + tmpFormat4.length();
                         textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_white)), i, imax, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                         textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_grey)), imax, text.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                     }
@@ -2321,7 +2450,21 @@ public class MainActivity extends BaseActivity
             }
         }
 
+        boolean speed = false;
+        // For some reason some devices display "miner" instead of "speed"
+        if (text.contains("H/s") && (text.contains("speed") || text.contains("miner"))) {
+            text = text.replace("speed ", "");
+            text = text.replace("miner ", "");
+            text = text.replace("H/s ", "");
+            speed = true;
+        }
+
         Spannable textSpan = new SpannableString(text);
+
+        if(bIsPerformanceMode)
+            return textSpan;
+
+        // UPDATE STYLE & COLORS
 
         // Format time
         formatText = "]";
@@ -2433,7 +2576,7 @@ public class MainActivity extends BaseActivity
             int i = text.indexOf(formatText);
             int imax = i + formatText.length();
             textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_white)), i, imax, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            textSpan.setSpan(new StyleSpan(android.graphics.Typeface.BOLD), i, imax, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+            textSpan.setSpan(new StyleSpan(android.graphics.Typeface.NORMAL), i, imax, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
             return textSpan;
         }
 
@@ -2441,7 +2584,7 @@ public class MainActivity extends BaseActivity
         if(text.contains(formatText)) {
             int i = text.indexOf(formatText);
             int imax = i + formatText.length();
-            textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_grey)), i, imax, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_white)), i, imax, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             textSpan.setSpan(new StyleSpan(android.graphics.Typeface.NORMAL), i, imax, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
             return textSpan;
         }
@@ -2451,7 +2594,16 @@ public class MainActivity extends BaseActivity
             int i = text.indexOf(formatText);
             int imax = i + formatText.length();
             textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_white)), i, imax, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            textSpan.setSpan(new StyleSpan(android.graphics.Typeface.BOLD), i, imax, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+            textSpan.setSpan(new StyleSpan(android.graphics.Typeface.NORMAL), i, imax, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+            return textSpan;
+        }
+
+        formatText = getResources().getString(R.string.mining_resumed_by_user);
+        if(text.contains(formatText)) {
+            int i = text.indexOf(formatText);
+            int imax = text.length();
+            textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_white)), i, imax, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            textSpan.setSpan(new StyleSpan(android.graphics.Typeface.NORMAL), i, imax, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
             return textSpan;
         }
 
@@ -2464,7 +2616,7 @@ public class MainActivity extends BaseActivity
             return textSpan;
         }
 
-        formatText = getResources().getString(R.string.stopped);
+        formatText = "resumed";
         if(text.contains(formatText)) {
             int i = text.indexOf(formatText);
             int imax = text.length();
@@ -2473,7 +2625,25 @@ public class MainActivity extends BaseActivity
             return textSpan;
         }
 
-        formatText = "resumed";
+        formatText = getResources().getString(R.string.restarted);
+        if(text.contains(formatText)) {
+            int i = text.indexOf(formatText);
+            int imax = text.length();
+            textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_white)), i, imax, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            textSpan.setSpan(new StyleSpan(android.graphics.Typeface.NORMAL), i, imax, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+            return textSpan;
+        }
+
+        formatText = getResources().getString(R.string.minimum_stopped_unexpectedly);
+        if(text.contains(formatText)) {
+            int i = text.indexOf(formatText);
+            int imax = text.length();
+            textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_red)), i, imax, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            textSpan.setSpan(new StyleSpan(android.graphics.Typeface.NORMAL), i, imax, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+            return textSpan;
+        }
+
+        formatText = getResources().getString(R.string.stopped);
         if(text.contains(formatText)) {
             int i = text.indexOf(formatText);
             int imax = text.length();
@@ -2504,7 +2674,7 @@ public class MainActivity extends BaseActivity
         if(text.contains(formatText)) {
             int i = text.indexOf(formatText);
             int imax = text.length();
-            textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_yellow)), i, imax, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_grey)), i, imax, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             textSpan.setSpan(new StyleSpan(android.graphics.Typeface.NORMAL), i, imax, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
             return textSpan;
         }
@@ -2513,7 +2683,7 @@ public class MainActivity extends BaseActivity
         if(text.contains(formatText)) {
             int i = text.indexOf(formatText);
             int imax = text.length();
-            textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_yellow)), i, imax, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_grey)), i, imax, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             textSpan.setSpan(new StyleSpan(android.graphics.Typeface.NORMAL), i, imax, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
             return textSpan;
         }
@@ -2522,7 +2692,7 @@ public class MainActivity extends BaseActivity
         if(text.contains(formatText)) {
             int i = text.indexOf(formatText);
             int imax = text.length();
-            textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_yellow)), i, imax, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_grey)), i, imax, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             textSpan.setSpan(new StyleSpan(android.graphics.Typeface.NORMAL), i, imax, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
             return textSpan;
         }
@@ -2532,6 +2702,15 @@ public class MainActivity extends BaseActivity
             int i = text.indexOf(formatText);
             int imax = text.length();
             textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_white)), i, imax, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            textSpan.setSpan(new StyleSpan(android.graphics.Typeface.NORMAL), i, imax, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+            return textSpan;
+        }
+
+        formatText = "Mining Service Error";
+        if(text.contains(formatText)) {
+            int i = text.indexOf(formatText);
+            int imax = text.length();
+            textSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.c_red)), i, imax, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             textSpan.setSpan(new StyleSpan(android.graphics.Typeface.NORMAL), i, imax, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
             return textSpan;
         }
@@ -2606,7 +2785,7 @@ public class MainActivity extends BaseActivity
                         if(!validateSettings())
                             return;
 
-                        if (isDevicePaused()) {
+                        if (isDevicePaused() || isDeviceCooling()) {
                             if (Config.read(Config.CONFIG_PAUSE_ON_BATTERY).equals("1") && !isCharging && !bForceMiningOnPauseBattery) {
                                 askToForceMiningBattery();
                                 return;
@@ -2616,6 +2795,9 @@ public class MainActivity extends BaseActivity
                                 askToForceMiningNetwork();
                                 return;
                             }
+
+                            if(isDeviceCooling())
+                                m_bUserForcedResume = true;
 
                             clearMinerLog = false;
                             resumeMining();
@@ -2632,10 +2814,9 @@ public class MainActivity extends BaseActivity
 
                 binder.getService().setMiningServiceStateListener(new MiningService.MiningServiceStateListener() {
                     @Override
-                    public void onStateChange(Boolean state) {
+                    public void onStateChange(Boolean state, String message) {
                         Log.i(LOG_TAG, "onMiningStateChange: " + state);
                         runOnUiThread(() -> {
-                            updateMiningButtonState();
                             if (state) {
                                 if (clearMinerLog) {
                                     tvLogWidget.setText("");
@@ -2651,9 +2832,30 @@ public class MainActivity extends BaseActivity
                                 setStatusText("Miner Started.");
                             } else {
                                 setStatusText("Miner Stopped.");
+
+                                if(!m_bUserStoppedMining) {
+                                    m_bRestartingMining = true;
+                                    clearMinerLog = false;
+
+                                    nLastSharesCount = nSharesCount;
+
+                                    appendLogOutputTextWithDate(getResources().getString(R.string.minimum_stopped_unexpectedly));
+
+                                    // Start timer
+                                    new Handler().postDelayed(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            appendLogOutputTextWithDate(getResources().getString(R.string.restarted));
+                                            startMiningService(); // in case process stops by itself
+                                        }
+                                    }, 2000);
+                                }
                             }
 
-                            bIsRestartEvent = false;
+                            updateMiningButtonState();
+
+                            if(message != null && !message.isEmpty())
+                                appendLogOutputTextWithDate("Mining Service Error: " + message);
                         });
                     }
 
@@ -2663,18 +2865,16 @@ public class MainActivity extends BaseActivity
                         runOnUiThread(() -> {
                             appendLogOutputText(status);
 
-                            int nShares = nSharesCount + accepted;
-                            String sAccepted = Integer.toString(nShares);
+                            nSharesCount = nLastSharesCount + accepted;
+                            String sAccepted = Integer.toString(nSharesCount);
 
                             TextView tvAcceptedShares = findViewById(R.id.acceptedshare);
 
                             if(!tvAcceptedShares.getText().equals(sAccepted)) {
                                 tvAcceptedShares.setText(sAccepted);
-                                tvAcceptedShares.startAnimation(getBlinkAnimation());
-                            }
 
-                            if(nLastShareCount != accepted) {
-                                nLastShareCount = accepted;
+                                if(!bIsPerformanceMode)
+                                    tvAcceptedShares.startAnimation(getBlinkAnimation());
                             }
 
                             if(accepted == 1) {
@@ -2696,11 +2896,21 @@ public class MainActivity extends BaseActivity
     };
 
     private Animation getBlinkAnimation() {
-        Animation animation = new AlphaAnimation(1, 0);         // Change alpha from fully visible to invisible
+        Animation animation = new AlphaAnimation(1.0f, 0.0f);
         animation.setDuration(800);
-        animation.setInterpolator(new LinearInterpolator());    // do not alter animation rate
+        animation.setInterpolator(new LinearInterpolator());
         animation.setRepeatCount(1);
-        animation.setRepeatMode(Animation.REVERSE);             // Reverse animation at the end so the button will fade back in
+        animation.setRepeatMode(Animation.REVERSE);
+
+        return animation;
+    }
+
+    private Animation getBlinkAnimationInfinite() {
+        AlphaAnimation animation= new AlphaAnimation(1.0f, 0.2f);
+        animation.setDuration(1250);
+        animation.setInterpolator(new LinearInterpolator());
+        animation.setRepeatCount(Animation.INFINITE);
+        animation.setRepeatMode(Animation.REVERSE);
 
         return animation;
     }
@@ -2892,17 +3102,6 @@ public class MainActivity extends BaseActivity
         String message = "";
         try {
             String jsonMessage = "";
-            /*if(error != null && error.networkResponse != null && error.networkResponse.data != null) {
-                String responseBody = new String(error.networkResponse.data, StandardCharsets.UTF_8);
-
-                if (!responseBody.isEmpty()) {
-                    JSONObject data = new JSONObject(responseBody);
-                    JSONArray errors = data.getJSONArray("errors");
-                    jsonMessage = errors.getJSONObject(0).getString("message");
-                } else {
-                    jsonMessage = error.getMessage();
-                }
-            }*/
 
             if(error != null)
                 jsonMessage = error.getMessage();
@@ -2930,6 +3129,8 @@ public class MainActivity extends BaseActivity
         if(enable) {
             setMinerStatus(Config.STATE_COOLING);
 
+            m_bWasCooling = true;
+
             pauseMining();
 
             appendLogOutputTextWithDate(getResources().getString(R.string.maxtemperaturereached));
@@ -2956,10 +3157,11 @@ public class MainActivity extends BaseActivity
 
     public void pauseMining() {
         if (!isDevicePaused()) {
-            //if(!isDeviceCooling()) {
+            if(!isDeviceCooling()) {
                 setMinerStatus(Config.STATE_PAUSED);
-                updateMiningButtonState();
-            //}
+            }
+
+            updateMiningButtonState();
 
             if (binder != null) {
                 binder.getService().sendInput("p");
@@ -3057,7 +3259,7 @@ public class MainActivity extends BaseActivity
         notificationBuilder.addAction(R.mipmap.ic_pause_miner,"Pause", pendingIntentPause);
         notificationBuilder.addAction(R.mipmap.ic_stop_miner,"Stop", pendingIntentStop);
         notificationBuilder.setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher_round));
-        notificationBuilder.setSmallIcon(R.mipmap.ic_notification);
+        notificationBuilder.setSmallIcon(android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP ? R.drawable.ic_notification : R.mipmap.ic_notification);
         notificationBuilder.setOngoing(true);
         notificationBuilder.setOnlyAlertOnce(true);
         notificationBuilder.build();
@@ -3141,10 +3343,6 @@ public class MainActivity extends BaseActivity
                 ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
             }
 
-            if (imagePath.exists()) {
-                imagePath.delete();
-            }
-
             fos = new FileOutputStream(imagePath, false);
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);
             fos.flush();
@@ -3180,6 +3378,25 @@ public class MainActivity extends BaseActivity
             int status = batteryStatusIntent.getIntExtra(BatteryManager.EXTRA_STATUS, -1);
             isCharging = status == BatteryManager.BATTERY_STATUS_CHARGING || status == BatteryManager.BATTERY_STATUS_FULL;
 
+            boolean state = false;
+            if (binder != null) {
+                state = binder.getService().getMiningServiceState();
+            }
+
+            int level = batteryStatusIntent.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
+            int scale = batteryStatusIntent.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
+            float batteryPct = level * 100 / (float)scale;
+            float batteryLevelConfig = (float)Integer.parseInt(Config.read(Config.CONFIG_BATTERY_LEVEL, String.valueOf(Config.DefaultBatteryLevel)));
+
+            if(Config.read(Config.CONFIG_BATTERY_LEVEL_ENABLED).equals("1")
+                    && Config.read(Config.CONFIG_PAUSE_ON_BATTERY).equals("1")
+                    && state
+                    && !isCharging
+                    && batteryPct <= batteryLevelConfig) {
+                pauseMining();
+            }
+
+            // Device has been plugged or unplugged
             if (lastIsCharging == isCharging)
                 return;
 
@@ -3190,14 +3407,9 @@ public class MainActivity extends BaseActivity
             if (Config.read(Config.CONFIG_PAUSE_ON_BATTERY).equals("0")) {
                 clearMinerLog = true;
             } else {
-                boolean state = false;
-                if (binder != null) {
-                    state = binder.getService().getMiningServiceState();
-                }
-
                 if (isCharging) {
                     resumeMining();
-                } else if (state) {
+                } else if (state) { // mining on battery
                     pauseMining();
                 }
             }
@@ -3216,12 +3428,12 @@ public class MainActivity extends BaseActivity
             return capabilities != null && capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI);
         } else {
             NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+            assert networkInfo != null;
             return networkInfo.isConnected() && networkInfo.getType() == ConnectivityManager.TYPE_WIFI;
         }
     }
 
     static boolean lastIsOnWifi = false;
-    static boolean isOnWifiInit = false;
     private final BroadcastReceiver networkInfoReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent networkStatusIntent) {
@@ -3248,8 +3460,6 @@ public class MainActivity extends BaseActivity
                     }
                 }
             }
-
-            isOnWifiInit = true;
 
             if (lastIsOnWifi == isOnWifi)
                 return;

@@ -19,7 +19,7 @@ public class PaymentItem {
     public PaymentItem() {
     }
 
-    static public Comparator<PaymentItem> PaymentComparator = new Comparator<PaymentItem>() {
+    static public final Comparator<PaymentItem> PaymentComparator = new Comparator<PaymentItem>() {
         @Override
         public int compare(PaymentItem o1, PaymentItem o2) {
             return o1.mTimestamp.compareTo(o2.mTimestamp);

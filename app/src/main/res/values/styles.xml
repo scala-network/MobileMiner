@@ -1,7 +1,4 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <style name="TextAppearance.Widget.Event.Toolbar.Title" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
-        <!-- Text styling can be done here-->
-    </style>
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.MaterialComponents">
@@ -56,13 +53,6 @@
         <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
-
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light">
-        <item name="android:colorBackground">@color/bg_lighter</item>
-        <item name="android:textColor">@color/c_grey</item>
-    </style>
-
     <style name="Toolbar" parent="@android:style/TextAppearance.DeviceDefault.Medium">
         <item name="android:textColor">?colorPrimary</item>
         <item name="android:textColorHint">@color/txt_inactive</item>
@@ -72,11 +62,6 @@
         <item name="android:textSize">18sp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">@color/txt_headline</item>
-    </style>
-
-    <style name="Toolbar.Subtitle">
-        <item name="android:textSize">16sp</item>
-        <item name="android:textColor">@color/txt_secondary</item>
     </style>
 
     <style name="TextErrorStyle" parent="@android:style/TextAppearance">

@@ -47,6 +47,19 @@
                         android:textAllCaps="true"
                         android:textStyle="bold" />
 
+                    <Button
+                        android:id="@+id/btnAddressHelp"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        app:backgroundTint="@android:color/transparent"
+                        android:layout_gravity="center_vertical"
+                        app:cornerRadius="5dp"
+                        app:icon="@drawable/ic_help"
+                        app:iconGravity="textStart"
+                        app:iconPadding="0dp"
+                        app:iconTint="@color/c_grey"
+                        tools:ignore="UnusedAttribute" />
+
                     <Space
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
@@ -155,7 +168,6 @@
                     android:textStyle="bold" />
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/usernameparamsIL"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -174,7 +186,6 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/workernameIL"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -186,27 +197,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/workernamehint"
-                        android:textColor="@color/txt_main"
-                        android:textColorHint="@color/txt_inactive"
-                        android:textSize="14sp" />
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/mininggoalIL"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    app:errorEnabled="false">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/mininggoal"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:hint="@string/mininggoalhint"
-                        android:inputType="number"
                         android:textColor="@color/txt_main"
                         android:textColorHint="@color/txt_inactive"
                         android:textSize="14sp" />
@@ -757,6 +747,15 @@
                         android:checked="false"
                         app:buttonTint="@color/txt_main" />
 
+                    <ImageView
+                        android:id="@+id/ivBatteryLevelOptions"
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:layout_marginStart="4dp"
+                        android:layout_gravity="center_vertical"
+                        app:tint="@color/btn_icon_default"
+                        app:srcCompat="@drawable/ic_edit" />
+
                     <Space
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
@@ -925,7 +924,6 @@
                         android:checked="false" />
 
                     <Button
-                        android:id="@+id/btnDoNotRestartOnCrashHelp"
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:layout_gravity="center_vertical"
@@ -945,7 +943,6 @@
                         tools:ignore="NestedWeights" />
 
                     <Switch
-                        android:id="@+id/chkDoNotRestartOnCrash"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:theme="@style/SwitchTheme" />

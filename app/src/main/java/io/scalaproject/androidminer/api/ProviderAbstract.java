@@ -8,12 +8,14 @@ import android.os.AsyncTask;
 
 import com.android.volley.toolbox.StringRequest;
 
+import java.io.IOException;
+
 import io.scalaproject.androidminer.Config;
 import io.scalaproject.androidminer.widgets.PoolInfoAdapter;
 
 public abstract class ProviderAbstract extends AsyncTask<Void, Void, Void> {
 
-    protected String LOG_TAG = "MiningSvc";
+    protected final String LOG_TAG = "MiningSvc";
 
     final public ProviderData getBlockData() {
         return ProviderManager.data;
@@ -21,7 +23,7 @@ public abstract class ProviderAbstract extends AsyncTask<Void, Void, Void> {
 
     public IProviderListener mListener;
 
-    protected PoolItem mPoolItem;
+    protected final PoolItem mPoolItem;
 
     public ProviderAbstract(PoolItem poolItem){
         mPoolItem = poolItem;
@@ -54,6 +56,7 @@ public abstract class ProviderAbstract extends AsyncTask<Void, Void, Void> {
         try {
             onBackgroundFetchData();
         } catch (Exception e) {
+            e.printStackTrace();
         }
 
         getBlockData().pool.type = mPoolItem.getPoolType();

@@ -65,6 +65,7 @@ public class ScalaPool extends ProviderAbstract {
                 }
                 , PoolActivity::parseVolleyError);
     }
+
     @Override
     protected void onBackgroundFetchData() {
         PrettyTime pTime = new PrettyTime();
@@ -111,6 +112,7 @@ public class ScalaPool extends ProviderAbstract {
         if(wallet.equals("")) {
             return;
         }
+
         try {
             String url = mPoolItem.getApiUrl() + "/stats_address?address=" + getWalletAddress();
 

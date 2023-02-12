@@ -64,8 +64,10 @@ public class ChangelogInfoAdapter extends RecyclerView.Adapter<ChangelogInfoAdap
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
-        TextView tvVersion, tvDate, tvChangelog;
-        LinearLayout llUpdate;
+        final TextView tvVersion;
+        final TextView tvDate;
+        final TextView tvChangelog;
+        final LinearLayout llUpdate;
 
         ChangelogItem changelogItem;
 

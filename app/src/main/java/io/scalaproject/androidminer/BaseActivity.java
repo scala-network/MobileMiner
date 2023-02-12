@@ -7,17 +7,17 @@ package io.scalaproject.androidminer;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
 
 import org.jetbrains.annotations.NotNull;
 
-import static io.scalaproject.androidminer.MainActivity.contextOfApplication;
+import java.util.concurrent.TimeoutException;
+
+import io.scalaproject.androidminer.dialogs.ProgressDialog;
 
 public abstract class BaseActivity extends AppCompatActivity {
-    io.scalaproject.androidminer.dialogs.ProgressDialog progressDialog = null;
+    private ProgressDialog progressDialog = null;
 
     private static class SimpleProgressDialog extends io.scalaproject.androidminer.dialogs.ProgressDialog {
         SimpleProgressDialog(Context context, int msgId) {
@@ -32,10 +32,16 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
     }
 
-    private int sessionDepth = 0;
+    @Override
+    protected void onDestroy() {
+        dismissProgressDialog();
+        super.onDestroy();
+    }
 
-    static {
-        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
+    @Override
+    public void onPause() {
+        dismissProgressDialog();
+        super.onPause();
     }
 
     @Override
@@ -48,6 +54,12 @@ public abstract class BaseActivity extends AppCompatActivity {
             @Override
             public void uncaughtException(@NotNull Thread paramThread, @NotNull Throwable paramThrowable) {
                 MainActivity.hideNotifications();
+
+                // Ignore this exception: https://stackoverflow.com/a/55999687/1046299
+                if (paramThread.getName().equals("FinalizerWatchdogDaemon") && paramThrowable instanceof TimeoutException) {
+                    System.exit(2); // Prevents the service/app from freezing
+                    return;
+                }
 
                 if (oldHandler != null)
                     oldHandler.uncaughtException(paramThread, paramThrowable); // Delegates to Android's error handling
@@ -77,33 +89,10 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     public void dismissProgressDialog() {
-        if (progressDialog == null) return; // nothing to do
-
-        if (progressDialog.isShowing()) {
+        if (progressDialog != null && progressDialog.isShowing()) {
             progressDialog.dismiss();
         }
 
         progressDialog = null;
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        sessionDepth++;
-        if(sessionDepth == 1) {
-            //Do nothing: app came to foreground
-        }
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        if (sessionDepth > 0)
-            sessionDepth--;
-        if (sessionDepth == 0) {
-            // app went to background
-            if(MainActivity.isDeviceMiningBackground())
-                Utils.showToast(contextOfApplication, getResources().getString(R.string.miningbackground), Toast.LENGTH_SHORT);
-        }
     }
 }

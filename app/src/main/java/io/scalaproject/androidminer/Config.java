@@ -23,7 +23,7 @@ public class Config {
 
     public static final int MAX_WORKERNAME_TITLE_CHARS = 25;
 
-    public static final String URL_CHANGELOG_DIRECTORY = "https://raw.githubusercontent.com/scala-network/MobileMiner/2.1.1/fastlane/metadata/android/en-US/changelog/";
+    public static final String URL_CHANGELOG_DIRECTORY = "https://raw.githubusercontent.com/scala-network/MobileMiner/master/fastlane/metadata/android/en-US/changelog/";
     public static final String URL_RELEASES = "https://github.com/scala-network/MobileMiner/releases";
 
     public final static String[] SUPPORTED_ARCHITECTURES = {"arm64-v8a", "armeabi-v7a", "x86_64"};
@@ -37,7 +37,6 @@ public class Config {
     public final static String CONFIG_TEMPERATURE_SENSOR_SHOW_WARNING = "temp_sensor_warning";
     public final static String CONFIG_HASHRATE_REFRESH_DELAY = "hashrate_refresh_delay";
     public final static String CONFIG_SEND_DEBUG_INFO = "send_debug_info";
-    //public final static String CONFIG_DISABLE_RESTART_MINING_ABORTED = "disable_restart_mining_aborted";
     public final static String CONFIG_ADDRESS = "address";
     public final static String CONFIG_USERNAME_PARAMETERS = "usernameparameters";
     public final static String CONFIG_WORKERNAME = "workername";
@@ -45,8 +44,9 @@ public class Config {
     public final static String CONFIG_MAX_BATTERY_TEMP = "maxbatterytemp";
     public final static String CONFIG_COOLDOWN_THRESHOLD = "cooldownthreshold";
     public final static String CONFIG_DISABLE_TEMPERATURE_CONTROL = "disable_temperature_control";
-    public final static String CONFIG_MINING_GOAL = "mininggoal";
     public final static String CONFIG_PAUSE_ON_BATTERY = "pauseonbattery";
+    public final static String CONFIG_BATTERY_LEVEL_ENABLED = "battery_level_enabled";
+    public final static String CONFIG_BATTERY_LEVEL = "battery_level";
     public final static String CONFIG_PAUSE_ON_NETWORK = "pauseonnetwork";
     public final static String CONFIG_KEEP_SCREEN_ON_WHEN_MINING = "keepscreenonwhenmining";
     public final static String CONFIG_HIDE_SETUP_WIZARD = "hide_setup_wizard";
@@ -57,6 +57,7 @@ public class Config {
     public final static String CONFIG_APP_PREVIOUS_VERSION = "app_previous_version";
 
     public final static int DefaultRefreshDelay = 30; // In seconds
+    public final static int DefaultBatteryLevel = 25; // In %
 
     public final static int CHECK_TEMPERATURE_DELAY = 10000; // In milliseconds
     public final static int CHECK_MINING_TIME_DELAY = 60000; // In milliseconds

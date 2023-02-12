@@ -5,28 +5,22 @@
     <color name="c_light_grey">#c5d0d9</color>
     <color name="c_dark_grey">#86939e</color>
     <color name="c_darker_grey">#5b6373</color>
-    <color name="c_inactive">#888f9e</color>
     <color name="c_blue">#6190ff</color>
     <color name="c_green">#78c2a4</color>
     <color name="c_red">#e85238</color>
     <color name="c_red_bright">#FF0000</color>
     <color name="c_yellow">#d1e838</color>
-    <color name="c_purple">#ca2c92</color>
     <color name="c_orange">#f29333</color>
 
     <color name="bg_black">#16171a</color>
     <color name="bg_blue">#2465ff</color>
     <color name="bg_green">#408066</color>
     <color name="bg_yellow">#eddd2c</color>
-    <color name="bg_orange">#c97a2a</color>
-    <color name="bg_red">#ff470e</color>
-    <color name="bg_grey">#1b1e24</color>
 
     <color name="txt_headline">#e8efff</color>
     <color name="txt_secondary">#929aa8</color>
     <color name="txt_main">#afb8c9</color>
     <color name="txt_inactive">#5b6373</color>
-    <color name="txt_button_outlined">#c5d0d9</color>
     <color name="txt_button_filled">#e6eaf2</color>
 
     <color name="btn_icon_default">#c5d0d9</color>
@@ -34,7 +28,6 @@
     <color name="btn_bg_default">#444b57</color>
 
     <color name="input_bg_default">@color/bg_body</color>
-    <color name="input_outline">#929ca8</color>
 
     <color name="bg_body">#1b1e24</color>
     <color name="bg_lighter">#2f333d</color>

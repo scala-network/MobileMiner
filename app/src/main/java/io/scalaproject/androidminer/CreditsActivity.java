@@ -14,8 +14,10 @@ public class CreditsActivity extends LibsActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         LibsBuilder builder = new LibsBuilder();
+        builder.aboutAppName = getResources().getString(R.string.app_name);
+        builder.aboutShowIcon = true;
+        builder.aboutShowVersion = true;
         builder.withFields(R.string.class.getFields());
-        builder.withLibraries("activeandroid", "caldroid");
         builder.withActivityTheme(R.style.CustomAboutLibrariesTheme);
 
         setIntent(builder.intent(this));

@@ -25,17 +25,20 @@ import io.scalaproject.androidminer.network.Json;
 
 public final class ProviderManager {
 
-    // Increment the version number when the json structure changes
+    // Increment the version number when the pool json structure changes
     static private final String version = "1";
 
     static private final String DEFAULT_POOLS_REPOSITORY = "https://raw.githubusercontent.com/scala-network/MobileMiner/master/app.json";
 
-    static private final String IPFS_HASH = "QmaX32HmCqH9BeVim9G2nk7vzhGHmevN7PRN3F8gttuEmD";
-    static private final String[] POOLS_REPOSITORY_IPFS_GATEWAYS = {
-            "https://dweb.link/ipfs/",
-            "https://ipfs.io/ipfs/",
-            "https://gateway.ipfs.io/ipfs/",
-            "https://cloudflare-ipfs.com/ipfs/"
+    // USAGE: When the DEFAULT_POOLS_REPOSITORY file is modified, we need to upload the new file
+    //        to the IPNS gateway as well. This is to avoid having to release a new version of the app
+    //        every time the data changes.
+    static private final String IPNS_NAME = "pool-list.scalaproject.io";
+    static private final String[] POOLS_REPOSITORY_IPNS_GATEWAYS = {
+            "https://dweb.link/ipns/",
+            "https://ipfs.io/ipns/",
+            "https://gateway.ipfs.io/ipns/",
+            "https://cloudflare-ipfs.com/ipns/"
     };
 
     static private final String DEFAULT_POOL = "{\n" +
@@ -53,7 +56,7 @@ public final class ProviderManager {
 
     static public boolean useDefaultPool = false;
 
-    static private final ArrayList<PoolItem> mPools = new ArrayList<PoolItem>();
+    static private final ArrayList<PoolItem> mPools = new ArrayList<>();
 
     static public void add(PoolItem poolItem) {
         mPools.add(poolItem);
@@ -84,7 +87,7 @@ public final class ProviderManager {
     }
 
     static public void loadPools(Context context) {
-        loadDefaultPools(context);
+        loadDefaultPools();
 
         loadUserdefinedPools(context);
 
@@ -180,7 +183,7 @@ public final class ProviderManager {
         request.run();
     }
 
-    static public void loadDefaultPools(Context context) {
+    static public void loadDefaultPools() {
         request.stop();
         request.mPoolItem = null;
         mPools.clear();
@@ -208,9 +211,10 @@ public final class ProviderManager {
 
             // If GitHub is not available or is blocked by firewalls, use IPFS gateways
             if(jsonString.isEmpty()) {
-                for (String strPoolURL : POOLS_REPOSITORY_IPFS_GATEWAYS) {
+                for (String strPoolURLDir : POOLS_REPOSITORY_IPNS_GATEWAYS) {
+                    String strPoolURL = strPoolURLDir + IPNS_NAME;
                     if(Tools.isURLReachable(strPoolURL)) {
-                        jsonString = Json.fetch(strPoolURL + IPFS_HASH);
+                        jsonString = Json.fetch(strPoolURL);
                         if (!jsonString.isEmpty())
                             break;
                     }
@@ -224,7 +228,7 @@ public final class ProviderManager {
             } else {
                 useDefaultPool = false;
                 Config.write(Config.CONFIG_POOLS_REPOSITORY_JSON, jsonString);
-                Config.write(Config.CONFIG_POOLS_REPOSITORY_LAST_FETCHED, String.valueOf(now + 3600));//Cached time is 1 hour for now
+                Config.write(Config.CONFIG_POOLS_REPOSITORY_LAST_FETCHED, String.valueOf(now + 3600)); //Cached time is 1 hour for now
             }
         }
 
@@ -240,10 +244,8 @@ public final class ProviderManager {
                 ArrayList<String> listPort = new ArrayList<>();
                 if(pool.has("ports")) {
                     JSONArray portsArray = pool.getJSONArray("ports");
-                    if (portsArray != null) {
-                        for (int j = 0; j < portsArray.length(); j++){
-                            listPort.add(portsArray.getString(j));
-                        }
+                    for (int j = 0; j < portsArray.length(); j++){
+                        listPort.add(portsArray.getString(j));
                     }
                 }
 
@@ -288,7 +290,7 @@ public final class ProviderManager {
         for(int i = 0; i < mPools.size(); i++) {
             PoolItem pi = mPools.get(i);
 
-            if(pi.isUserDefined()) { // just in case!
+            if(pi.isUserDefined()) {
                 String poolString = pi.toString();
                 editor.putString(Integer.toString(i), poolString);
             }

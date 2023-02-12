@@ -96,16 +96,9 @@ public class MiningService extends Service {
     }
 
     @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
-        return START_STICKY;
-    }
-
-    @Override
     public void onTaskRemoved(Intent rootIntent) {
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.cancelAll();
-
-        stopMining();
 
         super.onTaskRemoved(rootIntent);
     }
@@ -115,15 +108,13 @@ public class MiningService extends Service {
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.cancelAll();
 
-        stopMining();
-
         super.onDestroy();
     }
 
     private MiningServiceStateListener listener = null;
 
     public interface MiningServiceStateListener {
-        void onStateChange(Boolean state);
+        void onStateChange(Boolean state, String message);
         void onStatusChange(String status, float speed, float max, int accepted, int difficulty, int connection);
     }
 
@@ -134,9 +125,9 @@ public class MiningService extends Service {
 
     Boolean mMiningServiceState = false;
 
-    private void raiseMiningServiceStateChange(boolean state) {
+    private void raiseMiningServiceStateChange(boolean state, String message) {
         mMiningServiceState = state;
-        if (listener != null) listener.onStateChange(state);
+        if (listener != null) listener.onStateChange(state, message);
     }
 
     private void raiseMiningServiceStatusChange(String status, float speed, float max, int accepted, int difficulty, int connection) {
@@ -329,11 +320,8 @@ public class MiningService extends Service {
             String[] args = {"./" + Config.miner_xlarig};
 
             ProcessBuilder pb = new ProcessBuilder(args);
-
             pb.directory(new File(privatePath));
-
             pb.environment().put("LD_LIBRARY_PATH", privatePath);
-
             pb.redirectErrorStream();
 
             accepted = 0;
@@ -345,10 +333,10 @@ public class MiningService extends Service {
 
             process = pb.start();
 
-            outputHandler = new MiningService.OutputReaderThread(process.getInputStream(), Config.miner_xlarig);
+            outputHandler = new MiningService.OutputReaderThread(process.getInputStream());
             outputHandler.start();
 
-            inputHandler = new InputReaderThread(process.getOutputStream());
+            inputHandler = new MiningService.InputReaderThread(process.getOutputStream());
             inputHandler.start();
 
             if (procMon != null) {
@@ -388,26 +376,26 @@ public class MiningService extends Service {
 
         public void run() {
             try {
-                raiseMiningServiceStateChange(true);
+                raiseMiningServiceStateChange(true, "");
                 if (proc != null) {
                     proc.waitFor();
                     Log.i(LOG_TAG, "process exit: " + proc.exitValue());
                 }
-                raiseMiningServiceStateChange(false);
+                raiseMiningServiceStateChange(false, "");
 
             } catch (Exception e) {
                 // assume problem with process and not running
-                raiseMiningServiceStateChange(false);
+                raiseMiningServiceStateChange(false, e.getMessage());
                 Log.e(LOG_TAG, "exception:", e);
             }
         }
     }
 
     private class OutputReaderThread extends Thread {
-        private final InputStream inputStream;
-        private final StringBuilder output = new StringBuilder();
+        private InputStream inputStream;
+        private StringBuilder output = new StringBuilder();
 
-        OutputReaderThread(InputStream inputStream, String miner) {
+        OutputReaderThread(InputStream inputStream) {
             this.inputStream = inputStream;
         }
 
@@ -421,15 +409,13 @@ public class MiningService extends Service {
                 if(lineCompare.contains("diff")) {
                     int i = lineCompare.indexOf("diff ") + "diff ".length();
                     int imax = lineCompare.indexOf(" ", i);
-                    String diff = lineCompare.substring(i, imax).trim();
-                    difficulty = Integer.parseInt(lineCompare.substring(i, imax).trim());;
+                    difficulty = Integer.parseInt(lineCompare.substring(i, imax).trim());
                 }
 
                 if(lineCompare.contains("ms)")) {
                     int i = lineCompare.indexOf("(", lineCompare.length() - 10) + 1;
                     int imax = lineCompare.indexOf("ms)");
-                    String conn = lineCompare.substring(i, imax).trim();
-                    connection = Integer.parseInt(lineCompare.substring(i, imax).trim());;
+                    connection = Integer.parseInt(lineCompare.substring(i, imax).trim());
                 }
 
             } // For some reason some devices display "miner" instead of "speed"
@@ -492,8 +478,8 @@ public class MiningService extends Service {
         }
     }
 
-    private static class InputReaderThread extends Thread {
-        private final OutputStream outputStream;
+    private class InputReaderThread extends Thread {
+        private OutputStream outputStream;
         private BufferedWriter writer;
 
         InputReaderThread(OutputStream outputStream) {
@@ -532,7 +518,7 @@ public class MiningService extends Service {
         }
     }
 
-    public boolean isMiningProcessAlive() {
+    /*public boolean isMiningProcessAlive() {
         try {
             if(process != null) {
                 process.exitValue();
@@ -543,5 +529,5 @@ public class MiningService extends Service {
         }
 
         return false;
-    }
+    }*/
 }

@@ -6,7 +6,7 @@
 //
 // Please see the included LICENSE file for more information.
 
-package io.scalaproject.androidminer.controls;
+package io.scalaproject.androidminer.controls
 
 import android.content.Context
 import android.graphics.*
@@ -44,7 +44,7 @@ class SimpleTriangleIndicator(context: Context) : Indicator<SimpleTriangleIndica
         indicatorPath.lineTo(getCenterX() + width, indicatorTop + width)
         indicatorPath.moveTo(0f, 0f)
 
-        indicatorPaint.setColor(color);
+        indicatorPaint.color = color
     }
 
     override fun setWithEffects(withEffects: Boolean) {

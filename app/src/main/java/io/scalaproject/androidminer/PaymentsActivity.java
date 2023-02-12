@@ -62,7 +62,7 @@ public class PaymentsActivity extends BaseActivity implements PaymentInfoAdapter
         View view = findViewById(android.R.id.content).getRootView();
 
         RecyclerView rvPayments = view.findViewById(R.id.rvPayments);
-        PaymentInfoAdapter paymentsAdapter = new PaymentInfoAdapter(this, this);
+        PaymentInfoAdapter paymentsAdapter = new PaymentInfoAdapter(this);
         rvPayments.setAdapter(paymentsAdapter);
 
         // Set payments data
@@ -88,7 +88,7 @@ public class PaymentsActivity extends BaseActivity implements PaymentInfoAdapter
     }
 
     @Override
-    public void onShowPayment(final View view, final PaymentItem paymentItem) {
+    public void onShowPayment(final PaymentItem paymentItem) {
         String paymentURL = "https://explorer.scalaproject.io/tx?tx_info=" + paymentItem.mHash;
         Uri uri = Uri.parse(paymentURL);
         startActivity(new Intent(Intent.ACTION_VIEW, uri));

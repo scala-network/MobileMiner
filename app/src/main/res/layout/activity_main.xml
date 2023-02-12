@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="@color/bg_body"
@@ -21,7 +20,6 @@
         android:layout_below="@+id/toolbar">
 
         <LinearLayout
-            android:id="@+id/layout_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/bg_body"
@@ -61,6 +59,74 @@
                                 android:orientation="horizontal"
                                 android:gravity="center">
 
+                                <LinearLayout
+                                    android:id="@+id/llCPUCores"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:paddingTop="6dp"
+                                    android:paddingBottom="6dp"
+                                    android:paddingStart="8dp"
+                                    android:paddingEnd="10dp"
+                                    android:orientation="horizontal"
+                                    android:gravity="center_vertical"
+                                    android:background="@drawable/corner_radius_lighter_round">
+
+                                    <ImageView
+                                        android:layout_width="12dp"
+                                        android:layout_height="12dp"
+                                        android:layout_marginTop="1dp"
+                                        android:gravity="center"
+                                        app:srcCompat="@drawable/ic_cpu_cores" />
+
+                                    <TextView
+                                        android:id="@+id/tvCPUCores"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        android:layout_marginStart="2dp"
+                                        android:gravity="start"
+                                        android:text="4/7"
+                                        android:textColor="@color/c_white"
+                                        android:textSize="12sp"
+                                        android:textStyle="normal" />
+
+                                </LinearLayout>
+
+                                <Space
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight="1" />
+
+                                <LinearLayout
+                                    android:id="@+id/llMiningStatus"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="9dp"
+                                    android:orientation="horizontal"
+                                    android:gravity="center_vertical">
+
+                                    <ImageView
+                                        android:id="@+id/ivMiningStatus"
+                                        android:layout_width="20dp"
+                                        android:layout_height="20dp"
+                                        android:layout_marginTop="1dp"
+                                        app:tint="@color/bg_lighter"
+                                        app:srcCompat="@drawable/ic_mining_status" />
+
+                                    <TextView
+                                        android:id="@+id/tvMiningStatus"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        android:layout_marginStart="4dp"
+                                        android:gravity="start"
+                                        android:text="@string/stopped_status"
+                                        android:textColor="@color/c_white"
+                                        android:textSize="18sp"
+                                        android:textStyle="bold" />
+
+                                </LinearLayout>
+
                                 <Space
                                     android:layout_width="0dp"
                                     android:layout_height="match_parent"
@@ -76,7 +142,6 @@
                                     android:layout_marginEnd="3dp"
                                     app:tint="@color/c_blue"
                                     app:srcCompat="@drawable/ic_rocket" />
-
 
                                 <Switch
                                     android:id="@+id/swPerformanceMode"
@@ -368,7 +433,7 @@
 
                                     <Button
                                         android:id="@+id/start"
-                                        android:layout_width="50dp"
+                                        android:layout_width="0dp"
                                         android:layout_height="55dp"
                                         android:layout_weight="0.25"
                                         app:backgroundTint="@color/bg_green"
@@ -383,13 +448,11 @@
                             </FrameLayout>
 
                             <Space
-                                android:id="@+id/space_metrics_above"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:layout_weight="1" />
 
                                 <HorizontalScrollView
-                                    android:id="@+id/hsv"
                                     android:layout_width="fill_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="15dp"
@@ -398,12 +461,12 @@
                                     android:scrollbars="none" >
 
                                     <LinearLayout
-                                        android:id="@+id/innerLay"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_marginBottom="5dp"
                                         android:gravity="center_vertical"
-                                        android:orientation="horizontal" >
+                                        android:orientation="horizontal"
+                                        android:baselineAligned="false">
 
                                         <LinearLayout
                                             android:layout_width="50dp"
@@ -623,7 +686,6 @@
                                 </HorizontalScrollView>
 
                             <Space
-                                android:id="@+id/space_metrics_below"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:layout_weight="1" />
@@ -719,19 +781,18 @@
                                     android:progressDrawable="@drawable/progressbar_rounded_green" />
 
                                 <LinearLayout
-                                    android:id="@+id/llPayoutGoal"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="10dp"
                                     android:layout_marginBottom="5dp"
-                                    android:onClick="onEditPayoutGoal"
+                                    android:onClick="onMinimumPayoutHelp"
                                     android:orientation="horizontal">
 
                                     <TextView
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:gravity="center"
-                                        android:text="Payout Goal:"
+                                        android:text="@string/minimum_payout_label"
                                         android:textColor="@color/txt_main"
                                         android:textSize="12sp" />
 
@@ -755,20 +816,20 @@
                                         android:textSize="12sp" />
 
                                     <ImageView
-                                        android:layout_width="14dp"
-                                        android:layout_height="14dp"
-                                        android:layout_marginStart="5dp"
+                                        android:layout_width="12dp"
+                                        android:layout_height="12dp"
+                                        android:layout_marginTop="0.5dp"
+                                        android:layout_marginStart="4dp"
                                         android:layout_gravity="center"
-                                        android:onClick="onEditPayoutGoal"
-                                        android:tint="@color/btn_icon_default"
-                                        app:srcCompat="@drawable/ic_edit" />
+                                        android:onClick="onMinimumPayoutHelp"
+                                        android:tint="@color/txt_main"
+                                        app:srcCompat="@drawable/ic_help" />
 
                                 </LinearLayout>
 
                             </LinearLayout>
 
                         <LinearLayout
-                            android:id="@+id/llTitleActivity"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="20dp"
@@ -818,7 +879,6 @@
                         </LinearLayout>
 
                         <RelativeLayout
-                            android:id="@+id/rlLog"
                             android:layout_width="match_parent"
                             android:layout_height="125dp"
                             android:layout_marginTop="15dp"

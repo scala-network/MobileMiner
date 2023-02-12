@@ -25,9 +25,10 @@
                 style="@style/ScalaEdit"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:hint="Name"
+                android:hint="@string/name"
                 android:textColor="@color/txt_main"
                 android:textStyle="normal"
+                android:inputType="textCapWords"
                 android:imeOptions="actionNext"
                 android:textAlignment="textStart" />
         </com.google.android.material.textfield.TextInputLayout>
@@ -43,10 +44,11 @@
                 style="@style/ScalaEdit"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:hint="URL"
+                android:hint="@string/url"
                 android:textColor="@color/txt_main"
                 android:textStyle="normal"
                 android:imeOptions="actionNext"
+                android:inputType="textUri"
                 android:layout_weight="1"
                 android:textAlignment="textStart" />
         </com.google.android.material.textfield.TextInputLayout>

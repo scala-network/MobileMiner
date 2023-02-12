@@ -1,0 +1,2 @@
+- Add an option to define a minimum battery level when mining
+- Fix numerous crashes
