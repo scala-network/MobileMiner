@@ -21,6 +21,7 @@
   "cpu": {
     "enabled": true,
     "huge-pages": true,
+    "1gb-pages": true,
     "hw-aes": null,
     "priority": 3,
     "asm": false,
